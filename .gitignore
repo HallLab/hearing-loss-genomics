@@ -205,3 +205,32 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project Hearing Loss Files
+# Data files — never commit
+data/
+*.txt
+*.csv
+*.tsv
+*.gz
+*.vcf
+*.bim
+*.bed
+*.fam
+*.plink
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Outputs (large files)
+outputs/*.png
+outputs/*.pdf
