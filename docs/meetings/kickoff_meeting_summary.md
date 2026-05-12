@@ -63,7 +63,7 @@ Adult patients are rarely assessed genetically because results don't currently c
 ### Priority 3 — Document & port the original pipeline
 - Daniel Hui ran the original pipeline. Already shared the scripts.
 - Joe Park provided methodological recommendations.
-- New rare-variant approaches (last ~6 months — used by Charlene in Hall Lab) should also be applied.
+- Newer rare-variant approaches (developed within the last ~6 months) should also be applied as a methodological comparator.
 - Nikki/Andre should review, document, and re-run with current methods.
 
 ---

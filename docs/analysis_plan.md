@@ -5,7 +5,7 @@
 ## Objectives
 
 1. Reproduce the Hui et al. 2023 PMBB pipeline on the **same PMBB release Daniel used (v2, `PMBB-Release-2020-2.0`)** to confirm we can replicate the published numbers. This validates our infrastructure before changing data versions.
-2. Re-run the ZNF175 burden test with updated rare-variant methods (Charlene's recent recommendations).
+2. Re-run the ZNF175 burden test with **SAIGE-GENE+** as the modern rare-variant comparator alongside the legacy biobin pipeline. (Leaning: SAIGE — it's what most groups in the field are converging on.)
 3. Deep-dive the 8 signal-driving exomes to identify candidate second-hit variants in other HL genes.
 4. Document the pipeline thoroughly so it's reusable for downstream analyses (UKBB, AoU, audiogram subcohort).
 5. **(Later phase)** Port the validated pipeline to PMBB v3 (`PMBB-Release-2024-3.0`) and v4 (`PMBB-Release-2026-4.0`) to extend the analysis to newer cohorts.
@@ -15,12 +15,12 @@
 ## Task list
 
 ### Setup & onboarding
-- [ ] Confirm Daniel Hui's scripts are complete and accessible at the project root
-- [ ] Read scripts end-to-end; produce `docs/pipeline_walkthrough.md` documenting each step's input/output/parameters
-- [ ] Reach out to Daniel Hui (still at Penn, Tishkoff lab — same email) for any clarifications
+- [x] Confirm Daniel Hui's scripts are complete and accessible at the project root
+- [x] Read scripts end-to-end; produce `docs/pipeline_walkthrough.md` documenting each step's input/output/parameters
+- [x] Reach out to Daniel Hui (daniel.hui.work@gmail.com) for any clarifications
 - [ ] Reach out to Joe Park if methodology questions arise about the original burden test
-- [ ] Inventory `data/` — confirm we have: PMBB v3 genotype data, exome data, phecode 389 definitions, audiogram-PMBB ID linkage
-- [ ] Verify `venv` has required packages; create `requirements.txt` / `environment.yml` if missing
+- [x] Inventory `data/` — confirm we have: PMBB v2 genotype data, exome data, phecode 389 definitions, audiogram-PMBB ID linkage
+- [x] Verify `venv` has required packages; create `requirements.txt` / `environment.yml` if missing
 
 ### Replication (on PMBB v2 — same release Daniel used)
 - [ ] Recreate case/control definitions per Hui et al.: phecode 389 (≥2 instances = case, 0 = control, 1 = missing)
@@ -45,9 +45,9 @@
 - [ ] Cross-reference against Daniel's curated 140-case cohort: do the same second-hit patterns appear in mutation carriers WITH HL but not in those WITHOUT?
 - [ ] Statistical test (if N permits): rare-variant burden in HL genes, ZNF175-carriers-with-HL vs ZNF175-carriers-without-HL
 
-### Updated methods (Charlene's recommendations)
-- [ ] Get the updated rare-variant pipeline specs from Charlene
-- [ ] Run alongside the legacy pipeline for direct comparison
+### Updated methods comparison (SAIGE-GENE+)
+- [ ] Install a current SAIGE-GENE+ build — LPC has a stale SAIGE 1.5.0 install at `/project/ritchie/env/modules/saige/1.5.0` (no `module load` file; conda env recipe from 2020). Current SAIGE-GENE+ (≥1.1+) needs a fresh conda/mamba env or an Apptainer container.
+- [ ] Run SAIGE-GENE+ alongside the legacy biobin pipeline for direct comparison
 - [ ] Document any signal differences (gained / lost associations)
 
 ### Reporting
@@ -62,7 +62,7 @@
 - What exact filtering criteria define the "8 signal-driving cases"? (pLoF only? or pLoF + missense? what allele-frequency cutoff?)
 - Is the 140-case curated cohort still considered the working cohort, or should we re-curate with PMBB v3?
 - For the audiogram-only quantitative-trait analysis on the 4K cohort: in scope for Phase 1 or Phase 2?
-- Which updated methods is Charlene using — REGENIE? STAAR? SAIGE-GENE+? confirm before re-running.
+- ~~Which modern rare-variant method should be the comparator?~~ → **SAIGE-GENE+** (Andre's pick, 2026-05-12). Open sub-question: install via fresh conda env, Apptainer container, or LPC IT request for a new module build?
 
 ---
 

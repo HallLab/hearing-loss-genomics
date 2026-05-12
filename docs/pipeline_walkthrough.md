@@ -38,7 +38,23 @@
 
 ## Phase 1 — Gene list curation + variant annotation filter (lines 1–46)
 
-**Goal:** produce the final master variant×gene table [`annot_genes_full_funcToInclude.txt`](../data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz), restricted to (a) the 173 HL gene set and (b) the variant functional classes used in the burden test (pLoF + missense REVEL>0.6).
+**Goal:** produce the final master variant×gene table [`annot_genes_full_funcToInclude.txt.gz`](../data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz), restricted to (a) the 173 HL gene set and (b) the variant functional classes used in the burden test (pLoF + missense REVEL>0.6).
+
+### Re-run modes for Phase 1
+
+Daniel's intermediates from this phase **already exist** in [`data/PMBB_Exome/`](../data/PMBB_Exome/):
+
+| File | Size | Origin |
+|---|---|---|
+| [`all_genes_including_ShadisList.txt.gz`](../data/PMBB_Exome/all_genes_including_ShadisList.txt.gz) | 512 B | Step 1.1 output — the 173-gene HL list |
+| [`annot_genes_full.txt.gz`](../data/PMBB_Exome/annot_genes_full.txt.gz) | 12 MB | Step 1.2 output — annotation table filtered to HL genes |
+| [`annot_genes_full_funcToInclude.txt.gz`](../data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz) | 1.8 MB | Step 1.3 output — **master variant×gene table** used by every downstream phase |
+
+**Light mode** (recommended for initial validation): skip Phase 1 entirely and use `annot_genes_full_funcToInclude.txt.gz` directly. Confirms we can read Daniel's outputs and matches his exact filter decisions.
+
+**Heavy mode** (for end-to-end replication): regenerate all three files from raw v2 data. Confirms our infrastructure reproduces the same filter outputs Daniel got. Useful as a stepping stone toward the future v3/v4 port (where this phase WILL need to be re-run).
+
+The remainder of this Phase 1 section documents **heavy mode**.
 
 ### Step 1.1 — Build the HL gene list (lines 1–24)
 
@@ -77,6 +93,7 @@ X-linked genes excluded from autosomal burden: COL4A5, NDP (and MIRN96, which li
 
 ### Step 1.2 — Filter PMBB variant annotation to HL genes (line 25)
 
+Daniel's original command (runbook line 25):
 ```bash
 python scripts/only_HL_genes.py \
     all_genes_including_ShadisList.txt \
@@ -84,25 +101,44 @@ python scripts/only_HL_genes.py \
     > annot_genes_full.txt
 ```
 
-- **Script:** [`scripts/pmbb_exome/only_HL_genes.py`](../analysis/daniel/scripts/pmbb_exome/only_HL_genes.py)
-- **Input:** PMBB v2 variant annotation (column 8 = gene name)
-- **Output:** [`annot_genes_full.txt.gz`](../data/PMBB_Exome/annot_genes_full.txt.gz) — all annotated variants in HL genes (~12 MB after compression)
+**To re-run today** (with current paths and the still-existing annotation file):
+```bash
+zcat data/PMBB_Exome/all_genes_including_ShadisList.txt.gz > /tmp/genes.txt
+python analysis/daniel/scripts/pmbb_exome/only_HL_genes.py \
+    /tmp/genes.txt \
+    data/pmbb_v2/Exome/Variant_annotations/PMBB-Release-2020-2.0_genetic_exome_variant-annotation-counts.txt \
+    > analysis/daniel/outputs/phase1/annot_genes_full.txt
+```
+
+Two notable substitutions vs Daniel's original:
+- Path remap: `/project/PMBB/...` → `data/pmbb_v2/...`
+- **Filename:** the original `variant-annotations.txt` no longer exists in v2 — only `variant-annotation-counts.txt` (5.4 GB). Daniel himself migrated to the `-counts` version mid-runbook (line 42-43: "were replaced by these"). The two files have the same column structure, so the script works unchanged.
+
+- **Script:** [`only_HL_genes.py`](../analysis/daniel/scripts/pmbb_exome/only_HL_genes.py) — reads column 8 (`line[7]`, 0-indexed) = `Gene.refGene`. Verified column position in the current `-counts.txt` header is still column 8 ✓.
+- **Output:** [`annot_genes_full.txt.gz`](../data/PMBB_Exome/annot_genes_full.txt.gz) (Daniel's, 12 MB compressed) — all annotated variants in HL genes
 
 QA check: any HL gene names NOT in the annotation get written to `not_in_annot_full.txt` and reviewed manually.
 
 ### Step 1.3 — Filter to functional classes used in burden test (line 46)
 
+Daniel's command:
 ```bash
 python scripts/only_func_cats_to_include.py annot_genes_full.txt \
     > annot_genes_full_funcToInclude.txt
 ```
 
-- **Script:** [`scripts/pmbb_exome/only_func_cats_to_include.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py)
+**To re-run today:**
+```bash
+python analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py \
+    analysis/daniel/outputs/phase1/annot_genes_full.txt \
+    > analysis/daniel/outputs/phase1/annot_genes_full_funcToInclude.txt
+```
+
+- **Script:** [`only_func_cats_to_include.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py)
 - **What it keeps:** pLoFs (frameshift_*, stopgain, splicing) + missense with **REVEL > 0.6** (paper's burden criteria)
-- **Output:** [`annot_genes_full_funcToInclude.txt.gz`](../data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz) — the **master variant×gene table** used by every downstream burden test
-- **Variant of script** for the exome-wide all-genes run: [`only_func_cats_to_include.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py) used unchanged but on the full annotation file (no gene-list pre-filter) — see Phase 12, line 406
-- **Variant for UKBB:** [`only_func_cats_to_include_UKBB.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_UKBB.py)
-- **Variant including stoploss + multiallelic** (later add-back): [`only_func_cats_to_include_stoploss_newannot.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_stoploss_newannot.py)
+- **Output:** [`annot_genes_full_funcToInclude.txt.gz`](../data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz) (Daniel's, 1.8 MB) — the **master variant×gene table** used by every downstream phase
+- **Sanity check** for our re-run: `diff <(zcat data/PMBB_Exome/annot_genes_full_funcToInclude.txt.gz) analysis/daniel/outputs/phase1/annot_genes_full_funcToInclude.txt` should be empty. If not, schema drift between Daniel's annotation file and the current `-counts.txt` — investigate.
+- **Sibling scripts** (used in later phases): [`only_func_cats_to_include_UKBB.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_UKBB.py) for UKBB Phase 15; [`only_func_cats_to_include_stoploss_newannot.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_stoploss_newannot.py) for the multiallelic+stoploss add-back (Phase 9)
 
 ### v3+ porting notes (Phase 1) — future phase, ignore in Phase 1
 

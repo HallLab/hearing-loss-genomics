@@ -20,7 +20,7 @@ analysis/daniel/
 │   ├── pmbb_imputed/         # 16 scripts (GWAS, PRS) (was data/PMBB_Imputed/scripts/*.gz)
 │   └── dfna/                 # 5 scripts (was data/DFNA/scripts/*.gz)
 ├── configs/                  # parameter files for our re-runs (empty — to be populated)
-├── outputs/                  # outputs from our re-runs (empty — to be populated)
+├── outputs/                  # outputs from our re-runs, organized per phase (outputs/phase1/, outputs/phase2/, …)
 └── logs/                     # job logs (LSF / SLURM / interactive)
 ```
 
@@ -59,7 +59,8 @@ All confirmed available on LPC (`superman` node) as of 2026-05-12:
 | **plink2** | `/appl/plink2-20240804/plink` (default on PATH as `plink`) | Most plink1.9 commands work in plink2 but pilot-test first |
 | **Python** | `source venv/bin/activate` (Python 3.12) | Project venv — ⚠ missing `pandas scipy statsmodels numpy`, install before running scripts |
 | **R** | `/appl/R-4.4/bin/Rscript` (explicit path) | ⚠ Default `R-3.6.3` is **broken** on this RHEL 9 node (`libreadline.so.6` missing); R-3.6 through R-4.3 all broken. **Use R-4.4 or R-4.5.** Daniel's scripts use base R, runs fine on 4.x |
-| **regenie** | `module load regenie/3.2.1` (and older) | **Likely Charlene's "updated methods" tool** for the side-by-side comparison |
+| **regenie** | `module load regenie/3.2.1` (and older) | Modern rare-variant burden tool — available as module |
+| **SAIGE-GENE+** | ⚠ needs setup | Andre's chosen comparator for the modern-methods side-by-side. LPC has only stale SAIGE 1.5.0 (2020) — needs fresh conda env or Apptainer container. |
 | **VEP / ANNOVAR** | `module load variant_effect_predictor/92` or `annovar/20191024` | If re-annotating from raw VCFs |
 
 **Quick env setup** for a fresh shell on `superman`:

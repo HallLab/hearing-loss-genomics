@@ -1,6 +1,6 @@
 # Data Inventory — `data/`
 
-> First-pass inventory of `/home/alrico/hall/analysis/hearing-loss-genomics/data/`. Identifies what each subdirectory and key file is for, based on file names, READMEs, and the original pipeline notes. Updated 2026-05-12.
+> First-pass inventory of `/project/hall/analysis/hearing-loss-genomics/data/`. Identifies what each subdirectory and key file is for, based on file names, READMEs, and the original pipeline notes. Updated 2026-05-12.
 >
 > Companion docs:
 > - [`pipeline_walkthrough.md`](pipeline_walkthrough.md) — the curated phase-by-phase guide to Daniel's runbook
@@ -250,17 +250,15 @@ Kickoff meeting and analysis plan refer to "8 signal-driving cases" / "8 cases d
 
 See [`pipeline_walkthrough.md`](pipeline_walkthrough.md) Phase 8 + 11 for the detailed cross-reference.
 
-### ⚠ PMBB version mismatch
+### PMBB version alignment (Phase 1)
 
-All Daniel's files are built against `PMBB-Release-2020-2.0` (v2). Our [`pmbb_v3/`](../data/pmbb_v3/) symlinks point at `PMBB-Release-2024-3.0` (v3). The replication will need to either:
-- regenerate genotype/annotation tables on v3 (correct way — sample composition has changed)
-- OR re-use Daniel's v2 cohort and call this a "documentation pass, not a re-derivation"
+Phase 1 replicates on the **same PMBB release Daniel used** — `PMBB-Release-2020-2.0` (v2). All Daniel's intermediates in [`PMBB_Exome/`](../data/PMBB_Exome/), [`PMBB_Imputed/`](../data/PMBB_Imputed/), and [`DFNA/`](../data/DFNA/) are v2-derived. Raw v2 is accessible via [`data/pmbb_v2/`](../data/pmbb_v2/) → `/static/PMBB/PMBB-Release-2020-2.0/`. No version mismatch in Phase 1.
 
-Plan currently implies the former. Need to confirm with Molly.
+The [`data/pmbb_v3/`](../data/pmbb_v3/) symlinks (3 phenotype files) and the v4 release at `/static/PMBB/PMBB-Release-2026-4.0/` are reserved for the **future-phase port**, after Phase 1 v2 replication is validated.
 
 ### Audiogram linkage
 
-`audbase_feb252021/` contains `RGC21_45k_aud_1.csv.gz` (the Brant + RGC matched audiogram file with PMBB IDs, from Feb 2021). Kickoff notes 4K individuals with both audiograms and exomes — this file is the foundation for that subset. **Action:** confirm with ENT team whether a refreshed audiogram-PMBB ID linkage exists for v3, or whether the Feb 2021 snapshot is still authoritative.
+[`audbase_feb252021/`](../data/PMBB_Exome/audbase_feb252021/) contains `RGC21_45k_aud_1.csv.gz` (the Brant + RGC matched audiogram file with PMBB IDs, from Feb 2021). Kickoff notes 4K individuals with both audiograms and exomes — this file is the foundation for that subset, and it's what Daniel used. **For Phase 1 (v2 replication):** the Feb 2021 snapshot is the authoritative file — same as Daniel had — no action needed. **For the future-phase v3/v4 port:** confirm with ENT team whether a refreshed audiogram-PMBB ID linkage exists for the newer releases.
 
 ### Where the original pipeline starts
 
