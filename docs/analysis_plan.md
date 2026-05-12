@@ -4,10 +4,11 @@
 
 ## Objectives
 
-1. Reproduce the Hui et al. 2023 PMBB pipeline on current PMBB release (v3) to confirm we can replicate the published numbers.
+1. Reproduce the Hui et al. 2023 PMBB pipeline on the **same PMBB release Daniel used (v2, `PMBB-Release-2020-2.0`)** to confirm we can replicate the published numbers. This validates our infrastructure before changing data versions.
 2. Re-run the ZNF175 burden test with updated rare-variant methods (Charlene's recent recommendations).
 3. Deep-dive the 8 signal-driving exomes to identify candidate second-hit variants in other HL genes.
 4. Document the pipeline thoroughly so it's reusable for downstream analyses (UKBB, AoU, audiogram subcohort).
+5. **(Later phase)** Port the validated pipeline to PMBB v3 (`PMBB-Release-2024-3.0`) and v4 (`PMBB-Release-2026-4.0`) to extend the analysis to newer cohorts.
 
 ---
 
@@ -21,7 +22,7 @@
 - [ ] Inventory `data/` — confirm we have: PMBB v3 genotype data, exome data, phecode 389 definitions, audiogram-PMBB ID linkage
 - [ ] Verify `venv` has required packages; create `requirements.txt` / `environment.yml` if missing
 
-### Replication
+### Replication (on PMBB v2 — same release Daniel used)
 - [ ] Recreate case/control definitions per Hui et al.: phecode 389 (≥2 instances = case, 0 = control, 1 = missing)
 - [ ] Cross-check against audiograms (subset of ~1,917 in paper). Confirm 65% cases / 27% controls have audiogram-defined HL.
 - [ ] Reproduce paper's Table S2 (sample counts after each QC filter): target 35,397 controls + 1,110 cases for the audiogram-hybrid cohort
@@ -29,6 +30,11 @@
 - [ ] Re-run pLoF-only burden across all genes; confirm ZNF175 reappears at expected significance
 - [ ] Recompute heritability estimate (paper reports h² = 4.53%)
 - [ ] Note any deviations from published numbers; document expected vs observed in `results/phase1/replication_summary.md`
+
+### Future phase — port to newer PMBB releases
+- [ ] **(Later)** Port pipeline to PMBB v3 (`PMBB-Release-2024-3.0`) — re-derive case/control on the newer cohort, compare results to v2 baseline
+- [ ] **(Later)** Port to PMBB v4 (`PMBB-Release-2026-4.0`) if release is finalized and stable
+- [ ] Document differences in cohort size, ancestry composition, phecode definitions between releases
 
 ### ZNF175 deep-dive
 - [ ] Identify the 8 signal-driving cases from the original burden test (their ZNF175 variants + PMBB IDs)

@@ -3,6 +3,12 @@
 > Curated map of Daniel Hui's 1,262-line runbook ([`analysis/daniel/runbook_hui2023.txt`](../analysis/daniel/runbook_hui2023.txt)) into ordered phases. Each phase lists: cookbook line range, what it does, scripts invoked, inputs, outputs, and gotchas. Use this to know *where* in the runbook to look — then go to the runbook itself for exact commands.
 >
 > Cookbook line numbers refer to [`analysis/daniel/runbook_hui2023.txt`](../analysis/daniel/runbook_hui2023.txt) (decompressed from `data/PMBB_Exome/README.gz`). All scripts under [`analysis/daniel/scripts/`](../analysis/daniel/scripts/).
+>
+> **Scope:** Phase 1 of the project replicates this pipeline on **PMBB v2** (the release Daniel used). Raw v2 data is at [`data/pmbb_v2/`](../data/pmbb_v2/) → `/static/PMBB/PMBB-Release-2020-2.0/`. Daniel's intermediates are in [`data/PMBB_Exome/`](../data/PMBB_Exome/) etc.
+>
+> **Path substitution:** Daniel's runbook references `/project/PMBB/PMBB-Release-2020-2.0/...`. Replace with `data/pmbb_v2/...` or `/static/PMBB/PMBB-Release-2020-2.0/...` — the old `/project/PMBB/` path no longer exists on LPC.
+>
+> **Future-phase notes** at the end of each phase (labeled "v3+ porting notes") flag what will need attention when we later port the validated pipeline to PMBB v3 or v4. Ignore those during Phase 1.
 
 ## Phase map (TL;DR)
 
@@ -98,7 +104,7 @@ python scripts/only_func_cats_to_include.py annot_genes_full.txt \
 - **Variant for UKBB:** [`only_func_cats_to_include_UKBB.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_UKBB.py)
 - **Variant including stoploss + multiallelic** (later add-back): [`only_func_cats_to_include_stoploss_newannot.py`](../analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include_stoploss_newannot.py)
 
-### v3 porting notes (Phase 1)
+### v3+ porting notes (Phase 1) — future phase, ignore in Phase 1
 
 - The PMBB v3 release at `/static/PMBB/PMBB-Release-2024-3.0/Exome/Variant_annotations/` will have a different (possibly more recent) annotation schema — column positions may have shifted. Inspect the v3 annotation header before running [`only_HL_genes.py`](../analysis/daniel/scripts/pmbb_exome/only_HL_genes.py) — the script's hard-coded `cut -f 8` may need updating.
 - Gene name reconciliation list (Step 1.1 gotcha) should be re-applied — gene symbol changes between 2021 and 2024 may have happened (HGNC updates).
@@ -138,7 +144,7 @@ python scripts/only_func_cats_to_include.py annot_genes_full.txt \
    ```
    This is what plink's `--extract` takes.
 
-### v3 porting notes (Phase 2)
+### v3+ porting notes (Phase 2) — future phase, ignore in Phase 1
 
 The "add back multi-allelic + stoploss" later add-back (Phase 9) was needed because the initial filter was too aggressive. For v3, decide upfront whether to include multi-allelic from the start.
 
@@ -186,7 +192,7 @@ The "add back multi-allelic + stoploss" later add-back (Phase 9) was needed beca
 - `genotypes/allIndvs_chr{1..22}_maf.001_noRels.{bed,bim,fam}` — per-chr filtered
 - `genotypes/allIndvs_maf.001_noRels_merged.{bed,bim,fam}` — cohort-wide
 
-### v3 porting notes (Phase 3)
+### v3+ porting notes (Phase 3) — future phase, ignore in Phase 1
 
 - v3 IBD file location: `/static/PMBB/PMBB-Release-2024-3.0/Exome/IBD/` (check exact filename). Sample N will differ.
 - MAF cutoff `.001` is a paper-level constant. Cohort-MAF cutoff `.01` (for later "addBack" runs in Phase 9) is the other constant.
@@ -292,7 +298,7 @@ python scripts/keep_HL_cases_IBD.py removed_cases.txt \
 
 **Note (line 129-138):** 3 individuals (PMBB2821699971795, PMBB9129875068625, PMBB9394987694139) have HL family members and were further excluded. Final case N matches paper's reported numbers.
 
-### v3 porting (Phase 6)
+### v3+ porting (Phase 6) — future phase, ignore in Phase 1
 
 The IBD "genome" file and 3rd-degree-unrelated file for v3 may use different formats. This phase is the most likely place for cohort N to drift between v2 and v3.
 
@@ -360,7 +366,7 @@ python scripts/missense_or_pLOF.py \
 
 - **Script:** [`scripts/pmbb_exome/missense_or_pLOF.py`](../analysis/daniel/scripts/pmbb_exome/missense_or_pLOF.py)
 
-### v3 porting + project relevance
+### v3+ porting + project relevance — future phase, ignore in Phase 1
 
 This is **the** phase for the Phase 1 priority. Two questions to resolve before re-running:
 1. **Which "8" do we deep-dive?** Position 51587727 produces 8 carriers but only 1 is phecode-case. The kickoff meeting says "8 signal-driving cases" — most likely interpretation: deep-dive all 8 carriers regardless of phecode status. Confirm with Doug/Daniel.
@@ -503,7 +509,7 @@ The **imputed-data side** (GWAS, PRS-CS, PRSice, heritability) lives in [`data/P
 
 ---
 
-## What to do next
+## What to do next (Phase 1 — v2 replication)
 
 1. **Resolve the "8 cases" definition** with Doug/Daniel. The four candidate interpretations are:
    - 8 carriers at chr19:51587727 (regardless of phecode)
@@ -511,5 +517,7 @@ The **imputed-data side** (GWAS, PRS-CS, PRSice, heritability) lives in [`data/P
    - The 6 named in Joe's email + 2 from another source
    - Aggregate ZNF175 pLoF carriers from the multiallelic+stoploss add-back run
 2. **Verify tools are available on LPC:** `biobin` + `loki.db`, `plink` (v1.9), R packages, SLURM (vs. LSF).
-3. **Pilot re-run** of Phase 4 (the first biobin run) on the existing intermediates to confirm we reproduce a known number (e.g., top hit = ESRRB, line 151 of the runbook).
-4. **Then** start the porting to PMBB v3 in [`analysis/01_phase1_exploration_pmbb_v3/`](../analysis/01_phase1_exploration_pmbb_v3/) — Phase 1 (gene-list curation) is the natural starting point since it's the simplest and most likely to have v2/v3 schema drift.
+3. **Pilot re-run** of Phase 4 (the first biobin run) on the existing intermediates in [`data/PMBB_Exome/biobin/`](../data/PMBB_Exome/biobin/) to confirm we reproduce a known number (e.g., top hit = ESRRB, line 151 of the runbook).
+4. **End-to-end replication:** re-run the full pipeline on raw v2 data via [`data/pmbb_v2/`](../data/pmbb_v2/) (path-substituting `/project/PMBB/PMBB-Release-2020-2.0/` → `data/pmbb_v2/` in Daniel's commands). Confirm the published cohort numbers (1,110 cases / 35,397 controls; h² = 4.53%; ZNF175 + ESRRB + TCOF1 hits).
+
+**After Phase 1 is validated** (future phase, not now): port to PMBB v3 (`PMBB-Release-2024-3.0`) and/or v4 (`PMBB-Release-2026-4.0`). Start with Phase 1 gene-list curation against the v3+ annotation schema — most likely place for v2→v3 schema drift.

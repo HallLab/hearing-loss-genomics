@@ -13,20 +13,40 @@
 | [`PMBB_Exome/`](../data/PMBB_Exome/) | Daniel Hui (Hui et al. 2023) | **Main rare-variant burden workspace.** All pipeline scripts, phenotype/covariate files, gene lists, intermediate plink/VCF outputs, and per-gene deep-dives (ZNF175, TCOF1, ESRRB, ADGRV1). 5.6 GB, 6,258 files. |
 | [`PMBB_Imputed/`](../data/PMBB_Imputed/) | Daniel Hui | **GWAS & PRS workspace.** Common-variant GWAS, PRS-CS, PRSice, heritability, paper-SNP replication. 385 GB (mostly imputed genotypes), 1,406 files. |
 | [`DFNA/`](../data/DFNA/) | Shadi (separate, prior paper) | Adjacent dataset — Shadi's DFNA analysis. NOT the focus of our project but referenced (HL gene list is partially built from Shadi's list). 910 MB, 188 files. |
-| [`pmbb_v3/`](../data/pmbb_v3/) | Andre (Apr 2026) | **Symlinks into the current PMBB v3 release** (`/static/PMBB/PMBB-Release-2024-3.0/`). Three files so far: covariates, PheCode12_long, PheCodeX_long. This is the *new* data we will run the replication against. |
+| [`pmbb_v2/`](../data/pmbb_v2/) | Andre (May 2026) | **Single symlink to the raw PMBB v2 release** (`/static/PMBB/PMBB-Release-2020-2.0/`). This is the **active Phase 1 source** — same release Daniel used. Replaces his old `/project/PMBB/PMBB-Release-2020-2.0/` references. |
+| [`pmbb_v3/`](../data/pmbb_v3/) | Andre (Apr 2026) | Symlinks into PMBB v3 release (`/static/PMBB/PMBB-Release-2024-3.0/`). Three files: covariates + 2 phecode files. For a **future phase** — not Phase 1. |
 | [`README.gz`](../data/README.gz) | Daniel | One-line legend for the three sibling dirs. |
 
-## PMBB v3 — current release (target of replication)
+## PMBB v2 — active Phase 1 source
 
-`pmbb_v3/` contains only **three symlinks** so far — these are the only PMBB v3 files actively pulled into the project. The full release sits at `/static/PMBB/PMBB-Release-2024-3.0/` with subdirs `Exome/`, `Genotype/`, `Imaging/`, `Imputed/`, `Phenotypes/`, `README.txt`.
+[`data/pmbb_v2/`](../data/pmbb_v2/) is a single symlink to `/static/PMBB/PMBB-Release-2020-2.0/` — the raw v2 release. This is what Daniel used. All Daniel's runbook paths starting with `/project/PMBB/PMBB-Release-2020-2.0/` map to this location now (the old `/project/PMBB/...` path no longer exists on LPC).
+
+Key subpaths Daniel's pipeline references:
+
+| Path (via `data/pmbb_v2/`) | Contents |
+|---|---|
+| `Exome/Variant_annotations/` | `PMBB-Release-2020-2.0_genetic_exome_variant-annotation-counts.txt` (5.4 GB) — single annotation file, the newer "counts" version |
+| `Exome/pVCF/GL_by_chrom/` | `PMBB-Release-2020-2.0_genetic_exome_chr{1..22}_GL.vcf.gz` + `.tbi` — 48 files total |
+| `Exome/pVCF/all_variants/` | Cohort-wide plink `bed/bim/fam` of NF and GL variants |
+| `Exome/PCA/` | Eigenvec, eigenval, ancestry assignments (EUR/AFR/etc.) |
+| `Exome/IBD/` | `.genome` files for 2nd/3rd-degree relationships + 3rd-degree-unrelated keep-list |
+| `Phenotype/` | Subdirs `2.0/`, `2.1/`, `2.2/`, `2.3/` (incremental phenotype updates within v2) |
+
+## PMBB v3 — future-phase staging
+
+[`data/pmbb_v3/`](../data/pmbb_v3/) symlinks PMBB v3 (`/static/PMBB/PMBB-Release-2024-3.0/`). **Not used in Phase 1.** Will be the source for the later v3-port phase.
+
+Current symlinks (created by Andre during scoping):
 
 | Symlink | Target |
 |---|---|
 | [`pmbb_v3/covariates.txt`](../data/pmbb_v3/covariates.txt) | `/static/PMBB/PMBB-Release-2024-3.0/Phenotypes/3.0/PMBB-Release-2024-3.0_covariates.txt` |
-| [`pmbb_v3/phecode12_long.txt`](../data/pmbb_v3/phecode12_long.txt) | `..._phenotype_conditions_PheCode12_long.txt` (ICD9-mapped phecodes, classic version — what Hui et al. used) |
+| [`pmbb_v3/phecode12_long.txt`](../data/pmbb_v3/phecode12_long.txt) | `..._phenotype_conditions_PheCode12_long.txt` (ICD9-mapped phecodes — version Hui et al. used) |
 | [`pmbb_v3/phecodeX_long.txt`](../data/pmbb_v3/phecodeX_long.txt) | `..._phenotype_conditions_PheCodeX_long.txt` (PheCodeX extended version) |
 
-**To-do for inventory:** when replication starts, add symlinks for the v3 exome pVCFs, ancestries file, IBD/relatedness file, and audiogram linkage (audiogram data lives outside `/static/PMBB/Phenotypes/`, per kickoff notes — need to confirm where).
+## PMBB v4 — exists, not yet used
+
+`/static/PMBB/PMBB-Release-2026-4.0/` (subdirs: `Exome/`, `Genotype/`, `Phenotype/`). For a possible future-phase port after v3 work, if v4 is finalized and stable.
 
 ## `PMBB_Exome/` — rare-variant burden workspace
 
