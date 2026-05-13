@@ -211,6 +211,16 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
 
 **Goal:** for each chromosome, extract just the burden-eligible SNPs from the pVCF, filter out 3rd-degree-related individuals (except HL cases — see Phase 6 trick), restrict to MAF < 0.001, and merge into a single cohort-wide bed/bim/fam.
 
+**Replicated 2026-05-13** — see [`results/phase3/phase3_replication_report.md`](../results/phase3/phase3_replication_report.md). Step 3.1 was validated two ways: (a) **light mode** confirmed Daniel's 22 per-chr files have 9,667 variants summing across chrs (= our Phase 2 .extract count) in 43,731 samples; (b) **heavy pilot on chr21** confirmed that running plink ourselves against the raw v2 pVCF reproduces Daniel's `.bim` / `.fam` / `.bed` byte-for-byte (md5sum match). **plink 1.9 is the verified version** — plink 2.0 needs `--memory <MB>` to behave on LSF nodes with lots of RAM (default reserves ~50% of detected RAM).
+
+### Re-run modes for Phase 3
+
+| Mode | What it does | Cost | What it validates |
+|---|---|---|---|
+| **Light** (recommended) | Decompresses Daniel's 22 `data/PMBB_Exome/genotypes/allIndvs_chr*.{bed,bim,fam}.gz` files | ~2 s | Daniel's intermediates are well-formed and consistent with our Phase 2 |
+| **Heavy pilot** (chr21 only) | Runs plink ourselves on chr21's 8.7 GB pVCF; compares to Daniel | ~5 min wall | Our plink invocation produces the same outputs Daniel had |
+| **Heavy full** (all 22 chrs) | Same, on all chrs via 22-task LSF job array | ~45 min wall | Required only for v3 port |
+
 ### Steps
 
 1. **Per-chr plink extraction** (line 62):
@@ -222,6 +232,8 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
    done
    ```
    Output: [`data/PMBB_Exome/genotypes/allIndvs_chr{1..22}.bed/bim/fam`](../data/PMBB_Exome/genotypes/).
+
+   **Use plink 1.9 explicitly** — `/appl/plink-1.90Beta6.18/plink`. The default `plink` on PATH is now plink 2.0, which on this LPC defaults to reserving ~50% of detected node RAM (~515 GB on the 1 TB nodes), exceeding any reasonable LSF memory limit and getting killed. Either explicitly invoke plink 1.9, or use plink 2.0 with `--memory 2048` (or matching the LSF `-M` value in MB). plink 1.9 was verified to produce byte-for-byte identical output to Daniel on chr21 (md5 `9a0ccc62fc3fdb10cd48d9e9061ad7a6`).
 
 2. **IBD-based individual filter** (line 69):
    - Source N (chr22): 43,731 individuals in the raw pVCF
