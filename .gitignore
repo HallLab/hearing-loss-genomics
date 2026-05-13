@@ -219,6 +219,9 @@ data/
 *.bed
 *.fam
 *.plink
+*.err
+*.out
+*.log
 
 # Jupyter checkpoints
 .ipynb_checkpoints/

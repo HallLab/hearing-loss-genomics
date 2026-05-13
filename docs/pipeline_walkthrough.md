@@ -9,6 +9,8 @@
 > **Path substitution:** Daniel's runbook references `/project/PMBB/PMBB-Release-2020-2.0/...`. Replace with `data/pmbb_v2/...` or `/static/PMBB/PMBB-Release-2020-2.0/...` — the old `/project/PMBB/` path no longer exists on LPC.
 >
 > **Future-phase notes** at the end of each phase (labeled "v3+ porting notes") flag what will need attention when we later port the validated pipeline to PMBB v3 or v4. Ignore those during Phase 1.
+>
+> **PMBB v2 annotation file schema migration (discovered during Phase 1 re-run, 2026-05-12).** Daniel's runbook references two PMBB v2 annotation files at different points: the older `variant-annotations.txt` (used in early steps; **no longer exists on disk** as of 2026) and the newer `variant-annotation-counts.txt` (used in later steps; the only file currently present). Daniel flagged this migration at runbook line 42-43. Header column 1 differs (`Constant_ID` in the old file → `ID` in the new). For our re-runs, **use only `variant-annotation-counts.txt`** — Daniel's existing intermediates may have been built from the older file, so byte-diff against them will fail even when the pipeline is correct. Validate by set equality of variant IDs and genes instead. See [`results/phase1/phase1_replication_report.md`](../results/phase1/phase1_replication_report.md) for the detailed Phase 1 finding.
 
 ## Phase map (TL;DR)
 
@@ -150,39 +152,58 @@ python analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py \
 
 ## Phase 2 — SNP ID reconciliation (lines 47–62)
 
-**Goal:** the variant annotation file and the pVCF use different SNP ID schemes — produce a lookup table to map between them, then a plink-compatible `--extract` file.
+**Goal:** the variant annotation file and the pVCF use different SNP ID schemes — produce a lookup table to map between them, then a plink-compatible `--extract` file with 9,667 IDs.
+
+**Replicated 2026-05-12** — see [`results/phase2/phase2_replication_report.md`](../results/phase2/phase2_replication_report.md). Both validation checks PASSED; `.extract` is bit-identical to Daniel's (`md5sum 5e80ebc0faa5e68277cfeb948af8b1da` when sorted unique).
+
+### Re-run modes for Phase 2
+
+| Mode | What it does | Cost | What it validates |
+|---|---|---|---|
+| **Light** (recommended) | Reuses Daniel's `data/PMBB_Exome/vcf_SNP_IDs/vcf_SNP_IDs_allchr.txt.gz` (77 MB) and runs only the join + filter + extract | ~20 s wall | Phase 1 → Phase 2 chain; the Python join logic + filter steps |
+| **Heavy** | Re-runs `zgrep \| cut` on the raw v2 pVCFs (**781 GB total** — chr1 alone is 79 GB) via a 22-task LSF job array, then concatenates | ~15-20 min wall, requires job-array submission | Adds: the mechanical extract from raw pVCFs (low schema risk — pure VCF-spec cols 1-5) |
+
+Light is the right call for Phase 1 v2 replication. Heavy becomes necessary only when porting to PMBB v3 (different pVCFs).
 
 ### Steps
 
-1. **Extract SNP IDs from each chr pVCF** (line 49):
+1. **(Heavy only) Extract SNP IDs from each chr pVCF** (line 49):
    ```bash
    for i in {1..22}; do
      bsub "zgrep -v '#' /project/PMBB/PMBB-Release-2020-2.0/Exome/pVCF/GL_by_chrom/PMBB-Release-2020-2.0_genetic_exome_chr${i}_GL.vcf.gz \
        | cut -f 1-5 > vcf_SNP_IDs/vcf_SNP_IDs_chr${i}.txt"
    done
    ```
-   Output goes to [`data/PMBB_Exome/vcf_SNP_IDs/`](../data/PMBB_Exome/vcf_SNP_IDs/).
+   In light mode, skip — use [`data/PMBB_Exome/vcf_SNP_IDs/vcf_SNP_IDs_allchr.txt.gz`](../data/PMBB_Exome/vcf_SNP_IDs/) directly.
 
 2. **Join annotation to pVCF IDs** (line 53):
    ```bash
-   python scripts/annot_IDs_vs_pVCF.py annot_genes_full_funcToInclude.txt \
-       vcf_SNP_IDs/vcf_SNP_IDs_allchr.txt \
+   python analysis/daniel/scripts/pmbb_exome/annot_IDs_vs_pVCF.py \
+       <master list from Phase 1> \
+       <allchr VCF IDs> \
        | sort -gk1,1 -gk2,2 > matched_snp_IDs_annot_pVCF.txt
    ```
-   Script: [`scripts/pmbb_exome/annot_IDs_vs_pVCF.py`](../analysis/daniel/scripts/pmbb_exome/annot_IDs_vs_pVCF.py).
+   Script: [`annot_IDs_vs_pVCF.py`](../analysis/daniel/scripts/pmbb_exome/annot_IDs_vs_pVCF.py). Keys by `(chr, pos)`; collapses multi-allelic-in-annotation entries (11,661 → 11,236 unique positions). Outputs NA for variants in annotation but absent from pVCF.
 
-3. **Drop NA + multi-allelic** (lines 55-57). Sanity-check: ref/alt alleles match between annotation and pVCF (no mismatches expected).
+3. **Drop NA + multi-allelic** (lines 55-57). 11,236 → 9,668 rows. Sanity check: `awk '$4 != $7'` (VCF ref vs annot ref) — expect 0 mismatches.
 
 4. **Produce `.extract` file** (line 60):
    ```bash
-   cut -f 3 matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.txt \
+   tail -n +2 matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.txt | cut -f 3 \
        > matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.extract
    ```
-   This is what plink's `--extract` takes.
+   **Important:** Daniel's runbook says just `cut -f 3 ...`, but his actual `.extract.gz` on disk has 9,667 lines (no header) — he must have stripped it elsewhere undocumentedly. `plink --extract` requires one SNP ID per line **with no header**; keeping `VCF_ID` as the first line makes plink hunt for a SNP literally named "VCF_ID" and silently drop the search. **Always strip the header.**
+
+5. **Final attrition through Phase 2:** Phase 1 master 11,661 → 11,236 (chr+pos dedup) → 9,668 (NA + multi-allelic filter) → 9,667 (`.extract`, header stripped). 17% loss total; 1,173 multi-allelic come back later via Phase 9.
+
+### Script trap encountered (relevant to future phase scripts)
+
+When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefail`: if `diff` finds differences (returns 1), pipefail propagates the non-zero and `set -e` aborts the script before the `if [[ "$diff_count" -eq 0 ]]` branch can run. **Pattern for future phase scripts:** wrap validation blocks in `set +e` / `set -e` toggles, OR use `{ diff || true; } | wc -l`. See Phase 2 report Issue 2 for the full story.
 
 ### v3+ porting notes (Phase 2) — future phase, ignore in Phase 1
 
-The "add back multi-allelic + stoploss" later add-back (Phase 9) was needed because the initial filter was too aggressive. For v3, decide upfront whether to include multi-allelic from the start.
+- Heavy mode mandatory — v3 pVCFs are different files.
+- The "add back multi-allelic + stoploss" later add-back (Phase 9) was needed because the initial filter was too aggressive. For v3, decide upfront whether to include multi-allelic from the start.
 
 ---
 
