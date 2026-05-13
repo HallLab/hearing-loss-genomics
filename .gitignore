@@ -220,8 +220,11 @@ data/
 *.fam
 *.plink
 *.err
+*.stderr
 *.out
+*.stdout
 *.log
+
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
@@ -243,3 +246,6 @@ outputs/*.pdf
 PMBB_Exome/
 PMBB_Imputed/
 DFNA/
+
+# results files
+*.nosex

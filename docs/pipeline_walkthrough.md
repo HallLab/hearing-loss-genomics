@@ -268,6 +268,8 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
 
 ---
 
+> **Phase 5 in this replication = walkthrough Phases 6 + 7 fused.** The walkthrough sub-sections below split Phase 4 (preparatory files) from Phase 6 (IBD trick) from Phase 7 (biobin). In our actual replication we ran Phase 4 as a separate scripted phase (only preparatory files), then a fused Phase 5 containing Phase 6's IBD trick + Phase 7's plink filter + merge + biobin. See [`results/phase5/phase5_replication_report.md`](../results/phase5/phase5_replication_report.md) — top hit ESRRB at p=8.6308e-05, byte-exact to Daniel.
+
 ## Phase 4 — First case/control + covariates + biobin (lines 77–93)
 
 **Goal:** first end-to-end gene-burden test on the HL gene set, with audiogram-derived cases, on the merged cohort.
