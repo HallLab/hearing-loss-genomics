@@ -272,6 +272,10 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
 
 **Goal:** first end-to-end gene-burden test on the HL gene set, with audiogram-derived cases, on the merged cohort.
 
+**Replicated 2026-05-13 (scoped to preparatory files only)** — see [`results/phase4/phase4_replication_report.md`](../results/phase4/phase4_replication_report.md). Steps 4.1, 4.2, 4.3 (case/control, covariates, region file) replicated cleanly. Step 4.4 (the actual biobin run) was deferred to Phase 5 because Daniel overwrote his first-biobin output with the Phase 7 keepHLcases version — no preserved reference for Step 4.4 alone.
+
+**Key gotcha:** [`make_covs.py`](../analysis/daniel/scripts/pmbb_exome/make_covs.py) emits `str(age*age)` (default float repr). Daniel ran under Python 2 (lossy ~12-char repr); we run under Python 3 (shortest-roundtrip lossless repr). Same float values, different text. Use numeric tolerance on AgeSq column when validating (round to 4 decimals — sufficient given AgeSq ~1000-7000 in years²).
+
 ### Case/control definition (line 78-81)
 
 ```bash
