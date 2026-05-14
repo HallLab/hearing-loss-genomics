@@ -67,7 +67,9 @@ Note: at the carrier-vs-non-carrier level the cases-vs-controls difference is sm
 ### Genes implicated (rare variant)
 - **Replicated known HL genes with increased burden:** TCOF1, ESRRB (associated with HL in PMBB and replicated)
 - **Novel candidate genes (HL not previously implicated):** COL5A2, HMMR, NNT, RAPGEF3
-  - Plausible mechanisms inferred for 3 of 4 (NNT — mitochondrial / insulin / HL; RAPGEF3 — noise-induced inner ear pathology, beta-cell dysfunction; ZNF175 — the priority gene for our follow-up)
+  - Plausible mechanisms inferred for 3 of 4 (NNT — mitochondrial / insulin / HL; RAPGEF3 — noise-induced inner ear pathology, beta-cell dysfunction).
+
+**⚠ Important — ZNF175 is NOT in the published paper.** Earlier versions of this summary incorrectly listed ZNF175 here. Verified 2026-05-13 by `pdftotext` search of [`pgen.1010584.pdf`](pgen.1010584.pdf): zero matches for ZNF175, Zfp, KRAB, or "zinc finger". The project's ZNF175 priority comes from **Hall Lab / Epstein Lab internal follow-up work** — Doug Epstein's mouse biology on the syntenic ortholog *Zfp719*, plus Daniel Hui's unpublished gene-specific PMBB analyses preserved in [`data/PMBB_Exome/ZNF175/`](../../data/PMBB_Exome/ZNF175/) and [`data/PMBB_Exome/addBack_multiallelic_stoploss/`](../../data/PMBB_Exome/addBack_multiallelic_stoploss/). See [`meetings/kickoff_meeting_summary.md`](../meetings/kickoff_meeting_summary.md) for the biological motivation. ZNF175 is the project's priority gene but is **extending beyond** the published paper, not replicating it.
 
 ### GWAS hit
 - **PLPPR5** (chr1:99058420:C:T, MAF=0.012, p=8.27×10⁻⁹)
@@ -92,10 +94,10 @@ Note: at the carrier-vs-non-carrier level the cases-vs-controls difference is sm
 
 ## What's not in the paper (and why our project exists)
 
-- The ZNF175 hit is mentioned but its biological mechanism in humans is not resolved.
-- The 8 cases driving the original burden signal are not deep-dived.
-- No analysis of *second-hit* variants in HL genes among ZNF175 carriers.
+- **ZNF175 is NOT in the published paper.** The gene was identified through Hall Lab / Epstein Lab internal follow-up of Daniel's PMBB analyses + Doug Epstein's mouse biology work on *Zfp719*. Our project's primary biological goal (the ZNF175 deep-dive) is **extending beyond** the published paper, not replicating it.
+- The 8 cases driving the (unpublished) ZNF175 burden observation are not deep-dived in any published source. They emerge from Daniel's unpublished runbook commands (decompressed to [`analysis/daniel/runbook_hui2023.txt`](../../analysis/daniel/runbook_hui2023.txt) lines 174–260, 346–403).
+- No analysis of *second-hit* variants in HL genes among ZNF175 carriers exists publicly.
 - No use of the ~4,000 PMBB participants with both audiograms AND exomes for quantitative-trait analysis.
 - No UKBB / All of Us replication of the ZNF175 specific signal.
 
-These are the gaps Phase 1+ of our project addresses.
+These are the gaps Phase 1+ of our project addresses, building on Daniel's preserved unpublished work in `data/PMBB_Exome/ZNF175/` and `addBack_multiallelic_stoploss/`.

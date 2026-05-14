@@ -1,5 +1,10 @@
 # Kickoff Meeting Summary — Hearing Loss Genomics
 
+> **⚠ Post-kickoff verification note (2026-05-13):** Some of the framing below — particularly around ZNF175 — was clarified during the project's replication work. The kickoff describes ZNF175 as a "novel hit" from Daniel's PMBB burden test, but verification of the published paper (`docs/papers/pgen.1010584.pdf` — 0 mentions of ZNF175) and Daniel's preserved meta-analyses (ZNF175 never reaches FDR significance) confirms that **ZNF175 was actually brought to Daniel by Doug Epstein** based on his mouse *Zfp719* biology, not the other way around. The "8 signal-driving cases" come from Daniel's gene-specific runbook commands (lines 193-196, 346-403), not from any published top-hit table. See [`docs/papers/paper_summary_hui2023.md`](../papers/paper_summary_hui2023.md) for the corrected framing and the project's CLAUDE.md for the updated scope. The kickoff summary below is preserved verbatim as historical record.
+
+---
+
+
 **Date:** Early 2026 (project kickoff)
 **Participants:** Molly Hall (PI), Douglas Epstein (collaborator), Nikki Palmiero, Andre Rico
 **Reference paper:** Hui et al., PLOS Genetics 2023 (doi: 10.1371/journal.pgen.1010584)

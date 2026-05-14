@@ -1,5 +1,7 @@
 # Pipeline Walkthrough — Hui et al. 2023 (PMBB v2)
 
+> **Scope note (verified 2026-05-13):** The walkthrough's "Phases 1-7" reproduce the **published** Hui et al. 2023 paper findings (our project Phases 1-6 — done, byte-equivalent on top hits). Walkthrough Phases 8+ document Daniel's **unpublished** ZNF175-specific follow-up work. **ZNF175 itself is NOT in the published paper** — it was brought to Daniel by Doug Epstein based on his mouse *Zfp719* biology, and Daniel's preserved gene-specific analyses live in `data/PMBB_Exome/ZNF175/` and `addBack_multiallelic_stoploss/`. See [`docs/papers/paper_summary_hui2023.md`](papers/paper_summary_hui2023.md) for what IS in the published paper.
+>
 > Curated map of Daniel Hui's 1,262-line runbook ([`analysis/daniel/runbook_hui2023.txt`](../analysis/daniel/runbook_hui2023.txt)) into ordered phases. Each phase lists: cookbook line range, what it does, scripts invoked, inputs, outputs, and gotchas. Use this to know *where* in the runbook to look — then go to the runbook itself for exact commands.
 >
 > Cookbook line numbers refer to [`analysis/daniel/runbook_hui2023.txt`](../analysis/daniel/runbook_hui2023.txt) (decompressed from `data/PMBB_Exome/README.gz`). All scripts under [`analysis/daniel/scripts/`](../analysis/daniel/scripts/).

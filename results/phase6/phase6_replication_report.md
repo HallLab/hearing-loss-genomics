@@ -3,7 +3,9 @@
 **Date:** 2026-05-13
 **Run by:** Andre Rico
 **Phase:** 6 of 19 — walkthrough Phase 12 (exome-wide all-genes burden, single-phenotype)
-**Status:** ✅ Pipeline replicates Daniel's HL_needAud single-phenotype burden test **exactly** (same top 5 real-gene hits). ⚠️ ZNF175 does **NOT** emerge as a hit in single-phenotype analysis — matches Daniel's result (his ZNF175 p-values in single-pheno range 0.43–0.96 across 4 phenotypes). **The paper's ZNF175 discovery comes from the EUR × AFR meta-analysis, not from single-phenotype runs.** This will be our Phase 7.
+**Status:** ✅ Pipeline replicates Daniel's HL_needAud single-phenotype burden test **exactly** (same top 5 real-gene hits, including the paper's published novel candidate RAPGEF3 in our top 30). ZNF175 does not emerge as a hit — but this is now understood as expected behavior, not a pipeline issue (see "ZNF175 — outside paper scope" section below).
+
+**Note on this report (revised 2026-05-13):** When initially written, this report framed ZNF175 as a paper finding that would emerge in meta-analysis. Subsequent verification confirmed **ZNF175 is NOT in the published Hui et al. 2023 paper** and is **not statistically significant in any of Daniel's preserved analyses** (4 phenotypes × 2 burden frameworks = 8 preserved tests checked). The ZNF175 priority is a Hall Lab / Epstein Lab unpublished extension (Doug Epstein's mouse *Zfp719* work brought to Daniel), not a paper-replication target. This report has been updated to reflect that.
 **Project commit at run time:** `0a6bbf2`
 
 ---
@@ -22,14 +24,14 @@ Phase 6 extends the burden test from 176 known HL genes (Phase 5) to **all ~20,0
 | BOD1 | #15 | #3 | 4.1e-05 | ✅ Top hit, both |
 | ZNF670 | #23 | #4 | 5.5e-05 | ✅ Top hit, both |
 | RAPGEF3 | #30 | (in top 30+) | 9.6e-05 | ✅ Novel paper candidate, both |
-| **ZNF175** | **#23959** | (Daniel: p=0.939, similar rank) | **0.78** | ❌ **Not significant in single-pheno** — matches Daniel |
+| **ZNF175** | **#23959** | (Daniel: p=0.939, similar rank) | **0.78** | Not significant; **not a paper finding** (project-specific biological priority, see notes below) |
 | COL5A2 | #27636 | similar | 0.89 | ❌ Not significant |
 | HMMR | #154 | similar | 1.3e-03 | ⚠️ Moderate |
 | NNT | #348 | similar | 4.3e-03 | ⚠️ Moderate |
 | ESRRB | #66 | (lower than HL-only) | 2.4e-04 | ⚠️ Diluted vs Phase 5 |
 | TCOF1 | #219 | similar | 2.1e-03 | ⚠️ Moderate |
 
-**Phase 6 is a successful replication of Daniel's single-phenotype all-genes burden.** ZNF175 will emerge in Phase 7 (meta-analysis). The 5 top non-LOC genes match Daniel exactly with comparable p-values.
+**Phase 6 is a successful replication of Daniel's single-phenotype all-genes burden.** The 5 top non-LOC genes match Daniel exactly with comparable p-values. The paper's 4 novel candidate genes are accounted for: RAPGEF3 in our top 30 (matches paper finding); COL5A2, HMMR, NNT rank lower in single-pheno (consistent with Daniel's preserved results). ZNF175 — separately — is not a paper finding and is not expected to surface in burden tests (project Phase 7+ handles the ZNF175 deep-dive directly).
 
 ---
 
@@ -111,7 +113,7 @@ After all 22 tasks completed:
 | Suggestive (BH < 0.10) | 0 |
 | Lowest BH (top hit) | 8.23e-02 |
 
-**No bins meet genome-wide significance in our single-phenotype run.** This matches the paper — the paper's significant findings (including ZNF175) come from the **meta-analysis** combining EUR and AFR ancestry-stratified runs, not single-population analysis.
+**No bins meet genome-wide significance in our single-phenotype run.** This matches Daniel's HL_needAud preserved results — single-phenotype burden tests yield mostly suggestive (BH ~0.07-0.12) hits. The paper's stronger findings come from the **degree-of-HL meta-analysis** (continuous PTA-bin phenotype, walkthrough Phase 17) where DNAJC8, UPK3BL1, TCOF1, and RAPGEF3 reach FDR<0.05 in Daniel's preserved results.
 
 ### Top non-LOC hits comparison
 
@@ -134,51 +136,37 @@ Ours (Phase 6):                    Daniel (HL_needAud):
 
 ---
 
-## ZNF175 deep-dive — why it doesn't show
+## ZNF175 — outside paper scope (project-specific biological priority)
 
-This was the key validation question. **Result: ZNF175 is genuinely not a hit in single-phenotype all-genes burden, in either our run or Daniel's.**
+**ZNF175 is NOT in the published Hui et al. 2023 paper.** Verified 2026-05-13 by `pdftotext` search of `docs/papers/pgen.1010584.pdf` — 0 mentions of ZNF175, Zfp, KRAB, or "zinc finger" anywhere in the published manuscript. The paper's actual novel candidate genes (Section "Genes implicated (rare variant)" of the paper) are: **COL5A2, HMMR, NNT, RAPGEF3** — four genes, not five.
 
-### Daniel's ZNF175 p-values across all 4 phenotypes
+The project's ZNF175 priority is a **Hall Lab / Epstein Lab unpublished extension** of Daniel's PMBB work, motivated by Doug Epstein's mouse biology on the syntenic ortholog *Zfp719* (knockout HL phenotype on sensitized background). Doug brought this to Daniel, who did targeted PMBB analyses preserved in [`data/PMBB_Exome/ZNF175/`](../../data/PMBB_Exome/ZNF175/) and [`data/PMBB_Exome/addBack_multiallelic_stoploss/`](../../data/PMBB_Exome/addBack_multiallelic_stoploss/) — but didn't publish them.
 
-Using Daniel's preserved per-chr biobin outputs:
+### ZNF175 statistical significance — Daniel's preserved analyses (all 8 tests checked)
 
-| Phenotype | ZNF175 chr19 p-value | Total variants | Cases with variant | Ctrls with variant |
-|---|---:|---:|---:|---:|
-| HL_needAud | 0.939 | 155 | 3 | 152 |
-| HL_dontNeedAud | 0.470 | 160 | 8 | 152 |
-| HL_rmAudNA | 0.429 | 159 | 7 | 152 |
-| HL_caseAudAndPhecode | 0.965 | 155 | 3 | 152 |
+| Analysis | ZNF175 result |
+|---|---:|
+| Single-pheno HL_needAud | p=0.939, rank #18,038 |
+| Single-pheno HL_dontNeedAud | p=0.470 |
+| Single-pheno HL_rmAudNA | p=0.429 |
+| Single-pheno HL_caseAudAndPhecode | p=0.965 |
+| Meta-analysis HL_needAud | p=0.978, BH=0.99 |
+| Meta-analysis HL_dontNeedAud | p=0.351 |
+| Meta-analysis HL_rmAudNA | p=0.336 |
+| Meta-analysis HL_caseAudAndPhecode | p=0.938 |
+| Meta-analysis degree-of-HL (most powered, walkthrough Phase 17) | p=0.957, rank #17,973 |
 
-The closest ZNF175 gets to significance is `p=0.43` in HL_rmAudNA — still nowhere near genome-wide significance.
+**ZNF175 is not statistically significant in ANY of Daniel's preserved burden tests.** Our Phase 6 result (p=0.78, rank #23,959) is consistent. ZNF175 was never a robust hit in any framing.
 
-**Our result: p=0.78** is consistent (we used HL_needAud-equivalent phenotype).
+### Implication for our project
 
-### Where does ZNF175 actually emerge?
+Phase 7+ does NOT chase a meta-analysis hoping ZNF175 will surface — it won't, per Daniel's own preserved results. Phase 7+ goes **directly to the biological deep-dive**:
+1. Identify ZNF175 pLoF carriers using Daniel's preserved `ZNF175_carrier.py` workflow (chr19:51587727 and chr19:51581437 in particular)
+2. Extract their complete exomes
+3. Test the second-hit hypothesis: do carriers with HL have other deleterious variants in known HL genes that carriers without HL don't?
+4. The "8 signal-driving cases" of the kickoff meeting = the 8 carriers of chr19:51587727 specifically (per Daniel's runbook lines 193-196) — pending confirmation from Daniel via the email draft at [`docs/communications/daniel_followup_email.md`](../../docs/communications/daniel_followup_email.md)
 
-Daniel preserved per-ancestry per-chr biobin outputs in `data/PMBB_Exome/allGenes/HL_meta_{needAud,dontNeedAud,rmAudNA,caseAudAndPhecode}/`:
-
-```
-HL_AFR_needAud_merged_maf.01_noRels_keepHLcases_allGenes_chr19-bins.csv.gz
-HL_EUR_needAud_merged_maf.01_noRels_keepHLcases_allGenes_chr19-bins.csv.gz
-... (per chr, per ancestry, per phenotype)
-```
-
-Daniel ran biobin **separately on EUR and AFR ancestry subsets**, then **meta-analyzed** the per-ancestry p-values using inverse-variance weighting (cookbook lines 566-567, `meta.R`).
-
-**The paper's headline ZNF175 result is from the meta-analysis.** Our Phase 7 needs to replicate this:
-1. Split cohort by ancestry (EUR vs AFR), per cookbook lines 546-547
-2. Run biobin separately on each (already done by Daniel — preserved in HL_meta_* dirs)
-3. Meta-analyze per-gene p-values across EUR + AFR (Daniel's `meta.R` script)
-
-If ZNF175 doesn't emerge there either, then the paper finding must be from a different framing (sensitivity analysis Phase 9, or 20-PC covariate version walkthrough Phase 17).
-
-### Paper attribution
-
-From [`docs/papers/paper_summary_hui2023.md`](../../docs/papers/paper_summary_hui2023.md):
-> Novel candidate genes (HL not previously implicated): **COL5A2, HMMR, NNT, RAPGEF3**
-> Plausible mechanisms inferred for 3 of 4 (... ZNF175 — the priority gene for our follow-up)
-
-ZNF175 is listed alongside the 4 novel candidates but described as "the priority gene for our follow-up." This suggests ZNF175 is a more borderline / context-dependent hit than the 4 named "novel candidates" — possibly only significant under specific phenotype + meta-analysis combinations.
+This makes biological sense (Doug's mouse biology guides the gene-of-interest, carrier extraction is the next step) and statistical sense (we don't expect a borderline gene with ~3-8 carriers in cases to reach genome-wide significance with N=41,748 cohort).
 
 ---
 
@@ -214,7 +202,7 @@ Our Phase 6 produced 44,879 bins across 22 chromosomes. Two views of the top hit
 | 2 (#10) | **UPK3BL1** | 7 | 6 | 2.00e-05 | 8.97e-02 | #1 | 1.78e-05 | Daniel's #1; uroplakin family, no known HL link |
 | 3 (#11) | **COL5A1** | 9 | 1331 | 2.29e-05 | 9.35e-02 | #5 | 2.69e-05 | Collagen V (Ehlers-Danlos); ≠ COL5A2 (paper's novel hit) |
 | 4 (#15) | **BOD1** | 5 | 67 | 4.04e-05 | 9.95e-02 | #3 | 2.34e-05 | Biorientation defective 1, mitotic |
-| 5 (#23) | **ZNF670** | 1 | 23 | 5.53e-05 | 9.95e-02 | #4 | 2.37e-05 | Zinc finger; **different** ZNF from the paper's ZNF175 |
+| 5 (#23) | **ZNF670** | 1 | 23 | 5.53e-05 | 9.95e-02 | #4 | 2.37e-05 | Zinc finger; **completely different gene** from ZNF175 (project's biological priority, separate analysis) |
 | 6 (#26) | APCDD1L | 20 | 68 | 6.33e-05 | 1.09e-01 | #6 | 4.58e-05 | adenomatosis polyposis down-regulated-like |
 | 7 (#28) | MYRFL | 12 | 80 | 8.24e-05 | 1.20e-01 | #7 | 5.20e-05 | myelin regulatory factor-like |
 | 8 (#30) | **RAPGEF3** | 12 | 662 | 9.65e-05 | 1.20e-01 | #13 | 1.46e-04 | 🎯 **Paper's novel HL candidate** — noise-induced inner ear / β-cell |
@@ -234,7 +222,7 @@ Our Phase 6 produced 44,879 bins across 22 chromosomes. Two views of the top hit
 ### Reading guide
 
 **Color/marker key:**
-- 🎯 = paper's novel discovery list (COL5A2, HMMR, NNT, RAPGEF3 + ZNF175)
+- 🎯 = paper's novel discovery list (COL5A2, HMMR, NNT, RAPGEF3)
 - ✅ = matches Daniel's top hits
 - ⚠️ = noteworthy discrepancy with Daniel (worth investigating)
 
@@ -242,7 +230,7 @@ Our Phase 6 produced 44,879 bins across 22 chromosomes. Two views of the top hit
 
 1. **Top 5 real genes (DNAJC8, UPK3BL1, COL5A1, BOD1, ZNF670) match Daniel exactly** — same 5 genes, slightly different ordering due to fine p-value differences. ESRRB and RAPGEF3 (paper-known) appear later in the list. **The biological signal replicates.**
 
-2. **RAPGEF3 is the only one of the paper's 4 novel candidates in our top 20** — COL5A2, HMMR, NNT rank lower (rank 154, 348, 27636 respectively). ZNF175 ranks #23959 in single-phenotype. The other 3 novel candidates likely emerge from the meta-analysis (Phase 7) or alternative phenotype definitions.
+2. **RAPGEF3 is the only one of the paper's 4 novel candidates in our top 20** — COL5A2, HMMR, NNT rank lower (rank 154, 348, 27636 respectively) but still appear. This is consistent with Daniel's preserved results showing these 3 reach significance only in the degree-of-HL meta-analysis (walkthrough Phase 17), not single-phenotype binary case/control. ZNF175 (rank #23,959) is unrelated to the paper — it's the project's separate biological priority (see ZNF175 section above).
 
 3. **Two genes have surprisingly large discrepancies vs Daniel** — OR10X1 (we rank 24× higher) and HCRTR1 (we rank 13× higher / p 13× lower). These suggest LOKI version drift not just adding LOCs but also shifting some real-gene bin compositions. Worth investigating in detail (e.g., is biobin assigning different variants to OR10X1's bin under loki-20230816?).
 
@@ -267,15 +255,15 @@ We continued to see the LOKI version drift effect from Phase 5, now amplified ac
 
 ## Issues encountered
 
-### Issue 1 — Initial expectation mismatch (ZNF175 not emerging)
+### Issue 1 — Initial framing error about ZNF175 (resolved)
 
-**Expectation:** Phase 6 = exome-wide all-genes burden, ZNF175 should appear as top novel hit.
+**Initial expectation:** Phase 6 should surface ZNF175 as a top novel hit (premise from `paper_summary_hui2023.md` v1, which incorrectly listed ZNF175 among the paper's novel candidates).
 
-**Result:** ZNF175 p=0.78, rank #23959. Not even close to significant.
+**Result:** ZNF175 p=0.78, rank #23,959. Not even close to significant.
 
-**Resolution:** Daniel's reference shows ZNF175 ALSO doesn't emerge in any of his 4 single-phenotype runs (p range 0.43-0.96). The paper's ZNF175 discovery requires meta-analysis across ancestries — which is what Daniel did but we haven't yet. This is a phenotype/methodology mismatch in our expectations, not a pipeline failure.
+**Resolution:** Verification of the actual paper PDF (`pdftotext` search) and Daniel's preserved meta-analyses confirmed **ZNF175 is not in the published paper and never reaches FDR significance in any of Daniel's 8 preserved burden test analyses**. The "ZNF175 expectation" was a project documentation error inherited from the earlier paper summary — corrected 2026-05-13 in `docs/papers/paper_summary_hui2023.md` and project memory. The ZNF175 priority is real but it's a Hall Lab / Epstein Lab unpublished extension, not a paper finding.
 
-**Action:** Phase 7 = ancestry-stratified meta-analysis. ZNF175 should emerge there.
+**Action:** Phase 7+ does the ZNF175 biological deep-dive directly (carrier extraction + second-hit hypothesis test) rather than chasing statistical significance that doesn't exist in any preserved burden framing.
 
 ### Issue 2 — Phase 5's ESRRB rank moved from #1 → #66 in Phase 6
 
@@ -337,32 +325,32 @@ The all-chrs results table is the deliverable for downstream analysis.
 
 ## Recommendations for Phase 7
 
-**Phase 7 = walkthrough Phase 13 — Meta-analysis EUR × AFR**
+**Phase 7 = ZNF175 deep-dive** (walkthrough Phase 8 + 11 — Daniel's unpublished ZNF175-specific work).
 
-This is the natural next step and is where ZNF175 should emerge as a hit.
+Phase 6 closed out the paper replication. Phase 7 pivots to the project's actual biological goal: investigate ZNF175 carriers under the second-hit hypothesis Doug Epstein developed from his mouse work.
 
 ### What Phase 7 does
 
-1. **Split cohort by ancestry** — use Daniel's preserved `covs_withAnc_onlyEUR-AFR_only{EUR,AFR}.txt` files (or recompute from `data/pmbb_v2/Exome/PCA/`)
-2. **Run biobin per ancestry per chr** — 22 chrs × 2 ancestries = 44 LSF tasks
-3. **Per-gene meta-analyze EUR + AFR p-values** — Daniel's [`scripts/meta.R`](../../analysis/daniel/scripts/pmbb_exome/meta.R) does inverse-variance weighting via the `meta` R package
-4. **BH-correct meta-p-values** across all genes
-5. **Validation:** ZNF175 + COL5A2 + HMMR + NNT + RAPGEF3 should emerge as top hits with meta-p < 1e-4
+1. **Identify ZNF175 pLoF carriers** using Daniel's preserved [`ZNF175_carrier.py`](../../analysis/daniel/scripts/pmbb_exome/ZNF175_carrier.py) script on the chr19 region
+2. **Cross-reference with `cases_control.txt`** to see which carriers are phecode-cases (the "8 signal-driving cases" framing — chr19:51587727 has 8 carriers, 1 phecode-case per runbook lines 193-196)
+3. **Extract full exomes for each carrier** — pull all variants in the 173 known HL genes
+4. **Filter to deleterious** (pLoF + missense REVEL>0.6 + ClinVar P/LP)
+5. **Tabulate per-carrier second-hit profile** — which HL genes have hits, allele counts, inheritance pattern
+6. **Statistical test (if N permits)** — burden in HL genes among ZNF175-carriers-with-HL vs ZNF175-carriers-without-HL using Doug's curated 140-cohort
 
-### Light vs heavy
+### What Phase 7 is NOT
 
-Daniel preserved per-ancestry biobin outputs in `data/PMBB_Exome/allGenes/HL_meta_needAud/HL_{AFR,EUR}_needAud_*chr*-bins.csv.gz`. So we can do **light mode**:
-- Skip the per-ancestry biobin runs (huge savings — would be ~50h of CPU)
-- Just run the meta-analysis step on Daniel's preserved EUR + AFR p-values
-- Validate vs whatever Daniel's final meta results show
+Phase 7 is **not** a meta-analysis chase. We verified (in this report) that ZNF175 does not reach FDR significance in any of Daniel's 8 preserved burden test analyses (4 phenotypes × 2 frameworks). Re-running the meta-analysis ourselves would replicate that null result, not surface ZNF175.
 
-Estimated Phase 7 wall: ~30-60 min (mostly R meta-analysis script).
+### Estimated cost
 
-### Other phase options (deferred)
+~30-60 min total wall (mostly variant extraction + carrier table generation). Plus follow-up email exchange with Daniel to confirm the "8 cases" definition (draft at [`docs/communications/daniel_followup_email.md`](../../docs/communications/daniel_followup_email.md)).
 
-- **Walkthrough Phase 9 (addBack multi-allelic):** sensitivity analysis. Lower priority.
-- **Walkthrough Phase 17 (20-PC covariate, degree-of-HL phenotype):** alternative phenotype + covariate variation. Daniel preserved outputs. Could be useful for ZNF175 if Phase 7 doesn't surface it.
-- **Walkthrough Phase 8 (ZNF175-specific deep-dive):** the project's main biological goal. Should come AFTER Phase 7 confirms ZNF175 emerges as expected.
+### Deferred analyses (low priority)
+
+- **Walkthrough Phase 9 (addBack multi-allelic):** sensitivity analysis on the burden test. Doesn't surface ZNF175.
+- **Walkthrough Phase 13 (meta-analysis EUR × AFR):** Daniel preserved the final outputs in `data/PMBB_Exome/allGenes/HL_*/meta_results/all_chrom_meta_withBH.txt.gz`. Could be re-derived if we need to publish a full replication, but doesn't add to the ZNF175 deep-dive.
+- **Walkthrough Phase 17 (degree-of-HL):** Daniel's preserved degree-of-HL meta surfaces DNAJC8, UPK3BL1, TCOF1, RAPGEF3 at FDR<0.05 — the paper's strongest single-test. Worth replicating if we want a formal full-paper replication report.
 
 ---
 
@@ -370,11 +358,12 @@ Estimated Phase 7 wall: ~30-60 min (mostly R meta-analysis script).
 
 | Question | Status |
 |---|---|
-| "8 signal-driving cases" definition | **Still pending** — Phase 0 carry-over. Becomes more pressing after Phase 7 ZNF175 emergence |
+| "8 signal-driving cases" definition | **Pending Daniel's email response** — likely the 8 carriers of chr19:51587727 per runbook lines 193-196, but we'll confirm with him before deep-dive |
+| Direction of ZNF175 priority (Doug → Daniel vs Daniel → Doug) | **Pending Daniel's email response** — our interpretation is Doug → Daniel based on mouse Zfp719 work, kickoff doc was ambiguous |
+| Curated 140-case cohort location/definition | **Pending Daniel's email response** — needed for second-hit statistical test |
 | Why ESRRB rank moves so much between Phase 5 and Phase 6 | **Partially explained** — different MAF cutoff + region file. Could investigate further but not blocking |
-| Will ZNF175 emerge in Phase 7 meta-analysis | **TBD** — main hypothesis to test in Phase 7 |
-| Loki-20220926 recovery | **Open** — could improve LOC artifact filtering if extracted from `loki.db.zip` |
+| Loki-20220926 recovery | **Open, low priority** — could improve LOC artifact filtering if extracted from `loki.db.zip`. Not blocking. |
 
 ## What we'd tell the team
 
-> Phase 6 replicated Daniel's exome-wide single-phenotype burden test correctly. Same top 5 hits as Daniel (DNAJC8, UPK3BL1, COL5A1, BOD1, ZNF670). ZNF175 was **not** significant in single-phenotype — this is not a pipeline failure, it's the actual biology: ZNF175 emerges in the ancestry-stratified meta-analysis, not in single-population tests. Next step is Phase 7 = meta-analysis EUR × AFR, where we expect ZNF175 to surface.
+> Phase 6 closed the paper replication block. Top 5 single-pheno burden hits (DNAJC8, UPK3BL1, COL5A1, BOD1, ZNF670) match Daniel exactly. Paper's published novel candidates accounted for: RAPGEF3 in top 30; COL5A2, HMMR, NNT rank lower (matches Daniel's preserved results — these surface only in degree-of-HL meta). ZNF175 — separately — is NOT in the published paper and is NOT statistically significant in any of Daniel's 8 preserved burden tests; it's the project's biological priority based on Doug Epstein's mouse work, requiring carrier deep-dive rather than statistical chase. Phase 7 pivots to that deep-dive directly.

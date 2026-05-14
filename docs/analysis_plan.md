@@ -1,6 +1,8 @@
-# Analysis Plan — Phase 1 (Replication & ZNF175 Deep-dive)
+# Analysis Plan — Paper Replication + ZNF175 Extension
 
-> Working document. Updated as we go. Checkbox items in priority order. Reach out to Molly with questions before executing major changes.
+> Working document. Updated as we go. Reach out to Molly with questions before executing major changes.
+>
+> **Project status (2026-05-13):** Phases 1-6 of paper replication COMPLETE and validated (byte-equivalent on top hits). Phase 7+ pivots to the **unpublished ZNF175 extension** — the gene is **NOT in the published Hui et al. 2023 paper** but came from Doug Epstein's mouse biology brought to Daniel for PMBB investigation. See [`docs/papers/paper_summary_hui2023.md`](papers/paper_summary_hui2023.md) for the verified scope of the published paper.
 
 ## Objectives
 
@@ -36,10 +38,16 @@
 - [ ] **(Later)** Port to PMBB v4 (`PMBB-Release-2026-4.0`) if release is finalized and stable
 - [ ] Document differences in cohort size, ancestry composition, phecode definitions between releases
 
-### ZNF175 deep-dive
-- [ ] Identify the 8 signal-driving cases from the original burden test (their ZNF175 variants + PMBB IDs)
+### Phase 7 — ZNF175 deep-dive (UNPUBLISHED extension — Doug Epstein → Daniel)
+
+**Reframe (2026-05-13):** ZNF175 is **NOT in the published paper** and **does NOT reach FDR significance in any of Daniel's preserved burden tests** (4 phenotype variants + degree-of-HL meta — checked in `data/PMBB_Exome/allGenes/HL_*/meta_results/`). This phase is the biological deep-dive that Daniel started but didn't publish, motivated by Doug Epstein's mouse work on *Zfp719* (ZNF175's syntenic ortholog showing HL phenotype in knockout).
+
+**Strategy: skip meta-analysis (won't surface ZNF175 anyway), go directly to gene-specific carrier deep-dive.**
+
+- [ ] Identify carriers of ZNF175 pLoF variants (especially chr19:51587727 and chr19:51581437 — referenced in Daniel's runbook lines 193-196)
+- [ ] Validate the "8 signal-driving cases" definition with Daniel (open question — see [`results/phase1/phase1_replication_report.md`](../results/phase1/phase1_replication_report.md) and email draft to Daniel at [`docs/communications/daniel_followup_email.md`](communications/daniel_followup_email.md))
 - [ ] Extract their complete exomes
-- [ ] Annotate variants in all 173 known HL genes for these 8 individuals
+- [ ] Annotate variants in all 173 known HL genes for these carriers
 - [ ] Filter for predicted-deleterious (pLoF + REVEL>0.6 + ClinVar pathogenic/likely-pathogenic)
 - [ ] Tabulate: which HL genes have hits, allele counts, ClinVar status, inheritance pattern (DFNA/DFNB)
 - [ ] Cross-reference against Daniel's curated 140-case cohort: do the same second-hit patterns appear in mutation carriers WITH HL but not in those WITHOUT?
@@ -57,11 +65,14 @@
 
 ---
 
-## Open questions (to raise with Molly / Doug)
+## Open questions (to raise with Daniel / Doug / Molly)
 
-- What exact filtering criteria define the "8 signal-driving cases"? (pLoF only? or pLoF + missense? what allele-frequency cutoff?)
-- Is the 140-case curated cohort still considered the working cohort, or should we re-curate with PMBB v3?
-- For the audiogram-only quantitative-trait analysis on the 4K cohort: in scope for Phase 1 or Phase 2?
+- **For Daniel** (email draft ready at [`docs/communications/daniel_followup_email.md`](communications/daniel_followup_email.md)):
+  - Was ZNF175 introduced by Doug from his mouse Zfp719 work, or did it emerge from your PMBB burden tests?
+  - What exact filter defines the "8 signal-driving cases"? Carriers of chr19:51587727 specifically?
+  - Is the 140-case curated cohort still canonical? Where is it documented?
+- For Molly / Doug:
+  - For the audiogram-only quantitative-trait analysis on the 4K cohort: in scope or deferred?
 - ~~Which modern rare-variant method should be the comparator?~~ → **SAIGE-GENE+** (Andre's pick, 2026-05-12). Open sub-question: install via fresh conda env, Apptainer container, or LPC IT request for a new module build?
 
 ---

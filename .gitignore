@@ -224,6 +224,7 @@ data/
 *.out
 *.stdout
 *.log
+*.raw
 
 
 # Jupyter checkpoints
@@ -246,6 +247,7 @@ outputs/*.pdf
 PMBB_Exome/
 PMBB_Imputed/
 DFNA/
+docs/communications/
 
 # results files
 *.nosex
