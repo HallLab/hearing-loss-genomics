@@ -2,6 +2,10 @@
 
 Genomic analysis of age-related hearing loss in the **Penn Medicine BioBank (PMBB)**, extending Hui et al., PLOS Genetics 2023 ([doi:10.1371/journal.pgen.1010584](https://doi.org/10.1371/journal.pgen.1010584)).
 
+> **First time here?**
+> - **Replicating Chapter 1 (paper replication)?** Start with [`HANDOFF.md`](HANDOFF.md) — the Chapter 1 guide written for Elena (the interim person doing this work). Walks you through setup, day-by-day plan, and validation. Then [`REPRODUCTION_GUIDE.md`](REPRODUCTION_GUIDE.md) has the per-phase commands.
+> - **Picking up Chapter 2 (ZNF175 follow-up)?** Start with [`STATUS_SNAPSHOT.md`](STATUS_SNAPSHOT.md) — captures the in-progress state of Chapter 2 work, blockers, pending tasks. Chapter 2 is not validated yet.
+
 ## Collaboration
 
 - **Hall Lab** (Penn) — Molly Hall (PI), Nikki Palmiero, Andre Rico

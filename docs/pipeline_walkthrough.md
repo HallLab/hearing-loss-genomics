@@ -12,7 +12,7 @@
 >
 > **Future-phase notes** at the end of each phase (labeled "v3+ porting notes") flag what will need attention when we later port the validated pipeline to PMBB v3 or v4. Ignore those during Phase 1.
 >
-> **PMBB v2 annotation file schema migration (discovered during Phase 1 re-run, 2026-05-12).** Daniel's runbook references two PMBB v2 annotation files at different points: the older `variant-annotations.txt` (used in early steps; **no longer exists on disk** as of 2026) and the newer `variant-annotation-counts.txt` (used in later steps; the only file currently present). Daniel flagged this migration at runbook line 42-43. Header column 1 differs (`Constant_ID` in the old file → `ID` in the new). For our re-runs, **use only `variant-annotation-counts.txt`** — Daniel's existing intermediates may have been built from the older file, so byte-diff against them will fail even when the pipeline is correct. Validate by set equality of variant IDs and genes instead. See [`results/phase1/phase1_replication_report.md`](../results/phase1/phase1_replication_report.md) for the detailed Phase 1 finding.
+> **PMBB v2 annotation file schema migration (discovered during Phase 1 re-run, 2026-05-12).** Daniel's runbook references two PMBB v2 annotation files at different points: the older `variant-annotations.txt` (used in early steps; **no longer exists on disk** as of 2026) and the newer `variant-annotation-counts.txt` (used in later steps; the only file currently present). Daniel flagged this migration at runbook line 42-43. Header column 1 differs (`Constant_ID` in the old file → `ID` in the new). For our re-runs, **use only `variant-annotation-counts.txt`** — Daniel's existing intermediates may have been built from the older file, so byte-diff against them will fail even when the pipeline is correct. Validate by set equality of variant IDs and genes instead. See [`results/chapter1_paper_replication/phase1_replication_report.md`](../results/chapter1_paper_replication/phase1_replication_report.md) for the detailed Phase 1 finding.
 
 ## Phase map (TL;DR)
 
@@ -156,7 +156,7 @@ python analysis/daniel/scripts/pmbb_exome/only_func_cats_to_include.py \
 
 **Goal:** the variant annotation file and the pVCF use different SNP ID schemes — produce a lookup table to map between them, then a plink-compatible `--extract` file with 9,667 IDs.
 
-**Replicated 2026-05-12** — see [`results/phase2/phase2_replication_report.md`](../results/phase2/phase2_replication_report.md). Both validation checks PASSED; `.extract` is bit-identical to Daniel's (`md5sum 5e80ebc0faa5e68277cfeb948af8b1da` when sorted unique).
+**Replicated 2026-05-12** — see [`results/chapter1_paper_replication/phase2_replication_report.md`](../results/chapter1_paper_replication/phase2_replication_report.md). Both validation checks PASSED; `.extract` is bit-identical to Daniel's (`md5sum 5e80ebc0faa5e68277cfeb948af8b1da` when sorted unique).
 
 ### Re-run modes for Phase 2
 
@@ -213,7 +213,7 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
 
 **Goal:** for each chromosome, extract just the burden-eligible SNPs from the pVCF, filter out 3rd-degree-related individuals (except HL cases — see Phase 6 trick), restrict to MAF < 0.001, and merge into a single cohort-wide bed/bim/fam.
 
-**Replicated 2026-05-13** — see [`results/phase3/phase3_replication_report.md`](../results/phase3/phase3_replication_report.md). Step 3.1 was validated two ways: (a) **light mode** confirmed Daniel's 22 per-chr files have 9,667 variants summing across chrs (= our Phase 2 .extract count) in 43,731 samples; (b) **heavy pilot on chr21** confirmed that running plink ourselves against the raw v2 pVCF reproduces Daniel's `.bim` / `.fam` / `.bed` byte-for-byte (md5sum match). **plink 1.9 is the verified version** — plink 2.0 needs `--memory <MB>` to behave on LSF nodes with lots of RAM (default reserves ~50% of detected RAM).
+**Replicated 2026-05-13** — see [`results/chapter1_paper_replication/phase3_replication_report.md`](../results/chapter1_paper_replication/phase3_replication_report.md). Step 3.1 was validated two ways: (a) **light mode** confirmed Daniel's 22 per-chr files have 9,667 variants summing across chrs (= our Phase 2 .extract count) in 43,731 samples; (b) **heavy pilot on chr21** confirmed that running plink ourselves against the raw v2 pVCF reproduces Daniel's `.bim` / `.fam` / `.bed` byte-for-byte (md5sum match). **plink 1.9 is the verified version** — plink 2.0 needs `--memory <MB>` to behave on LSF nodes with lots of RAM (default reserves ~50% of detected RAM).
 
 ### Re-run modes for Phase 3
 
@@ -270,13 +270,13 @@ When validating outputs with `diff <(...) <(...) | wc -l` under `set -euo pipefa
 
 ---
 
-> **Phase 5 in this replication = walkthrough Phases 6 + 7 fused.** The walkthrough sub-sections below split Phase 4 (preparatory files) from Phase 6 (IBD trick) from Phase 7 (biobin). In our actual replication we ran Phase 4 as a separate scripted phase (only preparatory files), then a fused Phase 5 containing Phase 6's IBD trick + Phase 7's plink filter + merge + biobin. See [`results/phase5/phase5_replication_report.md`](../results/phase5/phase5_replication_report.md) — top hit ESRRB at p=8.6308e-05, byte-exact to Daniel.
+> **Phase 5 in this replication = walkthrough Phases 6 + 7 fused.** The walkthrough sub-sections below split Phase 4 (preparatory files) from Phase 6 (IBD trick) from Phase 7 (biobin). In our actual replication we ran Phase 4 as a separate scripted phase (only preparatory files), then a fused Phase 5 containing Phase 6's IBD trick + Phase 7's plink filter + merge + biobin. See [`results/chapter1_paper_replication/phase5_replication_report.md`](../results/chapter1_paper_replication/phase5_replication_report.md) — top hit ESRRB at p=8.6308e-05, byte-exact to Daniel.
 
 ## Phase 4 — First case/control + covariates + biobin (lines 77–93)
 
 **Goal:** first end-to-end gene-burden test on the HL gene set, with audiogram-derived cases, on the merged cohort.
 
-**Replicated 2026-05-13 (scoped to preparatory files only)** — see [`results/phase4/phase4_replication_report.md`](../results/phase4/phase4_replication_report.md). Steps 4.1, 4.2, 4.3 (case/control, covariates, region file) replicated cleanly. Step 4.4 (the actual biobin run) was deferred to Phase 5 because Daniel overwrote his first-biobin output with the Phase 7 keepHLcases version — no preserved reference for Step 4.4 alone.
+**Replicated 2026-05-13 (scoped to preparatory files only)** — see [`results/chapter1_paper_replication/phase4_replication_report.md`](../results/chapter1_paper_replication/phase4_replication_report.md). Steps 4.1, 4.2, 4.3 (case/control, covariates, region file) replicated cleanly. Step 4.4 (the actual biobin run) was deferred to Phase 5 because Daniel overwrote his first-biobin output with the Phase 7 keepHLcases version — no preserved reference for Step 4.4 alone.
 
 **Key gotcha:** [`make_covs.py`](../analysis/daniel/scripts/pmbb_exome/make_covs.py) emits `str(age*age)` (default float repr). Daniel ran under Python 2 (lossy ~12-char repr); we run under Python 3 (shortest-roundtrip lossless repr). Same float values, different text. Use numeric tolerance on AgeSq column when validating (round to 4 decimals — sufficient given AgeSq ~1000-7000 in years²).
 
@@ -554,14 +554,14 @@ Scripts: [`ClinVar_carrier.py`](../analysis/daniel/scripts/pmbb_exome/ClinVar_ca
 
 ## Phase 17 — 20-PC update + degHL continuous phenotype (lines 782–875)
 
-Switch from 4 PCs to **20 PCs** in covariates. Rerun the all-genes burden with the updated covariates against the degree-of-HL (0–4 ordinal) phenotype.
+Switch from 4 PCs to **20 PCs** in covariates. Rerun the all-genes burden with the updated covariates against the degree-of-HL (0–4 ordinal) phenotype. **This is the analysis that produces Tables 3 and 4 of the paper.**
 
 Two transformations explored:
 - Raw degree-HL (0-4)
 - "1-baseline" version subtracting baseline
 - Log of "1-baseline"
 
-Uses linear regression (`--test linear` in biobin) instead of logistic.
+**Pipeline detail (verified during our Phase 7 replication, 2026-05-18):** biobin only generates the per-individual per-gene burden matrix (`bins.csv`) with `--test linear`. The actual published Betas/SEs/p-values come from a separate **R `lm()` invocation** per gene in [`run_regression.R`](../analysis/daniel/scripts/pmbb_exome/run_regression.R), which fits `lm(DegHL ~ PC1-20 + Sex + Age + AgeSq + d[,i])` for each gene `i`. The biobin-internal `--test linear` p-value is ignored. See [`results/chapter1_paper_replication/phase7_degree_hl_burden.md`](../results/chapter1_paper_replication/phase7_degree_hl_burden.md) for details.
 
 Outputs in [`data/PMBB_Exome/allGenes/20PCs/{binary,degreeHL,degreeHL_1baseline,degreeHL_1baseline_log}/`](../data/PMBB_Exome/allGenes/20PCs/).
 

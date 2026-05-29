@@ -248,6 +248,7 @@ PMBB_Exome/
 PMBB_Imputed/
 DFNA/
 docs/communications/
+docs/andre/
 
 # results files
 *.nosex

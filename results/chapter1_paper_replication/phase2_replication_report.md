@@ -96,7 +96,7 @@ The `.extract` files are bit-identical (`md5sum 5e80ebc0faa5e68277cfeb948af8b1da
 
 ## Validation
 
-We used **semantic set-equality** rather than byte-for-byte diff (same pattern established in [`results/phase1/phase1_replication_report.md`](../phase1/phase1_replication_report.md)).
+We used **semantic set-equality** rather than byte-for-byte diff (same pattern established in [`phase1_replication_report.md`](phase1_replication_report.md)).
 
 ### Verification commands
 

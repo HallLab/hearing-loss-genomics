@@ -1,7 +1,7 @@
-# Phase 7 — The Carrier Numbers, Explained Simply
+# Chapter 2 · Phase 1 — The ZNF175 Carrier Numbers, Explained Simply
 
 **Audience:** anyone who wants to understand what's in our analysis without opening the spreadsheets.
-**Companion to:** [`phase7_replication_report.md`](phase7_replication_report.md) (the technical version).
+**Companion to:** [`phase1_carrier_deep_dive.md`](phase1_carrier_deep_dive.md) (the technical version).
 **Date:** 2026-05-15
 
 ---

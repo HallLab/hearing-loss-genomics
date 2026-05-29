@@ -1,8 +1,9 @@
-# Phase 7 Report — ZNF175 Carrier Deep-Dive + Second-Hit Hypothesis Test
+# Chapter 2 · Phase 1 — ZNF175 Carrier Deep-Dive + Second-Hit Hypothesis Test
 
 **Date:** 2026-05-15
 **Run by:** Andre Rico
-**Phase:** 7 — **first phase OUTSIDE the published paper.** This extends Daniel Hui's unpublished ZNF175-specific work and tests Doug Epstein's second-hit hypothesis.
+**Chapter:** 2 (ZNF175 Analysis — extension beyond the published paper). This is the first phase of the unpublished follow-up: it extends Daniel Hui's preserved ZNF175-specific work and tests Doug Epstein's second-hit hypothesis.
+**Previously:** numbered Phase 7 of the linear pipeline; renamed when the project was reorganized into two chapters (paper replication vs ZNF175 analysis).
 **Status:** ✅ Completed. Strong qualitative biological signal — all 3 HL-case ZNF175-carriers carry deleterious variants in established Mendelian HL genes (GJB2, COL11A1, COL11A2, USH2A, MYO7A, MYO3A, GPSM2). Statistical power limited by N=3 cases vs N=129 controls (formal tests not significant: Fisher OR=inf p=1.0; Mann-Whitney p=0.24).
 **Project commit at run time:** `7ec5755`
 

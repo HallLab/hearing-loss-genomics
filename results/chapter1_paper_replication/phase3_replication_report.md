@@ -103,7 +103,7 @@ These 66 files are the canonical Step 3.1 outputs that Phases 4-8+ will consume.
 
 Two questions at once:
 1. **Can plink actually run on this LPC against the v2 pVCFs?** (Smoke test — we hadn't invoked plink in this environment yet.)
-2. **Do plink 1.9 and plink 2.0 produce the same output?** (Open question from Phase 1 report — see [`results/phase1/phase1_replication_report.md`](../phase1/phase1_replication_report.md) recommendation 5.)
+2. **Do plink 1.9 and plink 2.0 produce the same output?** (Open question from Phase 1 report — see [`phase1_replication_report.md`](phase1_replication_report.md) recommendation 5.)
 
 Picked chr21 because it's the smallest autosomal pVCF (8.7 GB). Daniel's reference for chr21 has 173 variants in 43,731 samples.
 
