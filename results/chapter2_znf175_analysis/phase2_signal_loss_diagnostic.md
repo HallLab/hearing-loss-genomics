@@ -1,9 +1,11 @@
 # Chapter 2 · Phase 2 — Signal-Loss Diagnostic
 
-**Date:** 2026-05-28
+**Date:** 2026-05-28 (independently validated by Daniel Hui, 2026-05-29)
 **Run by:** Andre Rico
 **Audience:** Molly Hall, Doug Epstein, Nikki Palmiero
 **Status:** Diagnostic done — explains why Joe Park's PMBB v1 ZNF175 signal did not replicate in PMBB v2
+
+> **Independent validation by Daniel Hui (2026-05-29):** Daniel — without having seen this diagnostic — independently described the exact mechanism: *"right like if you lose a SNP because it stops passing some global MAF threshold but it is more common in one ancestry, it could be worth testing still."* See [`docs/communications/daniel_response_received.md`](../../docs/communications/daniel_response_received.md). His recommendation: use ancestry-stratified MAF filtering (now incorporated into Chapter 2 Phase 4 of the analysis plan).
 
 ---
 
