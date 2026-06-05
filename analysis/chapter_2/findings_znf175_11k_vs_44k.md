@@ -37,6 +37,16 @@
 
 ---
 
+## Figure
+
+![ZNF175 pLOF burden × tinnitus — v1 vs v2](results/07/fig_znf175_v1_v2.png)
+
+- **A** — tinnitus is far more frequent among ZNF175 carriers in **v1 (15.4% vs 1.4%)** than in **v2 (5.8% vs 2.0%)**.
+- **B** — the adjusted carrier **OR decays from ~14.6 (v1) to ~3.5 (v2)**; the wide 95% CIs (v1 [4.6–45.9], v2 [1.3–9.8]) reflect the small carrier-case counts.
+- **C** — the **carrier pool grows 26 → 69** while **carriers-with-tinnitus stay at 4** — the dilution that drives the winner's-curse decay.
+
+---
+
 ## Conclusion
 
 With an **identical pipeline**, the signal **reproduces Park's discovery at 11K and decays at 44K**. The **~4 carrier-cases that anchor the association did not grow** with the cohort, while the carrier pool went **26 → 69**; the new carriers are ultra-rare and mostly phenotype-negative, **diluting the enrichment** and shrinking the OR (~13 → ~3.5). This is the classic **winner's-curse** signature of a small-case-driven signal.
