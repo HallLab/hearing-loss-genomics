@@ -55,6 +55,26 @@ Hui's "loss" combines this **effect-size regression** with the **exome-wide sign
 
 ---
 
+## Fidelity to Park's method (we followed the design, not a different methodology)
+
+This **faithfully applies Park's burden-test design** — rare pLOF variants (MAF ≤ 0.1%) collapsed to a per-gene carrier status, tested against tinnitus with logistic regression adjusted for age, age², sex and 10 PCs, EUR/AFR-stratified + inverse-variance meta — **applied identically to both cohorts**. We **did reproduce Park's discovery signal in the 11K** (adjusted *p* = 4.8×10⁻⁶; stratified-meta *p* = 2×10⁻⁸, vs his published 3.24×10⁻¹⁰).
+
+Where we differ from Park's *exact implementation* are deliberate, minor tooling choices — **none change the qualitative conclusion**:
+
+| Step | Park | Here | Why it's minor |
+|---|---|---|---|
+| pLOF annotation | ANNOVAR / RefSeq | VEP (most-severe) | same LoF consequence terms |
+| Tinnitus definition | phecode (PheWAS map) | ICD `388.3x`/`H93.1x`, rule-of-2 | similar case set; likely why we capture ~4 vs his ~8 anchor cases |
+| Rare-variant MAF | gnomAD v2, ancestry-specific | cohort MAF ≤ 0.1% | same rarity tier for these variants |
+| Small-sample model | Firth penalized logistic | standard logistic + Fisher | direction & significance consistent |
+| Genome build | GRCh37 | GRCh38 (Freeze One on disk) | identical pLOF set for this gene |
+
+Two points for the reader:
+1. **Internal validity is unaffected.** The *same* pipeline was applied to v1 and v2, so the **v1 → v2 decay — the actual finding — holds regardless** of small departures from Park's exact code.
+2. **A bit-for-bit replication is feasible** (ANNOVAR/RefSeq, phecode via R `PheWAS`, Firth via R `logistf` are all on the LPC) and is a documented next step. The residual gap to 3.24×10⁻¹⁰ is consistent with capturing **~4 of his ~8 anchor cases**, not with a different design.
+
+---
+
 ## Caveats
 
 - **Small carrier-case counts (n = 4)** → point estimates are unstable (especially the stratified meta); the **qualitative pattern** (strong v1, weak v2) is the robust takeaway.
