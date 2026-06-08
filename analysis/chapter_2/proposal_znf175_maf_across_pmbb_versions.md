@@ -2,7 +2,7 @@
 
 **Author:** Andre Rico
 **Date:** 2026-06-05
-**Status:** NB 00–05 done (substrate stable + annotated). Next: NB 06–07 = ZNF175 burden regression, Park pipeline on both cohorts — data assembly confirmed on-disk (see §2c).
+**Status:** ✅ **NB 00–07 done — core question answered** (see §2b): signal reproduces Park at 11K, decays at 44K = winner's curse + exome-wide bar; variant set faithful to Park, residual gap is phenotype (phecode) not variants. Next: phecode via R `PheWAS` + Firth; profile the 4 carrier-cases; extend to v3/v4.
 **Project context:** Chapter 2 — resolving the ZNF175–tinnitus signal-loss puzzle (11K → 45K).
 **All analysis lives in:** `analysis/chapter_2/` (notebooks in `scripts/0X/`, outputs in `results/0X/`)
 
@@ -28,9 +28,9 @@ Pull **all variants at the ZNF175 locus** and compare their **presence and MAF**
 
 ---
 
-## 2b. Results so far (NB 00–05, executed 2026-06-05)
+## 2b. Results (NB 00–07)
 
-Notebooks in `scripts/0X/`, outputs in `results/0X/`. All extraction/annotation via LSF jobs (`scripts/0X/*.sh`).
+Notebooks in `scripts/0X/`, outputs in `results/0X/`. All extraction/annotation via LSF jobs (`scripts/0X/*.sh`). Full write-up: `findings_znf175_11k_vs_44k.md`; deck: `presentation_znf175.md`.
 
 | NB | What | Headline result |
 |---|---|---|
@@ -40,8 +40,12 @@ Notebooks in `scripts/0X/`, outputs in `results/0X/`. All extraction/annotation 
 | **03** | Annotation via **Biofilter 4** | 97/386 found; 6 pLOF; **0 AlphaMissense** for ZNF175. **75% not_found because the loaded BF4 DB was filtered to gnomAD AC≥5** (AC<5 excluded — they exist in gnomAD; reversible by reloading without the cutoff). |
 | **04** | Annotation via **VEP + dbNSFP4.5a** (by coordinate) | **384/386** annotated; **24 pLOF**; **177 AlphaMissense**. Covers the AC<5 variants BF4's cutoff excluded. |
 | **05** | **VEP × BF4** reconciliation | 94% consequence agreement where both annotate; VEP superior on coverage + AlphaMissense + pLOF. BF4's gap is the AC≥5 DB filter, not an inherent limit. |
+| **06** | Qualifying set (Park filter: pLOF + MAF≤0.1%) + carriers, both cohorts | v1: **10 variants, 34 carriers (0.30%)**; v2: 24 variants, 72 carriers (0.16%). Carrier rate ~halved as cohort grew. *(VEP `--most_severe` for pLOF; plink2 `--export-allele` to count ALT.)* |
+| **07** | **Burden regression** `tinnitus ~ carrier + age + age² + sex + PC1-10`, EUR/AFR-strat + meta | **v1: OR 14.6, p=4.8×10⁻⁶ (meta 2×10⁻⁸) — reproduces Park** (his 3.24×10⁻¹⁰). **v2: OR 3.5, p=0.015 — attenuated.** Carrier-AND-tinnitus = **4 in BOTH** cohorts (didn't grow). |
 
-> **Conclusion (substrate question):** the ZNF175 variant substrate is **stable** between v1 and v2 → the 11K→45K signal loss is **NOT** a variant-substrate artifact. It points to **winner's curse** or **association-pipeline differences** (pLOF→missense in replications; phenotype-release version). ⚠️ This compares MAF, not the association — the definitive verdict needs the **association re-run** with a matched pipeline.
+> **CONCLUSION (the answer):** with the **same pipeline** on both cohorts, the signal **reproduces Park at 11K and decays at 44K**. The ~4 carrier-cases anchoring it **did not grow** with the cohort (pool 26→69 added phenotype-negative carriers) → enrichment dilutes → OR ~14→3.5 = **winner's curse**. Hui's "loss" = this + the **exome-wide bar** (p<10⁻⁶ across ~1,500 genes). **Not a pipeline artifact; attenuated, not a clean null.**
+>
+> **Variant set is faithful to Park** — verified against his preserved list (`data/PMBB_Exome/ZNF175/Joe_analyses/znf175_variants.txt`, b37): Park = **10–11 pLOF / 35 carriers**, we = **10 / 34**. → the residual gap to his p-value is the **phenotype definition** (phecode + control exclusions vs our raw ICD) ± **Firth**, **not** the variants. (Park: GRCh37 + ANNOVAR + phecode + Firth; us: GRCh38 + VEP + ICD + standard logistic — faithful to the method, not bit-identical.)
 
 **Annotation-tool notes (LPC):** see memories `reference-biofilter4-lpc` and `reference-vep-annovar-lpc`. Open refinements: VEP `--most_severe` (vs `--pick`) for a pLOF-focused pass; LOFTEE HC/LC needs `human_ancestor`/gerp data (absent).
 

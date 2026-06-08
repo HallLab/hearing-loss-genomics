@@ -99,12 +99,11 @@ We **reproduced Park's discovery** at 11K (vs his published 3.24×10⁻¹⁰).
 
 ---
 
-## 8. Caveats & next steps
+## 8. Caveats
 
 - **Small carrier-case counts (n = 4)** → estimates noisy; qualitative pattern (strong v1, weak v2) is the robust takeaway.
 - Faithful to **Park's method**, not bit-identical to his exact code (VEP vs ANNOVAR; ICD vs phecode; standard vs Firth; GRCh38 vs GRCh37). A bit-for-bit replication is feasible (tools on LPC) — documented next step.
 - Cross-cohort **per-individual matching not possible** (different ID schemes) — "4 in both, likely overlapping" is inferred.
-- **Next:** (1) profile the 4 carrier-cases (variants, age, ancestry); (2) phecode via R `PheWAS` + Firth; (3) extend the burden to **v3/v4** (≥57K/70K) to see where the effect settles.
 
 ---
 
