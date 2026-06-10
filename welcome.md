@@ -11,11 +11,12 @@ Welcome to the project. This document is written specifically for you, with a cl
 
 ## 1. Your scope, in 90 seconds
 
+
 You're replicating **Chapter 1** of the project, which reproduces Daniel Hui's PMBB hearing-loss analysis as published in [Hui et al. 2023 PLOS Genetics](docs/papers/pgen.1010584.pdf). The paper used PMBB v2 (`PMBB-Release-2020-2.0`, 43,731 exomes). Your goal is to re-run the 7 phases of Chapter 1 and confirm you get the same numerical results as the published paper and as my prior runs.
 
 **What success looks like:**
 
-- All 7 phases of Chapter 1 execute cleanly in your environment
+- All 7 phases of Chapter 1 execute cleanly in your environment,
 - Your outputs match either Daniel's preserved intermediates or my prior re-run outputs (validation criteria are spelled out in each phase)
 - You produce a short summary report of your replication run
 

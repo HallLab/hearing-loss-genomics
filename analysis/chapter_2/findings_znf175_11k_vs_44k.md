@@ -83,4 +83,4 @@ Two points for the reader:
 
 ---
 
-*Source: chapter 2 notebooks NB 06–07 (`analysis/chapter_2/scripts/0{6,7}/`), outputs in `results/0{6,7}/`. Substrate stability + annotation established in NB 00–05.*
+*Source: chapter 2 notebooks NB 06–07 (`analysis/chapter_2/scripts/0{6,7}/`), outputs in `results/0{6,7}/`. Substrate stability + annotation established in NB 00–05.* .
