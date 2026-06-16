@@ -12,12 +12,22 @@
 
 ## Coverage by rarity (max cohort MAF)
 
-| MAF bin | LOKI | BF4 | VEP |
-|---|---|---|---|
-| < 0.01% | 0.71 | 0.11 | 1.00 |
-| 0.01–0.1% | 0.95 | 0.88 | 0.98 |
-| 0.1–1% | 0.94 | 1.00 | 1.00 |
-| ≥ 1% | 1.00 | 1.00 | 1.00 |
+| MAF bin | LOKI (position) | BF4 (allele) | **BF4 (position)** | VEP (coordinate) |
+|---|---|---|---|---|
+| < 0.01% | 0.71 | 0.11 | **0.13** | 1.00 |
+| 0.01–0.1% | 0.95 | 0.88 | **0.83** | 0.98 |
+| 0.1–1% | 0.94 | 1.00 | **0.88** | 1.00 |
+| ≥ 1% | 1.00 | 1.00 | **1.00** | 1.00 |
+
+## Is LOKI's higher coverage just because it ignores ref/alt? — NO
+
+Tested by re-querying BF4 **position-only** (`chr:pos` input → any allele at the position), to match LOKI's position-based criterion:
+
+| | LOKI (position) | BF4 (allele) | **BF4 (position)** | VEP |
+|---|---|---|---|---|
+| overall | 75% | 25% | **25%** | 99% |
+
+**BF4-by-position (25%) ≈ BF4-by-allele (25%)** — dropping ref/alt does **not** raise BF4's coverage. So **LOKI's 75% vs BF4's 25% is NOT a position-vs-allele artifact**; it's the **database content**: LOKI (dbSNP, comprehensive) has the *positions*, while the BF4 DB as loaded (genome-only + AC≥5) dropped whole variants/positions. This **confirms BF4's gap is the DB load**, not allele-matching. *(Caveat: the BF4 `chr:pos` query returns SNVs only, so it slightly undercounts indel positions — hence BF4-position dips a bit in the 0.1–1% bin.)*
 
 ## Reading (⚠️ not apples-to-apples)
 
