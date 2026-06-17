@@ -1,4 +1,4 @@
-# Welcome, Elena — Chapter 1 Replication, **No-PMBB-Access Mode**
+# Chapter 1 Replication, **No-PMBB-Access Mode**
 
 Welcome to the project. This is the version of [`welcome.md`](welcome.md) for when you **don't yet have access to the raw PMBB release** (`/static/PMBB/`) or the `ritchie` LPC group. You can still validate the **entire Chapter 1 result** using the preserved intermediates that already live in the project.
 
