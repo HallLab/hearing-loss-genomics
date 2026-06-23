@@ -33,7 +33,7 @@ Our re-run does **not** reproduce the paper's published p-values exactly — and
 | Phase | Reproduces paper? | Your target | Why it differs from the paper |
 |---|---|---|---|
 | P5 (HL-only, biobin) | **yes, byte-exact** | ESRRB p = 8.6308×10⁻⁵ | — (LOKI not consulted; region-file pins genes) |
-| P6 (exome-wide, biobin) | no — ~30%–5× off | **our `loki-20230816` values** (P6 table below) | **LOKI version drift** |
+| P6 (exome-wide, biobin) | no — ~30%–5× off | **Daniel's preserved `loki-20220926` values** (ours need biobin) | **LOKI version drift** |
 | P7 (degree-HL, lm) | close — within ~1 order of magnitude | **our STable values** (Tables 3 & 4) | **iteration drift** |
 
 **Two drift sources — keep them separate, they are unrelated:**
@@ -101,11 +101,15 @@ source venv/bin/activate
 bash analysis/daniel/scripts/run_phase2.sh
 ```
 
-**Validate:**
+**Validate — your variant set is identical to ours (order-independent):**
 ```bash
-sort -u analysis/daniel/outputs/phase2/matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.extract | md5sum
-# Expected: 5e80ebc0faa5e68277cfeb948af8b1da
+YOURS=analysis/elena/outputs/phase2/matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.extract  # wherever your run wrote it
+OURS=data/PMBB_Exome/matched_snp_IDs_annot_pVCF_noNA_noMultiallelic.extract.gz
+comm -3 <(LC_ALL=C sort -u "$YOURS") <(zcat "$OURS" | LC_ALL=C sort -u) | wc -l
+# Expected: 0   → same 9,667 variants as ours
 ```
+
+> ⚠️ **Do NOT hash the raw file.** `md5sum <file>` depends on line **order**, so it will differ even when the variant set is identical — that is **not** a mismatch. Use the set comparison above (it ignores order). If you want a hash, it must be on sorted-unique input: `sort -u <file> | md5sum` → `5e80ebc0faa5e68277cfeb948af8b1da`.
 
 **Detailed methodology:** [`results/chapter1_paper_replication/phase2_replication_report.md`](results/chapter1_paper_replication/phase2_replication_report.md)
 
@@ -125,6 +129,8 @@ bash analysis/daniel/scripts/run_phase3.sh
 ```bash
 ls analysis/daniel/outputs/phase3/light/allIndvs_chr*.bed | wc -l   # Expected: 22
 ```
+
+> **Note:** the script creates empty `pilot_chr21/v19` and `v20` folders even in light mode (it `mkdir`s the heavy-mode dirs up front). They stay empty unless you run heavy — harmless, ignore or delete them.
 
 **Detailed methodology:** [`results/chapter1_paper_replication/phase3_replication_report.md`](results/chapter1_paper_replication/phase3_replication_report.md)
 
@@ -169,29 +175,31 @@ for g,p in zip(genes,ps):
 
 ## Ch1 P6 — Exome-wide all-genes burden (validate-only)
 
-Full mode runs a 22-task biobin array (~2 h, needs biobin) then concatenates + BH-FDR. In no-PMBB mode, validate the **preserved meta result** (already concatenated, with BH-corrected p):
+Full mode runs a 22-task biobin array (~2 h, needs biobin) then concatenates + BH-FDR. In no-PMBB mode, inspect the **preserved exome-wide result**.
+
+> ⚠️ **Read this first — what P6 validates and what it does NOT.** P6 is the **binary** case/control scan. Its top hits are **not** the 6 headline genes. The 6 headline genes (TCOF1, ESRRB, COL5A1, HMMR, RAPGEF3, NNT) are the **degree-HL linear** result from **P7** — that model weights severe cases more, which is why they only rise to the top there. In the binary P6 scan those 6 are **present but mid-tier**, and that is the *correct* biology. So P6 has **two** checks; do **not** expect the headline 6 at the top here.
 
 ```bash
-F=data/PMBB_Exome/allGenes/HL_needAud/meta_results/all_chrom_meta_withBH.txt.gz
-zcat "$F" | head -1                                  # Gene  Beta  SE  p  BH-corrected_p
-zcat "$F" | awk -F'\t' 'NR>1 && $1 !~ /^LOC|^LINC/' | sort -t$'\t' -gk4 | head -8
-# Top non-LOC genes include the paper's novel candidates: UPK3BL1, BOD1, ZNF670, COL5A1, DNAJC8
+F=data/PMBB_Exome/allGenes/HL_needAud/results_allChr_needAud_withBH.txt.gz
+zcat "$F" | head -1     # Chromosome_hg38  Gene  Logistic_regression_beta_p  BH-corrected_p
 ```
 
-**Our target p-values for the 6 headline genes** (this is what you target, *not* the paper):
+**Check 1 — binary top tier matches ours** (col 2 = Gene, col 3 = logistic p):
+```bash
+zcat "$F" | awk -F'\t' 'NR>1 && $2 !~ /^LOC|^LINC/ && $3!="NA"' | sort -t$'\t' -gk3 | head -6
+# Expected top non-LOC genes (= ours): UPK3BL1, DNAJC8, BOD1, ZNF670, COL5A1, APCDD1L
+```
 
-| Gene | **Our target** (`loki-20230816`) | Paper / Daniel (`loki-20220926`) |
-|---|---:|---:|
-| TCOF1   | 2.10×10⁻³ | 1.60×10⁻³ |
-| ESRRB   | 2.40×10⁻⁴ | 1.13×10⁻³ |
-| COL5A1  | 2.29×10⁻⁵ | 2.69×10⁻⁵ |
-| HMMR    | 1.30×10⁻³ | 4.20×10⁻³ |
-| RAPGEF3 | 9.65×10⁻⁵ | 1.46×10⁻⁴ |
-| NNT     | 4.30×10⁻³ | 1.60×10⁻³ |
+**Check 2 — the 6 headline genes are present (mid-tier, by design):**
+```bash
+zcat "$F" | awk -F'\t' '$2 ~ /^(TCOF1|ESRRB|COL5A1|HMMR|RAPGEF3|NNT)$/'
+# Expected logistic p (Daniel loki-20220926 — what you reproduce here):
+#   COL5A1 2.69e-05 | RAPGEF3 1.46e-04 | ESRRB 1.13e-03 | TCOF1 1.57e-03 | NNT 1.62e-03 | HMMR 4.19e-03
+```
 
-> ⚠️ **No-PMBB caveat for P6:** our exact `loki-20230816` numbers come from biobin, which is `ritchie`-gated — so in no-PMBB mode you **cannot regenerate them yourself**. The preserved file you inspect above is *Daniel's* (`loki-20220926`), so its p-values match the right-hand column. In no-PMBB mode, P6 validation = **the 6 genes rank top-tier** in the preserved result; the precise our-vs-paper comparison is recorded in [`chapter1_authoritative_pvalues.md`](results/chapter1_paper_replication/chapter1_authoritative_pvalues.md) and becomes reproducible only once biobin access is available.
+> ⚠️ **No-PMBB caveat:** the preserved file is **Daniel's** (`loki-20220926`), so the values you reproduce are *his* (Check 2 above). **Our** re-run uses a newer LOKI (`loki-20230816`) and differs ~30%–5× — but our exact numbers come from biobin (`ritchie`-gated), so they can't be regenerated in no-PMBB mode. The full our-vs-Daniel-vs-paper table is in [`chapter1_authoritative_pvalues.md`](results/chapter1_paper_replication/chapter1_authoritative_pvalues.md).
 
-> **Known issue:** `LOC*`/`LINC*` pseudogenes dominate the raw top hits due to a newer LOKI database. Filter `^LOC|^LINC` to see the real genes. See the Phase 6 report.
+> **Known issue:** `LOC*`/`LINC*` pseudogenes dominate the unfiltered top hits (newer LOKI). Filter `^LOC|^LINC` to see real genes. See the Phase 6 report.
 
 **Detailed methodology:** [`results/chapter1_paper_replication/phase6_replication_report.md`](results/chapter1_paper_replication/phase6_replication_report.md)
 

@@ -113,7 +113,7 @@ You work inside the shared project, in your own `analysis/elena/` folder:
 | Ch1 P3 — plink extract | **run** | `run_phase3.sh` (light only — never `PHASE3_MODE=heavy`) |
 | Ch1 P4 — prep files | **validate-only** | inspect preserved `cases_control` / `covs` / `regions` |
 | Ch1 P5 — HL burden | **validate-only** | inspect preserved biobin → ESRRB p = 8.6308e-05 |
-| Ch1 P6 — exome-wide | **validate-only** | inspect preserved `all_chrom_meta_withBH.txt.gz` |
+| Ch1 P6 — exome-wide | **validate-only** | inspect preserved `results_allChr_needAud_withBH.txt.gz` (binary top tier; the 6 headline genes are the **P7** result, mid-tier here) |
 | **Ch1 P7 — degree-HL** | **run** | **`run_phase8.sh`** (NOT `run_phase7.sh`) |
 
 Exact commands and validation criteria: [`REPRODUCTION_GUIDE_no_pmbb.md`](REPRODUCTION_GUIDE_no_pmbb.md).
