@@ -36,7 +36,7 @@ export LD_LIBRARY_PATH="$PROJECT_ROOT/analysis/daniel/configs/lib-shims:${LD_LIB
 
 PLINK=/appl/plink-1.90Beta6.18/plink
 
-OUT_DIR="analysis/daniel/outputs/phase5"
+OUT_DIR="analysis/elena/outputs/phase5"
 PREP_DIR="$OUT_DIR/prep"
 IBD_DIR="$OUT_DIR/ibd_trick"
 FILT_DIR="$OUT_DIR/filtered"
@@ -45,8 +45,8 @@ BIOBIN_DIR="$OUT_DIR/biobin"
 LOG_DIR="analysis/daniel/logs/phase5"
 
 # Inputs from previous phases / raw v2
-PHASE3_LIGHT="analysis/daniel/outputs/phase3/light"
-PHASE4_OUT="analysis/daniel/outputs/phase4"
+PHASE3_LIGHT="analysis/elena/outputs/phase3/light"
+PHASE4_OUT="analysis/elena/outputs/phase4"
 CASES_CONTROL="$PHASE4_OUT/cases_control.txt"
 COVS="$PHASE4_OUT/covs.txt"
 REGIONS="$PHASE4_OUT/gene_list_regions.txt"

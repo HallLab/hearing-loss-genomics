@@ -21,9 +21,12 @@ if [[ -z "${VIRTUAL_ENV:-}" ]]; then
     source venv/bin/activate
 fi
 
+# biobin from the hall_shared module (no `ritchie` group needed); the module
+# provides boost 1.65.1 + the liblzma shim and puts biobin on PATH.
 # shellcheck disable=SC1091
 source /etc/profile.d/modules.sh 2>/dev/null || true
-module load rlsoftware/latest 2>/dev/null || true
+module use /project/hall_shared/env/modulefiles 2>/dev/null || true
+module load biobin/2.3.1 2>/dev/null || true
 export LD_LIBRARY_PATH="$PROJECT_ROOT/analysis/daniel/configs/lib-shims:${LD_LIBRARY_PATH:-}"
 
 OUT_DIR="analysis/daniel/outputs/phase6"
@@ -45,7 +48,7 @@ log "START Phase 6 chr${CHR}"
 REF_VCF_GZ="data/PMBB_Exome/allGenes/allIndvs_burdenSNPs_allGenes_noRels_maf.01_chr${CHR}.vcf.gz"
 CASES_CONTROL="analysis/daniel/outputs/phase4/cases_control.txt"
 COVS="analysis/daniel/outputs/phase4/covs.txt"
-LOKI_DB="/project/ritchie/datasets/loki/loki-20230816.db"
+LOKI_DB="/project/hall_shared/datasets/loki/loki-20230816.db"
 
 [[ -f "$REF_VCF_GZ" ]] || fail "Daniel's chr${CHR} VCF missing: $REF_VCF_GZ"
 [[ -f "$CASES_CONTROL" ]] || fail "Phase 4 cases_control missing"

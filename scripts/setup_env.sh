@@ -36,10 +36,15 @@ if groups | tr ' ' '\n' | grep -qx hall; then
 else
     fail "Not in 'hall' group — request access from Molly or LPC IT"
 fi
-if groups | tr ' ' '\n' | grep -qx ritchie; then
-    ok "Member of 'ritchie' group (raw PMBB data)"
+if groups | tr ' ' '\n' | grep -qx hall_shared; then
+    ok "Member of 'hall_shared' group (biobin module + LOKI)"
 else
-    fail "Not in 'ritchie' group — request access (needed for /static/PMBB/...)"
+    fail "Not in 'hall_shared' group — needed for biobin (module load biobin/2.3.1) and the hall_shared LOKI"
+fi
+if groups | tr ' ' '\n' | grep -qx ritchie_pmbb; then
+    ok "Member of 'ritchie_pmbb' group (raw PMBB v2 at /static/PMBB)"
+else
+    warn "Not in 'ritchie_pmbb' group — only needed to re-run heavy phases from RAW PMBB (/static/PMBB); light/validate-only phases don't"
 fi
 echo
 
@@ -83,7 +88,7 @@ else
     fail "R-4.4 NOT FOUND at $R44"
 fi
 
-LOKI="/project/ritchie/datasets/loki/loki-20230816.db"
+LOKI="/project/hall_shared/datasets/loki/loki-20230816.db"
 if [[ -f "$LOKI" ]]; then
     sz=$(du -h "$LOKI" | cut -f1)
     ok "LOKI database at $LOKI ($sz)"
@@ -100,18 +105,15 @@ else
     warn "  Create with: ln -s /usr/lib64/liblzma.so.5 $BIOBIN_SHIM"
 fi
 
-# biobin itself - try a couple common locations
-BIOBIN_PATH=""
-for cand in "/project/ritchie/env/modules/rlsoftware/latest/bin/biobin" "$(command -v biobin 2>/dev/null)"; do
-    if [[ -n "$cand" && -x "$cand" ]]; then
-        BIOBIN_PATH="$cand"
-        break
-    fi
-done
+# biobin — from the hall_shared module (no `ritchie` group needed)
+source /etc/profile.d/modules.sh 2>/dev/null || true
+module use /project/hall_shared/env/modulefiles 2>/dev/null || true
+module load biobin/2.3.1 2>/dev/null || true
+BIOBIN_PATH="$(command -v biobin 2>/dev/null)"
 if [[ -n "$BIOBIN_PATH" ]]; then
-    ok "biobin found at $BIOBIN_PATH"
+    ok "biobin found at $BIOBIN_PATH (module load biobin/2.3.1)"
 else
-    warn "biobin not found in usual locations — check with Ritchie Lab module"
+    fail "biobin NOT FOUND — 'module load biobin/2.3.1' failed (in hall_shared group? is /project/hall_shared/env/modulefiles reachable?)"
 fi
 
 LSF_BSUB=$(command -v bsub 2>/dev/null)
