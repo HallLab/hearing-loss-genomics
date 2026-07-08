@@ -13,7 +13,8 @@ Replicating Park et al. 2021 (ZNF175 pLOF → tinnitus) in Freeze One WES, we co
 
 ## The question
 
-- Park 2021 (Nat Med): ZNF175 pLOF burden → tinnitus, **p = 3.24×10⁻¹⁰**, OR ≈ 14.6, ~35 carriers, in ~11K WES (Freeze One).
+- Park 2021 (Nat Med): ZNF175 pLOF burden → tinnitus, **p = 3.24×10⁻¹⁰**, OR ≈ 14.6, **~35 carriers**, in ~11K WES (Freeze One).
+- **Our replication (same Freeze One cohort): 34 carriers** (10 qualifying pLOF variants, MAF ≤ 0.1%) — matching Park's ~35 — of which **4 are tinnitus carrier-cases**; adjusted OR ≈ 14.6 (p ≈ 4.8×10⁻⁶), reproducing Park's effect a few orders weaker in p.
 - The signal decays by ~44K (Hui-era) and by the exome-wide bar.
 - Project-internal expectation: **8** carrier-cases in v1. We reproduce **4**. Why?
 

@@ -42,7 +42,7 @@ IBD_DIR="$OUT_DIR/ibd_trick"
 FILT_DIR="$OUT_DIR/filtered"
 MERGE_DIR="$OUT_DIR/merged"
 BIOBIN_DIR="$OUT_DIR/biobin"
-LOG_DIR="analysis/daniel/logs/phase5"
+LOG_DIR="analysis/elena/logs/phase5"
 
 # Inputs from previous phases / raw v2
 PHASE3_LIGHT="analysis/elena/outputs/phase3/light"
