@@ -250,5 +250,10 @@ DFNA/
 docs/communications/
 docs/andre/
 
+# Elena Files
+# Working directory on the shared filesystem (~1 TB): Nextflow work/ scratch,
+# SAIGE .rda null models, *.bin chunk matrices, and PMBB participant ID lists.
+analysis/elena/
+
 # results files
 *.nosex
