@@ -1,0 +1,40 @@
+{
+  "results_file": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/HL_only_rarevariant/newmasks_combined_gene_results.csv",
+  "rows_raw": 1830387,
+  "rows_used_after_qc": 1822748,
+  "malformed_header_note": "file has 41 fields; only first 16 are real. One data row was glued into the header and is therefore missing from the table.",
+  "row_lost_in_header": {
+    "Region": "ABRA",
+    "Group": "pDM",
+    "max_MAF": "1e-04",
+    "Pvalue": "0.0289903099999999",
+    "Pvalue_Burden": "0.0289903099999999.1",
+    "Pvalue_SKAT": "0.0289903099999999.2",
+    "BETA_Burden": "2.33374322054901",
+    "SE_Burden": "1.06875054760847",
+    "MAC": "12",
+    "MAC_case": "3",
+    "MAC_control": "9",
+    "Number_rare": "0",
+    "Number_ultra_rare": "10",
+    "Ancestry": "0.001",
+    "Mask": "1",
+    "CHR": "0.860453285235705"
+  },
+  "primary_set": {
+    "source": "ClinGen HL GCEP Definitive+Strong -> phecode 389",
+    "n_genes": 61
+  },
+  "moi_breakdown": {
+    "AR": 40,
+    "AD": 19,
+    "XL": 2
+  },
+  "genes_absent_from_results": [
+    "LRTOMT",
+    "POU3F4",
+    "SMPX"
+  ],
+  "n_strata": 36,
+  "n_hits_fdr05": 22
+}
