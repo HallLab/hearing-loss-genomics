@@ -1,0 +1,18 @@
+{
+  "gene_list": "/project/hall/analysis/hearing-loss-genomics/cycle_2/data/clingen/genes_definitive_strong.txt",
+  "n_pairs": 121,
+  "n_unique_gene_disease": 116,
+  "n_mapped_to_any_phecode": 100,
+  "n_mapped_direct_xref": 16,
+  "n_mapped_via_ancestor": 84,
+  "n_unmapped": 16,
+  "n_distinct_phecodes": 29,
+  "phecodes_by_confidence": {
+    "clinical": 15,
+    "wastebasket": 6,
+    "suspect": 8
+  },
+  "mondo_terms_parsed": 58655,
+  "phecode_map": "/project/hall/analysis/hearing-loss-genomics/analysis/chapter_2_v2/results/phecode_map12.csv",
+  "phecode_labels": "PheWAS::pheinfo"
+}

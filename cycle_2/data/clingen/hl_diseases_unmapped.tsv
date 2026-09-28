@@ -1,0 +1,17 @@
+GENE	DISEASE_LABEL	MONDO	CLASSIFICATION	REASON
+ADGRV1	Usher syndrome type 2	MONDO:0016484	Definitive	no_icd_xref_within_3_ancestors
+BCS1L	Bjornstad syndrome	MONDO:0009872	Definitive	no_icd_xref_within_3_ancestors
+CDC14A	hearing impairment and infertile male syndrome	MONDO:0100069	Strong	no_icd_xref_within_3_ancestors
+CEP250	cone-rod dystrophy and hearing loss 2	MONDO:0020780	Definitive	no_icd_xref_within_3_ancestors
+CEP78	cone-rod dystrophy and hearing loss	MONDO:0014980	Strong	no_icd_xref_within_3_ancestors
+CIB2	Usher syndrome type 1	MONDO:0010168	Refuted	no_icd_xref_within_3_ancestors
+CLRN1	Usher syndrome type 3	MONDO:0016485	Definitive	no_icd_xref_within_3_ancestors
+GATA3	hypoparathyroidism-deafness-renal disease syndrome	MONDO:0007797	Definitive	no_icd_xref_within_3_ancestors
+GPSM2	Chudley-McCullough syndrome	MONDO:0011411	Definitive	no_icd_xref_within_3_ancestors
+MITF	Waardenburg syndrome type 2	MONDO:0019517	Definitive	no_icd_xref_within_3_ancestors
+MYO7A	Usher syndrome type 1	MONDO:0010168	Definitive	no_icd_xref_within_3_ancestors
+SLITRK6	high myopia-sensorineural deafness syndrome	MONDO:0009082	Definitive	no_icd_xref_within_3_ancestors
+TBC1D24	DOORS syndrome	MONDO:0009079	Definitive	no_icd_xref_within_3_ancestors
+USH1C	Usher syndrome type 1	MONDO:0010168	Definitive	no_icd_xref_within_3_ancestors
+USH2A	Usher syndrome type 2	MONDO:0016484	Definitive	no_icd_xref_within_3_ancestors
+WHRN	Usher syndrome type 2D	MONDO:0012662	Definitive	no_icd_xref_within_3_ancestors

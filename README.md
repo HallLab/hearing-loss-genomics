@@ -13,7 +13,13 @@ Genomic analysis of age-related hearing loss in the **Penn Medicine BioBank (PMB
 
 ## Current focus
 
-Deep-dive replication and follow-up of the **ZNF175** novel HL gene signal in PMBB. See `docs/analysis_plan.md` for the full task list.
+**Cycle 2** — rare variation in Mendelian hearing-loss genes and adult-onset HL in PMBB v4.
+Charter and research question: [`cycle_2/README.md`](cycle_2/README.md).
+
+Everything at the repository root outside `cycle_2/` (`analysis/`, `data/`, `docs/`, `results/`, `scripts/`)
+is **Cycle 1** — the ZNF175 replication and signal-loss investigation. Cycle 1 is not archived: its data and
+pipelines are reused by Cycle 2, and two of its blockers are still open. See `docs/analysis_plan.md` for the
+Cycle 1 task list.
 
 ## Repository structure
 

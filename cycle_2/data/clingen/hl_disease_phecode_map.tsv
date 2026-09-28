@@ -1,0 +1,120 @@
+GENE	DISEASE_LABEL	MONDO	MOI	CLASSIFICATION	PHECODE	PHECODE_DESC	PHECODE_GROUP	CONFIDENCE	ICD_EVIDENCE	ICD_MATCH	MATCH_LEVEL	VIA_ANCESTOR
+ABHD12	PHARC syndrome	MONDO:0012984	AR	Definitive	272.9	Unspecified disorder of lipoid metabolism	endocrine/metabolic	wastebasket	ICD9:272.9	exact	ancestor_d2	inherited lipid metabolism disorder
+ABHD12	PHARC syndrome	MONDO:0012984	AR	Definitive	277.5	Other disorders of lipoid metabolism	endocrine/metabolic	wastebasket	ICD9:272.8	exact	ancestor_d2	inherited lipid metabolism disorder
+ACTG1	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+ACTG1	Baraitser-winter syndrome 2	MONDO:0013812	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	ancestor_d1	Baraitser-Winter cerebrofrontofacial syndrome
+ADGRV1	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Disputed	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+AIFM1	X-linked hereditary sensory and autonomic neuropathy with hearing loss	MONDO:0010378	XL	Definitive	356	Hereditary and idiopathic peripheral neuropathy	neurological	clinical	ICD9:356.2	exact	ancestor_d1	hereditary sensory and autonomic neuropathy
+ALMS1	Alstrom syndrome	MONDO:0008763	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+ATP2B2	autosomal dominant nonsyndromic hearing loss	MONDO:0019587	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+ATP6V1B1	renal tubular acidosis, distal, 2, with progressive sensorineural hearing loss	MONDO:0009968	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD9:389.8	exact	direct	
+ATP6V1B1	renal tubular acidosis, distal, 2, with progressive sensorineural hearing loss	MONDO:0009968	AR	Definitive	588	Disorders resulting from impaired renal function	genitourinary	clinical	ICD9:588.89	exact	direct	
+BSND	Bartter disease type 4A	MONDO:0011242	AR	Definitive	255.12	Hyperaldosteronism	endocrine/metabolic	clinical	ICD10CM:E26.81;ICD9:255.13	exact	ancestor_d2	Bartter syndrome
+BTD	biotinidase deficiency	MONDO:0009665	AR	Definitive	277.6	Other deficiencies of circulating enzymes	endocrine/metabolic	clinical	ICD10CM:D81.810;ICD9:277.6	exact	direct	
+CABP2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CDC14A	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CDH23	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CEACAM16	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Strong	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CEACAM16	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Moderate	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CHD7	CHARGE syndrome	MONDO:0008965	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+CIB2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CISD2	Wolfram syndrome	MONDO:0018105	AR	Definitive	250.2	Type 2 diabetes	endocrine/metabolic	clinical	ICD9:250.80	exact	direct	
+CLDN14	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+CLPP	Perrault syndrome 3	MONDO:0013588	AR	Definitive	253.4	Anterior pituitary disorders	endocrine/metabolic	suspect	ICD9:253.4	exact	ancestor_d3	primary ovarian failure
+CLPP	Perrault syndrome 3	MONDO:0013588	AR	Definitive	627.5	Premature menopause and other ovarian failure	genitourinary	suspect	ICD10CM:E28.3;ICD9:256.39	exact	ancestor_d3	primary ovarian failure
+COCH	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+COL11A2	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+COL11A2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Moderate	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+COL11A2	otospondylomegaepiphyseal dysplasia	MONDO:0008975	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+COL11A2	otospondylomegaepiphyseal dysplasia	MONDO:0008975	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+COL4A5	Alport syndrome	MONDO:0018965	XL	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD10CM:Q87.81	exact	direct	
+COL9A1	Stickler syndrome, type 4	MONDO:0013590	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	ancestor_d1	Stickler syndrome
+COL9A3	Stickler syndrome	MONDO:0019354	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+DIAPH1	DIAPH1-related sensorineural hearing loss-thrombocytopenia syndrome	MONDO:0044635	AD	Definitive	287.3	Thrombocytopenia	hematopoietic	suspect	ICD9:287.5	exact	ancestor_d3	thrombocytopenia
+DNMT1	autosomal dominant cerebellar ataxia, deafness and narcolepsy	MONDO:0011397	AD	Definitive	327	Sleep disorders	neurological	clinical	ICD10CM:G47;ICD9:307.4;ICD9:307.40;ICD9:307.49	exact	ancestor_d1	sleep-wake disorder
+DSPP	dentinogenesis imperfecta	MONDO:0018849	AD	Definitive	520.1	Hereditary disturbances in tooth structure	digestive	clinical	ICD9:520.5	exact	direct	
+ESPN	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+ESPN	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Limited	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+ESRRB	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+EYA1	branchio-oto-renal syndrome	MONDO:0007029	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+EYA4	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+FGF3	deafness with labyrinthine aplasia, microtia, and microdontia	MONDO:0012541	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+GIPC3	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GJB2	hearing loss disorder	MONDO:0005365	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	direct	
+GJB2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GJB3	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Disputed	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GJB3	erythrokeratodermia variabilis	MONDO:0017851	AD	Definitive	691	Congenital anomalies of skin	dermatologic	clinical	ICD9:757.39	exact	ancestor_d1	diffuse palmoplantar keratoderma
+GJB6	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Refuted	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GJB6	Clouston syndrome	MONDO:0007510	AD	Definitive	691	Congenital anomalies of skin	dermatologic	clinical	ICD9:757.39	exact	ancestor_d1	diffuse palmoplantar keratoderma
+GRHL2	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GRXCR1	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+GSDME	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+HSD17B4	Perrault syndrome	MONDO:0017312	AR	Definitive	253.4	Anterior pituitary disorders	endocrine/metabolic	suspect	ICD9:253.4	exact	ancestor_d2	primary ovarian failure
+HSD17B4	Perrault syndrome	MONDO:0017312	AR	Definitive	627.5	Premature menopause and other ovarian failure	genitourinary	clinical	ICD10CM:E28.3;ICD9:256.39	exact	ancestor_d2	primary ovarian failure
+ILDR1	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+KCNQ1	Jervell and Lange-Nielsen syndrome	MONDO:0002441	AR	Definitive	426.8	Other cardiac conduction disorders	circulatory system	clinical	ICD10CM:I45.81;ICD9:426.82	exact	ancestor_d2	long QT syndrome
+KCNQ4	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+LARS2	Perrault syndrome	MONDO:0017312	AR	Definitive	253.4	Anterior pituitary disorders	endocrine/metabolic	suspect	ICD9:253.4	exact	ancestor_d2	primary ovarian failure
+LARS2	Perrault syndrome	MONDO:0017312	AR	Definitive	627.5	Premature menopause and other ovarian failure	genitourinary	clinical	ICD10CM:E28.3;ICD9:256.39	exact	ancestor_d2	primary ovarian failure
+LHFPL5	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+LMX1A	autosomal dominant nonsyndromic hearing loss	MONDO:0019587	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+LOXHD1	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+LRTOMT	autosomal recessive nonsyndromic hearing loss 63	MONDO:0012670	AR	Definitive	389	Hearing loss	sense organs	suspect	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d3	hearing loss disorder
+MARVELD2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MINAR2	hearing loss, autosomal recessive 120	MONDO:0859374	AR	Strong	389	Hearing loss	sense organs	suspect	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d3	hearing loss disorder
+MPZL2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Strong	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MSRB3	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MYH9	macrothrombocytopenia and granulocyte inclusions with or without nephritis or sensorineural hearing loss	MONDO:0015912	AD	Definitive	287.31	Primary thrombocytopenia	hematopoietic	clinical	ICD9:287.33	exact	direct	
+MYH9	macrothrombocytopenia and granulocyte inclusions with or without nephritis or sensorineural hearing loss	MONDO:0015912	AD	Definitive	580.14	Chronic glomerulonephritis, NOS	genitourinary	clinical	ICD9:582.89	exact	direct	
+MYH9	macrothrombocytopenia and granulocyte inclusions with or without nephritis or sensorineural hearing loss	MONDO:0015912	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+MYO15A	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MYO3A	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MYO6	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+MYO7A	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+OTOA	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+OTOF	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+OTOG	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+OTOGL	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+PAX3	Waardenburg syndrome	MONDO:0018094	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.7	exact	ancestor_d3	developmental defect during embryogenesis
+PDZD7	hearing loss, autosomal recessive	MONDO:0019588	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+PJVK	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+POU3F4	nonsyndromic genetic hearing loss	MONDO:0019497	XL	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+POU4F3	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+PRPS1	phosphoribosylpyrophosphate synthetase superactivity	MONDO:0010395	XL	Limited	277.2	Other disorders of purine and pyrimidine metabolism	endocrine/metabolic	wastebasket	ICD9:277.2	exact	ancestor_d2	inborn disorder of purine or pyrimidine metabolism
+PRPS1	PRPS1 deficiency disorder	MONDO:0100061	XL	Definitive	356	Hereditary and idiopathic peripheral neuropathy	neurological	wastebasket	ICD9:356.9	exact	ancestor_d3	peripheral nervous system disorder
+PTPRQ	hearing loss, autosomal recessive	MONDO:0019588	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+RDX	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+RIPOR2	autosomal dominant nonsyndromic hearing loss	MONDO:0019587	AD	Limited	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+RIPOR2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Strong	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+S1PR2	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Strong	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+SIX1	branchio-oto-renal syndrome	MONDO:0007029	AD	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+SLC17A8	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+SLC26A4	Pendred syndrome	MONDO:0010134	AR	Definitive	244.5	Congenital hypothyroidism	endocrine/metabolic	clinical	ICD9:243	exact	ancestor_d1	congenital hypothyroidism
+SLC26A4	Pendred syndrome	MONDO:0010134	AR	Definitive	262	Mineral deficiency NEC	endocrine/metabolic	wastebasket	ICD9:269.3	exact	ancestor_d1	congenital hypothyroidism
+SLC26A4	Pendred syndrome	MONDO:0010134	AR	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	ancestor_d1	congenital hypothyroidism
+SLC52A2	Brown-Vialetto-van Laere syndrome 2	MONDO:0013867	AR	Definitive	334.2	Anterior horn cell disease	neurological	suspect	ICD10CM:G12.2;ICD9:335.2;ICD9:335.8;ICD9:335.9	exact	ancestor_d3	motor neuron disorder
+SLC52A3	Brown-Vialetto-van Laere syndrome 1	MONDO:0024537	AR	Definitive	334.2	Anterior horn cell disease	neurological	suspect	ICD10CM:G12.2;ICD9:335.2;ICD9:335.8;ICD9:335.9	exact	ancestor_d3	motor neuron disorder
+SMPX	nonsyndromic genetic hearing loss	MONDO:0019497	XL	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+SOX10	Waardenburg syndrome type 4C	MONDO:0013202	AD	Definitive	564	Functional digestive disorders	digestive	suspect	ICD9:564	exact	ancestor_d3	intestinal disorder
+SOX10	Waardenburg syndrome type 4C	MONDO:0013202	AD	Definitive	565	Anal and rectal conditions	digestive	suspect	ICD9:569.4;ICD9:569.49	exact	ancestor_d3	intestinal disorder
+SOX10	Waardenburg syndrome type 4C	MONDO:0013202	AD	Definitive	569	Other disorders of intestine	digestive	suspect	ICD9:569;ICD9:569.89;ICD9:569.9	exact	ancestor_d3	intestinal disorder
+SOX10	Waardenburg syndrome type 4C	MONDO:0013202	AD	Definitive	569.2	Gastrointestinal complications	digestive	suspect	ICD9:564.4	exact	ancestor_d3	intestinal disorder
+SOX10	Waardenburg syndrome type 4C	MONDO:0013202	AD	Definitive	575	Other biliary tract disease	digestive	suspect	ICD9:575	exact	ancestor_d3	intestinal disorder
+STRC	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TBC1D24	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Limited	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TCOF1	Treacher-Collins syndrome	MONDO:0002457	AD	Definitive	749.2	Congenital anomalies of skull and face bones	congenital anomalies	clinical	ICD10CM:Q75.4	exact	ancestor_d1	mandibulofacial dysostosis
+TECTA	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TECTA	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TIMM8A	deafness dystonia syndrome	MONDO:0010578	XL	Definitive	759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	ICD9:759.89	exact	direct	
+TMC1	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TMIE	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TMPRSS3	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TPRN	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+TRIOBP	hearing loss, autosomal recessive	MONDO:0019588	AR	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d2	hearing loss disorder
+TWNK	Perrault syndrome 5	MONDO:0014504	AR	Definitive	253.4	Anterior pituitary disorders	endocrine/metabolic	suspect	ICD9:253.4	exact	ancestor_d3	primary ovarian failure
+TWNK	Perrault syndrome 5	MONDO:0014504	AR	Definitive	627.5	Premature menopause and other ovarian failure	genitourinary	suspect	ICD10CM:E28.3;ICD9:256.39	exact	ancestor_d3	primary ovarian failure
+USH1C	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Limited	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+WFS1	Wolfram syndrome	MONDO:0018105	AR	Definitive	250.2	Type 2 diabetes	endocrine/metabolic	clinical	ICD9:250.80	exact	direct	
+WFS1	Wolfram-like syndrome	MONDO:0013673	AD	Definitive	259	Other endocrine disorders	endocrine/metabolic	wastebasket	ICD9:259.8;ICD9:259.9	exact	ancestor_d1	endocrine system disorder
+WFS1	nonsyndromic genetic hearing loss	MONDO:0019497	AD	Definitive	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder
+WHRN	nonsyndromic genetic hearing loss	MONDO:0019497	AR	Moderate	389	Hearing loss	sense organs	clinical	ICD10CM:H90;ICD9:389;ICD9:389.8;ICD9:389.9	exact	ancestor_d1	hearing loss disorder

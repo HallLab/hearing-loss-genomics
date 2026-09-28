@@ -1,0 +1,30 @@
+PHECODE	PHECODE_DESC	PHECODE_GROUP	CONFIDENCE	N_GENES	N_DISEASES	MATCH_LEVELS	GENES
+389	Hearing loss	sense organs	clinical	61	7	ancestor_d1;ancestor_d2;ancestor_d3;direct	ACTG1;ADGRV1;ATP2B2;ATP6V1B1;CABP2;CDC14A;CDH23;CEACAM16;CIB2;CLDN14;COCH;COL11A2;ESPN;ESRRB;EYA4;GIPC3;GJB2;GJB3;GJB6;GRHL2;GRXCR1;GSDME;ILDR1;KCNQ4;LHFPL5;LMX1A;LOXHD1;LRTOMT;MARVELD2;MINAR2;MPZL2;MSRB3;MYO15A;MYO3A;MYO6;MYO7A;OTOA;OTOF;OTOG;OTOGL;PDZD7;PJVK;POU3F4;POU4F3;PTPRQ;RDX;RIPOR2;S1PR2;SLC17A8;SMPX;STRC;TBC1D24;TECTA;TMC1;TMIE;TMPRSS3;TPRN;TRIOBP;USH1C;WFS1;WHRN
+627.5	Premature menopause and other ovarian failure	genitourinary	clinical	4	3	ancestor_d2;ancestor_d3	CLPP;HSD17B4;LARS2;TWNK
+250.2	Type 2 diabetes	endocrine/metabolic	clinical	2	1	direct	CISD2;WFS1
+356	Hereditary and idiopathic peripheral neuropathy	neurological	clinical	2	2	ancestor_d1;ancestor_d3	AIFM1;PRPS1
+691	Congenital anomalies of skin	dermatologic	clinical	2	2	ancestor_d1	GJB3;GJB6
+244.5	Congenital hypothyroidism	endocrine/metabolic	clinical	1	1	ancestor_d1	SLC26A4
+255.12	Hyperaldosteronism	endocrine/metabolic	clinical	1	1	ancestor_d2	BSND
+277.6	Other deficiencies of circulating enzymes	endocrine/metabolic	clinical	1	1	direct	BTD
+287.31	Primary thrombocytopenia	hematopoietic	clinical	1	1	direct	MYH9
+327	Sleep disorders	neurological	clinical	1	1	ancestor_d1	DNMT1
+426.8	Other cardiac conduction disorders	circulatory system	clinical	1	1	ancestor_d2	KCNQ1
+520.1	Hereditary disturbances in tooth structure	digestive	clinical	1	1	direct	DSPP
+580.14	Chronic glomerulonephritis, NOS	genitourinary	clinical	1	1	direct	MYH9
+588	Disorders resulting from impaired renal function	genitourinary	clinical	1	1	direct	ATP6V1B1
+749.2	Congenital anomalies of skull and face bones	congenital anomalies	clinical	1	1	ancestor_d1	TCOF1
+759	Other and unspecified congenital anomalies	congenital anomalies	wastebasket	14	13	ancestor_d1;ancestor_d3;direct	ACTG1;ALMS1;CHD7;COL11A2;COL4A5;COL9A1;COL9A3;EYA1;FGF3;MYH9;PAX3;SIX1;SLC26A4;TIMM8A
+259	Other endocrine disorders	endocrine/metabolic	wastebasket	1	1	ancestor_d1	WFS1
+262	Mineral deficiency NEC	endocrine/metabolic	wastebasket	1	1	ancestor_d1	SLC26A4
+272.9	Unspecified disorder of lipoid metabolism	endocrine/metabolic	wastebasket	1	1	ancestor_d2	ABHD12
+277.2	Other disorders of purine and pyrimidine metabolism	endocrine/metabolic	wastebasket	1	1	ancestor_d2	PRPS1
+277.5	Other disorders of lipoid metabolism	endocrine/metabolic	wastebasket	1	1	ancestor_d2	ABHD12
+253.4	Anterior pituitary disorders	endocrine/metabolic	suspect	4	3	ancestor_d2;ancestor_d3	CLPP;HSD17B4;LARS2;TWNK
+334.2	Anterior horn cell disease	neurological	suspect	2	2	ancestor_d3	SLC52A2;SLC52A3
+287.3	Thrombocytopenia	hematopoietic	suspect	1	1	ancestor_d3	DIAPH1
+564	Functional digestive disorders	digestive	suspect	1	1	ancestor_d3	SOX10
+565	Anal and rectal conditions	digestive	suspect	1	1	ancestor_d3	SOX10
+569	Other disorders of intestine	digestive	suspect	1	1	ancestor_d3	SOX10
+569.2	Gastrointestinal complications	digestive	suspect	1	1	ancestor_d3	SOX10
+575	Other biliary tract disease	digestive	suspect	1	1	ancestor_d3	SOX10

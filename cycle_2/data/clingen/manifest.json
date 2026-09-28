@@ -1,0 +1,46 @@
+{
+  "source_url": "https://search.clinicalgenome.org/kb/gene-validity/download",
+  "gcep": "Hearing Loss Gene Curation Expert Panel",
+  "clingen_file_created": "2026-08-26",
+  "raw_csv": "clingen_gene_validity_all.csv",
+  "raw_sha256": "753fb2c70af9bd69220750f0dfdedc394d2b822b87127b50d3449bc357c3dd37",
+  "n_curations_all_gceps": 3667,
+  "n_gene_disease_pairs": 191,
+  "n_unique_genes": 166,
+  "pairs_by_classification": {
+    "Definitive": 102,
+    "Strong": 7,
+    "Moderate": 23,
+    "Limited": 43,
+    "Disputed": 12,
+    "Refuted": 4
+  },
+  "genes_by_best_classification": {
+    "Definitive": 94,
+    "Strong": 6,
+    "Moderate": 20,
+    "Limited": 35,
+    "Disputed": 9,
+    "Refuted": 2
+  },
+  "pairs_by_moi": {
+    "AD": 70,
+    "AR": 113,
+    "XL": 8
+  },
+  "gene_lists": {
+    "definitive": {
+      "file": "genes_definitive.txt",
+      "n_genes": 94
+    },
+    "definitive_strong": {
+      "file": "genes_definitive_strong.txt",
+      "n_genes": 100
+    },
+    "definitive_strong_moderate": {
+      "file": "genes_definitive_strong_moderate.txt",
+      "n_genes": 120
+    }
+  },
+  "citation": "Tshering KC et al. ClinGen recuration of hearing loss associated-genes demonstrates significant changes in gene-disease validity over time. Genet Med. 2025;27(5):101397. PMID 39987489"
+}
