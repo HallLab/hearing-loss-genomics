@@ -1,0 +1,49 @@
+{
+  "release": "/static/PMBB/PMBB-Release-2026-4.0",
+  "sources": {
+    "phecodex": "/static/PMBB/PMBB-Release-2026-4.0/Phenotype/4.0/PMBB-Release-2026-4.0_phenotype_conditions_phecode_x.txt",
+    "observation": "/static/PMBB/PMBB-Release-2026-4.0/Phenotype/4.0/PMBB-Release-2026-4.0_phenotype_observation.txt",
+    "covariates": "/static/PMBB/PMBB-Release-2026-4.0/Phenotype/4.0/PMBB-Release-2026-4.0_phenotype_covariates.txt",
+    "exome_samples": "/static/PMBB/PMBB-Release-2026-4.0/Exome/PCA/combined/PMBB-Release-2026-4.0_genetic_exome.commonsnps.samples_ancestries.tsv"
+  },
+  "tinnitus_observation_codes": [
+    "388.3",
+    "388.30",
+    "388.31",
+    "388.32",
+    "H93.1",
+    "H93.11",
+    "H93.12",
+    "H93.13",
+    "H93.19"
+  ],
+  "rules": "case >=2 distinct dates; 1 date excluded; related ear-family evidence excluded from controls",
+  "sample_frame": "exome sample list (not the imputed LD-pruned .fam)",
+  "n_exome_samples": 70925,
+  "summary": {
+    "hearing_impairment": {
+      "case": 6752,
+      "control": 50755,
+      "excluded_one_date": 4007,
+      "excluded_related_ear_phenotype": 9411,
+      "analysis_N": 57507,
+      "case_rate_%": 11.74
+    },
+    "hl_or_tinnitus": {
+      "case": 7941,
+      "control": 50755,
+      "excluded_one_date": 4455,
+      "excluded_related_ear_phenotype": 7774,
+      "analysis_N": 58696,
+      "case_rate_%": 13.53
+    },
+    "tinnitus": {
+      "case": 2859,
+      "control": 50755,
+      "excluded_one_date": 2911,
+      "excluded_related_ear_phenotype": 14400,
+      "analysis_N": 53614,
+      "case_rate_%": 5.33
+    }
+  }
+}
