@@ -1,19 +1,21 @@
 # PMBB v4 hearing-loss cohort — 517 participants excluded for missing imputed PCs
 
 **Author:** Andre Rico · **Date:** 2026-09-29 · **Status:** for review
-**Owner of the artifact in question:** Nikki Palmiero
+**Artifacts affected:** files owned by both Nikki Palmiero and Elena (see *Where the rule lives*)
 **Evidence:** `analysis/elena_replication/phase_1/` — script, outputs and per-person list
 
 ---
 
 ## Decision requested
 
-1. **Was the exclusion deliberate?** 517 exome-sequenced participants are absent from the SAIGE
-   sample list because they have no imputed-array principal components. The analysis uses exome
-   PCs. If this was an intentional QC choice, we would like to record the reason. → **Nikki**
+1. **Was the exclusion deliberate, and which step introduced it?** 517 exome-sequenced
+   participants are absent from the SAIGE sample list because they have no imputed-array principal
+   components. The analysis is adjusted with exome PCs; the imputed ones are never used as
+   covariates. The requirement appears in artifacts owned by both of you, and the files alone do not
+   say which step introduced it or whether one inherited it from the other. → **Nikki and Elena**
 2. **Should the 427 affected cases and controls be restored** for the hearing-loss analysis?
    → **Molly, Doug, Nikki**
-3. **If restored, does anything already run need re-running?** → **Molly, Nikki**
+3. **If restored, does anything already run need re-running?** → **Molly, Nikki, Elena**
 
 ---
 
@@ -62,8 +64,39 @@ The 427 belong to a larger group of **517** lost between `HL_TIN_PMBBv4_keep.txt
 They are exactly the set of people in the release covariates who have exome PCs but no imputed PCs:
 517 of 70,925, or 0.7% of the cohort.
 
-The SAIGE covariate files use `exome_PC1-6`. The imputed PCs are not consumed anywhere in this
-analysis.
+### The model is adjusted correctly — the filter is what went wrong
+
+This is worth stating precisely, because the milder reading is the correct one.
+
+The covariates the model consumes are **exome** PCs. Verified by value, not by column name: the
+`PC1` column of `covariates_combined_5PCs_withBatch.txt` is numerically identical to the release's
+`exome_PC1` (correlation 0.99965 over 70,404 people; `imputed_PC1` correlates 0.992 but the values
+differ). The imputed PCs never enter the regression.
+
+They act as a **gate**, not as a covariate. The sample list is exactly:
+
+```
+analysable  ∩  {has all 20 imputed PCs}
+  57,507         (excludes 427)          =  57,080
+```
+
+— an exact set identity, not an approximation. The effect is what a completeness check spanning
+every PC column in the file would produce, rather than only the six the model uses.
+
+So this is not a case of an exome analysis being adjusted with ancestry components derived from
+array data. That would be a methodological error; this is not it. The adjustment is right. What is
+wrong is that a completeness requirement over unused columns silently reduced the cohort.
+
+### Where the rule lives
+
+| Artifact | Owner | State |
+|---|---|---|
+| `PMBBv4_phecodex/` phenotype, `all_statuses`, summary | Nikki | phenotype reproduces 100% |
+| `PMBBv4_phecodex/hearing_impairment_PMBBv4_SAIGE.txt` | Nikki | 57,080 — the rule is exactly reproducible here |
+| `HL_TIN_PMBBv4_keep.txt` | Elena | 70,925 — full cohort, rule not yet applied |
+| `HL_TIN_PMBBv4_SAIGE_samples.txt` | Elena | 70,408 — rule applied, zero people without imputed PCs |
+
+The requirement is present on both sides. Which step introduced it is question 1.
 
 ## Why it is worth a decision rather than a fix
 

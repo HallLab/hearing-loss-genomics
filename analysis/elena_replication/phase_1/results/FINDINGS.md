@@ -28,10 +28,36 @@ The 427 are part of a larger group of **517** lost between `HL_TIN_PMBBv4_keep.t
 They are the entire set of people in the release with exome PCs but no imputed PCs: 517 of 70,925,
 0.7% of the cohort.
 
-**This is an exome study.** The SAIGE covariate file carries `exome_PC1-6` in its header; the
-imputed PCs are not used anywhere in the analysis. 517 participants — among them **40 hearing-loss
-cases** — were removed from an exome analysis for missing array-imputation principal components
-that the analysis does not consume.
+**This is an exome study.** 517 participants — among them **40 hearing-loss cases** — were removed
+from an exome analysis for missing array-imputation principal components that the analysis does not
+consume.
+
+### The model is adjusted correctly; the filter is what is wrong
+
+The distinction matters, and the milder reading is the correct one.
+
+The covariates the model consumes are **exome** PCs, verified by value rather than by column name.
+The covariate files handed to SAIGE label their columns generically (`PC1 … PC5`), so the name
+carries no information. Matched against the release: `PC1` is numerically identical to `exome_PC1`
+(correlation 0.99965 across 70,404 people; `imputed_PC1` correlates 0.992, but the values differ —
+e.g. 0.0003 vs 0.0004 for the same person). The imputed PCs never enter the regression.
+
+They act as a **gate**. The delivered sample list is an exact set identity:
+
+```
+analysable  ∩  {has all 20 imputed PCs}   =   57,080
+  57,507              (excludes 427)
+```
+
+Tested as set equality, not as a count match. The effect is what a completeness check spanning every
+PC column in the covariates file would produce, rather than only the six the model uses.
+
+So this is **not** an exome analysis adjusted with array-derived ancestry components — that would be
+a methodological error, and it is not what happened. The adjustment is correct. A completeness
+requirement over unused columns silently reduced the cohort.
+
+Note that the release publishes `exome_PC1-20` and `imputed_PC1-20` — two separate PCA runs on two
+separate assays, each numbered from 1. This is not a 6-versus-20 distinction within one family.
 
 ### Why it matters beyond the count
 
