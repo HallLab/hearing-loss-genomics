@@ -1,0 +1,316 @@
+# Phase 1 — Cohort definition · reference record
+
+**Author:** Andre Rico · **Date:** 2026-09-29 · **Status:** complete
+**Type:** reference record. This page documents what was done and what it means. It asks for no
+decision — the decision arising from it is [page 01](01_sample_frame_decision.md).
+**Repo:** `analysis/elena_replication/phase_1/`
+
+---
+
+## 1. In one page
+
+Phase 1 of the PMBB v4 replication checks the cohort: who is in the study, and who counts as having
+hearing loss. It is the first phase because every later phase consumes its output.
+
+Two things were checked, and they came out differently.
+
+| | Question | Result |
+|---|---|---|
+| **The rule** | Who counts as a case? | **Passes.** Re-derived independently, 100% agreement, 70,925 of 70,925 people. |
+| **The list** | Who made it into the study? | **Fails.** 427 analysable participants, 40 of them cases, were dropped by a filter that checks the wrong columns. |
+
+The useful part is the split. The rule for deciding who is a case is now confirmed, so a
+disagreement in a later phase cannot be blamed on the phenotype. The cohort that was actually
+analysed is 427 people smaller than the phenotype supports, and that gap has to be carried forward
+as a known quantity.
+
+---
+
+## 2. Why this phase exists at all
+
+The question the whole pipeline asks is: *is there a gene where rare damaging variants are more
+common in people with hearing loss than in people without?*
+
+Before that can be asked, two things must be settled: **who has hearing loss** and **who is in the
+study**. If either is wrong, every number downstream is wrong, and no amount of care in the
+statistics fixes it. Phase 1 is that settling.
+
+It is also why the replication runs in pipeline order rather than starting with the cheapest check.
+Had this work begun at Phase 5 — rebuilding the final summary table, which takes minutes — it would
+have reported a pass. The table does faithfully reflect the calculations. The calculations were run
+on a cohort missing 40 cases, and nothing at Phase 5 can see that.
+
+---
+
+## 3. What Phase 1 read
+
+Everything comes from the institutional release except the pipeline's own outputs, which are read
+only as the reference being checked. Nothing in `analysis/elena/` was modified.
+
+**From the release** — `/static/PMBB/PMBB-Release-2026-4.0/`
+
+| Path | What it provides |
+|---|---|
+| `Phenotype/4.0/..._conditions_phecode_x.txt` | diagnosis codes with dates (12 GB) |
+| `Phenotype/4.0/..._observation.txt` | the OMOP observation table (1.2 GB) — where v4 moved tinnitus |
+| `Phenotype/4.0/..._covariates.txt` | age, sex, batch, and both PC families |
+| `Exome/PCA/combined/..._samples_ancestries.tsv` | who has exome data (70,925 people) |
+
+**From the pipeline** — `analysis/elena/rarevariantExWAS/`
+
+| Path | Owner | What it is |
+|---|---|---|
+| `PMBBv4_phecodex/PMBBv4_hearing_tinnitus_all_statuses.csv.gz` | nikkipal | every person's case/control status |
+| `PMBBv4_phecodex/PMBBv4_hearing_tinnitus_summary.csv` | nikkipal | the published counts |
+| `PMBBv4_phecodex/hearing_impairment_PMBBv4_SAIGE.txt` | nikkipal | the file handed to SAIGE |
+| `HL_TIN_PMBBv4_keep.txt` | elenas18 | full cohort, 70,925 |
+| `HL_TIN_PMBBv4_SAIGE_samples.txt` | elenas18 | after the filter, 70,408 |
+| `covariates/covariates_*_withBatch.txt` | elenas18 | the covariates SAIGE consumed |
+
+---
+
+## 4. Check 01 — the sample frame
+
+**Script:** `phase_1/scripts/01_sample_frame.py`
+
+Traces the cohort from the release to the file SAIGE actually received, and attributes every drop.
+
+```
+70,925   people with exome data in the release
+70,925   classified for hearing impairment (the whole cohort)
+57,507   case or control  (the rest are excluded by phenotype rules)
+57,080   delivered to SAIGE
+   427   dropped here — 40 cases, 387 controls
+```
+
+The 427 belong to a group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
+`HL_TIN_PMBBv4_SAIGE_samples.txt` (70,408). Checked against the release, all 517 have exome data,
+have complete `exome_PC1-20`, and have **no** `imputed_PC1-20`.
+
+### The mechanism, stated carefully
+
+This is the part worth getting right, because a loose reading makes it sound worse than it is.
+
+The release publishes **two separate families of principal components**, each numbered from 1:
+
+```
+exome_PC1   … exome_PC20     from exome sequencing
+imputed_PC1 … imputed_PC20   from array genotyping + imputation
+```
+
+These are two different PCA runs on two different assays. It is **not** a "first 6 versus extended
+20" distinction inside one family — both families go to 20.
+
+**The model used the exome PCs.** Verified by value, not by column name: the covariate files handed
+to SAIGE label their columns generically (`PC1 … PC5`), so the name carries no information. Matched
+against the release, `PC1` is numerically identical to `exome_PC1` (r = 0.99965 over 70,404 people;
+`imputed_PC1` correlates 0.992 but the values differ). **The imputed PCs never entered the
+regression.**
+
+They acted as a **gate**. The delivered sample list is an exact set identity:
+
+```
+analysable (57,507)  ∩  {has all 20 imputed PCs}  =  57,080
+```
+
+Tested as set equality, not as a matching count. That is what a completeness check spanning every PC
+column in the file produces, rather than only the six the model uses.
+
+So: **the adjustment is correct; the filter is what is wrong.** An exome analysis adjusted with
+array-derived ancestry components would be a methodological error. That is not what happened.
+
+### 517 and 427 are different facts
+
+All 517 have the same problem — no imputed PCs. Nobody in the release is missing exome PCs (checked:
+zero). The 427 is about **phenotype status**, not about which PCs were absent:
+
+```
+517  lacking imputed PCs
+ ├── 387  controls  ┐
+ ├──  40  cases     ┘── 427  analysable       →  real loss
+ ├──  64  already excluded, related ear phenotype  ┐
+ └──  26  already excluded, one date               ┘── 90  already out anyway
+```
+
+The 90 had been excluded by the phenotype rules before any PC was considered, so removing them
+changed nothing. **427 is the number that matters.**
+
+### Why it shows up as two different published numbers
+
+| | `summary.csv` | file given to SAIGE |
+|---|---:|---:|
+| cases | 6,752 | **6,712** |
+| controls | 50,755 | **50,368** |
+
+The summary was written at the phenotype step; the filter came afterwards and nobody rewrote it.
+Anyone citing the summary reports 6,752 — a number the analysis did not use.
+
+---
+
+## 5. Check 02 — cases and controls
+
+**Script:** `phase_1/scripts/02_rebuild_cases_controls.py`
+
+Cases and controls were re-derived from the release, written from its own files without reference to
+the existing code, then compared person by person.
+
+### The rules, as the pipeline documents them
+
+| Status | Condition |
+|---|---|
+| `case` | target evidence on **≥ 2 distinct dates** (the "rule of 2") |
+| `excluded_one_date` | target evidence on exactly 1 date |
+| `excluded_related_ear_phenotype` | no target evidence, but some other ear-family evidence |
+| `control` | no ear-family evidence of any kind |
+
+Target = hearing impairment (`SO_396`). Ear family = any `SO_39x` code, plus tinnitus from the
+observation table (see below).
+
+### Result
+
+| | pipeline | rebuilt |
+|---|---:|---:|
+| case | 6,752 | **6,752** |
+| excluded, one date | 4,007 | **4,007** |
+| excluded, related ear | 9,411 | **9,411** |
+| control | 50,755 | **50,755** |
+
+**70,925 / 70,925 — 100%, person for person.** Not just matching totals: the same people.
+
+### Sub-finding A — the pipeline was right and the rebuild was wrong
+
+The first rebuild used only `conditions_phecode_x` and disagreed on **558** people, all in the
+control / related-ear boundary, all in the direction of the rebuild seeing *less* evidence.
+
+Cause: **PMBB v4 moved the standard tinnitus ICD codes (388.3x, H93.1x) into the OMOP `observation`
+table.** The phecode files retain only the ~3,016 pulsatile-tinnitus events; the real bulk — 25,094
+events — sits in `observation.txt`. All 558 (100%) carry tinnitus there.
+
+Adding that source took agreement from 99.21% to 100%. The pipeline had already handled this. The
+relocation is documented nowhere in the release, and it is the single easiest way to get a v4
+phenotype wrong.
+
+### Sub-finding B — child-phecode rollup makes no difference here
+
+PheWAS convention rolls a child phecode up into its parent, and `SO_396` has five children with real
+volume (`.2` = 81,319 events, `.8` = 78,903, plus `.1`, `.3`, `.9`). Both definitions were computed:
+
+- `SO_396` exact
+- `SO_396` plus all children
+
+**Identical results.** No child adds a case, which means the source already records parent and child
+for the same encounter. The question can be closed rather than argued in a meeting.
+
+### Independent corroboration
+
+Two extraction counts match the pipeline's own notebook exactly, from separately written code:
+
+| | this replication | pipeline notebook |
+|---|---:|---:|
+| ear-family PhecodeX rows | 655,946 | 655,946 |
+| tinnitus events in `observation` | 25,094 | 25,094 |
+
+---
+
+## 6. Verdict
+
+The criterion was: the re-derived case, control **and sample** sets match person-for-person, or every
+difference is explained by a documented rule.
+
+| Component | Verdict | Basis |
+|---|---|---|
+| Phenotype definition | **passes** | exact reproduction, 100% |
+| Sample frame | **does not pass** | 427 dropped by an undocumented filter on unused columns |
+
+Every other Phase 1 filter — rule of 2, related-ear exclusion — reproduced exactly. The PC
+completeness check is the only one that fails.
+
+---
+
+## 7. Every number in one place
+
+| Number | Meaning |
+|---:|---|
+| 70,925 | people with exome data in PMBB v4; also the variant-QC sample set |
+| 57,507 | analysable for hearing impairment (case or control) |
+| 57,080 | delivered to SAIGE |
+| 6,752 | cases the phenotype supports — reproduced exactly |
+| 6,712 | cases the analysis actually ran on |
+| 427 | analysable people dropped — 40 cases + 387 controls |
+| 517 | people in the release with no imputed PCs (427 analysable + 90 already excluded) |
+| 4,007 | excluded, evidence on one date only |
+| 9,411 | excluded, other ear-family evidence but not hearing impairment |
+| 558 | first-pass disagreements, all explained by the observation table |
+| 655,946 | ear-family PhecodeX rows extracted |
+| 25,094 | tinnitus events in the observation table |
+| 134,917 | `SO_396` hearing-impairment events |
+
+### Which number goes to the next phase
+
+| Phase | Cohort |
+|---|---|
+| 2 — masks | **70,925.** Variant QC ran on the full cohort, so the 427 defect did not reach the masks. |
+| 3, 4 | **Undecided** — pending page 01. The replication carries 57,507 as correct and diffs against 57,080, holding the 427 as a known delta so a later phase does not rediscover Phase 1 and call it new. |
+
+---
+
+## 8. Scripts and outputs
+
+All paths relative to `analysis/elena_replication/phase_1/`.
+
+| File | Tracked in git | Contents |
+|---|---|---|
+| `scripts/00_extract_release_tables.sh` | yes | caches the two multi-GB release extracts |
+| `scripts/01_sample_frame.py` | yes | traces the cohort chain, identifies the 517 |
+| `scripts/02_rebuild_cases_controls.py` | yes | re-derives cases/controls, diffs against the pipeline |
+| `results/FINDINGS.md` | yes | the full write-up, including what was not established |
+| `results/01_sample_frame.json` | yes | every number in §4, machine-readable |
+| `results/02_rebuild_cases_controls.json` | yes | counts, agreement, confusion matrix |
+| `results/01_dropped_participants.csv` | no — per-person IDs | the 427, with status |
+| `results/02_disagreements_*.csv` | no — per-person IDs | now empty (header only): zero disagreements is the result |
+| `data/_ear_family.tsv` | no — 24 MB extract | cached `SO_39x` rows, regenerable |
+| `data/_tinnitus_obs.tsv` | no — 0.9 MB extract | cached observation tinnitus, regenerable |
+
+Per-person files and cached extracts are deliberately untracked; the scripts regenerate them.
+
+### How to re-run
+
+```bash
+cd /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_1
+
+bash scripts/00_extract_release_tables.sh          # only if data/ is empty; ~10 min
+../../../venv/bin/python3 scripts/01_sample_frame.py
+../../../venv/bin/python3 scripts/02_rebuild_cases_controls.py
+```
+
+Script 00 caches the two release extracts and prints the expected row counts (655,946 and 25,094) so
+a silent change in the release shows up immediately. Scripts 01 and 02 take seconds once the cache
+exists.
+
+---
+
+## 9. Concepts, for coming back to this later
+
+| Term | Plain meaning |
+|---|---|
+| **case / control** | Someone the records say has the condition, versus someone they say does not. Getting the boundary right is most of Phase 1. |
+| **rule of 2** | A diagnosis must appear on **two separate dates** to count. One mention could be a query, a rule-out, or a coding slip; two separate encounters is evidence. |
+| **phecode** | A grouping of raw ICD billing codes into something clinically meaningful. `SO_396` = hearing impairment. `SO_39x` is the whole ear family. |
+| **ear family** | Any ear-related code. Used for exclusion: someone with ear problems but *not* hearing impairment is neither a clean case nor a clean control, so they are set aside. |
+| **principal components (PCs)** | Numbers summarising a person's genetic ancestry. They stop the analysis confusing *"this gene causes hearing loss"* with *"this gene is commoner in a population that happens to have more hearing loss."* Necessary — but they must come from the same assay as the data being tested. |
+| **the two PC families** | `exome_PC*` from exome sequencing; `imputed_PC*` from array + imputation. Two separate PCA runs, both numbered 1–20. This study uses `exome_PC1-6`. |
+| **covariate** | Something adjusted *for* in the model — age, sex, batch, PCs. |
+| **gate** | Something used to decide who gets *in*. The bug here: imputed PCs were a gate, never a covariate. |
+| **sample frame** | The set of people actually analysed, as opposed to the set the phenotype defines. When the two differ and nobody says so, published counts stop matching the analysis. |
+| **OMOP `observation` table** | One of the standard tables in the PMBB data model. In v4, tinnitus ICD codes live here rather than with the other diagnoses — the trap in sub-finding A. |
+
+---
+
+## 10. Still open
+
+| # | Question | Who |
+|---|---|---|
+| 1 | Was the PC filter deliberate, and which step introduced it? | Nikki, Elena — [page 01](01_sample_frame_decision.md) |
+| 2 | Do the 427 come back? | Molly, Doug, Nikki |
+| 3 | Do the 517 differ systematically from the rest of the cohort — enrolment era, site, ancestry? If they do, removing them is not neutral. Not checked. | open |
+| 4 | Variant QC ran on 70,925 but the association test on 57,080. Defensible, and arguably better, but undocumented — the kind of thing a reviewer asks about. | open |

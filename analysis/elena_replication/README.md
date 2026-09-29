@@ -193,7 +193,7 @@ replication finds are recorded in the phase that found them, and listed in the s
 analysis/elena_replication/
   README.md          this file — scope, defects, success criteria
   pipeline_plan.md   what the v4 pipeline does and what the replication does to each phase
-  docs/              pages staged for review by the lab, each opening with a decision requested
+  docs/              pages staged for Confluence — decision requests and phase reference records
   phase_1/           who is in the study
   phase_2/           which variants count
   phase_3/           what is adjusted away
