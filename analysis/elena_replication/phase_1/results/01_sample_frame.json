@@ -1,0 +1,18 @@
+{
+  "exome_cohort_release": 70925,
+  "phenotyped_all_statuses": 70925,
+  "analysable_case_or_control": 57507,
+  "delivered_to_saige": 57080,
+  "dropped": 427,
+  "dropped_by_status": {
+    "control": 387,
+    "case": 40
+  },
+  "lost_between_keep_and_samples": 517,
+  "lost_all_have_exome": true,
+  "lost_all_lack_imputed_pcs": true,
+  "lost_all_have_exome_pcs": true,
+  "cohort_lacking_imputed_pcs": 517,
+  "cohort_lacking_exome_pcs": 0,
+  "saige_file_uses_pcs": "exome_PC1-6"
+}

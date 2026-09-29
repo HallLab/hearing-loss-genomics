@@ -1,0 +1,83 @@
+{
+  "cohort": 70925,
+  "reference_counts": {
+    "control": 50755,
+    "excluded_related_ear_phenotype": 9411,
+    "case": 6752,
+    "excluded_one_date": 4007
+  },
+  "exact": {
+    "counts": {
+      "control": 50755,
+      "excluded_related_ear_phenotype": 9411,
+      "case": 6752,
+      "excluded_one_date": 4007
+    },
+    "agree": 70925,
+    "disagree": 0,
+    "pct_agree": 100.0,
+    "confusion": {
+      "case": {
+        "case": 6752,
+        "control": 0,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 0
+      },
+      "control": {
+        "case": 0,
+        "control": 50755,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 0
+      },
+      "excluded_one_date": {
+        "case": 0,
+        "control": 0,
+        "excluded_one_date": 4007,
+        "excluded_related_ear_phenotype": 0
+      },
+      "excluded_related_ear_phenotype": {
+        "case": 0,
+        "control": 0,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 9411
+      }
+    }
+  },
+  "rollup": {
+    "counts": {
+      "control": 50755,
+      "excluded_related_ear_phenotype": 9411,
+      "case": 6752,
+      "excluded_one_date": 4007
+    },
+    "agree": 70925,
+    "disagree": 0,
+    "pct_agree": 100.0,
+    "confusion": {
+      "case": {
+        "case": 6752,
+        "control": 0,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 0
+      },
+      "control": {
+        "case": 0,
+        "control": 50755,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 0
+      },
+      "excluded_one_date": {
+        "case": 0,
+        "control": 0,
+        "excluded_one_date": 4007,
+        "excluded_related_ear_phenotype": 0
+      },
+      "excluded_related_ear_phenotype": {
+        "case": 0,
+        "control": 0,
+        "excluded_one_date": 0,
+        "excluded_related_ear_phenotype": 9411
+      }
+    }
+  }
+}
