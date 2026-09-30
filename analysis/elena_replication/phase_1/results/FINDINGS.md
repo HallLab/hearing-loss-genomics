@@ -12,11 +12,18 @@ The cohort shrinks in a place nothing documents:
 
 ```
 70,925   exome cohort in the release
-70,925   phenotyped (all_statuses covers the whole cohort)
-57,507   case or control for hearing impairment
-57,080   the phenotype file on disk today
-   427   dropped between the two -- 40 cases, 387 controls
+57,507   analysable: case or control  -- what the phenotype supports
+57,632   what the SAIGE run actually consumed
+           -431  analysable people never entered it, 40 of them cases
+           +556  people the phenotype rules exclude entered as controls
 ```
+
+`57,507 - 431 + 556 = 57,632`. The run is **not a subset** of the analysable cohort: short in one
+direction, long in the other.
+
+A third number, **57,080**, appears in the phenotype file on disk. It was written after the run's
+inputs had already been built from an earlier version and **was never consumed by anything** — it is
+evidence for Finding 3, not a stage in the flow. Comparisons against it would measure nothing.
 
 The 427 are part of a larger group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
 `HL_TIN_PMBBv4_SAIGE_samples.txt` (70,408). Checked against the release, all 517:
@@ -118,9 +125,13 @@ that means asking whoever built `HL_TIN_PMBBv4_SAIGE_samples.txt`.
 ### Consequence for the replication
 
 The re-derived cohort should intersect with the **exome** sample list and require only the
-covariates the model actually uses. On that frame the analysable set is 57,507, not 57,080. Any
-later phase that compares against the pipeline has to hold this difference constant or it will
-attribute a cohort difference to something else.
+covariates the model actually uses. On that frame the analysable set is **57,507**, against the
+**57,632** the run consumed — 431 people short in one direction, 556 long in the other.
+
+Those two numbers are the replication's two arms ([`pipeline_plan.md`](../../pipeline_plan.md) §6).
+The 57,080 in the phenotype file on disk is neither: nothing consumed it, so comparing against it
+would measure nothing. Any later phase has to hold the 57,507 / 57,632 difference constant or it
+will attribute a cohort difference to something else.
 
 ---
 

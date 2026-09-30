@@ -50,10 +50,18 @@ The cohort shrinks between the phenotype definition and the phenotype file hande
 
 ```
 70,925   exome cohort in the release
-57,507   case or control for hearing impairment
-57,080   the phenotype file on disk today
-   427   dropped between the two  --  40 cases, 387 controls
+57,507   analysable: case or control  -- what the phenotype supports
+57,632   what the SAIGE run actually consumed
+           -431  analysable people never entered it, 40 of them cases
+           +556  people the phenotype rules exclude entered as controls
 ```
+
+`57,507 - 431 + 556 = 57,632`. The run is **not a subset** of the analysable cohort: short in one
+direction, long in the other.
+
+A third number, **57,080**, appears in the phenotype file on disk. It was written after the run's
+inputs had already been built from an earlier version and **was never consumed by anything** — it is
+evidence for Finding 3, not a stage in the flow. Comparisons against it would measure nothing.
 
 The 427 belong to a larger group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
 `HL_TIN_PMBBv4_SAIGE_samples.txt` (70,408). Checked against the release, all 517:
@@ -83,12 +91,15 @@ The covariates the model consumes are **exome** PCs. Verified by value, not by c
 `exome_PC1` (correlation 0.99965 over 70,404 people; `imputed_PC1` correlates 0.992 but the values
 differ). The imputed PCs never enter the regression.
 
-They act as a **gate**, not as a covariate. The sample list is exactly:
+They act as a **gate**, not as a covariate. The phenotype file on disk is exactly:
 
 ```
-analysable  ∩  {has all 20 imputed PCs}
-  57,507         (excludes 427)          =  57,080
+analysable  ∩  {has imputed genotypes}
+  57,507         (excludes 427)        =  57,080
 ```
+
+— an exact set identity. That file is not the one the run consumed (see the section below); it is
+shown here because it makes the gate visible.
 
 — an exact set identity, not an approximation. The two conditions — absent from the imputed `.fam`,
 and missing every imputed PC — pick out the same people, because both follow from having no imputed

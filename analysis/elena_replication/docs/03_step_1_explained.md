@@ -96,9 +96,18 @@ consulted.
 ```
 70,925   people with exome data
 57,507   analysable: case or control for hearing impairment
-57,080   survived the filter
-   427   removed -- 40 cases, 387 controls
+57,632   what the analysis actually ran on
+           -431  analysable people never entered it, 40 of them cases
+           +556  people the rules exclude entered as controls
 ```
+
+The second line is the cohort the phenotype supports; the third is what SAIGE was given. They are
+not nested — the run is short 431 people in one direction and carries 556 it should not in the
+other, for a separate reason (the phenotype file was rewritten after the run's inputs were built).
+
+A natural worry is that the excluded came back later, when the phenotype was merged with genotype
+data. Checked directly: **none of the 431 are in the file the run consumed, and none of the 40
+cases.** They were excluded once and stayed out.
 
 The 427 belong to a group of **517** who have exome data, have complete exome ancestry components,
 and have no array data at all. Every one of them could have been analysed. None of them was.

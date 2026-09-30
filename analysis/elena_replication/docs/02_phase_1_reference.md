@@ -76,16 +76,21 @@ only as the reference being checked. Nothing in `analysis/elena/` was modified.
 Traces the cohort from the release to the file SAIGE actually received, and attributes every drop.
 
 ```
-70,925   people with exome data in the release
-70,925   classified for hearing impairment (the whole cohort)
-57,507   case or control  (the rest are excluded by phenotype rules)
-57,080   the phenotype file on disk today
-   427   dropped between the two — 40 cases, 387 controls
+70,925   exome cohort in the release
+57,507   analysable: case or control  -- what the phenotype supports
+57,632   what the SAIGE run actually consumed
+           -431  analysable people never entered it, 40 of them cases
+           +556  people the phenotype rules exclude entered as controls
 ```
 
-Note the label carefully: **57,080 is the phenotype file, not what the run consumed.** The file the
-SAIGE run actually read held 57,632 people. See §5b — this distinction was missed on the first pass
-and is a finding in its own right.
+`57,507 - 431 + 556 = 57,632`. The run is **not a subset** of the analysable cohort: short in one
+direction, long in the other.
+
+A third number, **57,080**, appears in the phenotype file on disk. It was written after the run's
+inputs had already been built from an earlier version and **was never consumed by anything** — it is
+evidence for Finding 3, not a stage in the flow. Comparisons against it would measure nothing.
+
+See §5b — this distinction was missed on the first pass and is a finding in its own right.
 
 The 427 belong to a group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
 `HL_TIN_PMBBv4_SAIGE_samples.txt` (70,408). Checked against the release, all 517 have exome data,

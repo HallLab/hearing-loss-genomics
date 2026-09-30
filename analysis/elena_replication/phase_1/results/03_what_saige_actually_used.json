@@ -23,5 +23,18 @@
       "control": 4
     }
   },
-  "improperly_included_as_controls": 556
+  "improperly_included_as_controls": 556,
+  "did_the_excluded_return": {
+    "excluded_at_step1_present_in_consumed_file": 0,
+    "excluded_cases_present_in_consumed_file": 0,
+    "verdict": "no - none returned"
+  },
+  "analysable_vs_consumed": {
+    "analysable": 57507,
+    "consumed": 57632,
+    "only_analysable": 431,
+    "only_analysable_cases": 40,
+    "only_consumed": 556,
+    "in_both": 57076
+  }
 }

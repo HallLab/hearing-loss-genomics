@@ -98,9 +98,19 @@ foi ela a consultada.
 ```
 70.925   pessoas com dado de exoma
 57.507   analisáveis: caso ou controle para perda auditiva
-57.080   sobreviveram ao filtro
-   427   removidas -- 40 casos, 387 controles
+57.632   o que a análise de fato rodou
+           -431  analisáveis que nunca entraram, 40 deles casos
+           +556  pessoas que a regra exclui entraram como controles
 ```
+
+A segunda linha é a coorte que o fenótipo sustenta; a terceira é o que foi entregue ao SAIGE. Elas
+**não são aninhadas** — a rodada está 431 pessoas a menos num sentido e carrega 556 que não deveria
+no outro, por motivo separado (o arquivo de fenótipo foi reescrito depois que as entradas da rodada
+já tinham sido construídas).
+
+Uma preocupação natural é que os excluídos tenham voltado depois, no merge com o dado genotípico.
+Testado direto: **nenhum dos 431 está no arquivo que a rodada consumiu, e nenhum dos 40 casos.**
+Foram excluídos uma vez e ficaram de fora.
 
 As 427 fazem parte de um grupo de **517** que têm dado de exoma, têm os componentes de ancestralidade
 de exoma completos, e não têm dado de array nenhum. Todas poderiam ter sido analisadas. Nenhuma foi.

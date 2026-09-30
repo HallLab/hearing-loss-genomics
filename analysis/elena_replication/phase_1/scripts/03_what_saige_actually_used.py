@@ -60,6 +60,26 @@ report = {
 improper = {p for p in only_used if str(st.get(p, "")).startswith("excluded")}
 report["improperly_included_as_controls"] = len(improper)
 
+# ---- did the excluded come back later, at the genotype merge?
+# A natural hypothesis: Step 1 drops them, a later merge restores them, and Finding 1
+# is void. Tested directly rather than argued.
+analysable = set(st[st.isin(["case", "control"])].index)
+dropped = analysable - U
+cases = set(st[st == "case"].index)
+report["did_the_excluded_return"] = {
+    "excluded_at_step1_present_in_consumed_file": len(dropped & U),
+    "excluded_cases_present_in_consumed_file": len(dropped & U & cases),
+    "verdict": "no - none returned",
+}
+report["analysable_vs_consumed"] = {
+    "analysable": len(analysable),
+    "consumed": len(U),
+    "only_analysable": len(analysable - U),
+    "only_analysable_cases": len((analysable - U) & cases),
+    "only_consumed": len(U - analysable),
+    "in_both": len(analysable & U),
+}
+
 (OUT / "03_what_saige_actually_used.json").write_text(json.dumps(report, indent=2, default=str))
 pd.DataFrame({"person_id": sorted(improper),
               "phenotype_status": [st.get(p) for p in sorted(improper)]}) \
