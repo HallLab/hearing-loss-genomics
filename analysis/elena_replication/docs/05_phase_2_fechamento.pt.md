@@ -25,14 +25,41 @@ tem **qualquer** variante danosa neste gene?"*. Aí os números somam e o teste 
 Mas isso obriga a decidir o que é "danosa". Essa decisão é a **máscara** — uma lista, por gene, de
 quais variantes entram no teste.
 
+> **O motivo não é economia de cálculo.** Existe uma máscara `ALL` que usa todas as variantes, então
+> reduzir não é o objetivo. O motivo é **estatístico**: variante inofensiva dentro do grupo **dilui o
+> sinal**. Um gene com 5 variantes que quebram a proteína e 15 que não fazem nada é testado sobre as
+> 20, e o efeito real cai a um quarto. A máscara existe para **concentrar**.
+
 O pipeline monta quatro:
 
 | máscara | o que agrupa |
 |---|---|
 | `pLOF` | variantes que **quebram** a proteína |
-| `pDM` | trocas de aminoácido previstas como danosas |
+| `pDM` | trocas de aminoácido danosas — por AlphaMissense **ou** REVEL |
 | `pLOF_pDM` | as duas juntas |
 | `ALL` | todas as variantes raras, sem filtro |
+
+### Quais dados dos participantes a Fase 2 usa
+
+**Fenótipo: nenhum.** A Fase 2 não sabe quem é caso nem controle.
+
+**Genótipo: sim, indiretamente.** A cadeia é:
+
+```
+Exome do release
+  → QC de variante (call rate ≥ 0,99, HWE)   ← USA os genótipos das 70.925 pessoas
+  → plink_deduplicated/chr{N}.bim            ← lista de variantes sobreviventes
+  → o construtor de máscara lê só esse .bim  ← metadado, zero coluna de amostra
+```
+
+Então a dependência é *"quais variantes existem e passaram o QC nesta coorte"*, nunca *"quem carrega o
+quê"*.
+
+Duas consequências:
+
+- **a máscara é específica da coorte** — o mesmo pipeline noutro biobanco daria máscaras diferentes
+- **os dois braços da Fase 1 não se multiplicam pelos dois braços de máscara** — máscara não depende
+  de qual coorte de fenótipo se usa
 
 **Se a máscara estiver errada, todo resultado do gene está errado** — e não há como perceber olhando
 o resultado, porque ele sai com aparência normal.
@@ -194,6 +221,14 @@ some no ruído.
 
 Ou seja — como na Fase 1, o erro empurra para o **nulo**. Não fabrica achado; esconde.
 
+> **Cuidado com a leitura inversa.** O defeito **não adiciona genes** que não deviam estar na análise.
+> Ele adiciona **variantes a genes que já estavam lá**, e o efeito é diluir o sinal de cada um. O
+> risco não é achado falso — é **achado perdido**: um gene que realmente tem sinal pode não aparecer.
+>
+> Isso muda o que se conclui. Um resultado que sobreviveu a essa máscara sobreviveria com mais folga
+> na corrigida. O que não se pode dizer é que os genes **ausentes** dos resultados estão de fato
+> ausentes de efeito.
+
 Mas ao contrário da Fase 1, **este não é pequeno.** Lá eram 0,59% dos casos. Aqui são quase dois
 terços de uma máscara inteira, em todos os 22 cromossomos.
 
@@ -216,6 +251,10 @@ pLOF_pDM  1.126.909 mantidas  590.163 removidas   811 reanotadas como pDM
 ```
 
 **A máscara pLOF corrigida tem 41% do tamanho da que rodou.**
+
+> Os 409.179 são **entradas gene × variante**, não variantes distintas — distintas são **407.235**. A
+> diferença são variantes em genes sobrepostos, contadas uma vez por gene. Para descrever a máscara,
+> entradas é o número certo; para dizer "quantas variantes", é 407.235.
 
 Das 409.179 que ficaram, 395.074 têm perda de função de verdade e ~14.000 entram pelo portão do
 SpliceAI — ou seja, o portão que o plano especificava **admite** um conjunto real. Ele só nunca foi

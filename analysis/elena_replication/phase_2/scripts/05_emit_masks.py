@@ -11,8 +11,12 @@ deliverable, mirroring Phase 1's two arms:
 The corrected rule, from the analysis plan in elena_publishes/:
 
     pLOF = frameshift, stop_gained, start_lost, stop_lost,
-           splice_acceptor_variant, splice_donor_variant
+           splice_acceptor_variant, splice_donor_variant, transcript_ablation
          OR a splice-site annotation WITH SpliceAI >= 0.2
+
+transcript_ablation is in the set although the pipeline's lof_terms omitted it: it is
+a VEP IMPACT=HIGH consequence and unambiguously loss of function, so excluding it
+would be a second departure from the documented definition rather than a fix.
 
 Two changes from what was implemented. Terms are matched exactly against the
 comma-separated Consequence list rather than as substrings, and the three VEP
