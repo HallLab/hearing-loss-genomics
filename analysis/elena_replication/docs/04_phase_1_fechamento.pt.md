@@ -9,6 +9,9 @@
 
 ## A pergunta
 
+> **Nota de terminologia.** Uso *tinnitus* em vez de *zumbido* para bater com o nome que aparece no código, nas colunas e nos diretórios do projeto (`tinnitus_PMBBv4_SAIGE.txt`, phecode `SO_397`). São a mesma coisa.
+
+
 Antes de perguntar *qual gene causa perda auditiva*, é preciso saber **quem tem perda auditiva** e
 **quem está no estudo**. A Fase 1 verifica essas duas coisas. Tudo que vem depois herda a resposta —
 e um erro aqui não tem conserto lá na frente.
@@ -24,14 +27,14 @@ Nikki. Deu igual: **70.925 de 70.925 pessoas, uma a uma.** Não é só o total b
 pessoas.
 
 Isso cobre a regra de 2 (diagnóstico em duas datas), a exclusão de quem tem doença de ouvido que não
-é perda auditiva, e o tratamento do zumbido, que na versão 4 do PMBB mudou de tabela e é a armadilha
+é perda auditiva, e o tratamento do tinnitus, que na versão 4 do PMBB mudou de tabela e é a armadilha
 mais fácil de cair.
 
 **A estratificação por ancestralidade também confere.** Os arquivos EUR e AFR contêm só quem o
 release classifica como EUR e AFR, e o `combined` é exatamente a soma com os grupos menores.
 
 Vale registrar: em um dos checks **eu estava errado e o pipeline estava certo**. Minha primeira
-reconstrução discordou em 558 pessoas porque eu tinha esquecido a tabela nova do zumbido. A
+reconstrução discordou em 558 pessoas porque eu tinha esquecido a tabela nova do tinnitus. A
 conferência corre nos dois sentidos.
 
 ---
@@ -63,7 +66,7 @@ Este é o mais incômodo. A cronologia:
 ```
 31/jul 20:21   covariáveis de perda auditiva construídas   (57.632 pessoas)
 31/jul 20:57   todo o fenótipo é REGENERADO — a correção    (57.080)
-01/ago 14:27   covariáveis de ZUMBIDO reconstruídas da versão corrigida  ✓
+01/ago 14:27   covariáveis de TINNITUS reconstruídas da versão corrigida  ✓
 03/ago 14:38   modelos ajustados, usando as covariáveis VELHAS de perda auditiva
 03/ago 16:22   o teste roda
 ```
@@ -71,7 +74,7 @@ Este é o mais incômodo. A cronologia:
 A correção veio **primeiro**. A análise rodou **três dias depois**, em cima de um arquivo construído
 antes dela.
 
-E dá para ver que alguém percebeu a regeneração: as covariáveis de zumbido foram reconstruídas no dia
+E dá para ver que alguém percebeu a regeneração: as covariáveis de tinnitus foram reconstruídas no dia
 seguinte, a partir da versão corrigida. O ramo de perda auditiva simplesmente nunca foi refeito.
 
 Isso não é descuido. É o modo de falha mais comum que existe num pipeline com etapas manuais: dois
@@ -132,9 +135,9 @@ fazendo aquele grupo crescer 17,6% enquanto todos os outros mudam meio por cento
 | | |
 |---|---|
 | Por que o filtro usou o `.fam` do array | pergunta para Nikki e Elena |
-| Por que o ramo de perda auditiva não foi reconstruído, se o de zumbido foi | idem |
+| Por que o ramo de perda auditiva não foi reconstruído, se o de tinnitus foi | idem |
 | Os 4 controles legítimos que somem sem explicação | resíduo pequeno, não perseguido |
-| Zumbido | declarado fora de escopo — verificamos só perda auditiva |
+| Tinnitus | declarado fora de escopo — verificamos só perda auditiva |
 | Se o grupo restaura os 431 | decisão deles, não nossa |
 
 ---

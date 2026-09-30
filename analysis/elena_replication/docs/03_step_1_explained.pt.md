@@ -10,6 +10,9 @@ para o lab, é [`03_step_1_explained.md`](03_step_1_explained.md). O registro fo
 
 ## Para que serve o Step 1
 
+> **Nota de terminologia.** Uso *tinnitus* em vez de *zumbido* para bater com o nome que aparece no código, nas colunas e nos diretórios do projeto (`tinnitus_PMBBv4_SAIGE.txt`, phecode `SO_397`). São a mesma coisa.
+
+
 O pipeline pergunta: *existe algum gene onde variantes raras e danosas aparecem mais em quem tem
 perda auditiva do que em quem não tem?*
 
@@ -28,9 +31,9 @@ códigos de cobrança lançados durante o atendimento normal.
 
 Duas armadilhas moram aqui. Códigos de diagnóstico são agrupados em *phecodes* — `SO_396` é perda
 auditiva, `SO_39x` é a família auricular inteira — porque um código de cobrança cru é fino demais
-para servir de fenótipo. E no PMBB v4 os códigos de zumbido **mudaram de tabela**, separados de todos
+para servir de fenótipo. E no PMBB v4 os códigos de tinnitus **mudaram de tabela**, separados de todos
 os outros diagnósticos. Quem não souber disso perde silenciosamente quase toda a evidência de
-zumbido. Este pipeline tratou isso corretamente.
+tinnitus. Este pipeline tratou isso corretamente.
 
 ### 2. Decidir quem é caso — a regra de 2
 
@@ -141,7 +144,7 @@ faz, porque parece obviamente verdadeira.
 
 - **Não** que o fenótipo está errado. Ele está certo. Casos e controles foram re-derivados de forma
   independente a partir do release e batem pessoa a pessoa, 70.925 de 70.925. A regra de 2, a
-  exclusão do meio ambíguo e o tratamento da tabela de zumbido reproduzem exatamente.
+  exclusão do meio ambíguo e o tratamento da tabela de tinnitus reproduzem exatamente.
 - **Não** que houve descuido. A intenção está declarada no comentário e é a intenção correta. Os dois
   arquivos `.fam` diferem por uma palavra num caminho longo, e 0,7% de uma coorte está abaixo do que
   qualquer estatística de resumo revelaria.
