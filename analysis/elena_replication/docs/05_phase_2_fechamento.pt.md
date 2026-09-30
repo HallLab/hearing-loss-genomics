@@ -247,9 +247,11 @@ faria as máscaras corrigidas diferirem das originais por um segundo motivo que 
 | | |
 |---|---|
 | ~~Se o chr8 é representativo~~ | **resolvido — é.** 22 cromossomos entre 60,9% e 65,7% |
-| Quanto isso muda os resultados | é pergunta da Fase 4, não desta |
-| As máscaras `pLOF_pDM` e `ALL` | herdam o `pLOF`, então herdam o defeito — não quantificado |
-| Refazer a máscara corrigida | decisão de escopo, ainda não tomada |
+| ~~As máscaras `pLOF_pDM` e `ALL`~~ | **corrigido — eu tinha escrito errado.** O `pLOF_pDM` herda o defeito e está quantificado (590.163 removidas); o `ALL` **não** herda, porque é toda variante sem filtro de dano |
+| ~~Refazer a máscara corrigida~~ | **feito** — check 05, em `phase_2/results/masks/` |
+| Quanto isso muda os resultados | pergunta da **Fase 4**, não desta. É o que os dois braços de máscara existem para medir |
+| A diferença de 4.690 entre `pLOF.txt` e a porção pLOF do `pLOF_pDM.txt` | registrada, não resolvida — pequena e não é o defeito em investigação |
+| O fenótipo por trás | a Fase 2 não depende de coorte: as máscaras são sobre variantes, e o QC de variante rodou nas 70.925 completas |
 
 ---
 
