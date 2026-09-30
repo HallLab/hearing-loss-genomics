@@ -199,6 +199,49 @@ terços de uma máscara inteira, em todos os 22 cromossomos.
 
 ---
 
+## O que fechamos: duas máscaras, em arquivo
+
+| braço | máscaras |
+|---|---|
+| **reprodução** | as quatro da Elena, como rodaram |
+| **corrigido** | `pLOF` e `pLOF_pDM` reconstruídas; `ALL` e `pDM` por symlink, não afetadas |
+
+Em `phase_2/results/masks/`, geradas por `scripts/05_emit_masks.py`.
+
+**O custo do conserto:**
+
+```
+pLOF       409.179 mantidas   592.941 removidas
+pLOF_pDM  1.126.909 mantidas  590.163 removidas   811 reanotadas como pDM
+```
+
+**A máscara pLOF corrigida tem 41% do tamanho da que rodou.**
+
+Das 409.179 que ficaram, 395.074 têm perda de função de verdade e ~14.000 entram pelo portão do
+SpliceAI — ou seja, o portão que o plano especificava **admite** um conjunto real. Ele só nunca foi
+consultado.
+
+### Um cuidado que precisei tomar
+
+No `pLOF_pDM`, o construtor dá precedência à anotação `pLOF`. Uma variante marcada `pLOF` ali pode
+**também** ser `pDM`. Se eu simplesmente removesse as que falham a regra corrigida, perderia
+variantes `pDM` legítimas em silêncio — exatamente a classe de erro que estou documentando na análise
+dela.
+
+**811 variantes foram reanotadas, não removidas.** A contagem de `pDM` confirma: 720.453 → 721.264,
+exatamente +811.
+
+### E uma inconsistência que já existia
+
+O `pLOF.txt` tem 1.002.120 entradas pLOF; a porção pLOF do `pLOF_pDM.txt` tem 997.430 — diferença de
+**4.690** nas máscaras originais, antes de qualquer correção. As duas não foram construídas das
+mesmas entradas.
+
+Registrei em vez de consertar. É pequena, não é o defeito em investigação, e reconciliar em silêncio
+faria as máscaras corrigidas diferirem das originais por um segundo motivo que nada documenta.
+
+---
+
 ## O que está pendente
 
 | | |

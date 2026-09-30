@@ -229,6 +229,75 @@ a judgement call. Calling a synonymous variant loss-of-function is not.
 
 ---
 
+## Check 05 — the two mask sets, written down
+
+**Script:** [`../scripts/05_emit_masks.py`](../scripts/05_emit_masks.py)
+**Manifest:** [`05_masks_manifest.json`](05_masks_manifest.json) · **Files:** `results/masks/`
+
+Checks 01–04 established what is wrong. This writes down the deliverable, mirroring Phase 1:
+
+| Arm | Masks |
+|---|---|
+| **reproduction** | the pipeline's four masks exactly as they ran, at `masks_deduplicated/` |
+| **corrected** | `pLOF` and `pLOF_pDM` rebuilt; `ALL` and `pDM` symlinked unchanged |
+
+### The corrected rule
+
+```
+pLOF = exact term match on {frameshift, stop_gained, start_lost, stop_lost,
+                            splice_acceptor_variant, splice_donor_variant}
+     OR any splice annotation WITH SpliceAI >= 0.2
+```
+
+Two changes from the implementation: terms are matched **exactly** against the comma-separated
+`Consequence` list rather than as substrings, and the three `IMPACT=LOW` splice terms enter only
+through the SpliceAI gate the plan specifies.
+
+### What it costs the mask
+
+| | entries kept | dropped | re-annotated |
+|---|---:|---:|---:|
+| `pLOF` | 409,179 | **592,941** | — |
+| `pLOF_pDM` | 1,126,909 | 590,163 | 811 → `pDM` |
+
+`409,179 + 592,941 = 1,002,120` and `1,126,909 + 590,163 + 811 = 1,717,883`, matching both source
+files exactly. **The corrected pLOF mask is 41% the size of the one that ran.**
+
+Of the 409,179 kept, 395,074 have a genuine LoF consequence and the remaining ~14,000 enter through
+the SpliceAI gate — so the gate the plan specified does admit a real population, it was simply never
+consulted.
+
+### Why `pLOF_pDM` needed care
+
+The builder gives the `pLOF` annotation precedence, so a variant labelled `pLOF` there may also be
+`pDM`. Dropping it for failing corrected-pLOF would have silently lost a legitimate `pDM` variant —
+the same class of error this replication is documenting. **811 variants were re-annotated rather than
+removed**, which the `pDM` count confirms: 720,453 → 721,264, exactly +811.
+
+### `ALL` and `pDM` are untouched
+
+`pDM` is built from `is_AlphaMissense_DM` / `is_REVEL_DM`, which the defect does not involve, and
+`ALL` is every variant. Both are symlinked rather than copied: `ALL.txt` is 425 MB and duplicating it
+buys nothing.
+
+### Structural check on the output
+
+The same check applied to the pipeline's masks, applied here: `var` and `anno` rows pair correctly
+for every gene in both rewritten files (17,209 and 18,669 genes, zero misaligned), and annotations
+are homogeneous.
+
+### A pre-existing inconsistency, preserved rather than fixed
+
+`pLOF.txt` carries 1,002,120 pLOF entries; the pLOF portion of `pLOF_pDM.txt` carries 997,430 — a
+gap of **4,690** in the source masks, before any correction. The two were not built from identical
+inputs. The corrected versions preserve the gap proportionally (2,723).
+
+This is recorded rather than resolved. It is small, it is not the defect under investigation, and
+silently reconciling it would make the corrected masks differ from the originals in a second way that
+nothing documents.
+
+---
+
 ## What is established, and what is not
 
 | Claim | Basis | Strength |
