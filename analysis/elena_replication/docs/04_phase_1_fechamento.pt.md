@@ -130,10 +130,17 @@ tinnitus no phecode (SO_397)        :    0
 tinnitus na tabela OBSERVATION      :  556  ← 100%
 ```
 
-A **única** evidência auricular deles está naquela tabela. Na versão do fenótipo usada, que ainda não
-a lia, eles apareciam como **controles limpos** — sem nenhuma doença de ouvido.
+A **única** evidência auricular deles está naquela tabela.
 
-Ninguém decidiu incluí-los. Eles eram **invisíveis**.
+E aqui está a parte contraintuitiva: **não foi por consultar a `observation` que eles entraram — foi
+por não consultar.** A versão do fenótipo usada não lia aquela tabela, então o tinnitus dessas 556
+pessoas simplesmente não existia do ponto de vista do código. Elas apareciam sem nenhuma doença de
+ouvido, e a regra que separa o meio ambíguo não tinha do que se agarrar.
+
+Ninguém as viu e decidiu mantê-las como controles. **Ninguém as viu.**
+
+A correção das 20:57 foi justamente adicionar essa fonte — e aí elas passaram a aparecer como
+excluídas, corretamente.
 
 E o fecho: as 556 são **exatamente** as pessoas que meu check 02 classificou errado pelo mesmo
 motivo. Interseção de 100%. Cometi o mesmo erro, três meses depois, sozinho.
@@ -190,9 +197,14 @@ coorte perdeu um sexto dos seus. Isso não melhora aumentando o N.
            −  9.411  excluídos: meio ambíguo (doença de ouvido, sem perda auditiva)
 57.507   ANALISÁVEIS — o que o fenótipo sustenta          ← nosso número
            −    431  cortados pelo filtro do .fam imputado (40 casos)
-           +    556  tinnitus-só-na-observation, invisíveis naquela versão
+           +    556  pessoas cujo tinnitus a versão usada NÃO ENXERGAVA,
+                      e que por isso entraram como controles
 57.632   O QUE A ESTATÍSTICA RODOU                        ← número da Elena
 ```
+
+O sinal `+556` engana à primeira vista: ninguém *acrescentou* essas pessoas. Elas **nunca foram
+retiradas**, porque a regra que as retiraria depende de uma fonte de dados que aquela versão do
+fenótipo ainda não lia.
 
 ### Duas armadilhas de leitura
 
