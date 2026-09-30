@@ -1,0 +1,27 @@
+{
+  "consumed_by_saige": {
+    "n": 57632,
+    "cases": 6712,
+    "controls": 50920
+  },
+  "phenotype_file_on_disk": {
+    "n": 57080,
+    "cases": 6712,
+    "controls": 50368
+  },
+  "case_sets_identical": true,
+  "consumed_has_no_exome": 0,
+  "only_in_consumed": {
+    "n": 556,
+    "by_phenotype_status": {
+      "excluded_related_ear_phenotype": 556
+    }
+  },
+  "only_on_disk": {
+    "n": 4,
+    "by_phenotype_status": {
+      "control": 4
+    }
+  },
+  "improperly_included_as_controls": 556
+}

@@ -79,9 +79,13 @@ Traces the cohort from the release to the file SAIGE actually received, and attr
 70,925   people with exome data in the release
 70,925   classified for hearing impairment (the whole cohort)
 57,507   case or control  (the rest are excluded by phenotype rules)
-57,080   delivered to SAIGE
-   427   dropped here — 40 cases, 387 controls
+57,080   the phenotype file on disk today
+   427   dropped between the two — 40 cases, 387 controls
 ```
+
+Note the label carefully: **57,080 is the phenotype file, not what the run consumed.** The file the
+SAIGE run actually read held 57,632 people. See §5b — this distinction was missed on the first pass
+and is a finding in its own right.
 
 The 427 belong to a group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
 `HL_TIN_PMBBv4_SAIGE_samples.txt` (70,408). Checked against the release, all 517 have exome data,
@@ -137,13 +141,17 @@ changed nothing. **427 is the number that matters.**
 
 ### Why it shows up as two different published numbers
 
-| | `summary.csv` | file given to SAIGE |
+Both columns below are the pipeline's own numbers. Neither is this replication.
+
+| | `summary.csv` | phenotype file on disk |
 |---|---:|---:|
 | cases | 6,752 | **6,712** |
 | controls | 50,755 | **50,368** |
 
 The summary was written at the phenotype step; the filter came afterwards and nobody rewrote it.
 Anyone citing the summary reports 6,752 — a number the analysis did not use.
+
+Neither column is what the run consumed either. That was a third set of numbers — §5b.
 
 ---
 
@@ -212,6 +220,56 @@ Two extraction counts match the pipeline's own notebook exactly, from separately
 
 ---
 
+## 5b. Check 03 — what the run actually consumed
+
+**Script:** `phase_1/scripts/03_what_saige_actually_used.py`
+
+### Scope, stated up front
+
+Phase 1 asks who was in the study. That cannot be answered from the phenotype file, because the
+phenotype file was overwritten after being read. So this check follows the cohort to the file the run
+consumed. It makes **no claim about Phase 4** — it inspects that file's membership, never the
+statistics computed from it. Phase 4 remains unexamined.
+
+### What it found
+
+| | N | cases | controls |
+|---|---:|---:|---:|
+| the file the run consumed | **57,632** | 6,712 | **50,920** |
+| the phenotype file on disk | 57,080 | 6,712 | 50,368 |
+
+An inner join cannot increase N, so these are not the same file. The build log resolves it —
+`Phenotype samples: 57,636`:
+
+```
+20:21   the covariate build reads the phenotype file and writes the SAIGE inputs
+20:57   the phenotype file is overwritten
+```
+
+**The artifact on disk is not the artifact that was used.** Re-running any later step against today's
+phenotype file would not reproduce what was run, and nothing in either file says so.
+
+### Two defects, opposite directions
+
+Finding 1 holds: all 427, including all 40 cases, are absent from the consumed file, and the case
+sets of both files are identical at 6,712.
+
+But the 556 people present in the consumed file and not in today's all carry status
+`excluded_related_ear_phenotype`. **They were analysed as controls although the pipeline's own rule
+excludes them** — they have ear disease that is not hearing impairment, so they are neither a clean
+case nor a clean control. The 20:21 phenotype file had not applied that exclusion; the 20:57 one does,
+and was never used.
+
+```
+57,507 analysable  -  427  -  4  +  556  =  57,632 consumed
+```
+
+The run is not a subset of the analysable cohort. It is short in one direction and long in the other.
+Bias from the 556 dilutes the case-control contrast, so it understates associations rather than
+inventing them — 1.1% of controls, small but signed.
+
+---
+
 ## 6. Verdict
 
 The criterion was: the re-derived case, control **and sample** sets match person-for-person, or every
@@ -233,7 +291,9 @@ completeness check is the only one that fails.
 |---:|---|
 | 70,925 | people with exome data in PMBB v4; also the variant-QC sample set |
 | 57,507 | analysable for hearing impairment (case or control) |
-| 57,080 | delivered to SAIGE |
+| 57,080 | the phenotype file on disk today |
+| 57,632 | what the SAIGE run actually consumed — 6,712 cases, 50,920 controls |
+| 556 | people the phenotype rules exclude, analysed as controls |
 | 6,752 | cases the phenotype supports — reproduced exactly |
 | 6,712 | cases the analysis actually ran on |
 | 427 | analysable people dropped — 40 cases + 387 controls |
@@ -247,10 +307,13 @@ completeness check is the only one that fails.
 
 ### Which number goes to the next phase
 
-| Phase | Cohort |
-|---|---|
-| 2 — masks | **70,925.** Variant QC ran on the full cohort, so the 427 defect did not reach the masks. |
-| 3, 4 | **Undecided** — pending page 01. The replication carries 57,507 as correct and diffs against 57,080, holding the 427 as a known delta so a later phase does not rediscover Phase 1 and call it new. |
+What Phase 1 establishes is that **57,507** is the analysable cohort the phenotype supports, and that
+what the run consumed was **57,632** — a different set, not a subset (§5b).
+
+Which cohort each later phase inherits is that phase's question, not this one's, and is deliberately
+not answered here. A provisional note peeking at variant-QC files suggested Phase 2 may be
+cohort-independent; that was removed, because a claim about Phase 2 that has not been through Phase
+2's own check would sit in this page unwatched and go stale. Phase 2 will establish it.
 
 ---
 
@@ -263,8 +326,11 @@ All paths relative to `analysis/elena_replication/phase_1/`.
 | `scripts/00_extract_release_tables.sh` | yes | caches the two multi-GB release extracts |
 | `scripts/01_sample_frame.py` | yes | traces the cohort chain, identifies the 517 |
 | `scripts/02_rebuild_cases_controls.py` | yes | re-derives cases/controls, diffs against the pipeline |
+| `scripts/03_what_saige_actually_used.py` | yes | compares the consumed file against the phenotype file on disk |
 | `results/FINDINGS.md` | yes | the full write-up, including what was not established |
 | `results/01_sample_frame.json` | yes | every number in §4, machine-readable |
+| `results/03_what_saige_actually_used.json` | yes | the §5b comparison, machine-readable |
+| `results/03_improperly_included_controls.csv` | no — per-person IDs | the 556 |
 | `results/02_rebuild_cases_controls.json` | yes | counts, agreement, confusion matrix |
 | `results/01_dropped_participants.csv` | no — per-person IDs | the 427, with status |
 | `results/02_disagreements_*.csv` | no — per-person IDs | now empty (header only): zero disagreements is the result |
@@ -281,6 +347,7 @@ cd /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase
 bash scripts/00_extract_release_tables.sh          # only if data/ is empty; ~10 min
 ../../../venv/bin/python3 scripts/01_sample_frame.py
 ../../../venv/bin/python3 scripts/02_rebuild_cases_controls.py
+../../../venv/bin/python3 scripts/03_what_saige_actually_used.py
 ```
 
 Script 00 caches the two release extracts and prints the expected row counts (655,946 and 25,094) so
@@ -313,4 +380,8 @@ exists.
 | 1 | Was the PC filter deliberate, and which step introduced it? | Nikki, Elena — [page 01](01_sample_frame_decision.md) |
 | 2 | Do the 427 come back? | Molly, Doug, Nikki |
 | 3 | Do the 517 differ systematically from the rest of the cohort — enrolment era, site, ancestry? If they do, removing them is not neutral. Not checked. | open |
-| 4 | Variant QC ran on 70,925 but the association test on 57,080. Defensible, and arguably better, but undocumented — the kind of thing a reviewer asks about. | open |
+| 4 | Why was the phenotype file rewritten 36 minutes after the covariates were built from it, and did anyone know? | Nikki, Elena |
+
+Cross-phase observations — things noticed about a later phase while working on this one — are not
+recorded here. They go to the parent [`README.md`](../README.md) §6, so that no phase's page carries
+claims its own checks did not establish.

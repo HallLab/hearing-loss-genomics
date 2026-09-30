@@ -16,6 +16,9 @@
 2. **Should the 427 affected cases and controls be restored** for the hearing-loss analysis?
    → **Molly, Doug, Nikki**
 3. **If restored, does anything already run need re-running?** → **Molly, Nikki, Elena**
+4. **Separately: the phenotype file was overwritten 36 minutes after the SAIGE covariates were built
+   from it.** The run therefore consumed 57,632 people, not the 57,080 on disk, and 556 people the
+   phenotype rules exclude were analysed as controls. Was this known? → **Nikki and Elena**
 
 ---
 
@@ -43,13 +46,13 @@ relocation is documented nowhere in the release and is easy to miss.
 
 ## What we found
 
-The cohort shrinks between the phenotype file and the sample list given to SAIGE:
+The cohort shrinks between the phenotype definition and the phenotype file handed downstream:
 
 ```
 70,925   exome cohort in the release
 57,507   case or control for hearing impairment
-57,080   delivered to SAIGE
-   427   dropped  --  40 cases, 387 controls
+57,080   the phenotype file on disk today
+   427   dropped between the two  --  40 cases, 387 controls
 ```
 
 The 427 belong to a larger group of **517** lost between `HL_TIN_PMBBv4_keep.txt` (70,925) and
@@ -107,7 +110,7 @@ assuming it was a mistake — that is the first question above.
 
 **But the published summary and the analysed cohort disagree, and nothing says so.**
 
-| | `PMBBv4_hearing_tinnitus_summary.csv` | file given to SAIGE |
+| | `PMBBv4_hearing_tinnitus_summary.csv` | phenotype file on disk |
 |---|---:|---:|
 | hearing-loss cases | 6,752 | **6,712** |
 | controls | 50,755 | **50,368** |
@@ -120,6 +123,36 @@ question is answered.
 **The lost cases are not a random 0.7%.** Whether participants lacking array imputation differ
 systematically from those who have it — by enrolment era, by site, by ancestry — we have not
 checked. If they do, removing them is not neutral.
+
+## A second, separate problem in the same area
+
+Found while checking the first. The covariate files the SAIGE run consumed hold **57,632** people —
+not the 57,080 in the phenotype file on disk. An inner join cannot increase N, and the build log
+names what it read: `Phenotype samples: 57,636`.
+
+```
+2026-07-31 20:21   the covariate build reads the phenotype file, writes the SAIGE inputs
+2026-07-31 20:57   the phenotype file is overwritten
+```
+
+**The file on disk is not the file that was used.** Re-running any later step against it today would
+not reproduce what was run.
+
+The 556 people present in the consumed file but not in today's all carry status
+`excluded_related_ear_phenotype` — they were analysed as controls although the rule excludes them.
+The 20:21 version had not applied that exclusion; the 20:57 version does, and was never used.
+
+```
+57,507 analysable  -  427  -  4  +  556  =  57,632 consumed
+```
+
+So the analysed cohort is short 427 legitimate people in one direction and carries 556 it should not
+in the other. The 556 dilute the case-control contrast, which understates associations rather than
+inventing them — 1.1% of controls, small but signed.
+
+Detail and the reproducing script: `phase_1/results/FINDINGS.md` Finding 3.
+
+---
 
 ## Options
 
