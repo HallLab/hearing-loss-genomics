@@ -287,23 +287,43 @@ completeness check is the only one that fails.
 
 ## 7. Every number in one place
 
-| Number | Meaning |
+These are Phase 1's numbers only. Each label says whose artifact the number comes from and whether
+that artifact was actually used, because three different cohort counts are in circulation and the
+difference between them is Finding 3.
+
+**Cohort sizes, in the order they arose**
+
+| Number | What it is | Used by the run? |
+|---:|---|---|
+| 70,925 | people with exome data in the PMBB v4 release | — the starting population |
+| 57,507 | analysable for hearing impairment: case or control. **What the phenotype supports** — reproduced exactly by this replication | no |
+| 57,632 | the covariate files the SAIGE run consumed. Built 2026-07-31 **20:21** (Elena) from the then-current phenotype file | **yes — this is what ran** |
+| 57,080 | the phenotype file on disk today. Written **20:57** (Nikki), 36 minutes after the run's inputs had already been built from the earlier version | no — never reached SAIGE |
+
+**Case and control counts**
+
+| Number | What it is |
 |---:|---|
-| 70,925 | people with exome data in PMBB v4; also the variant-QC sample set |
-| 57,507 | analysable for hearing impairment (case or control) |
-| 57,080 | the phenotype file on disk today |
-| 57,632 | what the SAIGE run actually consumed — 6,712 cases, 50,920 controls |
-| 556 | people the phenotype rules exclude, analysed as controls |
 | 6,752 | cases the phenotype supports — reproduced exactly |
-| 6,712 | cases the analysis actually ran on |
-| 427 | analysable people dropped — 40 cases + 387 controls |
-| 517 | people in the release with no imputed PCs (427 analysable + 90 already excluded) |
-| 4,007 | excluded, evidence on one date only |
-| 9,411 | excluded, other ear-family evidence but not hearing impairment |
-| 558 | first-pass disagreements, all explained by the observation table |
-| 655,946 | ear-family PhecodeX rows extracted |
-| 25,094 | tinnitus events in the observation table |
+| 6,712 | cases the run used; identical in both versions of the phenotype file |
+| 50,920 | controls the run used |
+| 427 | analysable people absent from the run — 40 cases + 387 controls (Finding 1) |
+| 556 | people the phenotype rules exclude, present in the run as controls (Finding 3) |
+| 4 | legitimate controls on disk today but absent from the run |
+| 517 | people in the release with no imputed PCs — the 427 plus 90 already excluded on phenotype grounds |
+| 4,007 | excluded: target evidence on one date only |
+| 9,411 | excluded: other ear-family evidence but not hearing impairment |
+
+**Extraction and diagnostic counts**
+
+| Number | What it is |
+|---:|---|
+| 558 | first-pass disagreements in check 02, all explained by the observation table |
+| 655,946 | ear-family PhecodeX rows extracted from the release |
+| 25,094 | tinnitus events in the OMOP observation table |
 | 134,917 | `SO_396` hearing-impairment events |
+
+The three cohort sizes reconcile as `57,507 − 427 − 4 + 556 = 57,632`.
 
 ### Which number goes to the next phase
 
