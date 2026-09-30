@@ -1,0 +1,86 @@
+{
+  "purpose": "Phase 1 output: the two cohorts later phases consume.",
+  "arms": {
+    "reproduction": {
+      "strata": {
+        "combined": {
+          "N": 57632,
+          "cases": 6712,
+          "controls": 50920,
+          "case_rate_pct": 11.65,
+          "file": "reproduction_combined.tsv"
+        },
+        "EUR": {
+          "N": 43016,
+          "cases": 5160,
+          "controls": 37856,
+          "case_rate_pct": 12.0,
+          "file": "reproduction_EUR.tsv"
+        },
+        "AFR": {
+          "N": 11387,
+          "cases": 1279,
+          "controls": 10108,
+          "case_rate_pct": 11.23,
+          "file": "reproduction_AFR.tsv"
+        }
+      },
+      "composition": {
+        "EUR": 43016,
+        "AFR": 11387,
+        "EAS": 939,
+        "SAS": 874,
+        "AMR": 846,
+        "UNKNOWN0": 499,
+        "UNKNOWN1": 58,
+        "UNKNOWN2": 13
+      }
+    },
+    "corrected": {
+      "strata": {
+        "combined": {
+          "N": 57507,
+          "cases": 6752,
+          "controls": 50755,
+          "case_rate_pct": 11.74,
+          "file": "corrected_combined.tsv"
+        },
+        "EUR": {
+          "N": 42786,
+          "cases": 5183,
+          "controls": 37603,
+          "case_rate_pct": 12.11,
+          "file": "corrected_EUR.tsv"
+        },
+        "AFR": {
+          "N": 11334,
+          "cases": 1285,
+          "controls": 10049,
+          "case_rate_pct": 11.34,
+          "file": "corrected_AFR.tsv"
+        }
+      },
+      "composition": {
+        "EUR": 42786,
+        "AFR": 11334,
+        "EAS": 1104,
+        "SAS": 870,
+        "AMR": 844,
+        "UNKNOWN0": 495,
+        "UNKNOWN1": 61,
+        "UNKNOWN2": 13
+      }
+    }
+  },
+  "relationship": {
+    "corrected_only": 431,
+    "reproduction_only": 556,
+    "shared": 57076,
+    "note": "Neither is a subset of the other. 57,507 - 431 + 556 = 57,632."
+  },
+  "provenance": {
+    "reproduction": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/HL_only_rarevariant/new_SAIGE_covariates/hearing_impairment_combined_SAIGE_Step1_covariates.txt",
+    "corrected": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariantExWAS/PMBBv4_phecodex/PMBBv4_hearing_tinnitus_all_statuses.csv.gz"
+  },
+  "not_included": "Covariates are not built here -- that is Phase 3. The reproduction arm is copied verbatim rather than rebuilt, because the phenotype file it derives from was overwritten."
+}
