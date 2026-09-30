@@ -349,8 +349,15 @@ The three cohort sizes reconcile as `57,507 − 427 − 4 + 556 = 57,632`.
 What Phase 1 establishes is that **57,507** is the analysable cohort the phenotype supports, and that
 what the run consumed was **57,632** — a different set, not a subset (§5b).
 
-Which cohort each later phase inherits is that phase's question, not this one's, and is deliberately
-not answered here. A provisional note peeking at variant-QC files suggested Phase 2 may be
+**Both numbers are carried forward, deliberately.** From Phase 3 onward the replication runs two
+declared arms — reproduction on the 57,632 that actually ran, and corrected on the 57,507 the
+phenotype supports — so that a later difference can be attributed to the defect rather than to a
+cohort the replication changed. The design is in
+[`pipeline_plan.md`](../pipeline_plan.md) §6; the decision about which cohort the *group's* analysis
+should use is question 2 of [page 01](01_sample_frame_decision.md) and is not ours.
+
+Which cohort each later phase inherits beyond that is that phase's question, not this one's, and is
+deliberately not answered here. A provisional note peeking at variant-QC files suggested Phase 2 may be
 cohort-independent; that was removed, because a claim about Phase 2 that has not been through Phase
 2's own check would sit in this page unwatched and go stale. Phase 2 will establish it.
 

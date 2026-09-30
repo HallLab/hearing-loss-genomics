@@ -266,6 +266,36 @@ surfaces.
 **What that costs.** Phase 4 is days and ~1 TB, and it comes before the minutes-long Phase 5. There
 is no quick partial answer early. That is the price of an attributable result rather than a fast one.
 
+### Two arms, declared
+
+Phase 1 found that the cohort which ran is not the cohort the phenotype supports. From Phase 3
+onward the replication therefore runs **two arms, both declared in advance**:
+
+| Arm | Cohort | What it is for |
+|---|---|---|
+| **reproduction** | **57,632** — the set the SAIGE run actually consumed | verify that the pipeline's own numbers reproduce |
+| **corrected** | **57,507** — the analysable cohort the phenotype supports | measure what the fix changes |
+
+**Why not simply run the corrected cohort.** Because then a difference from the pipeline's published
+numbers could not be attributed. It would be impossible to say whether a changed p-value came from a
+defect in the pipeline or from the cohort *we* changed, and the ability to state "these numbers
+reproduce" is the main product of this work. A replication that quietly corrects as it goes has
+stopped verifying anything.
+
+**The difference between the arms is the result.** It turns "there is a defect" into "the defect
+moves this gene by this much" — or, just as usefully, into "the defect is real and changes nothing",
+which is a different recommendation to take to the group.
+
+**A practical note.** The reproduction arm uses 57,632, not the 57,080 in the phenotype file on disk,
+because that file was overwritten after the run's inputs were built from it (Phase 1, Finding 3). The
+cohort is still recoverable exactly: the covariate file the run consumed survives and carries the
+IIDs. Without it the reproduction arm would not be possible at all.
+
+**This does not wait on the pending decision.** Whether the 427 are restored for the group's own
+analysis is question 2 of [`docs/01_sample_frame_decision.md`](docs/01_sample_frame_decision.md) and
+belongs to Molly, Doug, Nikki and Elena. Running both arms supplies the number they need in order to
+decide, rather than asking them to decide without it.
+
 **One task sits outside this.** The summary table on disk is missing ~5,400 rows (§5), so what the
 existing results say cannot presently be read. Re-parsing the raw outputs to recover them takes
 minutes. That is triage — it makes existing output legible — and it is not evidence about whether
