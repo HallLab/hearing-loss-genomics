@@ -1,6 +1,6 @@
 # Fase 2 — quais variantes contam
 
-**Autor:** Andre Rico · **Data:** 2026-09-30 · **Status:** parcial — varredura genome-wide em andamento
+**Autor:** Andre Rico · **Data:** 2026-09-30 · **Status:** completa
 **Cópia de trabalho pessoal, em português.** Não é página de Confluence. O registro formal está em
 [`phase_2/results/FINDINGS.md`](../phase_2/results/FINDINGS.md).
 
@@ -92,8 +92,27 @@ No cromossomo 8, de 197.002 registros marcados como pLOF pelo pipeline:
       0  não têm nenhuma das duas
 ```
 
-**Três quartos da máscara pLOF não é perda de função.** E zero exceções — nada entra na máscara por
-outro caminho.
+Zero exceções — nada entra na máscara por outro caminho.
+
+**Atenção a um detalhe que muda o número.** Os 197.002 acima são *registros de anotação*, e cada
+variante tem um registro por transcrito. A máscara contém **variantes**, não registros. Contando
+variantes, o chr8 dá **64,5%**.
+
+Os dois números estão certos para o que medem: o de registro serve para diagnosticar a regra, o de
+variante descreve a máscara. **É o de variante que se cita.**
+
+### E vale para o genoma inteiro
+
+```
+1.089.876   variantes na máscara pLOF
+  395.074   com perda de função real      36,2%
+  694.802   sem                           63,8%
+```
+
+Por cromossomo a faixa é **60,9% a 65,7%** — todos os 22 dentro de cinco pontos. O chr8 está em
+64,5%, quase exatamente a média. O defeito é **uniforme**, não concentrado em lugar nenhum.
+
+**Quase dois terços da máscara pLOF do estudo — 694.802 variantes — não é perda de função.**
 
 ### O portão do SpliceAI nunca foi usado
 
@@ -175,8 +194,8 @@ some no ruído.
 
 Ou seja — como na Fase 1, o erro empurra para o **nulo**. Não fabrica achado; esconde.
 
-Mas ao contrário da Fase 1, **este não é pequeno.** Lá eram 0,59% dos casos. Aqui são três quartos de
-uma máscara inteira.
+Mas ao contrário da Fase 1, **este não é pequeno.** Lá eram 0,59% dos casos. Aqui são quase dois
+terços de uma máscara inteira, em todos os 22 cromossomos.
 
 ---
 
@@ -184,7 +203,7 @@ uma máscara inteira.
 
 | | |
 |---|---|
-| **Se o chr8 é representativo** | varredura nos 22 cromossomos **rodando agora** |
+| ~~Se o chr8 é representativo~~ | **resolvido — é.** 22 cromossomos entre 60,9% e 65,7% |
 | Quanto isso muda os resultados | é pergunta da Fase 4, não desta |
 | As máscaras `pLOF_pDM` e `ALL` | herdam o `pLOF`, então herdam o defeito — não quantificado |
 | Refazer a máscara corrigida | decisão de escopo, ainda não tomada |
@@ -197,5 +216,5 @@ A definição de pLOF no plano de análise está certa. A implementação inclui
 baixo que não são perda de função, e nunca ligou o filtro de SpliceAI que existia justamente para
 decidir esses casos.
 
-No cromossomo 8, isso faz três quartos da máscara pLOF ser algo que a própria definição do estudo não
-admitiria.
+Isso faz quase dois terços da máscara pLOF — 694.802 variantes, em todos os 22 cromossomos — ser
+algo que a própria definição do estudo não admitiria.

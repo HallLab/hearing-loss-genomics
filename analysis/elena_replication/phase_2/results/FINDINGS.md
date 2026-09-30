@@ -177,6 +177,38 @@ output, not from its source, so the exact expression that produces it is inferre
 
 ---
 
+## Finding 1c — chr8 is representative; the genome-wide figure is 63.8%
+
+**Script:** [`../scripts/04_genomewide.sh`](../scripts/04_genomewide.sh)
+**Output:** [`04_genomewide.tsv`](04_genomewide.tsv)
+
+Counted at the **variant** level across all 22 chromosomes — a variant is in the pLOF mask if any of
+its transcript rows sets `is_pLOF`, and has genuine support if any row carries a real
+loss-of-function consequence:
+
+```
+1,089,876   variants in the pLOF mask
+  395,074   with a genuine LoF consequence          36.2%
+  694,802   with none                               63.8%
+```
+
+Per chromosome the range is **60.9% to 65.7%** — every one of the 22 falls inside a five-point band.
+chr8 sits at 64.5%, almost exactly the genome-wide figure. The pilot was representative, and the
+defect is uniform rather than concentrated anywhere.
+
+### A correction to how Finding 1b was stated
+
+Finding 1b reported 74.5% for chr8. That is the **annotation-row** figure — 146,750 of 197,002 rows.
+The mask contains **variants**, not rows, and a variant carries one row per transcript. At the variant
+level chr8 is 64.5%.
+
+Both numbers are correct for what they measure, and the row figure is the right one for diagnosing
+the rule. **The variant figure is the one that describes the mask**, and it is the one to quote:
+63.8% genome-wide, 694,802 variants.
+
+
+---
+
 ## Finding 2 — the pDM disagreement is ordinary, and separable from Finding 1
 
 | | pipeline `pDM` | release `damaging_missense` |
@@ -206,7 +238,7 @@ a judgement call. Calling a synonymous variant loss-of-function is not.
 | Mask files are structurally well-formed | var/anno lengths, annotation homogeneity | **solid** |
 | pDM divergence is a threshold difference | 16,244 of 16,304 are release `other_missense` | **solid** |
 | The cause of Finding 1 | the pipeline's own classification output (Finding 1b) | **established** |
-| Whether chr8 is representative | — | **not established** |
+| Whether chr8 is representative | all 22 chromosomes, 60.9-65.7% (Finding 1c) | **established — it is** |
 
 **Not established, and deliberately not guessed:**
 
@@ -217,8 +249,9 @@ a judgement call. Calling a synonymous variant loss-of-function is not.
 - ~~**Whether the two annotation runs agree.**~~ **No longer an open question.** Finding 1b settles
   the defect from the pipeline's own annotation, without appeal to the release. The release detected
   the problem; the pipeline's own files confirm it.
-- **Whether it is genome-wide.** This is a chr8 pilot. Nothing here licenses a claim about the other
-  21 chromosomes.
+- ~~**Whether it is genome-wide.**~~ **Established — see Finding 1c.** All 22 chromosomes fall
+  between 60.9% and 65.7%; genome-wide, 694,802 of 1,089,876 pLOF variants have no loss-of-function
+  consequence.
 - **The effect on results.** That is Phase 4's question. A mask carrying non-LoF variants dilutes a
   burden test toward the null rather than inventing signal, but quantifying that is not Phase 2's
   job and is not attempted here.
