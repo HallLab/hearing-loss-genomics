@@ -8,11 +8,11 @@
 
 ## Decision requested
 
-1. **Was the exclusion deliberate, and which step introduced it?** 517 exome-sequenced
-   participants are absent from the SAIGE sample list because they have no imputed-array principal
-   components. The analysis is adjusted with exome PCs; the imputed ones are never used as
-   covariates. The requirement appears in artifacts owned by both of you, and the files alone do not
-   say which step introduced it or whether one inherited it from the other. → **Nikki and Elena**
+1. **Was the exclusion deliberate?** 517 exome-sequenced participants are absent from the SAIGE
+   sample list because the analysis cohort was built by merging against the **imputed genotype
+   `.fam`**. They have exome data and complete exome PCs; they have no array/imputed data. The
+   analysis is adjusted with exome PCs throughout, so nothing it computes needs the imputed set.
+   → **Nikki and Elena**
 2. **Should the 427 affected cases and controls be restored** for the hearing-loss analysis?
    → **Molly, Doug, Nikki**
 3. **If restored, does anything already run need re-running?** → **Molly, Nikki, Elena**
@@ -63,9 +63,16 @@ The 427 belong to a larger group of **517** lost between `HL_TIN_PMBBv4_keep.txt
 | have exome data | yes — all 517 are in the exome ancestry list |
 | have complete `exome_PC1-6` | yes — zero missing |
 | have any `imputed_PC1-20` | **no — all 20 missing, for all 517** |
+| appear in the imputed genotype `.fam` | **no — none of the 517** |
 
 They are exactly the set of people in the release covariates who have exome PCs but no imputed PCs:
 517 of 70,925, or 0.7% of the cohort.
+
+**The mechanism is a merge.** The ExWAS analysis blog logs it directly —
+`FAM samples: 70493 | Phenotype samples: 70925 | Matched samples: 70408` — and the arithmetic closes:
+the imputed `.fam` holds 70,493 people, 85 of whom have no exome, giving the 70,408 sample list. The
+517 have no imputed PCs because they have no imputed genotypes at all; the missing PCs are a marker
+of that, not a separate filter.
 
 ### The model is adjusted correctly — the filter is what went wrong
 

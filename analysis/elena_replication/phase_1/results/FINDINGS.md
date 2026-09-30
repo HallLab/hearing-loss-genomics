@@ -32,6 +32,37 @@ They are the entire set of people in the release with exome PCs but no imputed P
 from an exome analysis for missing array-imputation principal components that the analysis does not
 consume.
 
+### Corrected 2026-09-30 — the mechanism is a merge, not a PC completeness check
+
+An earlier version of this finding stated the mechanism as a completeness check spanning every PC
+column in the covariates file. **That was wrong**, and the correction came from the ExWAS analysis
+blog in `elena_publishes/`, which logs the operation directly:
+
+```
+FAM samples: 70493 | Phenotype samples: 70925 | Matched samples: 70408
+```
+
+The sample list was built by merging the exome phenotype against the **imputed genotype `.fam`**
+(`/static/PMBB/PMBB-Release-2026-4.0/Imputed/chunked_bed_files/*.fam`, 70,493 samples). Verified:
+
+```
+imputed .fam                       70,493
+  of those, without exome              85
+70,493 - 85                      =  70,408   = the sample list
+the 517 lacking imputed PCs, present in that .fam:  0
+```
+
+The 517 have no imputed PCs *because* they have no imputed genotypes — the missing PCs are a marker
+of the same underlying fact, not an independent filter. The consequence is unchanged: 517
+exome-sequenced participants, 40 of them hearing-loss cases, absent from an exome analysis for
+lacking array data. The mechanism is not.
+
+This also reverses a correction made earlier in this replication. Open question 4 originally
+described the drop as an intersection with an LD-pruned `.fam`; Phase 1 recorded that as wrong after
+testing against Elena's **exome** LD-pruned `.fam` (70,925), where all 427 are present. The merge was
+against the **imputed** `.fam`. The original description was substantially right and the correction
+was the error.
+
 ### The model is adjusted correctly; the filter is what is wrong
 
 The distinction matters, and the milder reading is the correct one.
@@ -42,7 +73,9 @@ carries no information. Matched against the release: `PC1` is numerically identi
 (correlation 0.99965 across 70,404 people; `imputed_PC1` correlates 0.992, but the values differ —
 e.g. 0.0003 vs 0.0004 for the same person). The imputed PCs never enter the regression.
 
-They act as a **gate**. The delivered sample list is an exact set identity:
+They act as a **gate** — though the gate is the `.fam` merge above, not the PC columns themselves.
+The delivered sample list is an exact set identity either way, since the two conditions select the
+same people:
 
 ```
 analysable  ∩  {has all 20 imputed PCs}   =   57,080
