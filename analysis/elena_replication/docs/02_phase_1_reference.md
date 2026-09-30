@@ -224,12 +224,31 @@ Two extraction counts match the pipeline's own notebook exactly, from separately
 
 **Script:** `phase_1/scripts/03_what_saige_actually_used.py`
 
-### Scope, stated up front
+### Scope, and what kind of evidence this is
 
 Phase 1 asks who was in the study. That cannot be answered from the phenotype file, because the
 phenotype file was overwritten after being read. So this check follows the cohort to the file the run
 consumed. It makes **no claim about Phase 4** — it inspects that file's membership, never the
 statistics computed from it. Phase 4 remains unexamined.
+
+**This check is an audit, not a replication, and it carries less weight than the other two.** Checks
+01 and 02 re-derive from the institutional release: 02 rebuilds the cohort from scratch, and 01 uses
+the release covariates to establish independently *why* the 517 were dropped. If the pipeline
+vanished tomorrow, both conclusions would still stand. Check 03 re-derives nothing. Its substantive
+inputs are three pipeline files compared against each other; the one release file it reads is used
+only as a sanity check that everyone in the consumed file has exome data. So the evidence here is
+entirely the pipeline's own — the question it answers is Phase 1's.
+
+Separating what is proven from what is inferred:
+
+| | Basis | Strength |
+|---|---|---|
+| The run consumed a different file than the one on disk | row counts (57,632 vs 57,080) and the build log recording `Phenotype samples: 57,636` | **solid** — no timestamps involved |
+| 556 excluded people were analysed as controls | membership comparison plus their status in `all_statuses` | **solid** |
+| The phenotype file was *overwritten*, 36 minutes later | file modification times | **inferred** — a copy, a `touch` or a restore would change mtime without changing content |
+
+Phase 1's conclusion rests on the solid rows. The overwrite is the most likely explanation, not a
+proven sequence, and the question of what actually happened goes to the people who ran it.
 
 ### What it found
 
