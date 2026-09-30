@@ -35,38 +35,101 @@ much harsher significance threshold; the benefit is that a novel gene can be fou
 
 ---
 
-## 2. The pipeline — five phases, eleven numbered steps
+## 2. The pipeline, as its author documented it
 
-Steps live in `analysis/elena/rarevariantExWAS/`. Phase 4 is where the defects are.
+Steps live in `analysis/elena/rarevariantExWAS/`. The numbering and sub-step titles below are taken
+from the analysis blogs in [`elena_publishes/`](../elena_publishes/), not inferred from file names.
+An earlier version of this section was inferred, and got Phase 4 wrong — see *Where the numbering
+disagrees with itself*.
+
+Our five phases are a grouping over her eleven steps. They are a reading aid, not a second
+vocabulary: every claim in this replication is anchored to a step.
 
 ```
 PHASE 1   Who is in the study
-          step1   cases and controls from diagnosis codes (rule of 2 dates),
-                  related individuals removed
-          step5   check each ancestry group has enough cases and controls
+  Step 1  Phenotyping and Sample QC
+            cases and controls from diagnosis codes (rule of 2)
+            builds HL_TIN_PMBBv4_keep.txt, then the SAIGE sample list
+  Step 5  Ancestry Stratification
+            5.1  case/control counts per ancestry
+            5.2  interpret the ancestry classification
 
 PHASE 2   Which variants count
-          step2   annotate every variant with VEP — what it does to the protein
-          step3   variant-level quality control
-          step4   group variants per gene into "masks"
+  Step 2  Variant Classification
+            2.1  rewrite the raw PMBB v4 VEP annotation files
+            2.2  keep a subset of annotation columns
+            2.3  classify variants; compare REVEL against AlphaMissense
+            2.4  count ZNF175 variants in cases vs controls
+  Step 3  Variant QC
+            3.1  restrict to rare variants meeting the thresholds
+            3.2  create summary file
+  Step 4  Burden Masking
+            4.1  make the 4 masks
+            4.2  convert ":" to "_" for SAIGE step 2 compatibility
 
 PHASE 3   What has to be adjusted away
-          step6   build covariate files: age, sex, batch, ancestry PCs
-          step7   LD pruning — pick independent common variants so relatedness
-                  between participants can be estimated
+  Step 6  SAIGE Covariate File
+            6.1  decide how many PCs for the combined dataset
+            6.2  build the combined covariate file
+            6.3  covariate QC — check for missing values
+            6.4  decide PCs per ancestry (scree plots); build by-ancestry files
+            6.5  add batch to all three cohorts
+  Step 7  LD Pruning
+            7.1  generate PLINK keep files for EUR and AFR
+            7.2  LD prune all three datasets
 
-PHASE 4   The statistical test                      <-- defects 1 and 2 live here
-          step8   SAIGE step 1: learn how hearing loss is distributed across the
-                  cohort WITHOUT looking at any gene, already accounting for
-                  relatedness and covariates
-          step9   SAIGE step 2: test each gene against that null model
-                  ---> this is what produces the 792 output files
+PHASE 4   The statistical test
+  Step 8  SAIGE
+            8.1  gene burden      ---> the 792 outputs
+            8.2  single variant, 4 MAF thresholds, no masks
 
 PHASE 5   Reading the result
-          step9_1  merge chromosomes        step10  QQ plots (calibration check)
-          step9_2  map genes                step11  final tables
-          step9_3-6  Manhattan plots
+  Step 9  Manhattan Plots
+            9.1  merge chromosomes across the 36 categories
+            9.2  map genes to positions
+            9.3-9.6  the plots
+  Step 10 QQ Plots           10.1-10.4, calibration
+  Step 11 Interesting Tables 11.1-11.4
 ```
+
+### Where the numbering disagrees with itself
+
+`step9` is overloaded on disk. `step9_saige_step2.bsub` runs the association test, while
+`step9_1_mergechr.bsub` through `step9_6_manhattanMAC.R` produce Manhattan plots. The blogs place
+SAIGE entirely in Step 8 and Manhattan plots in Step 9.
+
+The file names and the documentation disagree, and this replication follows the documentation: **the
+test is Step 8, Phase 4; everything from the chromosome merge onward is Step 9+, Phase 5.** An
+earlier version of this page followed the file names, split Step 9 across two phases, and described
+`step9` as "SAIGE step 2". Anyone tracing a finding back to a file should expect the mismatch.
+
+### Decisions the documents record, which the files do not
+
+Three choices are visible only in the prose or in code comments. Each would read as an omission from
+the files alone:
+
+| Decision | Where | Note |
+|---|---|---|
+| Related individuals are **not** removed | comment in `step1_phenotyping_sample_qc.ipynb`: *"Don't need to get rid of unrelated because SAIGE can account for relationships"* | deliberate and defensible — SAIGE models relatedness through the GRM |
+| `pLOF` = frameshift, stop-gained, start-lost, stop-lost, **or SpliceAI ≥ 0.2** | analysis plan, "VEP Consequence + SpliceAI" | broader than a consequence-only rule; see §7 |
+| PC count to be set by variance-explained plot, *"most likely 4 or 5"* | analysis plan | the runs used 5 combined, 9 EUR, 10 AFR |
+
+### The sample list, and what Step 1 actually does
+
+Step 1 does more than assign cases and controls. It also builds the list of people who enter the
+analysis, and that is where the cohort is cut:
+
+```python
+fam_file = ".../Imputed/common_snps_LD_pruned/..._genetic_imputed.commonsnps.ldpruned.ALL.fam"
+# Keep only samples with genotype data
+matched = pheno[pheno["PMBB_ID"].isin(fam["IID"])].copy()
+```
+
+The intent in that comment is right — restrict to people with genotype data. The file consulted is
+the **imputed** LD-pruned `.fam` (70,493 samples), while the analysis tests **exome** data. An exome
+LD-pruned set exists and was built by the same pipeline (`exome_ldpruned/ALL.common_ldpruned`,
+70,925 samples); the sample list was not gated on it. That single line is the mechanism behind the
+517 (Phase 1, Finding 1).
 
 ### The two directories, and how they chain
 
@@ -154,11 +217,19 @@ intended.
 ## 5. Where the three defects fall
 
 ```
-PHASE 3  step6   ->  defect 3: PC counts 5 / 9 / 10; the recorded decision said 5-6
-PHASE 4  step9   ->  defect 1: 3 files written with no header row (AFR / pDM / chr8)
-PHASE 4  step9   ->  defect 2: 11 files never written (killed for memory, no retry)
-PHASE 5  merge   ->  the summary table inherits both, and reports neither
+PHASE 1  Step 1   ->  the sample list is cut against the imputed .fam; 517 dropped,
+                      40 of them cases                            (Phase 1, Finding 1)
+PHASE 1  Step 1   ->  the phenotype file was overwritten after the covariates were
+                      built from it; 556 excluded people ran as controls (Finding 3)
+PHASE 2  Step 4   ->  half the pLOF mask meets neither clause of its documented
+                      definition                                  (Phase 2, chr8 pilot)
+PHASE 3  Step 6   ->  PC counts 5 / 9 / 10; the plan said "most likely 4 or 5"
+PHASE 4  Step 8   ->  3 files written with no header row (AFR / pDM / chr8)
+PHASE 4  Step 8   ->  11 files never written (killed for memory, no retry)
+PHASE 5  Step 9.1 ->  the merge inherits both, and reports neither
 ```
+
+The first three were found by the replication; the last three by the review that preceded it.
 
 Severity follows the phase. A Phase 5 defect corrupts how results are *read*. A Phase 4 defect means
 results were never *computed*. A Phase 3 defect means everything downstream was computed against the
@@ -260,7 +331,10 @@ afterwards as a deliberate third opinion. Two conditions apply if it is run:
 
 | Claim | Checked by |
 |---|---|
-| Step list and phase grouping | file listing of `rarevariantExWAS/`, notebook headers |
+| Step list, sub-steps and phase grouping | the analysis blogs in `elena_publishes/`, cross-checked against the file listing of `rarevariantExWAS/` |
+| `step9` is overloaded; documentation and file names disagree | `step9_saige_step2.bsub` alongside `step9_1_mergechr.bsub`, against the blogs placing SAIGE in Step 8 |
+| Relatedness is deliberately not filtered | code comment in `step1_phenotyping_sample_qc.ipynb` |
+| The sample list is cut against the imputed LD-pruned `.fam` | the merge in `step1_phenotyping_sample_qc.ipynb`; `.fam` verified at 70,493 samples |
 | `HL_only_rarevariant` consumes backbone phenotype + covariates | paths in `step2_newcovariate.bsub` |
 | Mask labels and test groups | `step4_burdenmasking.bsub`; `--annotation_in_groupTest` in the SAIGE command line |
 | 792 expected vs 781 on disk | `find` count under `saige_results_newmasks/`, and 3x4x22x3 |
