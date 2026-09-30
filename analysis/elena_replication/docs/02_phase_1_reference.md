@@ -117,8 +117,8 @@ They acted as a **gate**. The delivered sample list is an exact set identity:
 analysable (57,507)  ∩  {has all 20 imputed PCs}  =  57,080
 ```
 
-Tested as set equality, not as a matching count. That is what a completeness check spanning every PC
-column in the file produces, rather than only the six the model uses.
+Tested as set equality, not as a matching count. The two conditions — absent from the imputed `.fam`, and missing every imputed PC — pick out the
+same people, because both follow from having no imputed genotypes.
 
 So: **the adjustment is correct; the filter is what is wrong.** An exome analysis adjusted with
 array-derived ancestry components would be a methodological error. That is not what happened.
@@ -300,7 +300,7 @@ difference is explained by a documented rule.
 | Sample frame | **does not pass** | 427 dropped by an undocumented filter on unused columns |
 
 Every other Phase 1 filter — rule of 2, related-ear exclusion — reproduced exactly. The PC
-completeness check is the only one that fails.
+cohort was built by merging against the imputed `.fam`, and that is the only step that fails.
 
 ---
 

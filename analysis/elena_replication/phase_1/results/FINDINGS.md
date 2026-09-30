@@ -82,8 +82,8 @@ analysable  ∩  {has all 20 imputed PCs}   =   57,080
   57,507              (excludes 427)
 ```
 
-Tested as set equality, not as a count match. The effect is what a completeness check spanning every
-PC column in the covariates file would produce, rather than only the six the model uses.
+Tested as set equality, not as a count match. The two conditions — absent from the imputed `.fam`, and missing every imputed PC — pick out the
+same people, because both follow from having no imputed genotypes.
 
 So this is **not** an exome analysis adjusted with array-derived ancestry components — that would be
 a methodological error, and it is not what happened. The adjustment is correct. A completeness

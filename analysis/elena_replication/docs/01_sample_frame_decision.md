@@ -90,8 +90,9 @@ analysable  ∩  {has all 20 imputed PCs}
   57,507         (excludes 427)          =  57,080
 ```
 
-— an exact set identity, not an approximation. The effect is what a completeness check spanning
-every PC column in the file would produce, rather than only the six the model uses.
+— an exact set identity, not an approximation. The two conditions — absent from the imputed `.fam`,
+and missing every imputed PC — pick out the same people, because both follow from having no imputed
+genotypes.
 
 So this is not a case of an exome analysis being adjusted with ancestry components derived from
 array data. That would be a methodological error; this is not it. The adjustment is right. What is
