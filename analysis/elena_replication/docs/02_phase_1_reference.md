@@ -294,6 +294,78 @@ inventing them — 1.1% of controls, small but signed.
 
 ---
 
+## 5c. Check 04 — ancestry stratification, and who the excluded are
+
+**Script:** `phase_1/scripts/04_step5_and_dropped_profile.py`
+
+Phase 1 is Step 1 **and Step 5** by the mapping in
+[`pipeline_plan.md`](../pipeline_plan.md) §2. Checks 01–03 covered only Step 1. This closes the
+phase.
+
+### Step 5 verifies
+
+The stratification is internally consistent. The EUR and AFR cohorts contain only participants the
+release classifies as EUR and AFR; `combined` is exactly EUR + AFR + the smaller groups.
+
+### Both arms, side by side
+
+The strata were computed for each arm — the reproduction cohort that actually ran, and the corrected
+cohort the phenotype supports. Nobody had computed the second.
+
+| Stratum | reproduction (57,632) | corrected (57,507) | change |
+|---|---|---|---|
+| combined | 57,632 · 6,712 cases | 57,507 · **6,752** cases | −125 people, **+40 cases** |
+| EUR | 43,016 · 5,160 | 42,786 · 5,183 | −230, +23 |
+| AFR | 11,387 · 1,279 | 11,334 · 1,285 | −53, +6 |
+
+**The corrected arm is smaller and has more cases.** It gains the 431 who were never let in (40 of
+them cases) and loses the 556 controls the rules exclude. Case rate rises about 0.1 percentage
+points in every stratum — a small, consistent shift, which is what one would expect from correcting
+a defect that is real but not large.
+
+Ancestry composition moves in one place and one place only:
+
+| | reproduction | corrected | change |
+|---|---:|---:|---:|
+| EUR | 43,016 | 42,786 | −0.5% |
+| AFR | 11,387 | 11,334 | −0.5% |
+| **EAS** | **939** | **1,104** | **+17.6%** |
+| SAS | 874 | 870 | −0.4% |
+| AMR | 846 | 844 | −0.2% |
+
+Correcting the filter restores **165 East Asian participants**, growing that stratum by nearly a
+fifth while every other group changes by half a percent. That is Finding 4 seen from the other
+direction: the exclusion was concentrated, so the correction is concentrated too.
+
+### Finding 4 — the excluded are not a random 0.7%
+
+Exclusion rate within each group, against 0.73% cohort-wide:
+
+| Group | excluded | total | rate |
+|---|---:|---:|---:|
+| **EAS** | **208** | **1,333** | **15.60%** |
+| AMR | 16 | 1,039 | 1.54% |
+| SAS | 5 | 1,080 | 0.46% |
+| EUR | 233 | 51,867 | 0.45% |
+| AFR | 49 | 14,927 | 0.33% |
+
+One in six East Asian participants, twenty-one times the cohort rate. The same skew appears on sex
+(1.01% of women against 0.43% of men) and strongly on batch (1.09% of batch 1 against 0.11–0.18% of
+batches 2 and 3); the excluded are younger and enrolled earlier.
+
+Batch and enrolment point at a technical coverage gap — exome-sequenced early, array genotyping never
+completed for a subset — rather than anything about the participants. That is the pattern; the cause
+is not this replication's to establish.
+
+### Declared out of scope
+
+Step 1 produces **two** phenotypes. Checks 01–04 cover hearing impairment only. The tinnitus
+phenotype, and the combined hearing-loss-and/or-tinnitus phenotype decided on 2026-07-01, are
+unverified. Declared here rather than left implicit, because the combined phenotype will need the
+same scrutiny when it is built.
+
+---
+
 ## 6. Verdict
 
 The criterion was: the re-derived case, control **and sample** sets match person-for-person, or every
@@ -379,10 +451,12 @@ All paths relative to `analysis/elena_replication/phase_1/`.
 | `scripts/01_sample_frame.py` | yes | traces the cohort chain, identifies the 517 |
 | `scripts/02_rebuild_cases_controls.py` | yes | re-derives cases/controls, diffs against the pipeline |
 | `scripts/03_what_saige_actually_used.py` | yes | compares the consumed file against the phenotype file on disk |
+| `scripts/04_step5_and_dropped_profile.py` | yes | Step 5 for both arms; profiles the excluded |
 | `results/FINDINGS.md` | yes | the full write-up, including what was not established |
 | `results/01_sample_frame.json` | yes | every number in §4, machine-readable |
 | `results/03_what_saige_actually_used.json` | yes | the §5b comparison, machine-readable |
 | `results/03_improperly_included_controls.csv` | no — per-person IDs | the 556 |
+| `results/04_step5_and_dropped_profile.json` | yes | the §5c tables, machine-readable |
 | `results/02_rebuild_cases_controls.json` | yes | counts, agreement, confusion matrix |
 | `results/01_dropped_participants.csv` | no — per-person IDs | the 427, with status |
 | `results/02_disagreements_*.csv` | no — per-person IDs | now empty (header only): zero disagreements is the result |
@@ -400,6 +474,7 @@ bash scripts/00_extract_release_tables.sh          # only if data/ is empty; ~10
 ../../../venv/bin/python3 scripts/01_sample_frame.py
 ../../../venv/bin/python3 scripts/02_rebuild_cases_controls.py
 ../../../venv/bin/python3 scripts/03_what_saige_actually_used.py
+../../../venv/bin/python3 scripts/04_step5_and_dropped_profile.py
 ```
 
 Script 00 caches the two release extracts and prints the expected row counts (655,946 and 25,094) so

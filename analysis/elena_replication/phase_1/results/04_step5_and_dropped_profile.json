@@ -48,7 +48,57 @@
     },
     "EUR_plus_AFR": 54403,
     "combined": 57632,
-    "carried_only_in_combined": 3229
+    "carried_only_in_combined": 3229,
+    "corrected_arm_57507": {
+      "combined": {
+        "N": 57507,
+        "cases": 6752,
+        "controls": 50755,
+        "case_rate_pct": 11.74
+      },
+      "EUR": {
+        "N": 42786,
+        "cases": 5183,
+        "controls": 37603,
+        "case_rate_pct": 12.11
+      },
+      "AFR": {
+        "N": 11334,
+        "cases": 1285,
+        "controls": 10049,
+        "case_rate_pct": 11.34
+      },
+      "composition": {
+        "EUR": 42786,
+        "AFR": 11334,
+        "EAS": 1104,
+        "SAS": 870,
+        "AMR": 844,
+        "UNKNOWN0": 495,
+        "UNKNOWN1": 61,
+        "UNKNOWN2": 13
+      }
+    },
+    "corrected_minus_reproduction": {
+      "combined": {
+        "N": -125,
+        "cases": 40,
+        "controls": -165,
+        "case_rate_pct_points": 0.09
+      },
+      "EUR": {
+        "N": -230,
+        "cases": 23,
+        "controls": -253,
+        "case_rate_pct_points": 0.11
+      },
+      "AFR": {
+        "N": -53,
+        "cases": 6,
+        "controls": -59,
+        "case_rate_pct_points": 0.11
+      }
+    }
   },
   "B_profile_of_the_excluded": {
     "n_dropped": 517,

@@ -63,6 +63,36 @@ step5["combined_composition"] = pd.Series(
 step5["EUR_plus_AFR"] = len(cohorts["EUR"]) + len(cohorts["AFR"])
 step5["combined"] = len(cohorts["combined"])
 step5["carried_only_in_combined"] = step5["combined"] - step5["EUR_plus_AFR"]
+# --- the same stratification on the corrected arm (57,507), which nobody has run.
+# The consumed cohort above is the reproduction arm; this is what the strata would be
+# if the 431 came back and the 556 were excluded as the rules say.
+stat = pd.read_csv(E / "rarevariantExWAS/PMBBv4_phecodex/PMBBv4_hearing_tinnitus_all_statuses.csv.gz")
+stat = stat[stat.phenotype == "hearing_impairment"].set_index("person_id")["status"]
+corrected = stat[stat.isin(["case", "control"])]
+
+cdf = pd.DataFrame({"IID": corrected.index,
+                    "PHENO": (corrected.values == "case").astype(int)})
+cdf["ancestry"] = cdf.IID.map(amap)
+
+arm = {"combined": {"N": len(cdf), "cases": int(cdf.PHENO.sum()),
+                    "controls": int((cdf.PHENO == 0).sum()),
+                    "case_rate_pct": round(100 * cdf.PHENO.mean(), 2)}}
+for k in ["EUR", "AFR"]:
+    d = cdf[cdf.ancestry == k]
+    arm[k] = {"N": len(d), "cases": int(d.PHENO.sum()),
+              "controls": int((d.PHENO == 0).sum()),
+              "case_rate_pct": round(100 * d.PHENO.mean(), 2)}
+arm["composition"] = cdf.ancestry.value_counts().to_dict()
+step5["corrected_arm_57507"] = arm
+
+# what changes between the arms, per stratum
+delta = {}
+for k in ["combined", "EUR", "AFR"]:
+    r, c = step5["cohorts"][k], arm[k]
+    delta[k] = {"N": c["N"] - r["N"], "cases": c["cases"] - r["cases"],
+                "controls": c["controls"] - r["controls"],
+                "case_rate_pct_points": round(c["case_rate_pct"] - r["case_rate_pct"], 2)}
+step5["corrected_minus_reproduction"] = delta
 report["A_step5_ancestry_stratification"] = step5
 
 # ---------------------------------------------------------------- B. the 517
