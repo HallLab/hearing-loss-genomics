@@ -128,9 +128,26 @@ wrong about the phenotype; it describes a different sample frame than the one us
 that the two differ. That is the part that will cause trouble later regardless of how the first
 question is answered.
 
-**The lost cases are not a random 0.7%.** Whether participants lacking array imputation differ
-systematically from those who have it — by enrolment era, by site, by ancestry — we have not
-checked. If they do, removing them is not neutral.
+**The exclusion is not a random 0.7% — this has now been checked, and it is concentrated.**
+
+| Group | excluded | total | rate |
+|---|---:|---:|---:|
+| **EAS** | **208** | **1,333** | **15.60%** |
+| AMR | 16 | 1,039 | 1.54% |
+| EUR | 233 | 51,867 | 0.45% |
+| AFR | 49 | 14,927 | 0.33% |
+
+Cohort-wide the rate is 0.73%. **One in six East Asian participants was excluded — twenty-one times
+that.** The same skew shows on sex (1.01% of women against 0.43% of men) and strongly on batch (1.09%
+of batch 1 against 0.11-0.18% of batches 2 and 3), and the excluded are younger and enrolled earlier.
+
+The batch and enrolment pattern suggests a technical coverage gap rather than anything about the
+participants: exome-sequenced early, array genotyping never completed for a subset. That is the
+shape of it, not a demonstrated cause.
+
+It does not change the direction of bias — losing cases still biases toward the null. It does mean
+the loss cannot be called neutral. East Asian participants are 1.6% of the analysed cohort and a
+sixth of them are gone.
 
 ## A second, separate problem in the same area
 
@@ -168,7 +185,7 @@ Detail and the reproducing script: `phase_1/results/FINDINGS.md` Finding 3.
 |---|---|---|
 | **A** | Restore the 427 and re-run. Requires only that the covariate build stop requiring imputed PCs. | one SAIGE re-run |
 | **B** | Keep the exclusion, and document it in the summary so the two numbers agree. | documentation only |
-| **C** | Restore, and first check whether the 517 differ systematically from the rest of the cohort. | a short analysis, then A |
+| **C** | ~~Restore, and first check whether the 517 differ systematically.~~ The check is done — see above. C collapses into A, now with the knowledge that the loss is concentrated in the smallest ancestry group. | — |
 
 We are not recommending one. The choice depends on the answer to question 1, which we cannot
 supply.

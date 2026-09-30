@@ -1,0 +1,200 @@
+{
+  "A_step5_ancestry_stratification": {
+    "cohorts": {
+      "combined": {
+        "N": 57632,
+        "cases": 6712,
+        "controls": 50920,
+        "case_rate_pct": 11.65
+      },
+      "EUR": {
+        "N": 43016,
+        "cases": 5160,
+        "controls": 37856,
+        "case_rate_pct": 12.0
+      },
+      "AFR": {
+        "N": 11387,
+        "cases": 1279,
+        "controls": 10108,
+        "case_rate_pct": 11.23
+      }
+    },
+    "purity": {
+      "EUR": {
+        "expected_class": "EUR",
+        "all_match": true,
+        "classes_present": {
+          "EUR": 43016
+        }
+      },
+      "AFR": {
+        "expected_class": "AFR",
+        "all_match": true,
+        "classes_present": {
+          "AFR": 11387
+        }
+      }
+    },
+    "combined_composition": {
+      "EUR": 43016,
+      "AFR": 11387,
+      "EAS": 939,
+      "SAS": 874,
+      "AMR": 846,
+      "UNKNOWN0": 499,
+      "UNKNOWN1": 58,
+      "UNKNOWN2": 13
+    },
+    "EUR_plus_AFR": 54403,
+    "combined": 57632,
+    "carried_only_in_combined": 3229
+  },
+  "B_profile_of_the_excluded": {
+    "n_dropped": 517,
+    "n_kept": 70408,
+    "age": {
+      "dropped_median": 49.5,
+      "kept_median": 56.6,
+      "dropped_mean": 49.39,
+      "kept_mean": 54.49,
+      "standardised_difference": -0.302,
+      "mannwhitney_p": 1.4590713841110043e-11
+    },
+    "enrolment_year": {
+      "dropped_median": 2015.0,
+      "kept_median": 2016.0,
+      "dropped_mean": 2015.29,
+      "kept_mean": 2016.57,
+      "standardised_difference": -0.338,
+      "mannwhitney_p": 2.2656910000868693e-13
+    },
+    "ancestry": {
+      "pct_dropped": {
+        "AFR": 9.48,
+        "AMR": 3.09,
+        "EAS": 40.23,
+        "EUR": 45.07,
+        "SAS": 0.97,
+        "UNKNOWN0": 0.58,
+        "UNKNOWN1": 0.58,
+        "UNKNOWN2": 0.0
+      },
+      "pct_kept": {
+        "AFR": 21.13,
+        "AMR": 1.45,
+        "EAS": 1.6,
+        "EUR": 73.34,
+        "SAS": 1.53,
+        "UNKNOWN0": 0.83,
+        "UNKNOWN1": 0.1,
+        "UNKNOWN2": 0.02
+      },
+      "chi2_p": 0.0,
+      "largest_pct_point_gap": 38.63
+    },
+    "sequenced_gender": {
+      "pct_dropped": {
+        "Female": 71.95,
+        "Male": 28.05
+      },
+      "pct_kept": {
+        "Female": 51.91,
+        "Male": 48.09
+      },
+      "chi2_p": 1.5233614226982232e-19,
+      "largest_pct_point_gap": 20.04
+    },
+    "batch": {
+      "pct_dropped": {
+        "1": 92.26,
+        "2": 2.9,
+        "3": 4.84
+      },
+      "pct_kept": {
+        "1": 61.58,
+        "2": 18.79,
+        "3": 19.63
+      },
+      "chi2_p": 2.8936799803457015e-45,
+      "largest_pct_point_gap": 30.68
+    },
+    "exclusion_rate_within_group": {
+      "ancestry": {
+        "AFR": {
+          "excluded": 49,
+          "total": 14927,
+          "pct_excluded": 0.33
+        },
+        "AMR": {
+          "excluded": 16,
+          "total": 1039,
+          "pct_excluded": 1.54
+        },
+        "EAS": {
+          "excluded": 208,
+          "total": 1333,
+          "pct_excluded": 15.6
+        },
+        "EUR": {
+          "excluded": 233,
+          "total": 51867,
+          "pct_excluded": 0.45
+        },
+        "SAS": {
+          "excluded": 5,
+          "total": 1080,
+          "pct_excluded": 0.46
+        },
+        "UNKNOWN0": {
+          "excluded": 3,
+          "total": 587,
+          "pct_excluded": 0.51
+        },
+        "UNKNOWN1": {
+          "excluded": 3,
+          "total": 75,
+          "pct_excluded": 4.0
+        },
+        "UNKNOWN2": {
+          "excluded": 0,
+          "total": 17,
+          "pct_excluded": 0.0
+        }
+      },
+      "sequenced_gender": {
+        "Female": {
+          "excluded": 372,
+          "total": 36924,
+          "pct_excluded": 1.01
+        },
+        "Male": {
+          "excluded": 145,
+          "total": 34001,
+          "pct_excluded": 0.43
+        }
+      },
+      "batch": {
+        "1": {
+          "excluded": 477,
+          "total": 43834,
+          "pct_excluded": 1.09
+        },
+        "2": {
+          "excluded": 15,
+          "total": 13246,
+          "pct_excluded": 0.11
+        },
+        "3": {
+          "excluded": 25,
+          "total": 13845,
+          "pct_excluded": 0.18
+        }
+      }
+    },
+    "cohort_wide_exclusion_rate_pct": 0.73
+  },
+  "C_scope_not_covered": {
+    "tinnitus": "Step 1 produces hearing_impairment and tinnitus. Checks 01-04 cover hearing impairment only. The tinnitus phenotype, and the combined HL-and/or-tinnitus phenotype decided on 2026-07-01, are unverified."
+  }
+}

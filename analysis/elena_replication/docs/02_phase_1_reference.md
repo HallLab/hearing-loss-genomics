@@ -328,6 +328,7 @@ difference between them is Finding 3.
 | 50,920 | controls the run used |
 | 427 | analysable people absent from the run — 40 cases + 387 controls (Finding 1) |
 | 556 | people the phenotype rules exclude, present in the run as controls (Finding 3) |
+| 208 | East Asian participants excluded — 15.60% of the 1,333 in the cohort, against 0.73% cohort-wide (Finding 4) |
 | 4 | legitimate controls on disk today but absent from the run |
 | 517 | people in the release with no imputed PCs — the 427 plus 90 already excluded on phenotype grounds |
 | 4,007 | excluded: target evidence on one date only |
@@ -425,7 +426,7 @@ exists.
 |---|---|---|
 | 1 | Was the PC filter deliberate, and which step introduced it? | Nikki, Elena — [page 01](01_sample_frame_decision.md) |
 | 2 | Do the 427 come back? | Molly, Doug, Nikki |
-| 3 | Do the 517 differ systematically from the rest of the cohort — enrolment era, site, ancestry? If they do, removing them is not neutral. Not checked. | open |
+| 3 | ~~Do the 517 differ systematically?~~ **Resolved, check 04 — they do.** 15.60% of East Asian participants were excluded against 0.73% cohort-wide, with the same skew on sex and strongly on batch. The loss is concentrated, not neutral. | — |
 | 4 | Why was the phenotype file rewritten 36 minutes after the covariates were built from it, and did anyone know? | Nikki, Elena |
 
 Cross-phase observations — things noticed about a later phase while working on this one — are not

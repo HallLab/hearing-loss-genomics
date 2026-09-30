@@ -237,6 +237,66 @@ from the earlier version. A question for Nikki Palmiero and Elena, not something
 
 ---
 
+## Finding 4 — the excluded are not a random 0.7%
+
+**Script:** [`../scripts/04_step5_and_dropped_profile.py`](../scripts/04_step5_and_dropped_profile.py)
+**Output:** [`04_step5_and_dropped_profile.json`](04_step5_and_dropped_profile.json)
+
+Findings 1 and 3 established who was excluded and how. This asks whether it matters beyond the
+count, which every earlier write-up listed as open and none had tested.
+
+**It matters.** Exclusion rate within each group, against 0.73% cohort-wide:
+
+| Group | excluded | total | rate |
+|---|---:|---:|---:|
+| **EAS** | **208** | **1,333** | **15.60%** |
+| AMR | 16 | 1,039 | 1.54% |
+| SAS | 5 | 1,080 | 0.46% |
+| EUR | 233 | 51,867 | 0.45% |
+| AFR | 49 | 14,927 | 0.33% |
+
+**One in six East Asian participants was excluded — twenty-one times the cohort-wide rate.** No
+other group is close.
+
+The same skew appears on two other axes:
+
+| | rate |
+|---|---:|
+| Female | 1.01% |
+| Male | 0.43% |
+| Batch 1 | 1.09% |
+| Batch 3 | 0.18% |
+| Batch 2 | 0.11% |
+
+And the excluded are younger (median age 49.5 against 56.6) and enrolled earlier (median 2015
+against 2016). Standardised differences around 0.3 for both — modest individually, consistent in
+direction.
+
+### Reading it
+
+**A technical origin is the likeliest explanation.** 92% of the excluded come from batch 1, and they
+enrolled earlier. That is the shape of a coverage gap: participants sequenced by exome early on, a
+subset of whom never received array genotyping. Nothing here establishes that, and the cause is not
+this replication's to determine — but it is the pattern, and it argues the exclusion was incidental
+rather than anything about the people.
+
+**The consequence is not incidental.** East Asian participants are 1.6% of the analysed cohort. The
+exclusion removed a sixth of them, making an already small group smaller. The absolute number is 208
+people and they are carried only in the combined analysis, so no stratified result turns on it —
+but a claim that the loss is neutral cannot be made, and earlier drafts of the review page implied
+it was.
+
+**It does not overturn Findings 1 or 3.** The direction of bias from losing cases is still toward the
+null. What changes is that the loss is concentrated, so its effect is concentrated too, and the
+group deciding whether to restore the 427 should know that.
+
+### What this does not establish
+
+Why the coverage gap follows ancestry. Whether it reflects recruitment era, site, consent, or
+something in how batch 1 was assembled is not answerable from these files.
+
+---
+
 ## Phase 1 verdict
 
 The criterion in [README](../../README.md) §2 is that the re-derived case, control **and sample**
@@ -248,6 +308,11 @@ sets match person-for-person, or that every difference is explained by a documen
 - **Provenance of what was run — does not pass.** The phenotype file was overwritten 36 minutes
   after the covariates were built from it, and 556 people the rules exclude were analysed as
   controls (Finding 3).
+- **Ancestry stratification (Step 5) — passes.** The EUR and AFR cohorts contain only participants
+  the release classifies as EUR and AFR respectively, and `combined` is exactly EUR + AFR + the
+  smaller groups. Verified in check 04.
+- **Representativeness of the exclusion — does not pass.** The 517 are not a random 0.7%: one in six
+  East Asian participants was excluded, against 0.73% cohort-wide (Finding 4).
 
 The split matters for what comes next. The rule for deciding who is a case is sound, so a
 disagreement in a later phase should not be attributed to the phenotype. But the cohort that was

@@ -133,10 +133,19 @@ obviously true.
 - **Not that this was careless.** The intent is stated in the comment and it is the correct intent.
   The two `.fam` files differ by one word in a long path, and 0.7% of a cohort is below what any
   summary statistic would reveal.
-- **Not that the results are void.** 40 cases out of 6,752 is a small loss of power. The effect is
-  to make associations slightly harder to detect, not to create false ones. What is not yet known is
-  whether people without array data differ systematically from those who have it — by enrolment era,
-  by site, by ancestry. If they do, the loss is not neutral. That has not been checked.
+- **Not that the results are void.** 40 cases out of 6,752 is a small loss of power, and the effect
+  is to make associations slightly harder to detect, not to create false ones.
+
+**But the loss is not evenly spread, and that has now been checked.** Cohort-wide the exclusion rate
+is 0.73%. Among East Asian participants it is **15.60%** — 208 of 1,333, one in six. No other group
+comes close (EUR 0.45%, AFR 0.33%). The same skew appears on sex (1.01% of women against 0.43% of
+men) and strongly on batch (1.09% of batch 1 against 0.11–0.18% of the others), and the excluded are
+younger and enrolled earlier.
+
+That pattern looks technical — exome-sequenced early, array genotyping never completed for a subset —
+rather than anything about the people. It does not change the direction of bias. It does mean the
+loss cannot be called neutral: East Asian participants are 1.6% of the analysed cohort, and a sixth
+of them are gone.
 
 ---
 
