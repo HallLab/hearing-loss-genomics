@@ -202,9 +202,23 @@ An inner join cannot increase N, so these cannot be the same file. The build log
 merge that produced the consumed covariates records `Phenotype samples: 57,636`.
 
 ```
-20:21   the covariate build reads the phenotype file (57,636 rows) and writes the SAIGE inputs
-20:57   the phenotype file is overwritten (57,080 rows)
+2026-07-31 20:21   HL covariate build reads the phenotype file, writes the SAIGE inputs (57,632)
+2026-07-31 20:57   the ENTIRE phenotype output is regenerated (HL 57,080, tinnitus 53,100)
+2026-08-01 14:27   TINNITUS covariates are rebuilt from the corrected file (53,096)  <-- the fix was seen
+2026-08-03 14:38   null models are fitted, on the stale 20:21 HL covariates
+2026-08-03 16:22   the association test runs
 ```
+
+**The correction came first, and the analysis ran three days later on a derivative built before it.**
+Not "the file was fixed too late" — it was fixed, and the hearing-loss branch never picked it up.
+
+The tinnitus covariates were rebuilt from the corrected file the next day and match it (53,100
+phenotype rows to 53,096 after the join, the same loss of 4). So the regeneration was noticed and
+acted on in one branch. The hearing-loss covariates were simply never rebuilt.
+
+That weakens any reading of "nobody could have known the file changed", and it also argues against
+carelessness: two parallel branches, one updated and one not, is the ordinary failure mode of a
+pipeline whose file dependencies are not declared anywhere.
 
 Thirty-six minutes. **The artifact on disk is not the artifact that was used**, and neither file says
 so. This is a reproducibility problem independent of the counts: re-running any later step against
@@ -226,6 +240,12 @@ only in today's file      :    4  ->  legitimate controls
 evidence that is not hearing impairment, so they are neither a clean case nor a clean control — the
 rule exists precisely to set them aside. The 20:21 version of the phenotype file had not applied that
 exclusion; the 20:57 version does, and was never used.
+
+**What is inference, not fact.** Every file in `PMBBv4_phecodex/` carries the 20:57 timestamp,
+including `all_statuses`. So the status that classifies these 556 as excluded is itself from the
+regenerated version, and what they were classified as at 20:21 cannot be recovered. That the earlier
+version had not applied the exclusion is the likeliest reading, not a demonstrated one — the rule,
+the input data, or something else could have changed in that regeneration.
 
 ### What the analysis actually ran on
 
