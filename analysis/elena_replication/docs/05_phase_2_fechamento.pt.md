@@ -186,7 +186,7 @@ qual corte se usa, e a própria reunião de 2026-07-01 deixou isso aberto (REVEL
 ## O que isso significa
 
 **A máscara `pLOF` do estudo é majoritariamente variante intrônica perto de sítio de splice.** Quem
-leu um resultado "pLOF" desse pipeline leu, em três quartos, outra coisa.
+leu um resultado "pLOF" desse pipeline leu, em quase dois terços, outra coisa.
 
 Direção do efeito: encher a máscara de variantes inofensivas **dilui** o sinal. Se um gene tem 5
 variantes que realmente quebram a proteína e 15 que não fazem nada, o teste mistura as 20 e o efeito
