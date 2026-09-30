@@ -1,0 +1,45 @@
+{
+  "chromosome": "8",
+  "annotation_rows": 6093288,
+  "is_pLOF_true": {
+    "rows": 197002,
+    "with_a_real_LoF_consequence": 50252,
+    "no_real_LoF_but_contains_'splice'": 146750,
+    "no_real_LoF_and_no_'splice'": 0
+  },
+  "spliceai_gate": {
+    "rows_splice_without_real_LoF": 201281,
+    "is_pLOF_true__SpliceAI_below_0.2": 129118,
+    "is_pLOF_true__SpliceAI_at_or_above_0.2": 17632,
+    "is_pLOF_FALSE_although_SpliceAI_at_or_above_0.2": 9094,
+    "verdict": "SpliceAI does not gate the decision -- it is uncorrelated with it"
+  },
+  "splice_terms": {
+    "splice_polypyrimidine_tract_variant": {
+      "is_pLOF_true": 122036,
+      "is_pLOF_false": 0,
+      "always_triggers": true
+    },
+    "splice_region_variant": {
+      "is_pLOF_true": 46693,
+      "is_pLOF_false": 54531,
+      "always_triggers": false
+    },
+    "splice_donor_region_variant": {
+      "is_pLOF_true": 17580,
+      "is_pLOF_false": 0,
+      "always_triggers": true
+    },
+    "splice_donor_5th_base_variant": {
+      "is_pLOF_true": 7134,
+      "is_pLOF_false": 0,
+      "always_triggers": true
+    }
+  },
+  "always_triggering_terms": [
+    "splice_polypyrimidine_tract_variant",
+    "splice_donor_region_variant",
+    "splice_donor_5th_base_variant"
+  ],
+  "vep_impact_of_those_terms": "LOW -- none is a loss-of-function consequence"
+}

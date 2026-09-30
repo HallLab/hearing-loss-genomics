@@ -105,6 +105,78 @@ defensible.
 
 ---
 
+## Finding 1b — the cause, established from the pipeline's own annotation
+
+**Script:** [`../scripts/03_plof_root_cause.py`](../scripts/03_plof_root_cause.py)
+**Output:** [`03_plof_root_cause.json`](03_plof_root_cause.json)
+
+Finding 1 left one alternative open: that the pipeline's own VEP disagrees with the release's, making
+the whole comparison a difference between two annotation runs rather than a defect. **It is a defect**,
+and this is settled without reference to the release at all.
+
+The mask builder reads `rarevariantExWAS/variant_categories/chr{N}.classified.tsv`, which carries the
+pipeline's own `Consequence`, its own `SpliceAI_max`, and its own `is_pLOF` decision in the same row.
+The question is therefore internal: does `is_pLOF` follow the documented rule?
+
+### It does not, and the signature is exact
+
+Of 197,002 annotation rows marked `is_pLOF = True` on chr8:
+
+| | rows |
+|---|---:|
+| carry a genuine loss-of-function consequence | 50,252 — 25.5% |
+| carry **no** LoF consequence, but contain the string `splice` | 146,750 — 74.5% |
+| carry no LoF consequence and no `splice` | **0** |
+
+Zero exceptions. Nothing is marked pLOF except through a real LoF consequence or a consequence
+containing the word *splice*.
+
+### The SpliceAI gate was never applied
+
+The documented rule admits splice-site variants only at **SpliceAI ≥ 0.2**. Among splice-annotated
+rows without a real LoF consequence:
+
+| | rows |
+|---|---:|
+| `is_pLOF = True` with SpliceAI **< 0.2** | 129,118 |
+| `is_pLOF = True` with SpliceAI ≥ 0.2 | 17,632 |
+| `is_pLOF = **False**` although SpliceAI ≥ 0.2 | 9,094 |
+
+SpliceAI is **uncorrelated** with the decision — it admits variants below the threshold and rejects
+variants above it. The score was computed and written to the file; it was never used to gate.
+
+### Three low-impact terms trigger it unconditionally
+
+| VEP term | `is_pLOF` true | false | VEP impact |
+|---|---:|---:|---|
+| `splice_polypyrimidine_tract_variant` | 122,036 | **0** | LOW |
+| `splice_donor_region_variant` | 17,580 | **0** | LOW |
+| `splice_donor_5th_base_variant` | 7,134 | **0** | LOW |
+| `splice_region_variant` | 46,693 | 54,531 | LOW — true only by co-occurrence |
+
+The first three always trigger pLOF and never fail to. **None of them is a loss-of-function
+consequence**: all are VEP `IMPACT=LOW` annotations for variants *near* a splice site rather than at
+the donor or acceptor itself. `splice_polypyrimidine_tract_variant` alone accounts for 122,036 rows —
+more than twice the entire genuine-LoF set.
+
+### What this means
+
+The defect is a **consequence-matching error in the classification step**, not an annotation
+disagreement and not a mask-assembly bug. The pipeline's own VEP output is fine; the rule applied to
+it is wrong in two independent ways — three low-impact terms admitted that should not be, and the
+SpliceAI threshold that was supposed to gate them never consulted.
+
+This also closes the alternative that Finding 1 flagged. The release was used to *detect* the problem;
+the pipeline's own files *confirm* it. No appeal to an external reference is needed.
+
+### Still not established
+
+Whether chr8 is representative. Everything here is one chromosome. The classification code
+(`step2_3_3_classifyvariants.bsub`) has also not been read — the behaviour is established from its
+output, not from its source, so the exact expression that produces it is inferred rather than seen.
+
+---
+
 ## Finding 2 — the pDM disagreement is ordinary, and separable from Finding 1
 
 | | pipeline `pDM` | release `damaging_missense` |
@@ -133,19 +205,18 @@ a judgement call. Calling a synonymous variant loss-of-function is not.
 | 52.3% of chr8 pLOF meets neither clause of the documented definition | release VEP + SpliceAI, all transcripts | **solid for chr8, against this reference** |
 | Mask files are structurally well-formed | var/anno lengths, annotation homogeneity | **solid** |
 | pDM divergence is a threshold difference | 16,244 of 16,304 are release `other_missense` | **solid** |
-| The cause of Finding 1 | — | **not established** |
+| The cause of Finding 1 | the pipeline's own classification output (Finding 1b) | **established** |
+| Whether chr8 is representative | — | **not established** |
 
 **Not established, and deliberately not guessed:**
 
-- **The cause.** The pipeline ran its own VEP (`rarevariantExWAS/vep_annotation_filtered/`) and its
-  own classification (`step2_3_3_classifyvariants.bsub`). The defect could be in either, or in the
-  deduplication that produced `masks_deduplicated`. None has been read yet.
-- **Whether the two annotation runs agree.** This comparison uses the **release's** VEP and SpliceAI
-  as the reference. The pipeline ran its own. If its VEP assigned different consequences or splice
-  scores, part of the 52.3% would be a disagreement between two annotation runs rather than a
-  mask-construction error. Reading the pipeline's own VEP output is the next step and would settle
-  it — until then this finding is a discrepancy against an independent reference, not a proven
-  defect in the mask builder.
+- ~~**The cause.**~~ **Established — see Finding 1b.** It is a consequence-matching error in the
+  classification step: three VEP `IMPACT=LOW` splice terms admitted unconditionally, and the
+  documented SpliceAI ≥ 0.2 gate never applied. The classification *source* has still not been read,
+  so the exact expression is inferred from its output.
+- ~~**Whether the two annotation runs agree.**~~ **No longer an open question.** Finding 1b settles
+  the defect from the pipeline's own annotation, without appeal to the release. The release detected
+  the problem; the pipeline's own files confirm it.
 - **Whether it is genome-wide.** This is a chr8 pilot. Nothing here licenses a claim about the other
   21 chromosomes.
 - **The effect on results.** That is Phase 4's question. A mask carrying non-LoF variants dilutes a
