@@ -403,11 +403,12 @@ difference between them is Finding 3.
 | 6,752 | cases the phenotype supports — reproduced exactly |
 | 6,712 | cases the run used; identical in both versions of the phenotype file |
 | 50,920 | controls the run used |
-| 427 | analysable people absent from the run — 40 cases + 387 controls (Finding 1) |
+| **431** | analysable people absent **from the run** — 40 cases + 391 controls. The operative number |
+| 427 | analysable people absent from the **phenotype file on disk** — 40 cases + 387 controls (Finding 1). Not the same 431: it is 431 minus the 4 below |
+| 4 | legitimate controls on the disk file but absent from the run |
 | 556 | people the phenotype rules exclude, present in the run as controls (Finding 3) |
 | 208 | East Asian participants excluded — 15.60% of the 1,333 in the cohort, against 0.73% cohort-wide (Finding 4) |
-| 4 | legitimate controls on disk today but absent from the run |
-| 517 | people in the release with no imputed PCs — the 427 plus 90 already excluded on phenotype grounds |
+| 517 | people in the release with no imputed genotypes — the 427 plus 90 already excluded on phenotype grounds |
 | 4,007 | excluded: target evidence on one date only |
 | 9,411 | excluded: other ear-family evidence but not hearing impairment |
 
@@ -420,7 +421,27 @@ difference between them is Finding 3.
 | 25,094 | tinnitus events in the OMOP observation table |
 | 134,917 | `SO_396` hearing-impairment events |
 
-The three cohort sizes reconcile as `57,507 − 427 − 4 + 556 = 57,632`.
+The cohort sizes reconcile as `57,507 − 431 + 556 = 57,632`, or equivalently
+`57,507 − 427 − 4 + 556`.
+
+**The two arms, by stratum** (§5c)
+
+| Stratum | reproduction 57,632 | corrected 57,507 | change |
+|---|---|---|---|
+| combined | 57,632 · 6,712 cases | 57,507 · 6,752 cases | −125 people, +40 cases |
+| EUR | 43,016 · 5,160 | 42,786 · 5,183 | −230, +23 |
+| AFR | 11,387 · 1,279 | 11,334 · 1,285 | −53, +6 |
+
+The corrected arm is smaller and carries more cases. Case rate rises ~0.1 percentage points in every
+stratum.
+
+**Ancestry composition, the two arms**
+
+| Number | What it is |
+|---:|---|
+| 939 → 1,104 | East Asian participants, reproduction arm → corrected arm |
+| **165** | East Asian participants the correction restores — **+17.6%** of that stratum, against −0.5% or less for every other group |
+| 1,333 | East Asian participants in the exome cohort in total |
 
 ### Which number goes to the next phase
 
