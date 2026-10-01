@@ -2,7 +2,8 @@
 
 **Autor:** Andre Rico · **Data:** 2026-09-30
 **Cópia de trabalho pessoal, em português.** Não é página de Confluence.
-**Notebook com os gráficos e o código:** [`phase_3/scripts/01_pc_selection.ipynb`](../phase_3/scripts/01_pc_selection.ipynb)
+**Notebook com os gráficos e o código:** [`phase_3/scripts/01_pc_selection.pt.ipynb`](../phase_3/scripts/01_pc_selection.pt.ipynb)
+**Versão canônica, em inglês:** [`01_pc_selection.ipynb`](../phase_3/scripts/01_pc_selection.ipynb)
 
 ---
 
