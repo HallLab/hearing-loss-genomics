@@ -27,15 +27,46 @@ CONTEXT = "#d8d7d2"          # background points in small multiples
 WHAT_RAN = {"combined": 5, "EUR": 9, "AFR": 10}
 
 
+SOURCES = {
+    "combined": REL / "PCA/combined/PMBB-Release-2026-4.0_genetic_exome.no1KG.eigenvalues.tsv",
+    "EUR":      PIPE / "EUR_variance_explained.tsv",
+    "AFR":      PIPE / "AFR_variance_explained.tsv",
+    "pcs_per_person": REL / "PCA/combined/PMBB-Release-2026-4.0_genetic_exome.commonsnps.samples_ancestries.tsv",
+}
+
+
+def sources():
+    """Where every number in this notebook comes from, with owner and date.
+
+    Printed in the notebook rather than left inside this module: the notebook's job
+    is to let someone verify the claim, and a reader who cannot see which files were
+    read cannot do that.
+
+    Note that no PCA is computed anywhere here. These are eigenvalues that already
+    existed -- one table published by PMBB, two produced by the pipeline itself. A
+    scree plot is a view of a table, not a calculation.
+    """
+    import pwd, datetime
+    rows = []
+    for name, path in SOURCES.items():
+        st = path.stat()
+        rows.append({
+            "what": name,
+            "owner": pwd.getpwuid(st.st_uid).pw_name,
+            "modified": datetime.datetime.fromtimestamp(st.st_mtime).strftime("%Y-%m-%d"),
+            "path": str(path),
+        })
+    return pd.DataFrame(rows)
+
+
 def eigenvalues():
     """PC -> eigenvalue, for each of the three PCAs. Returns tidy long form."""
     rows = []
-    rel = pd.read_csv(REL / "PCA/combined/PMBB-Release-2026-4.0_genetic_exome.no1KG.eigenvalues.tsv",
-                      sep="\t").iloc[0].astype(float)
+    rel = pd.read_csv(SOURCES["combined"], sep="\t").iloc[0].astype(float)
     for i, v in enumerate(rel.values, 1):
         rows.append({"cohort": "combined", "PC": i, "eigenvalue": v})
     for grp in ["EUR", "AFR"]:
-        d = pd.read_csv(PIPE / f"{grp}_variance_explained.tsv", sep="\t")
+        d = pd.read_csv(SOURCES[grp], sep="\t")
         for _, r in d.iterrows():
             rows.append({"cohort": grp, "PC": int(r.PC), "eigenvalue": float(r.Eigenvalue)})
     df = pd.DataFrame(rows)
@@ -60,8 +91,8 @@ def elbow(df, cohort, flat_threshold=10.0):
 
 def pcs_with_ancestry():
     """Release exome PCs 1-4 with the ancestry label, for the scatter plots."""
-    f = REL / "PCA/combined/PMBB-Release-2026-4.0_genetic_exome.commonsnps.samples_ancestries.tsv"
-    d = pd.read_csv(f, sep="\t", usecols=["IID", "Class", "PC1", "PC2", "PC3", "PC4"])
+    d = pd.read_csv(SOURCES["pcs_per_person"], sep="\t",
+                    usecols=["IID", "Class", "PC1", "PC2", "PC3", "PC4"])
     d["Class"] = d.Class.fillna("UNKNOWN").str.replace(r"UNKNOWN\d", "UNKNOWN", regex=True)
     return d
 
