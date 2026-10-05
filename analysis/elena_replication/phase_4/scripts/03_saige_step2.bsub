@@ -53,7 +53,7 @@ MASKDIR=${REPL}/phase_4/data/masks_by_chrom
 PLINKDIR=${ELENA}/rarevariant_geneburden/plink_deduplicated
 OUT=${REPL}/phase_4/results/step2
 
-GROUPS=(combined EUR AFR)
+COHORTS=(combined EUR AFR)
 MASKS=(pLOF pDM pLOF_pDM)
 MAFS=(0.0001 0.001 0.01)
 
@@ -76,7 +76,7 @@ MASK_I=$(( (J / 3) % 3 ))
 CHR=$(( (J / 9) % 22 + 1 ))
 GRP_I=$(( J / 198 ))
 
-GROUP=${GROUPS[${GRP_I}]}
+GROUP=${COHORTS[${GRP_I}]}
 MASK=${MASKS[${MASK_I}]}
 ANNO=${ANNOS[${MASK_I}]}
 MAF=${MAFS[${MAF_I}]}
