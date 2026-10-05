@@ -209,92 +209,75 @@ the rule. **The variant figure is the one that describes the mask**, and it is t
 
 ---
 
-## Finding 2 — the pDM disagreement is ordinary, and separable from Finding 1
+## Finding 2 — CORRECTED: the pDM divergence is a parsing bug, not a threshold choice
 
-| | pipeline `pDM` | release `damaging_missense` |
-|---|---:|---:|
-| variants | 27,001 | 23,125 |
+> **This finding previously said the opposite.** It claimed the pDM divergence was a
+> predictor-threshold judgement of the kind the 2026-07-01 meeting left open, and that pDM was
+> "built from flags this defect does not involve". Nikki Palmiero found otherwise on 2026-10-05.
+> The original reading is kept below the correction, because how it went wrong is the useful part.
 
-Shared 10,697; pipeline-only 16,304; release-only 12,428. Of the pipeline-only, **16,244 are
-`other_missense` in the release** — missense variants the release does not consider damaging — and
-only 58 are absent from its universe.
+**Script:** [`../scripts/06_revel_and_biotype.py`](../scripts/06_revel_and_biotype.py)
 
-This is a **threshold disagreement**, which is expected and legitimate. Damaging-missense calls
-depend on which predictor and which cutoff: the 2026-07-01 decision specified REVEL 0.5 primary
-with 0.6 as sensitivity, and that choice alone moves tens of thousands of variants. Two defensible
-pipelines will differ here.
+VEP writes REVEL per transcript, as a comma-separated list:
 
-The contrast with Finding 1 is the point. Disagreeing about *how damaging* a missense variant is, is
-a judgement call. Calling a synonymous variant loss-of-function is not.
+```
+0.131,.,0.131,0.131,0.131
+```
+
+The classification script reads it with `pd.to_numeric(errors="coerce")`, which turns any
+multi-valued entry into `NaN`. Only variants whose REVEL happened to arrive as a single number
+survive.
+
+| chr8 | |
+|---|---:|
+| missense rows with a usable score, as parsed | 65,806 — **12.1%** |
+| with the list read | 517,274 — **95.3%** |
+| variants passing REVEL ≥ 0.5, as parsed | 5,391 |
+| variants passing REVEL ≥ 0.5, correct | **20,618** |
+| **undercount** | **15,227 — 73.9%** |
+
+So `pDM` is not intact. It is missing roughly three quarters of its REVEL-qualifying variants.
+
+### Why this replication missed it
+
+Checks 01 and 02 compared `pDM` against the release's group files **from outside**, saw a divergence
+of the size a different threshold would produce, and recorded it as a judgement call.
+
+**From outside, a different threshold and broken parsing are indistinguishable.** Both produce
+"fewer variants than the reference". Only reading the field separates them.
+
+That is a lesson about the method rather than about this defect: an external comparison detects a
+discrepancy, it does not diagnose a cause. Phase 2 had an internal check available — the pipeline's
+own classification file carries the raw `REVEL_score` — and did not use it for `pDM`, having already
+concluded the mask was fine.
+
+### What survives from the original reading
+
+The contrast with `pLOF` still holds, and still matters. Disagreeing about *how damaging* a missense
+variant is remains a judgement call, and the 2026-07-01 REVEL 0.5-versus-0.6 question is still open.
+What is no longer true is that `pDM`'s divergence **is** that disagreement. Most of it is a bug.
 
 ---
 
-## Check 05 — the two mask sets, written down
+## Finding 3 — non-coding genes are in the masks
 
-**Script:** [`../scripts/05_emit_masks.py`](../scripts/05_emit_masks.py)
-**Manifest:** [`05_masks_manifest.json`](05_masks_manifest.json) · **Files:** `results/masks/`
+Also raised by Nikki. Measured at gene level across all 22 chromosomes:
 
-Checks 01–04 established what is wrong. This writes down the deliverable, mirroring Phase 1:
-
-| Arm | Masks |
-|---|---|
-| **reproduction** | the pipeline's four masks exactly as they ran, at `masks_deduplicated/` |
-| **corrected** | `pLOF` and `pLOF_pDM` rebuilt; `ALL` and `pDM` symlinked unchanged |
-
-### The corrected rule
-
-```
-pLOF = exact term match on {frameshift, stop_gained, start_lost, stop_lost,
-                            splice_acceptor_variant, splice_donor_variant}
-     OR any splice annotation WITH SpliceAI >= 0.2
-```
-
-Two changes from the implementation: terms are matched **exactly** against the comma-separated
-`Consequence` list rather than as substrings, and the three `IMPACT=LOW` splice terms enter only
-through the SpliceAI gate the plan specifies.
-
-### What it costs the mask
-
-| | entries kept | dropped | re-annotated |
+| mask | genes | not protein-coding | entries affected |
 |---|---:|---:|---:|
-| `pLOF` | 409,179 | **592,941** | — |
-| `pLOF_pDM` | 1,126,909 | 590,163 | 811 → `pDM` |
+| `pLOF` | 19,038 | **1,101 — 5.8%** | 20,078 — 2.0% |
+| `pLOF_pDM` | 19,057 | **1,101 — 5.8%** | 20,342 — 1.2% |
+| `pDM` | 17,336 | 8 — 0.0% | 264 |
 
-`409,179 + 592,941 = 1,002,120` and `1,126,909 + 590,163 + 811 = 1,717,883`, matching both source
-files exactly. **The corrected pLOF mask is 41% the size of the one that ran.**
+`TMC3-AS1` is in the mask and is not protein-coding; the rest follow the same pattern — `A1BG-AS1`,
+`ABCA9-AS1`, `ACTA2-AS1`.
 
-Of the 409,179 kept, 395,074 have a genuine LoF consequence and the remaining ~14,000 enter through
-the SpliceAI gate — so the gate the plan specified does admit a real population, it was simply never
-consulted.
+**Large in genes, small in variants, and both are true.** Each of the 1,101 carries a burden test
+that cannot mean anything — a lncRNA has no protein to lose function of — and each consumes
+multiple-testing correction. But only about 2% of mask entries sit on them, so the dilution is minor.
+Quoting either number alone misleads.
 
-### Why `pLOF_pDM` needed care
-
-The builder gives the `pLOF` annotation precedence, so a variant labelled `pLOF` there may also be
-`pDM`. Dropping it for failing corrected-pLOF would have silently lost a legitimate `pDM` variant —
-the same class of error this replication is documenting. **811 variants were re-annotated rather than
-removed**, which the `pDM` count confirms: 720,453 → 721,264, exactly +811.
-
-### `ALL` and `pDM` are untouched
-
-`pDM` is built from `is_AlphaMissense_DM` / `is_REVEL_DM`, which the defect does not involve, and
-`ALL` is every variant. Both are symlinked rather than copied: `ALL.txt` is 425 MB and duplicating it
-buys nothing.
-
-### Structural check on the output
-
-The same check applied to the pipeline's masks, applied here: `var` and `anno` rows pair correctly
-for every gene in both rewritten files (17,209 and 18,669 genes, zero misaligned), and annotations
-are homogeneous.
-
-### A pre-existing inconsistency, preserved rather than fixed
-
-`pLOF.txt` carries 1,002,120 pLOF entries; the pLOF portion of `pLOF_pDM.txt` carries 997,430 — a
-gap of **4,690** in the source masks, before any correction. The two were not built from identical
-inputs. The corrected versions preserve the gap proportionally (2,723).
-
-This is recorded rather than resolved. It is small, it is not the defect under investigation, and
-silently reconciling it would make the corrected masks differ from the originals in a second way that
-nothing documents.
+`pDM` is barely touched because a missense call requires a protein by definition.
 
 ---
 
@@ -307,6 +290,8 @@ nothing documents.
 | Mask files are structurally well-formed | var/anno lengths, annotation homogeneity | **solid** |
 | pDM divergence is a threshold difference | 16,244 of 16,304 are release `other_missense` | **solid** |
 | The cause of Finding 1 | the pipeline's own classification output (Finding 1b) | **established** |
+| pDM is unaffected | — | **withdrawn** — it undercounts REVEL by 73.9% (Finding 2) |
+| Non-coding genes in the masks | gene-level biotype, all 22 chromosomes (Finding 3) | **established** |
 | Whether chr8 is representative | all 22 chromosomes, 60.9-65.7% (Finding 1c) | **established — it is** |
 
 **Not established, and deliberately not guessed:**

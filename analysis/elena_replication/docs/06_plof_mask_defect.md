@@ -1,6 +1,6 @@
 # The pLOF mask admits variants its own definition excludes
 
-**Author:** Andre Rico · **Date:** 2026-09-30 · **Status:** for review
+**Author:** Andre Rico · **Date:** 2026-10-05 · **Status:** for review · **revised**
 **For:** Nikki Palmiero · **Artifact:** `rarevariantExWAS/step2_3_3_classifyvariants.bsub`
 **Evidence:** `analysis/elena_replication/phase_2/` — scripts, outputs, and corrected masks
 
@@ -13,8 +13,9 @@
    rather record that than assume it was an oversight. → **Nikki, Elena**
 2. **Should the masks be rebuilt and the gene-burden step re-run?** A corrected mask is already
    built and ready. → **Nikki, Molly, Doug**
-3. **Is the REVEL threshold still open?** The `pDM` mask is unaffected by this defect, but its
-   0.5-versus-0.6 question is still recorded as pending from 2026-07-01. → **Nikki**
+3. **Is the REVEL threshold still open?** The 0.5-versus-0.6 question has been pending since
+   2026-07-01. It matters more now that the parsing bug below is fixed, since far more variants will
+   be near the cut. → **Nikki**
 
 ---
 
@@ -25,9 +26,6 @@ This is a defect in one expression, not in the annotation work around it.
 - **The VEP run is fine.** Consequences match what the release's own VEP assigns.
 - **The SpliceAI computation is fine.** `SpliceAI_max` is extracted correctly at line 125 of the
   classification script.
-- **`pDM` is fine.** It is built from `is_AlphaMissense_DM` and `is_REVEL_DM`, which this defect does
-  not involve. Its divergence from the release group files is a predictor-threshold difference — a
-  judgement call of exactly the kind the 2026-07-01 meeting left open.
 - **`ALL` is fine.** No damage filter applies to it.
 - **The mask files are structurally sound.** `var` and `anno` rows pair correctly for every gene, and
   annotations are homogeneous. Nothing is scrambled.
@@ -145,6 +143,43 @@ a real population. It was simply never consulted.
 
 ---
 
+## Two further defects, found by Nikki
+
+Raised 2026-10-05, after an independent review that reached the same pLOF diagnosis. Both were
+confirmed here; neither had been found by this replication.
+
+### REVEL is parsed as a single number
+
+VEP writes it per transcript as a comma-separated list — `0.131,.,0.131,0.131,0.131` — and
+`pd.to_numeric(errors="coerce")` turns any such entry into `NaN`. Only single-valued scores survive:
+**12.1% of missense rows instead of 95.3%**. On chr8 the `pDM` set is **5,391 where it should be
+20,618 — a 73.9% undercount**.
+
+This replication had written that `pDM` was unaffected. **That was wrong**, and it is worth saying
+why it was missed: checks 01–02 compared `pDM` against the release group files from outside, and from
+outside a different threshold and broken parsing look identical — both give "fewer variants than the
+reference". Only reading the field separates them.
+
+### Non-coding genes are in the masks
+
+Measured at gene level across all 22 chromosomes: **1,101 of 19,038 genes in `pLOF` are not
+protein-coding**, carrying 20,078 mask entries. `TMC3-AS1` is among them, as are `A1BG-AS1`,
+`ABCA9-AS1`, `ACTA2-AS1`.
+
+Large in genes, small in variants — about 2% of entries — and both are true. Each of the 1,101 is a
+burden test that cannot mean anything, and each consumes multiple-testing correction. `pDM` is barely
+touched here (8 genes), because a missense call requires a protein.
+
+### So all three damage masks are affected, by three independent causes
+
+| defect | affects | size |
+|---|---|---|
+| low-impact splice terms + SpliceAI gate unapplied | `pLOF`, `pLOF_pDM` | 63.8% of variants |
+| non-coding genes | `pLOF`, `pLOF_pDM` | 1,101 genes · 2% of entries |
+| REVEL parsing | **`pDM`**, `pLOF_pDM` | 73.9% undercount |
+
+---
+
 ## Why this is a defect and not a defensible disagreement
 
 Worth stating, because two analysts can annotate the same variants and disagree legitimately.
@@ -174,9 +209,33 @@ surfaced. The claim rests on the pipeline's own files.
 - **Not that this was careless.** The documented definition is right, the SpliceAI score is computed
   correctly, and the three terms are explicitly named rather than caught by accident — which is why
   question 1 above asks where the list came from rather than assuming.
-- **Not that the pDM divergence is the same kind of problem.** Disagreeing about how damaging a
-  missense variant is depends on predictor and cutoff, and the meeting left that open. Classifying an
-  intronic variant as loss-of-function does not.
+- **Not that every divergence is a defect.** Disagreeing about how damaging a missense variant is
+  depends on predictor and cutoff, and the meeting left that open. That genuine judgement call still
+  exists — what is no longer true is that `pDM`'s divergence *is* it. Most of that gap is the parsing
+  bug above.
+
+- **Not that the numbers here are final.** The corrected masks predate Nikki's two findings and are
+  being rebuilt with the REVEL fix and a `BIOTYPE == protein_coding` restriction. The pLOF figures
+  stand; the mask sizes will move.
+
+---
+
+## The corrected definition
+
+```
+pLOF =   an explicit list: frameshift / stop_gained / start_lost / stop_lost
+         / splice_acceptor / splice_donor / transcript_ablation
+  OR     any other splice annotation, but only with SpliceAI >= 0.2
+  AND    BIOTYPE == protein_coding
+```
+
+Matched as exact terms against the comma-separated consequence list — **not** by VEP's `IMPACT`
+field, which is per row: a row reading `stop_gained,splice_polypyrimidine_tract_variant` is `HIGH` as
+a whole, so filtering on `IMPACT` would pull the low-impact splice terms straight back in.
+
+`transcript_ablation` is added although the original list omits it: it is `IMPACT=HIGH` and
+unambiguously loss of function, so leaving it out would be a second departure from the documented
+definition rather than a fix.
 
 ---
 
