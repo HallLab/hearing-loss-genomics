@@ -6,9 +6,18 @@
 #
 #   3 cohorts (combined, EUR, AFR)
 # x 22 chromosomes
-# x 4 masks (pLOF, pDM, pLOF_pDM, ALL)   <- rebuilt in phase 2
+# x 3 masks (pLOF, pDM, pLOF_pDM)        <- rebuilt in phase 2
 # x 3 max-MAF cutoffs (1e-4, 1e-3, 1e-2)
-# = 792 tasks
+# = 594 tasks
+#
+# The ALL mask is deliberately not run.  Andre's call, and the reasoning holds:
+# a burden test over every variant in the gene pools synonymous and intronic
+# variants that carry no mechanism in with the ones that do, so it dilutes
+# rather than tests anything.  It is also by far the most expensive mask --
+# 15,951,289 entries against 1,340,936 for pLOF_pDM.  The ALL group files stay
+# on disk (phase_2/results/masks_v2/ and phase_4/data/masks_by_chrom/ALL/) so
+# the decision is reversible, and phase 5 simply has nothing to compare against
+# Elena's ALL results.
 #
 # Every SAIGE parameter below is taken from Elena's own
 # saige_hearing_pipeline.config, with two exceptions, both noted inline:
@@ -20,7 +29,7 @@
 # IDs in our rebuilt masks resolve against the chr1 .bim, so the ID convention
 # (chr:pos:ref:alt) matches ours exactly.
 #
-#BSUB -J saige2_corr[1-792]
+#BSUB -J saige2_corr[1-594]
 #BSUB -q epistasis_normal
 #BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_4/logs/step2.%J.%I.out
 #BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_4/logs/step2.%J.%I.err
@@ -45,7 +54,7 @@ PLINKDIR=${ELENA}/rarevariant_geneburden/plink_deduplicated
 OUT=${REPL}/phase_4/results/step2
 
 GROUPS=(combined EUR AFR)
-MASKS=(pLOF pDM pLOF_pDM ALL)
+MASKS=(pLOF pDM pLOF_pDM)
 MAFS=(0.0001 0.001 0.01)
 
 # --annotation_in_groupTest must name the annotation labels that actually
@@ -54,18 +63,18 @@ MAFS=(0.0001 0.001 0.01)
 # does not contain, and makes the pLOF_pDM run re-emit pLOF-only and pDM-only
 # tests that the standalone pLOF and pDM runs already produce.  We pass the
 # one category each file holds, so each mask yields exactly one test per gene.
-ANNOS=(pLOF pDM "pLOF:pDM" ALL)
+ANNOS=(pLOF pDM "pLOF:pDM")
 
 ########################################
 # decode the job index
-#   792 = 3 groups x 22 chr x 4 masks x 3 mafs
+#   594 = 3 groups x 22 chr x 3 masks x 3 mafs
 ########################################
 J=$(( LSB_JOBINDEX - 1 ))
 
 MAF_I=$(( J % 3 ))
-MASK_I=$(( (J / 3) % 4 ))
-CHR=$(( (J / 12) % 22 + 1 ))
-GRP_I=$(( J / 264 ))
+MASK_I=$(( (J / 3) % 3 ))
+CHR=$(( (J / 9) % 22 + 1 ))
+GRP_I=$(( J / 198 ))
 
 GROUP=${GROUPS[${GRP_I}]}
 MASK=${MASKS[${MASK_I}]}
@@ -82,7 +91,7 @@ RESULT=${OUT}/${GROUP}/${MASK}/${GROUP}_chr${CHR}_${MASK}_maf${MAF}.txt
 
 echo "===================================="
 echo "SAIGE step 2 -- corrected arm"
-echo "task    : ${LSB_JOBINDEX} / 792"
+echo "task    : ${LSB_JOBINDEX} / 594"
 echo "cohort  : ${GROUP}"
 echo "chr     : ${CHR}"
 echo "mask    : ${MASK}  (annotation '${ANNO}', $(( $(wc -l < ${GROUPFILE}) / 2 )) genes)"

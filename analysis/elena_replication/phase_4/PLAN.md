@@ -18,7 +18,7 @@ Phase 4 runs **only the corrected arm**: our cohort of 57,507 analysable, 57,498
 
 The reproduction arm's inputs are all still on disk — `phase_1/results/` holds the 57,632 cohort,
 `phase_2/results/masks/` the original masks — so it stays runnable if the lab wants the
-side-by-side later. What we do not do is spend 792 more jobs reproducing numbers we already know
+side-by-side later. What we do not do is spend 594 more jobs reproducing numbers we already know
 to be built on a mask where 63.8% of pLOF entries fail the pipeline's own SpliceAI gate.
 
 ---
@@ -47,9 +47,17 @@ reused rather than rebuilt. All 70,925 are present, so all three cohorts are cov
 and all 47,818 chr1 pLOF variant IDs from our rebuilt masks resolve against the chr1 `.bim` — the
 `chr:pos:ref:alt` convention matches ours exactly.
 
-**Masks.** The four rebuilt in Phase 2, `phase_2/results/masks_v2/`, split per chromosome by
-script 01. Gene counts survive the split exactly: pLOF 17,841 · pDM 17,623 · pLOF_pDM 17,945 ·
-ALL 18,038, and every gene is autosomal, so chromosomes 1–22 lose nothing.
+**Masks.** Three of the four rebuilt in Phase 2, `phase_2/results/masks_v2/`, split per chromosome
+by script 01. Gene counts survive the split exactly: pLOF 17,841 · pDM 17,623 · pLOF_pDM 17,945,
+and every gene is autosomal, so chromosomes 1–22 lose nothing.
+
+**`ALL` is not run.** Andre's call, and the reasoning holds: a burden test over every variant in the
+gene pools synonymous and intronic variants that carry no mechanism in with the ones that do, so it
+dilutes rather than tests anything. It is also by far the most expensive mask — 15,951,289 entries
+against 1,340,936 for `pLOF_pDM`, which is where most of the 2.1 GB and most of the CPU would have
+gone. The group files stay on disk, in `phase_2/results/masks_v2/ALL.txt` and
+`phase_4/data/masks_by_chrom/ALL/`, so the decision is reversible without rebuilding anything.
+Consequence for Phase 5: Elena ran `ALL`, and we will have nothing to set against those results.
 
 ---
 
@@ -72,8 +80,8 @@ SAIGE 1.5.0, `/project/hall/tools/saige/1.5.0/saige_1.5.0.sif`, run under
 `apptainer/1.4.1`. Elena ran the same container under `DEV/singularity` via Nextflow; we run it as
 two LSF job arrays instead, which is the same calls in a form that can be audited line by line.
 
-Scale: 3 cohorts × 22 chromosomes × 4 masks × 3 MAF cutoffs = **792 step-2 tasks**. The index decode
-in script 03 was checked to generate all 792 combinations exactly once.
+Scale: 3 cohorts × 22 chromosomes × 3 masks × 3 MAF cutoffs = **594 step-2 tasks**. The index decode
+in script 03 was checked to generate all 594 combinations exactly once.
 
 ---
 
@@ -105,9 +113,9 @@ label. So pLOF-within-pLOF_pDM and standalone pLOF differ for those variants.
 
 ### 4.3 Group files split by chromosome
 
-Mechanical. SAIGE step 2 runs one chromosome but reads the whole group file; our `ALL.txt` is
-317 MB and would be re-parsed 198 times. No gene line in any mask spans two chromosomes, so the
-split cannot change which genes are tested. The split also converts tab to space, matching the
+Mechanical. SAIGE step 2 runs one chromosome but reads the whole group file, so each mask would be
+re-parsed 198 times. No gene line in any mask spans two chromosomes, so the split cannot change
+which genes are tested. The split also converts tab to space, matching the
 format Elena's files use and that this container has demonstrably accepted.
 
 ---
