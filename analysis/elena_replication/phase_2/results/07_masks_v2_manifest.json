@@ -1,0 +1,25 @@
+{
+  "source": "release VEP, rebuilt from scratch",
+  "masks": {
+    "pLOF": {
+      "genes": 17841,
+      "entries": 462144,
+      "file": "pLOF.txt"
+    },
+    "pDM": {
+      "genes": 17623,
+      "entries": 890332,
+      "file": "pDM.txt"
+    },
+    "pLOF_pDM": {
+      "genes": 17945,
+      "entries": 1340936,
+      "file": "pLOF_pDM.txt"
+    },
+    "ALL": {
+      "genes": 18038,
+      "entries": 15951289,
+      "file": "ALL.txt"
+    }
+  }
+}

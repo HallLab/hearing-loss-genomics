@@ -281,6 +281,43 @@ Quoting either number alone misleads.
 
 ---
 
+## Check 07 — all four masks rebuilt from source
+
+**Script:** [`../scripts/07_rebuild_masks.py`](../scripts/07_rebuild_masks.py) · **Output:**
+`results/masks_v2/` · **Manifest:** [`07_masks_v2_manifest.json`](07_masks_v2_manifest.json)
+
+Check 05 filtered the pipeline's masks down. That worked while the only defect was over-inclusion.
+It cannot work now: the REVEL fix *adds* variants, and nothing is added by filtering. So the masks
+are rebuilt from the release's own VEP — not from `variant_categories/`, whose `REVEL_score` column
+holds no multi-valued entries at all, the lists having been coerced away before it was written.
+
+| mask | the pipeline's | rebuilt | change | genes |
+|---|---:|---:|---:|---|
+| `pLOF` | 1,002,120 | **462,144** | −539,976 | 19,038 → 17,841 |
+| `pDM` | 720,983 | **890,332** | **+169,349** | 17,336 → 17,623 |
+| `pLOF_pDM` | 1,717,883 | **1,340,936** | −376,947 | 19,057 → 17,945 |
+| `ALL` | 21,415,507 | **15,951,289** | −5,464,218 | 24,570 → 18,038 |
+
+`pDM` is the only one that grows — the REVEL fix recovering what the parsing lost, +23%.
+
+Verified: `var` and `anno` rows pair for every gene in all four, and zero non-coding genes remain in
+any of the three damage masks.
+
+### One decision beyond the three fixes
+
+The biotype restriction was applied to `ALL` as well, decided 2026-10-05.
+
+`ALL` had no defect. It is the unrestricted baseline, and restricting it removes 6,532 genes — a
+**second** difference between the arms, beyond the three corrections. It was argued both ways: a
+burden test on a lncRNA is meaningless in any mask and 6,532 fewer genes is 6,532 fewer tests
+carrying correction; against that, a replication should change only what is defective, and a second
+difference makes a later divergence harder to attribute.
+
+The decision was to restrict. **Later phases comparing the arms must hold two differences constant in
+`ALL`**, not one.
+
+---
+
 ## What is established, and what is not
 
 | Claim | Basis | Strength |
@@ -292,6 +329,7 @@ Quoting either number alone misleads.
 | The cause of Finding 1 | the pipeline's own classification output (Finding 1b) | **established** |
 | pDM is unaffected | — | **withdrawn** — it undercounts REVEL by 73.9% (Finding 2) |
 | Non-coding genes in the masks | gene-level biotype, all 22 chromosomes (Finding 3) | **established** |
+| All four masks rebuilt from source | check 07, structure and biotype verified | **done** |
 | Whether chr8 is representative | all 22 chromosomes, 60.9-65.7% (Finding 1c) | **established — it is** |
 
 **Not established, and deliberately not guessed:**
