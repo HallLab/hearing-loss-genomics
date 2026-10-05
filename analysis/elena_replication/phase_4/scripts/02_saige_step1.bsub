@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+# Phase 4, step 2 of 3 -- SAIGE step 1: fit the null model / GRM.
+#
+# CORRECTED ARM ONLY.  Per the decision for this phase, we run only the cohort
+# this replication built (57,507 analysable -> 57,498 with age), not the one
+# Elena's pipeline delivered.  The reproduction arm's inputs stay on disk, so
+# it remains runnable later if the lab wants the side-by-side.
+#
+# Three null models, one per cohort:
+#   combined  57,498  (6,752 cases)   5 PCs
+#   EUR       42,779  (5,183 cases)   4 PCs
+#   AFR       11,334  (1,285 cases)   3 PCs
+#
+# PC counts are ours (scree-supported), not Elena's 5/9/10 -- see
+# docs/07_pcs_explicados.pt.md and docs/10_fase_3_resumo.pt.md.
+#
+# GRM genotypes:
+#   EUR, AFR  -- our own LD-pruned sets, rebuilt in phase 3
+#   combined  -- Elena's ALL.common_ldpruned.  We never built a combined
+#                LD-pruned set (phase 3 only re-ran the two within-ancestry
+#                PCAs).  Hers is safe to borrow: it was made with
+#                --keep HL_TIN_PMBBv4_keep.txt, i.e. all 70,925, so it does NOT
+#                inherit the imputed-.fam defect from step 1, and it covers all
+#                57,498 of our combined cohort with zero gaps (checked).
+#                Caveat carried to phase 5: it holds 38,833 markers, against
+#                53,920 for our EUR and 114,694 for our AFR, because --hwe 1e-6
+#                applied across ancestries removes 176k variants where it
+#                removes 19k within EUR.  Thin for a GRM; flagged, not fixed.
+#
+# Deviation from Elena's pipeline, deliberate:
+#   --qCovarColList=SEX,Batch
+#   Her nextflow passes Batch in --covarColList only, so SAIGE reads 1/2/3 as a
+#   continuous variable and assumes batch 2 sits exactly halfway between 1 and
+#   3.  Batch is a label, not a quantity.  Declaring it categorical makes SAIGE
+#   dummy-code it.  SEX is listed too; with two levels it makes no difference,
+#   but it is categorical and saying so costs nothing.
+#
+#BSUB -J saige1_corr[1-3]
+#BSUB -q epistasis_normal
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_4/logs/step1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_4/logs/step1.%J.%I.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+#BSUB -n 8
+#BSUB -W 24:00
+
+set -euo pipefail
+
+module load apptainer/1.4.1
+
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+
+REPL=/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+
+COV=${REPL}/phase_3/results/covariates
+OUT=${REPL}/phase_4/results/step1
+
+case ${LSB_JOBINDEX} in
+  1)
+    GROUP=combined
+    PLINK=${ELENA}/rarevariantExWAS/exome_ldpruned/ALL.common_ldpruned
+    COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4,PC5"
+    ;;
+  2)
+    GROUP=EUR
+    PLINK=${REPL}/phase_3/data/pca/EUR.common_ldpruned
+    COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4"
+    ;;
+  3)
+    GROUP=AFR
+    PLINK=${REPL}/phase_3/data/pca/AFR.common_ldpruned
+    COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3"
+    ;;
+  *) echo "bad job index ${LSB_JOBINDEX}" >&2; exit 1 ;;
+esac
+
+PHENO=${COV}/corrected_${GROUP}_covariates.txt
+mkdir -p ${OUT}/${GROUP}
+
+echo "===================================="
+echo "SAIGE step 1 -- corrected arm"
+echo "cohort   : ${GROUP}"
+echo "pheno    : ${PHENO}  ($(( $(wc -l < ${PHENO}) - 1 )) samples)"
+echo "GRM      : ${PLINK}  ($(wc -l < ${PLINK}.bim) markers)"
+echo "covars   : ${COVARS}"
+echo "qcovars  : SEX,Batch"
+echo "start    : $(date)"
+echo "===================================="
+
+apptainer exec -B /project -B /project/hall -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step1_fitNULLGLMM.R \
+  --plinkFile=${PLINK} \
+  --phenoFile=${PHENO} \
+  --phenoCol=PHENO \
+  --covarColList=${COVARS} \
+  --qCovarColList=SEX,Batch \
+  --sampleIDColinphenoFile=IID \
+  --traitType=binary \
+  --outputPrefix=${OUT}/${GROUP}/${GROUP} \
+  --outputPrefix_varRatio=${OUT}/${GROUP}/${GROUP}.varianceRatio.txt \
+  --IsOverwriteVarianceRatioFile=TRUE \
+  --nThreads=8
+
+echo "===================================="
+echo "${GROUP} done : $(date)"
+ls -lh ${OUT}/${GROUP}
+echo "===================================="

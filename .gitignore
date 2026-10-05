@@ -257,3 +257,5 @@ analysis/elena/
 
 # results files
 *.nosex
+# SAIGE null models (~66 MB each; rebuilt by phase_4/scripts/02_saige_step1.bsub)
+*.rda
