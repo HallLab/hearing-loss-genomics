@@ -259,3 +259,9 @@ analysis/elena/
 *.nosex
 # SAIGE null models (~66 MB each; rebuilt by phase_4/scripts/02_saige_step1.bsub)
 *.rda
+
+# SAIGE step-2 transients and byproducts (written and deleted mid-run)
+*_P1Mat_Chunk_*.bin
+*_P2Mat_Chunk_*.bin
+*.txt.index
+*.singleAssoc.txt
