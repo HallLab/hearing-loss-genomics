@@ -14,9 +14,21 @@ through it unseen, and both are things a merge can check:
     by name parked 5,391 rows in phantom columns with Region, Group and Pvalue
     blank, and consumed gene ABRA's own result as the header.
 
-So this script asserts three things before it writes anything: every expected
-cell exists, every file carries the expected header, and no row has a blank or
-unnamed gene.  Any failure stops the merge and names the files.
+So this script asserts, before it writes anything: every expected cell exists,
+every file carries the expected header, every file is structurally whole, no
+row has a blank or unnamed gene, and no step-2 job is still in flight.  Any
+failure stops the merge and names the files.
+
+The in-flight check is not belt-and-braces.  SAIGE creates its output file when
+the task STARTS, not when it finishes -- while the array was running, 15 of 547
+existing .txt files held zero bytes.  So file existence proves nothing about
+completion.  Neither does the .txt.index sentinel: SAIGE writes it progressively
+to record the last chunk analysed, so it appears mid-run too.  What this script
+can check for itself is that every data row carries all 13 fields and the file
+ends in a newline, which catches a write truncated mid-row; LSF state closes
+the remaining gap, where a task died exactly on a row boundary.
+
+Pass --allow-running to merge anyway, for a deliberate look at partial results.
 
 Input : phase_4/results/step2/<cohort>/<mask>/<cohort>_chr<N>_<mask>_maf<M>.txt
 Output: phase_4/results/burden_<cohort>.tsv   (one per cohort)
@@ -26,10 +38,13 @@ Output: phase_4/results/burden_<cohort>.tsv   (one per cohort)
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 import pandas as pd
+
+ALLOW_RUNNING = "--allow-running" in sys.argv
 
 PHASE4 = Path(__file__).resolve().parents[1]
 STEP2 = PHASE4 / "results" / "step2"
@@ -56,8 +71,35 @@ def expected_cells():
     }
 
 
+def jobs_in_flight():
+    """Array elements of this phase's step-2 jobs still pending or running."""
+    try:
+        out = subprocess.run(
+            ["bjobs", "-a", "-J", "saige2_*"],
+            capture_output=True, text=True, timeout=60,
+        ).stdout
+    except (OSError, subprocess.SubprocessError):
+        return None  # no LSF here; the structural checks still apply
+    return [
+        line for line in out.splitlines()[1:]
+        if len(line.split()) > 2 and line.split()[2] in {"PEND", "RUN", "SSUSP", "USUSP", "PSUSP"}
+    ]
+
+
 def main():
     problems = []
+
+    # ---- 0. nothing still writing ----
+    flight = jobs_in_flight()
+    if flight and not ALLOW_RUNNING:
+        problems.append(
+            f"{len(flight)} step-2 array elements still pending or running. "
+            f"SAIGE creates its output file when a task starts, so merging now "
+            f"would read files still being written. Wait, or pass "
+            f"--allow-running."
+        )
+        for line in flight[:5]:
+            problems.append(f"    {line.strip()}")
 
     # ---- 1. every expected cell present, and nothing unexpected on disk ----
     found = {}
@@ -90,15 +132,30 @@ def main():
     for key in extra:
         problems.append(f"unexpected cell on disk: {key}")
 
-    # ---- 2. every file carries the expected header ----
+    # ---- 2. every file carries the expected header and is structurally whole ----
     for key, f in sorted(found.items()):
-        with f.open() as fh:
-            header = fh.readline().rstrip("\n").split("\t")
+        raw = f.read_bytes()
+        if not raw:
+            problems.append(f"empty file: {f.name} (task started but wrote nothing)")
+            continue
+        if not raw.endswith(b"\n"):
+            problems.append(f"no trailing newline, write truncated: {f.name}")
+        lines = raw.decode().splitlines()
+        header = lines[0].split("\t")
         if header != EXPECTED_HEADER:
             problems.append(
                 f"header mismatch in {f.name}: got {header[:4]}... "
                 f"({len(header)} cols, expected {len(EXPECTED_HEADER)})"
             )
+            continue
+        for i, line in enumerate(lines[1:], start=2):
+            n = len(line.split("\t"))
+            if n != len(EXPECTED_HEADER):
+                problems.append(
+                    f"{f.name} line {i} has {n} fields, expected "
+                    f"{len(EXPECTED_HEADER)}"
+                )
+                break
 
     if problems:
         print("MERGE REFUSED\n", file=sys.stderr)
