@@ -1,0 +1,67 @@
+{
+  "pc_counts": {
+    "combined": 5,
+    "EUR": 4,
+    "AFR": 3
+  },
+  "arms": {
+    "corrected": {
+      "combined": {
+        "requested": 57507,
+        "written": 57498,
+        "dropped_for_missing": 9,
+        "missing_by_column": {
+          "AGE": 9,
+          "AGE2": 9
+        },
+        "n_pcs": 5,
+        "file": "corrected_combined_covariates.txt"
+      },
+      "EUR": {
+        "requested": 42786,
+        "written": 42779,
+        "dropped_for_missing": 7,
+        "missing_by_column": {
+          "AGE": 7,
+          "AGE2": 7
+        },
+        "n_pcs": 4,
+        "file": "corrected_EUR_covariates.txt"
+      },
+      "AFR": {
+        "requested": 11334,
+        "written": 11334,
+        "dropped_for_missing": 0,
+        "missing_by_column": {},
+        "n_pcs": 3,
+        "file": "corrected_AFR_covariates.txt"
+      }
+    },
+    "reproduction": {
+      "combined": {
+        "rows": 57632,
+        "n_pcs": 5,
+        "copied_from": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/HL_only_rarevariant/new_SAIGE_covariates/hearing_impairment_combined_SAIGE_Step1_covariates.txt",
+        "file": "reproduction_combined_covariates.txt"
+      },
+      "EUR": {
+        "rows": 43016,
+        "n_pcs": 9,
+        "copied_from": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/HL_only_rarevariant/new_SAIGE_covariates/hearing_impairment_EUR_SAIGE_Step1_covariates.txt",
+        "file": "reproduction_EUR_covariates.txt"
+      },
+      "AFR": {
+        "rows": 11387,
+        "n_pcs": 10,
+        "copied_from": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/HL_only_rarevariant/new_SAIGE_covariates/hearing_impairment_AFR_SAIGE_Step1_covariates.txt",
+        "file": "reproduction_AFR_covariates.txt"
+      }
+    }
+  },
+  "pc_source": {
+    "combined": "release exome_PC1-5",
+    "EUR": "phase_3/data/pca/EUR.eigenvec (our re-run)",
+    "AFR": "phase_3/data/pca/AFR.eigenvec (our re-run)"
+  },
+  "note": "The reproduction arm is copied verbatim, not rebuilt: the phenotype file it derives from was overwritten, so a rebuild would not reproduce it."
+}

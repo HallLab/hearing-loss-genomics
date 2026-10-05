@@ -1,0 +1,42 @@
+#!/bin/bash
+#BSUB -J repl_pca_eur
+#BSUB -q epistasis_normal
+#BSUB -o logs/repl_pca_eur.%J.out
+#BSUB -e logs/repl_pca_eur.%J.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+#BSUB -n 4
+#BSUB -W 24:00
+#
+# Resume the EUR PCA. Job 49211958 completed the filtering and LD pruning and was
+# then killed at `plink --pca`, so only the final step is re-run here.
+#
+# WHY IT DIED. PLINK 1.9's --pca builds the full N x N relationship matrix, so memory
+# grows with the SQUARE of the sample count:
+#
+#     AFR   14,927^2 x 8 bytes  =   1.8 GB    fit in 16 GB
+#     EUR   51,867^2 x 8 bytes  =  21.5 GB    did not
+#
+# The original script asked 16 GB for both. AFR passing gave false confidence that
+# the figure was adequate. 64 GB leaves room for the matrix plus eigendecomposition
+# workspace, which typically needs about twice the matrix again.
+#
+# The method is deliberately unchanged -- same plink 1.9, same `--pca 20` -- so EUR
+# and AFR components are computed identically. Switching EUR to plink 2.0's
+# `--pca approx` would be cheaper and would also make the two ancestries
+# incomparable.
+
+set -euo pipefail
+module load plink/1.9-20210416
+
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_3
+OUT=${BASE}/data/pca
+
+test -f ${OUT}/EUR.common_ldpruned.bed || { echo "LD-pruned set missing"; exit 1; }
+echo "resuming from $(wc -l < ${OUT}/EUR.common_ldpruned.bim) variants, $(wc -l < ${OUT}/EUR.common_ldpruned.fam) samples"
+
+plink --bfile ${OUT}/EUR.common_ldpruned --allow-extra-chr \
+      --memory 60000 --pca 20 --out ${OUT}/EUR
+
+echo "samples in eigenvec: $(wc -l < ${OUT}/EUR.eigenvec)"
+echo "=== EUR done ==="
