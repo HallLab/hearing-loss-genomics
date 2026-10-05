@@ -1,0 +1,27 @@
+{
+  "cells": 594,
+  "rows": 472453,
+  "by_cohort": {
+    "combined": {
+      "rows": 159960,
+      "genes": 17943,
+      "bonferroni_0.05": 3.1257814453613406e-07,
+      "min_pvalue": 4.21416448725953e-06,
+      "file": "burden_combined.tsv"
+    },
+    "EUR": {
+      "rows": 159197,
+      "genes": 17928,
+      "bonferroni_0.05": 3.140762702814752e-07,
+      "min_pvalue": 1.53667322401185e-05,
+      "file": "burden_EUR.tsv"
+    },
+    "AFR": {
+      "rows": 153296,
+      "genes": 17789,
+      "bonferroni_0.05": 3.2616637094249036e-07,
+      "min_pvalue": 7.22823550812557e-06,
+      "file": "burden_AFR.tsv"
+    }
+  }
+}

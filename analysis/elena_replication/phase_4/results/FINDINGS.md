@@ -1,11 +1,11 @@
 # Phase 4 — the association test
 
-**Status:** step 1 complete · step 2 running (job 49232320, 594 tasks) · **Arm:** corrected only
+**Status:** complete · **Arm:** corrected only
 **Scripts:** `01_split_masks_by_chrom.sh` · `02_saige_step1.bsub` · `03_saige_step2.bsub` · `04_merge_results.py`
 **Design and deviations:** [`../PLAN.md`](../PLAN.md)
 
-Phase 4 covers the pipeline's Step 8. Findings 1–4 below are defects in the results the pipeline
-delivered, found while building ours against them. Our own results are not in yet.
+Phase 4 covers the pipeline's Step 8. The results are below; Findings 1–4 that follow them are
+defects in the results the pipeline delivered, found while building ours against them.
 
 ---
 
@@ -24,6 +24,88 @@ expected: they move power, not calibration.
 `tau₂ = 0` in AFR means the polygenic variance component converged to zero, so there SAIGE reduces
 to logistic regression on the covariates. Not a defect of ours — her AFR variance ratio is also 1 to
 nine decimals, so hers did the same. It is the sample: 11,334 people, 1,285 cases.
+
+---
+
+## Results — 594 of 594 cells, 472,453 tests
+
+| cohort | tests | genes | min p | 0.05/tests | 0.05/genes |
+|---|---:|---:|---|---|---|
+| combined | 159,960 | 17,943 | 4.21 × 10⁻⁶ | 3.13 × 10⁻⁷ | 2.79 × 10⁻⁶ |
+| EUR | 159,197 | 17,928 | 1.54 × 10⁻⁵ | 3.14 × 10⁻⁷ | 2.79 × 10⁻⁶ |
+| AFR | 153,296 | 17,789 | 7.23 × 10⁻⁶ | 3.26 × 10⁻⁷ | 2.81 × 10⁻⁶ |
+
+**No gene reaches exome-wide significance in any cohort**, under either defensible denominator —
+one test per mask × MAF combination, or one per gene. The corrected arm finds nothing.
+
+**Neither does hers.** Her best p-values on the same three masks are 3.33 × 10⁻⁶ (combined),
+9.05 × 10⁻⁶ (EUR) and 4.95 × 10⁻⁶ (AFR). Her EUR top hit clears 0.05/genes but not 0.05/tests, and
+nothing clears the stricter bar in either arm. So the headline conclusion is concordant: this
+cohort, at this size, does not support a hearing-impairment gene burden finding.
+
+That concordance is worth stating plainly, because it is the opposite of what a reader might expect
+from Phases 2 and 3. Four mask defects and surplus PCs did not manufacture a false positive. What
+they did instead is reshuffle the ranking underneath a null result.
+
+### The ranking is materially different
+
+Top 50 genes per cohort, by best p-value, our arm against hers on the same three masks:
+
+| cohort | shared in top 50 |
+|---|---:|
+| combined | 24 / 50 |
+| EUR | 17 / 50 |
+| AFR | 15 / 50 |
+
+Half to two thirds of each top-50 list changes. If this cohort were larger — or if these lists were
+used to pick genes for follow-up, which is what top-gene tables are for — the defects would decide
+which genes got looked at.
+
+### Her rank-1 gene is a lncRNA, and it disappears
+
+**`TMC3-AS1` is the top gene in her combined and EUR results**, at p = 3.33 × 10⁻⁶ and
+9.05 × 10⁻⁶. It is annotated `lncRNA`. A pLOF burden test asks whether losing the protein's function
+associates with the phenotype, and this gene has no protein to lose. The test rests on
+`Number_rare = 2`: two rare variants carry the whole result.
+
+It is absent from our masks entirely — it fell out in Phase 2 with the 1,101 non-coding genes Nikki
+raised. In AFR, where it survived to rank 6,707 in her results, it never mattered.
+
+The name is part of why this is worth flagging rather than filing. `TMC3-AS1` is antisense to
+`TMC3`, and `TMC1` is an established deafness gene. A reader skimming a top-gene table sees "TMC"
+and reads plausibility into it. An artefact that looks like a finding is more dangerous than one
+that looks like noise.
+
+Three others in her top 50 are not protein-coding either, with their release biotype:
+
+| gene | cohort, rank | biotype |
+|---|---|---|
+| `SLCO1B7` | EUR, rank 8 | `transcribed_unprocessed_pseudogene` |
+| `NUP153-AS1` | combined, rank 48 | `lncRNA` |
+| `TRGV9` | EUR, rank 47 | `TR_V_gene` (T-cell receptor variable segment) |
+
+AFR's top 50 has none.
+
+### Known deafness genes move both ways
+
+This is where the result refuses to be tidy, so it is recorded as it is rather than as it would be
+convenient:
+
+| gene | combined, ours | combined, hers | EUR, ours | EUR, hers |
+|---|---|---|---|---|
+| `SIX1` (DFNA23 / BOR) | **rank 7**, p 5.24 × 10⁻⁵ | rank 38, p 5.22 × 10⁻⁴ | rank 6 | rank 4 |
+| `COCH` (DFNA9) | rank 22, p 3.88 × 10⁻⁴ | **rank 12**, p 1.18 × 10⁻⁴ | rank 373 | **rank 68** |
+
+`SIX1` improves markedly in the corrected arm. `COCH` gets worse, in both cohorts. Two established
+genes moving in opposite directions is **not** evidence that the corrected arm recovers known
+biology better — it is evidence that the lists differ, which we already knew. Neither gene is
+anywhere near significant in either arm, so neither movement should be read as a result.
+
+What can be said without overreach: one specific artefact at rank 1 is gone, and the rest of the
+reshuffling has no established direction. A systematic enrichment test against the ClinGen hearing
+loss gene list would settle it, and is deliberately not done here — that list lives in `cycle_2`,
+and this folder's isolation rule keeps `cycle_2` out. It is a public endpoint, so it can be fetched
+independently into Phase 5 if the lab wants the test.
 
 ---
 
