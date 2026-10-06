@@ -1,0 +1,186 @@
+{
+  "calibration": {
+    "combined": {
+      "n_tests": 53331,
+      "ratios": {
+        "0.05": 0.917,
+        "0.01": 0.949,
+        "0.001": 0.863
+      }
+    },
+    "EUR": {
+      "n_tests": 53086,
+      "ratios": {
+        "0.05": 0.889,
+        "0.01": 0.925,
+        "0.001": 1.149
+      }
+    },
+    "AFR": {
+      "n_tests": 51412,
+      "ratios": {
+        "0.05": 0.929,
+        "0.01": 0.994,
+        "0.001": 0.934
+      }
+    }
+  },
+  "cross_ancestry": {
+    "genes_in_both": 17778,
+    "min_p_lt_0.01": {
+      "marginal_rate_EUR": 0.0305,
+      "marginal_rate_AFR": 0.0345,
+      "note": "marginal rate, not t -- min over 9 correlated tests inflates it",
+      "observed": 22,
+      "expected": 18.8,
+      "ratio": 1.17,
+      "binomial_p_greater": 0.25537560290323985
+    },
+    "min_p_lt_0.005": {
+      "marginal_rate_EUR": 0.0164,
+      "marginal_rate_AFR": 0.0182,
+      "note": "marginal rate, not t -- min over 9 correlated tests inflates it",
+      "observed": 3,
+      "expected": 5.3,
+      "ratio": 0.57,
+      "binomial_p_greater": 0.8975683188992408
+    },
+    "min_p_lt_0.001": {
+      "marginal_rate_EUR": 0.0039,
+      "marginal_rate_AFR": 0.004,
+      "note": "marginal rate, not t -- min over 9 correlated tests inflates it",
+      "observed": 0,
+      "expected": 0.3,
+      "ratio": 0.0,
+      "binomial_p_greater": 1.0
+    }
+  },
+  "maf_nesting": {
+    "triples_with_all_three_cutoffs": 156946,
+    "pct_all_three_identical": 31.7,
+    "pct_only_two_identical": 42.3,
+    "pct_all_three_distinct": 26.0,
+    "mean_variants_in_set": {
+      "0.0001": 27.93,
+      "0.001": 29.74,
+      "0.01": 30.07
+    },
+    "bonferroni": {
+      "combined": {
+        "n_nominal": 159960,
+        "bar_nominal": 3.1257814453613406e-07,
+        "n_distinct": 101627,
+        "bar_distinct": 4.919952374861012e-07,
+        "n_genes": 17943,
+        "bar_per_gene": 2.786602017499861e-06,
+        "min_pvalue": 4.21416448725953e-06,
+        "passes_most_permissive_bar": false
+      },
+      "EUR": {
+        "n_nominal": 159197,
+        "bar_nominal": 3.140762702814752e-07,
+        "n_distinct": 95396,
+        "bar_distinct": 5.241309908172251e-07,
+        "n_genes": 17928,
+        "bar_per_gene": 2.788933511825078e-06,
+        "min_pvalue": 1.53667322401185e-05,
+        "passes_most_permissive_bar": false
+      },
+      "AFR": {
+        "n_nominal": 153296,
+        "bar_nominal": 3.2616637094249036e-07,
+        "n_distinct": 101717,
+        "bar_distinct": 4.915599162381903e-07,
+        "n_genes": 17789,
+        "bar_per_gene": 2.810725729383327e-06,
+        "min_pvalue": 7.22823550812557e-06,
+        "passes_most_permissive_bar": false
+      }
+    }
+  },
+  "maf_sensitive_genes": {
+    "n_with_100x_improvement_at_strictest": 68,
+    "top": [
+      {
+        "cohort": "AFR",
+        "mask": "pDM",
+        "gene": "MLLT6",
+        "p_at_1e-4": 8.48952200000001e-06,
+        "p_at_1e-2": 0.0531672397756346,
+        "fold": 6262.7
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pLOF_pDM",
+        "gene": "ACLY",
+        "p_at_1e-4": 1.28093e-05,
+        "p_at_1e-2": 0.00374337,
+        "fold": 292.2
+      },
+      {
+        "cohort": "combined",
+        "mask": "pDM",
+        "gene": "PTPN23",
+        "p_at_1e-4": 3.9919995315274e-05,
+        "p_at_1e-2": 0.0074026969288928,
+        "fold": 185.4
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pLOF_pDM",
+        "gene": "ENTREP1",
+        "p_at_1e-4": 6.21621999999994e-05,
+        "p_at_1e-2": 0.0368905401505192,
+        "fold": 593.5
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pDM",
+        "gene": "ACLY",
+        "p_at_1e-4": 8.18769999999997e-05,
+        "p_at_1e-2": 0.0171585645242175,
+        "fold": 209.6
+      },
+      {
+        "cohort": "EUR",
+        "mask": "pLOF_pDM",
+        "gene": "DHCR7",
+        "p_at_1e-4": 0.0001562622981845,
+        "p_at_1e-2": 0.0317399056767275,
+        "fold": 203.1
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pLOF_pDM",
+        "gene": "GRIN2C",
+        "p_at_1e-4": 0.0001641429,
+        "p_at_1e-2": 0.0190695775236663,
+        "fold": 116.2
+      },
+      {
+        "cohort": "combined",
+        "mask": "pDM",
+        "gene": "GJB3",
+        "p_at_1e-4": 0.0002404479532574,
+        "p_at_1e-2": 0.0241366501065797,
+        "fold": 100.4
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pLOF",
+        "gene": "BRIP1",
+        "p_at_1e-4": 0.0002574878,
+        "p_at_1e-2": 0.438361882448935,
+        "fold": 1702.5
+      },
+      {
+        "cohort": "AFR",
+        "mask": "pDM",
+        "gene": "CYBC1",
+        "p_at_1e-4": 0.0002916570999999,
+        "p_at_1e-2": 0.0524267436056262,
+        "fold": 179.8
+      }
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 # Phase 4 — the association test
 
 **Status:** complete · **Arm:** corrected only
-**Scripts:** `01_split_masks_by_chrom.sh` · `02_saige_step1.bsub` · `03_saige_step2.bsub` · `04_merge_results.py`
+**Scripts:** `01_split_masks_by_chrom.sh` · `02_saige_step1.bsub` · `03_saige_step2.bsub` · `04_merge_results.py` · `05_calibration_and_consistency.py`
 **Design and deviations:** [`../PLAN.md`](../PLAN.md)
 
 Phase 4 covers the pipeline's Step 8. The results are below; Findings 1–4 that follow them are
@@ -36,12 +36,29 @@ nine decimals, so hers did the same. It is the sample: 11,334 people, 1,285 case
 | AFR | 153,296 | 17,789 | 7.23 × 10⁻⁶ | 3.26 × 10⁻⁷ | 2.81 × 10⁻⁶ |
 
 **No gene reaches exome-wide significance in any cohort**, under either defensible denominator —
-one test per mask × MAF combination, or one per gene. The corrected arm finds nothing.
+one test per mask × MAF combination, or one per gene. The corrected arm finds nothing. A third,
+still more permissive denominator is examined below and changes no answer.
 
-**Neither does hers.** Her best p-values on the same three masks are 3.33 × 10⁻⁶ (combined),
-9.05 × 10⁻⁶ (EUR) and 4.95 × 10⁻⁶ (AFR). Her EUR top hit clears 0.05/genes but not 0.05/tests, and
-nothing clears the stricter bar in either arm. So the headline conclusion is concordant: this
-cohort, at this size, does not support a hearing-impairment gene burden finding.
+**Neither does hers**, on either basis, and each is checked against *her own* gene and test counts
+rather than ours:
+
+| | her best p | gene | 0.05/her genes | 0.05/her tests |
+|---|---|---|---|---|
+| on the same three masks | 3.33 × 10⁻⁶ | `TMC3-AS1` (combined) | 2.63 × 10⁻⁶ | 9.09 × 10⁻⁸ |
+| | 9.05 × 10⁻⁶ | `TMC3-AS1` (EUR) | 2.64 × 10⁻⁶ | 9.15 × 10⁻⁸ |
+| | 4.95 × 10⁻⁶ | `IGSF9` (AFR) | 2.68 × 10⁻⁶ | 9.54 × 10⁻⁸ |
+| including her `ALL` mask | 2.07 × 10⁻⁶ | `PRIMPOL` (EUR) | 2.04 × 10⁻⁶ | 8.06 × 10⁻⁸ |
+| | 2.96 × 10⁻⁶ | `AARS1` (AFR) | 2.04 × 10⁻⁶ | 8.36 × 10⁻⁸ |
+
+Nothing passes. Her closest call is `PRIMPOL` at 2.07 × 10⁻⁶ against a per-gene bar of
+2.04 × 10⁻⁶ — short by 1.5%, which is as near as either arm gets to a finding.
+
+Her bars are *stricter* than ours, and the mask defect is why: her gene count is about 24,500
+against our 17,943, because her masks carry the non-coding genes. The defect inflates her
+denominator at the same time as it populates her top of list.
+
+So the headline conclusion is concordant: this cohort, at this size, does not support a
+hearing-impairment gene burden finding.
 
 That concordance is worth stating plainly, because it is the opposite of what a reader might expect
 from Phases 2 and 3. Four mask defects and surplus PCs did not manufacture a false positive. What
@@ -106,6 +123,86 @@ reshuffling has no established direction. A systematic enrichment test against t
 loss gene list would settle it, and is deliberately not done here — that list lives in `cycle_2`,
 and this folder's isolation rule keeps `cycle_2` out. It is a public endpoint, so it can be fetched
 independently into Phase 5 if the lab wants the test.
+
+### The absence is real, not a deflated analysis
+
+"No gene passes the threshold" and "there is nothing here" are different claims, and a conservative
+test produces the first without supporting the second. Under the null, the fraction of tests below
+*p* should be *p*. Measured at one MAF cutoff, so the same gene is not counted three times:
+
+| cohort | p<0.05 | p<0.01 | p<0.001 |
+|---|---|---|---|
+| combined | 0.92 | 0.95 | 0.86 |
+| EUR | 0.89 | 0.93 | 1.15 |
+| AFR | 0.93 | 0.99 | 0.93 |
+
+Well calibrated, slightly conservative. Neither inflated, which would make the p-values
+meaningless, nor deflated, which would hide real signal.
+
+**And nothing replicates across ancestries.** EUR and AFR are independent samples:
+
+| | observed | expected | ratio | p |
+|---|---:|---:|---:|---|
+| min-p < 0.01 in both | 22 | 18.8 | 1.17 | 0.26 |
+| min-p < 0.005 in both | 3 | 5.3 | 0.57 | 0.90 |
+| min-p < 0.001 in both | 0 | 0.3 | — | 1 |
+
+**The expectation here must use the measured marginal rates, not the threshold.** A first pass used
+0.01 and produced an apparent 12-fold excess that does not exist: per gene we take the minimum p
+over 9 correlated tests, so the marginal rate of min-p < 0.01 is 0.031 in EUR and 0.034 in AFR, not
+0.01. The warning is written into the script, because that arithmetic manufactures findings.
+
+### The three MAF cutoffs are largely the same test
+
+`--maxMAF_in_groupTest` decides which variants enter the gene's set: up to 1%, 0.1% or 0.01% in
+frequency. The cutoffs are nested, and in exome data a pLOF or damaging-missense variant is almost
+always very rare, so they often select the same variants. Over 156,946 (cohort, mask, gene) triples:
+
+| | share |
+|---|---:|
+| all three cutoffs give an **identical** p | 31.7% |
+| only 0.001 and 0.01 identical | 42.3% |
+| all three distinct | **26.0%** |
+
+The variant counts say why. The average gene's set holds 27.9 variants at the strictest cutoff and
+30.1 at the loosest — loosening from 0.01% to 1% adds about two variants.
+
+**This makes our reported Bonferroni bar conservative, and the conclusion survives it anyway:**
+
+| cohort | min p | 0.05/tests | collapsing identical MAF | 0.05/genes | passes? |
+|---|---|---|---|---|---|
+| combined | 4.21 × 10⁻⁶ | 3.13 × 10⁻⁷ | 4.92 × 10⁻⁷ | 2.79 × 10⁻⁶ | no |
+| EUR | 1.54 × 10⁻⁵ | 3.14 × 10⁻⁷ | 5.24 × 10⁻⁷ | 2.79 × 10⁻⁶ | no |
+| AFR | 7.23 × 10⁻⁶ | 3.26 × 10⁻⁷ | 4.92 × 10⁻⁷ | 2.81 × 10⁻⁶ | no |
+
+The masks are correlated too — `pLOF_pDM` contains `pLOF` and `pDM` — so the effective number of
+independent tests is smaller still. It does not matter: nothing clears even the per-gene bar, which
+is the most permissive one anyone would defend.
+
+### Where the MAF cutoff does change the answer, and GJB3
+
+68 tests improve more than 100-fold at the strictest cutoff. That pattern — signal concentrated in
+the rarest variants and diluting as slightly commoner ones enter — is how a real gene would behave,
+since a variant that genuinely destroys function is kept rare by selection.
+
+| gene | cohort | p at 10⁻⁴ | p at 10⁻² | fold |
+|---|---|---|---|---:|
+| `MLLT6` | AFR | 8.5 × 10⁻⁶ | 0.053 | 6,263 |
+| `ENTREP1` | AFR | 6.2 × 10⁻⁵ | 0.037 | 594 |
+| `ACLY` | AFR | 1.3 × 10⁻⁵ | 0.0037 | 292 |
+| `DHCR7` | EUR | 1.6 × 10⁻⁴ | 0.032 | 203 |
+| `PTPN23` | combined | 4.0 × 10⁻⁵ | 0.0074 | 185 |
+| **`GJB3`** | combined | 2.4 × 10⁻⁴ | 0.024 | 100 |
+
+**`GJB3` is worth a note for Phase 5.** Connexin 31, DFNA2B — an established non-syndromic deafness
+gene, at rank 14 of 17,943 in the combined cohort. And it shows the pattern cleanly: at the
+strictest cutoff `Pvalue_Burden` is 2.4 × 10⁻⁴ with all variants collapsed; loosening to 0.1% lets
+nine commoner variants in and the burden p falls to 0.093.
+
+This is a flag, not a result. p = 2.4 × 10⁻⁴ against a bar of 2.8 × 10⁻⁶ is two orders of magnitude
+short, and with 17,943 genes tested, a known deafness gene landing at rank 14 by chance is not
+surprising. It is recorded because it is the one top-ranked gene whose identity and behaviour both
+point the same way.
 
 ---
 
