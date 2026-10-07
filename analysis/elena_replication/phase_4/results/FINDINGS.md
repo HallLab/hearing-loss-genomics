@@ -39,6 +39,12 @@ nine decimals, so hers did the same. It is the sample: 11,334 people, 1,285 case
 one test per mask × MAF combination, or one per gene. The corrected arm finds nothing. A third,
 still more permissive denominator is examined below and changes no answer.
 
+Nor does the lenient correction. Phase 5 ran Benjamini-Hochberg at two levels, and found **zero
+genes at q < 0.05** in every cohort, with the smallest q between 0.26 and 0.79 — see
+[Phase 5, Finding 0](../../phase_5/results/FINDINGS.md). That matters because FDR is where a weak
+but real effect shows up first, so "nothing under Bonferroni" and "nothing under FDR either" are
+different strengths of claim.
+
 **Neither does hers**, on either basis, and each is checked against *her own* gene and test counts
 rather than ours:
 

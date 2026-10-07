@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import chi2
+from statsmodels.stats.multitest import multipletests
 
 HERE = Path(__file__).resolve().parents[1]
 REPL = HERE.parent
@@ -80,6 +81,12 @@ def lam(p):
     return float(np.median(chi2.ppf(1 - p, 1)) / CHI2_MEDIAN)
 
 
+def fdr(p):
+    """Benjamini-Hochberg q-values."""
+    p = np.asarray(p, dtype=float)
+    return multipletests(p, alpha=0.05, method="fdr_bh")[1]
+
+
 def genome_axis(d):
     """Cumulative x coordinate and the per-chromosome tick positions."""
     sizes = d.groupby("CHR").POS.max()
@@ -107,9 +114,22 @@ def manhattan(d, cohort, ax=None, mask=None, maf=None, label_top=5):
         ax.scatter(s.x[m], y[m], s=3, linewidths=0,
                    color="#3b6ea5" if c % 2 else "#9ab4d1")
 
+    # Bonferroni over the genes IN THIS PANEL -- that is, this panel treated as
+    # if it were the only analysis. It is the most permissive bar in play: it
+    # does not charge for having looked at nine panels per cohort, which the
+    # 0.05/tests bar in the findings does. Drawn because nothing crosses even
+    # this one, so the conclusion does not turn on the choice.
     bar_genes = 0.05 / s.Region.nunique()
     ax.axhline(-np.log10(bar_genes), color="#c0392b", lw=0.9,
-               label=f"0.05/genes = {bar_genes:.1e}")
+               label=f"Bonferroni, this panel alone: 0.05/{s.Region.nunique():,} genes "
+                     f"= {bar_genes:.1e}")
+
+    # No FDR line: Benjamini-Hochberg's cutoff is the largest p with q < 0.05,
+    # and there is none, so a line would have nowhere to sit. The smallest q is
+    # annotated instead, which carries the same information honestly.
+    q = fdr(s.Pvalue.values)
+    ax.annotate(f"min $q$ = {q.min():.2f}", (0.985, 0.93), xycoords="axes fraction",
+                ha="right", fontsize=7, color="#c0392b")
     ax.set_xticks(ticks)
     ax.set_xticklabels([str(c) if c <= 12 or c % 2 else "" for c in range(1, 23)],
                        fontsize=6)

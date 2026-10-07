@@ -21,6 +21,7 @@ Output: phase_5/results/*.tsv
 from pathlib import Path
 
 import pandas as pd
+from statsmodels.stats.multitest import multipletests
 
 HERE = Path(__file__).resolve().parents[1]
 REPL = HERE.parent
@@ -34,6 +35,14 @@ bt = pd.read_csv(REPL / "phase_2/data/symbol_biotype.tsv", sep="\t", header=None
                  names=["symbol", "biotype"], dtype=str)
 coding = set(bt[bt.biotype.str.contains("protein_coding", na=False)].symbol)
 biotype = bt.groupby("symbol").biotype.first()
+
+# Benjamini-Hochberg q-values, at both levels, because they answer different
+# questions. Per panel: would this gene survive if that panel were the only
+# analysis. Per cohort: does it survive having looked at all nine.
+d["q_panel"] = d.groupby(["Cohort", "Mask", "max_MAF"]).Pvalue.transform(
+    lambda x: multipletests(x.values, method="fdr_bh")[1])
+d["q_cohort"] = d.groupby("Cohort").Pvalue.transform(
+    lambda x: multipletests(x.values, method="fdr_bh")[1])
 
 # ---- 1. top hits ----
 for c in COHORTS:
@@ -51,10 +60,10 @@ for c in COHORTS:
         ])) or "-"
         for r in best.itertuples()]
     best.insert(1, "rank", range(1, len(best) + 1))
-    cols = ["rank", "Region", "Mask", "max_MAF", "Pvalue", "Pvalue_Burden",
-            "Pvalue_SKAT", "BETA_Burden", "MAC", "MAC_case", "MAC_control",
-            "Number_rare", "Number_ultra_rare", "bar_per_gene", "fragile",
-            "why_fragile"]
+    cols = ["rank", "Region", "Mask", "max_MAF", "Pvalue", "q_panel", "q_cohort",
+            "Pvalue_Burden", "Pvalue_SKAT", "BETA_Burden", "MAC", "MAC_case",
+            "MAC_control", "Number_rare", "Number_ultra_rare", "bar_per_gene",
+            "fragile", "why_fragile"]
     best[cols].to_csv(OUT / f"top_hits_{c}.tsv", sep="\t", index=False)
     print(f"top_hits_{c}.tsv  — {int(best.fragile.sum())} of 30 flagged fragile")
 
@@ -103,6 +112,8 @@ for c in COHORTS:
         "min_pvalue": s.Pvalue.min(),
         "bar_per_test": 0.05 / len(s), "bar_per_gene": 0.05 / s.Region.nunique(),
         "any_significant": bool(s.Pvalue.min() < 0.05 / s.Region.nunique()),
+        "min_q_cohort": s.q_cohort.min(), "min_q_panel": s.q_panel.min(),
+        "any_fdr_significant": bool(s.q_cohort.min() < 0.05),
         "her_genes": hh.Region.nunique(), "her_min_pvalue": hh.Pvalue.min(),
         "her_bar_per_gene": 0.05 / hh.Region.nunique(),
         "her_any_significant": bool(hh.Pvalue.min() < 0.05 / hh.Region.nunique()),

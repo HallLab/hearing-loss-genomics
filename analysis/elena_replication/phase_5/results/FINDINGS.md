@@ -7,9 +7,9 @@
 Phase 5 covers the pipeline's Steps 9 to 11. The chromosome merge (her Step 9.1) was pulled forward
 into Phase 4, because it was needed to compare against her results, and is not repeated.
 
-This phase does not add a conclusion. Phase 4 already reported that nothing is significant in either
-arm and that the ranking moves. What Phase 5 does is **show** both, and quantify how much of the
-result is load-bearing.
+Phase 4 already reported that nothing is significant in either arm and that the ranking moves. What
+Phase 5 does is **show** both, quantify how much of the result is load-bearing, and close the
+multiple-testing question — Finding 0 — which Phase 4 had left resting on Bonferroni alone.
 
 ---
 
@@ -25,6 +25,57 @@ The comparison figure is the one this replication exists to produce, and she has
 point per gene, her p on x and ours on y, with the genes our Phase 2 rebuild removed drawn as a
 strip along the bottom — they have no y value because we never tested them. **The rightmost mark in
 the combined panel is `TMC3-AS1`**, her rank-1 gene.
+
+---
+
+## Finding 0 — nothing passes, by Bonferroni or by FDR, at any level
+
+The question this phase has to answer without ambiguity, since it is the first
+thing anyone will press on.
+
+### Which Bonferroni bar the red line is
+
+The line drawn on each Manhattan panel is `0.05 / genes in that panel` — that panel treated as if it
+were the only analysis. It is **nine separate corrections per cohort**, not one correction over the
+whole grid, and so it is the most permissive bar in play: it does not charge for having looked at
+nine panels.
+
+| bar | denominator | combined | what it assumes |
+|---|---|---|---|
+| the red line | genes in that panel, ~17,800 | 2.81 × 10⁻⁶ | this panel is the whole analysis |
+| `0.05/genes` | genes in the cohort, 17,943 | 2.79 × 10⁻⁶ | the nine cells per gene count as one test |
+| `0.05/tests` | all 159,960 tests | 3.13 × 10⁻⁷ | every cell is its own test |
+
+The first two nearly coincide, but only by arithmetic accident — a panel holds almost every gene in
+the cohort. They are different claims, and the honest bar for "did anything in this cohort pass" is
+one of the latter two, because scanning nine panels and reporting the best is nine times the search.
+
+The permissive line is what gets drawn **because nothing crosses even it.** Where that is not true,
+the distinction would have to be made explicitly.
+
+### And FDR finds nothing either
+
+Bonferroni is the strict correction; Benjamini-Hochberg is the lenient one, and it is where a weak
+but real signal would show up first. It was run at both levels:
+
+| cohort | min q, within a panel | min q, over the cohort | genes at q < 0.05 |
+|---|---|---|---|
+| combined | 0.075 | 0.374 | **0** |
+| EUR | 0.271 | 0.785 | **0** |
+| AFR | 0.117 | 0.260 | **0** |
+
+Zero in every cohort, at either level. And the q-values themselves are the informative part, more
+than the count: the best gene in each cohort carries between a 26% and a 79% chance of being a false
+positive once the cohort is taken as a whole. That is not "narrowly missed".
+
+This closes the question in a way Bonferroni alone does not. A study with a weak real effect usually
+shows *something* under FDR. Nothing here does, and not by a small margin.
+
+No FDR line is drawn on the Manhattan plots, because BH's cutoff is the largest p with q < 0.05 and
+there is none — a line would have nowhere to sit. Each panel is annotated with its smallest q
+instead, which carries the same information without implying a threshold that does not exist.
+
+The q-values are in `summary.tsv` and per gene in `top_hits_<cohort>.tsv`.
 
 ---
 

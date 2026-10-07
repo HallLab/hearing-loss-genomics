@@ -50,9 +50,70 @@ linha é onde se separa o que resiste a essa correção.
 27 gráficos, e a linha vermelha está sozinha lá em cima em todos. Não há skyline — há uma cidade
 plana.
 
+### Qual correção a linha usa, exatamente
+
+A linha é **Bonferroni**, não FDR: `0,05 dividido pelo número de genes daquele painel`. Ou seja, são
+nove correções separadas por coorte — cada painel tratado como se fosse a análise inteira.
+
+Isso é de propósito, e vale entender por quê. Essa é a barra **mais frouxa** das três que dá para
+defender:
+
+| barra | divide 0,05 por | combined |
+|---|---|---|
+| **a linha do gráfico** | genes daquele painel (~17.800) | 2,81 × 10⁻⁶ |
+| por gene da coorte | 17.943 genes | 2,79 × 10⁻⁶ |
+| por teste | todos os 159.960 testes | 3,13 × 10⁻⁷ |
+
+A linha do gráfico não cobra por termos olhado nove painéis. Se você varre nove painéis e pega o
+melhor, você fez nove vezes mais buscas do que um painel só — então a barra honesta para "passou
+alguma coisa nesta coorte?" é uma das duas de baixo.
+
+Desenhei a mais frouxa justamente porque **nada cruza nem ela**. Assim a conclusão não depende de
+qual correção alguém prefere defender. Se algo tivesse cruzado, essa distinção precisaria ser feita
+com todas as letras.
+
 ---
 
-## Resultado 2 — o gráfico QQ: a ausência é real
+## Resultado 2 — e o FDR também não acha nada
+
+### Bonferroni contra FDR, em uma linha cada
+
+São duas formas de corrigir o fato de você estar testando 18 mil genes de uma vez.
+
+- **Bonferroni** é o rigoroso: divide o limiar pelo número de testes. Protege muito contra falso
+  positivo, e por isso perde achado fraco porém real.
+- **FDR** (taxa de falsa descoberta) é o tolerante: em vez de evitar *qualquer* falso positivo,
+  aceita uma proporção deles — tipicamente 5% da lista final. Acha mais coisa.
+
+O FDR é **onde um sinal fraco mas verdadeiro apareceria primeiro.** Se o Bonferroni não acha nada
+mas o FDR acha, isso é informação de verdade.
+
+### O que apareceu
+
+Rodamos o FDR nos dois níveis — dentro de cada painel e sobre a coorte agregada:
+
+| coorte | menor q, no painel | menor q, na coorte | genes com q < 0,05 |
+|---|---|---|---|
+| combined | 0,075 | 0,374 | **0** |
+| EUR | 0,271 | 0,785 | **0** |
+| AFR | 0,117 | 0,260 | **0** |
+
+Zero em todas, nos dois níveis.
+
+E os **próprios q-valores** dizem mais que a contagem. O melhor gene de cada coorte carrega entre
+**26% e 79% de chance de ser falso positivo** quando se considera a coorte inteira. Isso não é
+"passou perto".
+
+Isso fecha a porta de um jeito que o Bonferroni sozinho não fecha. Um estudo com efeito real, mesmo
+fraco, normalmente mostra *alguma coisa* sob FDR. Aqui não mostra nada, e não é por pouco.
+
+*(Não desenhei linha de FDR nos gráficos: o corte do FDR é o maior p com q < 0,05, e não existe
+nenhum — a linha não teria onde ficar. Cada painel traz o menor q anotado no canto, que diz a mesma
+coisa sem inventar um limiar que não existe.)*
+
+---
+
+## Resultado 3 — o gráfico QQ: a ausência é real
 
 ### O que é um QQ
 
@@ -83,7 +144,7 @@ independentes, mesma resposta.
 
 ---
 
-## Resultado 3 — a maior parte do topo é frágil
+## Resultado 4 — a maior parte do topo é frágil
 
 Mesmo sem ninguém significativo, existe uma lista dos "mais próximos". Era de esperar que alguém
 pegasse essa lista e começasse a investigar os primeiros.
@@ -109,7 +170,7 @@ top-30 do AFR não é uma lista de 30 candidatos.
 
 ---
 
-## Resultado 4 — a figura pela qual tudo isso existiu
+## Resultado 5 — a figura pela qual tudo isso existiu
 
 Esta é a única figura que a Elena não tem equivalente, e é a que resume a replicação inteira.
 
@@ -136,7 +197,7 @@ de cada lista é diferente.
 ## O que concluímos
 
 **1. Nenhum achado.** Nada atinge significância, em nenhuma coorte, em nenhum dos dois braços — nem
-o nosso nem o dela.
+o nosso nem o dela. Nem por Bonferroni, nem por FDR, em nenhum nível de agregação.
 
 **2. A ausência é real.** O teste está calibrado. Não encontramos nada porque não há nada a
 encontrar nesta coorte, com este tamanho. 6.752 casos é pouco para análise de variante rara.
