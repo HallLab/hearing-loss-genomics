@@ -77,6 +77,46 @@ instead, which carries the same information without implying a threshold that do
 
 The q-values are in `summary.tsv` and per gene in `top_hits_<cohort>.tsv`.
 
+### No Cauchy rows, and what that costs — raised by Nikki Palmiero
+
+SAIGE emits a `Cauchy` row per gene when several annotation groups are requested in one run,
+combining them into one omnibus p-value. **Our results contain none**, by construction: we pass one
+annotation per mask, so there is nothing for it to combine. Hers has 489,886 of them, 27% of her
+table.
+
+Two things had to be checked rather than assumed.
+
+**Did her Cauchy rows contaminate the comparison in Phase 4?** No. My filter kept them — it selects
+on the mask folder, not on `Group` — so 30% of the rows I compared against were omnibus p-values
+mixed in with per-annotation ones. Recomputed with them excluded, all three top-50 lists are
+**identical, 50 of 50**, the best p is unchanged in every cohort and so is the rank-1 gene. Only
+246–294 genes out of ~19,000 have their best p coming from a Cauchy row, and none sit near the top.
+The reason is structural: an omnibus across annotations lands between its components, so it rarely
+beats the best one.
+
+**Is losing the omnibus a loss?** It is the principled answer to the multiple-testing question
+above — one test per gene, with no denominator left to argue about. So it was computed post hoc over
+the 9 cells per gene, using the same ACAT statistic SAIGE uses:
+
+| cohort | best single cell | Cauchy omnibus | bar 0.05/genes | significant |
+|---|---|---|---|---|
+| combined | 4.21 × 10⁻⁶ | 3.02 × 10⁻⁵ | 2.79 × 10⁻⁶ | no |
+| EUR | 1.54 × 10⁻⁵ | 6.91 × 10⁻⁵ | 2.79 × 10⁻⁶ | no |
+| AFR | 7.23 × 10⁻⁶ | 2.17 × 10⁻⁵ | 2.81 × 10⁻⁶ | no |
+
+Nothing passes, and the omnibus is **further** from passing than the best cell — by a factor of 3 to
+7. That is the expected direction and it is informative: our top genes carry signal in one cell
+only, so averaging in the eight where they show nothing dilutes it. A gene with a consistent effect
+across masks and cutoffs would move the other way.
+
+It also exposes something about the headline numbers. Taking the smallest of 9 correlated p-values
+per gene and setting it against `0.05/genes` is mildly anti-conservative — it does not charge for
+the nine looks. The omnibus is the version that does charge, and under it the null is firmer still.
+
+Her `Cauchy` rows carry a separate problem for anyone reading her tables: `Newmasks_HL_TopGenes_*.csv`
+has no `Group` column, so an omnibus p-value and a single-annotation p-value sit in the same ranking
+with nothing to tell them apart.
+
 ---
 
 ## Finding 1 — the null is calibrated across all 27 panels

@@ -20,7 +20,14 @@ A deflated analysis produces the first without supporting the second. Two checks
      test. This decides whether 0.05/n_tests is the honest bar or a conservative
      one.
 
-  D. Where the MAF cutoff does change the answer. A gene whose signal sits only
+  D. The Cauchy (ACAT) omnibus, one p-value per gene. Raised by Nikki Palmiero:
+     SAIGE emits a Cauchy row combining annotation groups when several are
+     requested, and ours have none, because we pass one annotation per mask so
+     there is nothing for it to combine. The omnibus is computed here instead,
+     over the 9 cells per gene. It is the principled answer to the question C
+     raises -- one test per gene, with no denominator left to argue about.
+
+  E. Where the MAF cutoff does change the answer. A gene whose signal sits only
      in the very rarest variants, and dilutes as slightly commoner ones enter,
      is behaving the way a real gene would.
 
@@ -36,6 +43,7 @@ Output: phase_4/results/05_calibration_and_consistency.json
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from scipy.stats import binomtest
 
@@ -107,7 +115,31 @@ for c in ["combined", "EUR", "AFR"]:
         "passes_most_permissive_bar": bool(s_.Pvalue.min() < 0.05 / genes),
     }
 
-# ---- D. genes where the cutoff changes the answer ----
+# ---- D. Cauchy / ACAT omnibus, one p per gene ----
+def acat(p):
+    p = np.clip(np.asarray(p, dtype=float), 1e-300, 1 - 1e-16)
+    return 0.5 - np.arctan(np.mean(np.tan((0.5 - p) * np.pi))) / np.pi
+
+
+report["cauchy_omnibus"] = {
+    "why": "we emit no Cauchy rows (one annotation per mask), so this is computed "
+           "post hoc over the 9 cells per gene",
+    "by_cohort": {},
+}
+for c in ["combined", "EUR", "AFR"]:
+    s_ = d[d.Cohort == c]
+    om = s_.groupby("Region").Pvalue.apply(lambda x: acat(x.values))
+    bar = 0.05 / len(om)
+    report["cauchy_omnibus"]["by_cohort"][c] = {
+        "genes": int(len(om)),
+        "min_omnibus_p": float(om.min()),
+        "min_single_cell_p": float(s_.Pvalue.min()),
+        "bar_per_gene": bar,
+        "any_significant": bool(om.min() < bar),
+        "top5": {g: float(v) for g, v in om.nsmallest(5).items()},
+    }
+
+# ---- E. genes where the cutoff changes the answer ----
 r = piv[piv[0.01] > 0]
 ratio = r[0.01] / r[0.0001]
 sens = r[ratio > 100].assign(fold=ratio[ratio > 100]).sort_values(0.0001)
@@ -144,7 +176,13 @@ for c, v in m["bonferroni"].items():
           f"| distinct {v['bar_distinct']:.2e} | per gene {v['bar_per_gene']:.2e} "
           f"| passes most permissive: {v['passes_most_permissive_bar']}")
 
-print(f"\nD. {report['maf_sensitive_genes']['n_with_100x_improvement_at_strictest']} "
+print("\nD. Cauchy omnibus, one p per gene over the 9 cells")
+for c, v in report["cauchy_omnibus"]["by_cohort"].items():
+    print(f"   {c:9s} omnibus {v['min_omnibus_p']:.3g}  vs best single cell "
+          f"{v['min_single_cell_p']:.3g}  bar {v['bar_per_gene']:.2e}  "
+          f"significant: {v['any_significant']}")
+
+print(f"\nE. {report['maf_sensitive_genes']['n_with_100x_improvement_at_strictest']} "
       f"tests improve >100x at the strictest cutoff; top 5:")
 for e in report["maf_sensitive_genes"]["top"][:5]:
     print(f"   {e['cohort']:9s} {e['mask']:9s} {e['gene']:10s} "

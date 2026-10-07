@@ -98,6 +98,53 @@
       }
     }
   },
+  "cauchy_omnibus": {
+    "why": "we emit no Cauchy rows (one annotation per mask), so this is computed post hoc over the 9 cells per gene",
+    "by_cohort": {
+      "combined": {
+        "genes": 17943,
+        "min_omnibus_p": 3.0151295949853996e-05,
+        "min_single_cell_p": 4.21416448725953e-06,
+        "bar_per_gene": 2.786602017499861e-06,
+        "any_significant": false,
+        "top5": {
+          "PSG8": 3.0151295949853996e-05,
+          "PSMA7": 3.914908653374072e-05,
+          "BPTF": 4.4736823870406006e-05,
+          "SIX1": 9.300605543366425e-05,
+          "LSMEM2": 0.0001206880798848009
+        }
+      },
+      "EUR": {
+        "genes": 17928,
+        "min_omnibus_p": 6.905988850580691e-05,
+        "min_single_cell_p": 1.53667322401185e-05,
+        "bar_per_gene": 2.788933511825078e-06,
+        "any_significant": false,
+        "top5": {
+          "ATP13A4": 6.905988850580691e-05,
+          "CHGB": 0.00017043632277141674,
+          "FGD3": 0.00019378842116485329,
+          "SIX1": 0.00022165843357629944,
+          "PSMA7": 0.0002509729854427434
+        }
+      },
+      "AFR": {
+        "genes": 17789,
+        "min_omnibus_p": 2.1680768442888798e-05,
+        "min_single_cell_p": 7.22823550812557e-06,
+        "bar_per_gene": 2.810725729383327e-06,
+        "any_significant": false,
+        "top5": {
+          "CFH": 2.1680768442888798e-05,
+          "MLLT6": 3.8128600925890765e-05,
+          "TMOD2": 8.988960062072948e-05,
+          "ACLY": 9.892766269919973e-05,
+          "MAP9": 0.00020271049982584222
+        }
+      }
+    }
+  },
   "maf_sensitive_genes": {
     "n_with_100x_improvement_at_strictest": 68,
     "top": [
