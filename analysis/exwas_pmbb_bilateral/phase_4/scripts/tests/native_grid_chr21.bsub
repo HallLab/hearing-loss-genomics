@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# TEST, not part of the pipeline -- does one SAIGE call over the whole grid give
+# the same answers as nine calls over its cells?
+#
+# The current design calls SAIGE once per (mask, MAF): 9 calls per cohort and
+# chromosome, each with one annotation. SAIGE is built to take the whole grid in
+# one call -- --maxMAF_in_groupTest defaults to "0.0001,0.001,0.01" and
+# --annotation_in_groupTest takes a list -- and then its own Cauchy row combines
+# all nine, which is the per-gene omnibus we currently compute afterwards.
+#
+# Two things have to be checked before changing the design:
+#
+#   1. Do the shared cells agree exactly? The pLOF:pDM combination uses the same
+#      group file either way, so it must.
+#   2. How much do pLOF and pDM differ when read out of the pLOF_pDM file rather
+#      than from their own? 11,540 variants are both, and in pLOF_pDM each
+#      carries ONE label, so label precedence decides. This is the real cost.
+#
+# Run against the replication's existing null model and its chr21 results, so
+# the comparison isolates the job structure from everything else.
+#
+#BSUB -J native_grid_test
+#BSUB -q epistasis_normal
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/test_native.%J.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/test_native.%J.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+#BSUB -n 4
+#BSUB -W 4:00
+
+set -euo pipefail
+module load apptainer/1.4.1
+
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+REPL=/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication
+HERE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+
+CHR=21
+GROUP=combined
+PLINK=${ELENA}/rarevariant_geneburden/plink_deduplicated/chr${CHR}_deduplicated
+OUT=${HERE}/phase_4/results/test_native/${GROUP}_chr${CHR}_native.txt
+
+echo "one call, whole grid: 3 annotations x 3 MAF cutoffs"
+echo "start : $(date)"
+
+apptainer exec -B /project -B /project/hall -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed \
+  --bimFile=${PLINK}.bim \
+  --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${REPL}/phase_4/results/step1/${GROUP}/${GROUP}.rda \
+  --varianceRatioFile=${REPL}/phase_4/results/step1/${GROUP}/${GROUP}.varianceRatio.txt.varianceRatio.txt \
+  --groupFile=${REPL}/phase_4/data/masks_by_chrom/pLOF_pDM/chr${CHR}.txt \
+  --SAIGEOutputFile=${OUT} \
+  --minMAF=0 \
+  --maxMAF_in_groupTest=0.0001,0.001,0.01 \
+  --minMAC=1 \
+  --annotation_in_groupTest="pLOF,pDM,pLOF:pDM" \
+  --LOCO=FALSE \
+  --is_Firth_beta=TRUE \
+  --is_single_in_groupTest=FALSE \
+  --is_output_moreDetails=TRUE \
+  --is_no_weight_in_groupTest=TRUE \
+  --is_overwrite_output=TRUE
+
+echo "done : $(date)"
+wc -l ${OUT}

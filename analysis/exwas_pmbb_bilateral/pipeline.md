@@ -20,7 +20,8 @@ here. Each stage names its inputs, its outputs and the premise that governs it.
                                         PHASE 4│                 │
                                      ┌─────────▼─────────────────▼───┐
                                      │  SAIGE step 1  null models ×3 │
-                                     │  SAIGE step 2  594 tasks      │
+                                     │  SAIGE step 2  66 tasks       │
+                                     │   whole grid per call -> Cauchy│
                                      └───────────────┬───────────────┘
                                              PHASE 5 │
                                      ┌───────────────▼───────────────┐
@@ -93,38 +94,47 @@ model consumes, so excluding them is correct, unlike the imputed-PC cut P3 rever
 | | |
 |---|---|
 | in | covariates, masks, GRMs, exome genotypes |
-| out | 594 result files |
+| out | 66 result files, each covering the whole grid for its chromosome |
 | premise | **P6** three masks, **P8** categorical batch |
 
 **Step 4.1 — null model.** Three, one per cohort. Fits the expectation of who has hearing loss from
 age, sex, batch, ancestry and relatedness, without looking at any gene. Relatedness is the expensive
 part and does not depend on the gene, which is why it is computed once and reused.
 
-**Step 4.2 — association.** 3 cohorts × 22 chromosomes × 3 masks × 3 max-MAF cutoffs = **594 tasks**,
-as an LSF array. An array element that fails does not touch its siblings — the pipeline this
-replaces used `errorStrategy = 'terminate'`, where one out-of-memory task cancelled ten healthy ones
-and the merge never noticed.
+**Step 4.2 — association.** 3 cohorts × 22 chromosomes = **66 tasks**, as an LSF array. Each call
+takes the whole grid — three annotations and three max-MAF cutoffs — so SAIGE tests all nine
+combinations internally and emits **one `Cauchy` row per gene** covering all of them. That row is
+the per-gene omnibus (premise **P10**), produced by the tool rather than computed afterwards.
 
-Each gene yields three p-values: Burden (the sum), SKAT (the dispersion) and SKAT-O (the mixture).
+An array element that fails does not touch its siblings. The pipeline this replaces used Nextflow
+with `errorStrategy = 'terminate'`, where one out-of-memory task cancelled ten healthy ones and the
+merge never noticed.
+
+Each gene yields, per cell, three p-values — Burden (the sum), SKAT (the dispersion) and SKAT-O (the
+mixture) — plus the one Cauchy row across cells.
 
 ## Phase 5 — reading the result · **built here**
 
 | | |
 |---|---|
-| in | the 594 result files |
+| in | the 66 result files |
 | out | merged tables, Manhattan, QQ, top hits |
 | premise | **P9** both corrections, both levels |
 
-**Step 5.1 — merge.** Refuses rather than globs: all 594 cells present, every file carrying the
+**Step 5.1 — merge.** Refuses rather than globs: all 66 cells present, every file carrying the
 expected header, no file still being written, no blank gene, no non-numeric p-value.
 
-**Step 5.2 — calibration.** QQ plots and λ. Establishes whether a null result is a real absence or a
+**Step 5.2 — the headline.** One p-value per gene, from SAIGE's Cauchy row, against `0.05 / genes`.
+The nine cells stay in the table as detail — including `search_penalty`, omnibus over best cell,
+which says how much of the nine a gene needed searching to find.
+
+**Step 5.3 — calibration.** QQ plots and λ. Establishes whether a null result is a real absence or a
 deflated test, which a p-value table alone cannot distinguish.
 
-**Step 5.3 — tables.** Top hits with a fragility flag, because a p-value alone ranks a five-allele
+**Step 5.4 — tables.** Top hits with a fragility flag, because a p-value alone ranks a five-allele
 gene alongside a four-hundred-allele one.
 
-**Step 5.4 — against the replication.** The same genes under the broad `SO_396` phenotype and under
+**Step 5.5 — against the replication.** The same genes under the broad `SO_396` phenotype and under
 this one. That comparison is the point of running this at all: it measures what the phenotype
 decision costs and buys, with everything else held fixed.
 

@@ -77,8 +77,8 @@ position independently three days earlier:
 > give you a lot of noise... I wouldn't necessarily focus on the ones that don't have a likely causal
 > effect" — D. Epstein, 2026-10-02
 
-**Moves: 792 step-2 tasks → 594,** and removes the mask that held 15,951,289 entries against
-1,340,936 for `pLOF_pDM`.
+**Moves:** removes the mask that held 15,951,289 entries against 1,340,936 for `pLOF_pDM`. In the
+replication's job structure that was 792 tasks down to 594; **P10** then takes it to 66.
 
 ## P7 · PC counts are 5 / 4 / 3 · **R, Phase 3**
 
@@ -103,6 +103,44 @@ The intent was there; the wiring was not.
 Three Bonferroni denominators are defensible and they differ ninefold, so the one being used has to
 be named rather than implied. Benjamini-Hochberg is reported alongside, because it is the lenient
 correction and where a weak real effect would appear first.
+
+## P10 · SAIGE runs the whole grid in one call · **R, measured 2026-10-07**
+
+Not inherited — this analysis is the first to do it, and it came out of Nikki Palmiero asking why
+the replication had no `Cauchy` rows.
+
+SAIGE is built to take the grid whole: `--annotation_in_groupTest` takes a list, and
+`--maxMAF_in_groupTest` **defaults** to exactly our `0.0001,0.001,0.01`. One call per cohort and
+chromosome tests all nine combinations and emits **one Cauchy row per gene** covering all of them —
+the per-gene omnibus, from the tool, with nothing computed on the side.
+
+The replication overrode that default and sliced the grid into 594 jobs; the pipeline it replicates
+sliced it into 792. Neither produced a per-gene omnibus as a result.
+
+**Moves: 594 step-2 tasks → 66**, and the headline p-value stops depending on a calculation of mine
+that runs after the fact.
+
+### What it costs, measured rather than assumed
+
+chr21, combined cohort, one call against the nine:
+
+| comparison | genes | identical |
+|---|---:|---|
+| `pLOF:pDM` — same group file either way | 623 | **623 (100%)** |
+| `pLOF` — from pLOF_pDM vs its own file | 620 | **620 (100%)** |
+| `pDM` — from pLOF_pDM vs its own file | 522 | 381 (73%) |
+
+Native Cauchy: one row per gene, matching the hand-computed ACAT exactly for 165 of 208 genes,
+median ratio 1.000.
+
+Only `pDM` moves, and the cause is label precedence: of 11,517 variants that are both, 11,516 are
+written as `pLOF` in the combined file. So `pDM` read from there means "damaging missense that is
+not also loss-of-function". These are variants that truncate on one transcript and are missense on
+another, so either reading is defensible — and this one is arguably cleaner, since a variant that
+truncates the protein is not a missense story.
+
+Recorded so that a `pDM` result from this analysis is not compared naively against a `pDM` result
+from the replication. They are answering slightly different questions.
 
 ---
 

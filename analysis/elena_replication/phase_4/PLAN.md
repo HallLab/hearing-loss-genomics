@@ -108,8 +108,42 @@ standalone `pLOF` and `pDM` runs already produce. We pass the single category ea
 each mask yields exactly one test per gene.
 
 The duplicate tests are not quite identical, which is why this is worth stating rather than
-silently fixing: 11,540 variants are both pLOF and pDM, and in `pLOF_pDM.txt` each carries one
+silently fixing: 11,517 variants are both pLOF and pDM, and in `pLOF_pDM.txt` each carries one
 label. So pLOF-within-pLOF_pDM and standalone pLOF differ for those variants.
+
+### What this deviation cost, measured afterwards
+
+Passing one annotation also means SAIGE has nothing to combine, so **our output has no `Cauchy`
+rows** — the omnibus p-value per gene that Phase 5 ends up computing by hand. Nikki Palmiero asked
+about this, and chasing it turned up something about the job structure itself.
+
+SAIGE is built to take the whole grid in one call: `--annotation_in_groupTest` takes a list, and
+`--maxMAF_in_groupTest` defaults to exactly our `0.0001,0.001,0.01`. One call per cohort and
+chromosome would test all nine combinations and emit **one Cauchy row per gene** covering all of
+them. Both this replication and the pipeline it replicates overrode that default and sliced the
+grid into separate jobs — 594 and 792 of them — which is why neither produced a per-gene omnibus
+from the tool.
+
+Measured on chr21, combined cohort, one call against the nine:
+
+| comparison | genes | identical |
+|---|---:|---|
+| `pLOF:pDM` — same group file either way | 623 | **623 (100%)** |
+| `pLOF` — read from pLOF_pDM vs its own file | 620 | **620 (100%)** |
+| `pDM` — read from pLOF_pDM vs its own file | 522 | 381 (73%) |
+
+And SAIGE's native Cauchy comes out at one row per gene, matching the hand-computed ACAT for 165 of
+208 genes exactly, median ratio 1.000.
+
+Only `pDM` differs, and the cause is precedence: of the 11,517 dual-label variants, 11,516 are
+labelled `pLOF` in the combined file. So `pDM` read from there is "damaging missense that is not
+also loss-of-function", while the standalone file is "damaging missense, including those". Both are
+defensible — these are variants that truncate on one transcript and are missense on another — and
+the native reading is arguably the cleaner one, since a variant that truncates the protein is not
+really a missense story.
+
+Not changed here: this replication is finished and its numbers are reported. The finding is carried
+into `analysis/exwas_pmbb_bilateral`, which has not run yet.
 
 ### 4.3 Group files split by chromosome
 
