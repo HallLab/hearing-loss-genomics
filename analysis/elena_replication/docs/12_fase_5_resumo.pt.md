@@ -113,7 +113,86 @@ coisa sem inventar um limiar que não existe.)*
 
 ---
 
-## Resultado 3 — o gráfico QQ: a ausência é real
+## Resultado 3 — um p-valor por gene, em vez de nove
+
+*(Esta seção nasceu de uma pergunta da Nikki, e acabou mudando o número principal.)*
+
+### O problema
+
+Cada gene foi testado **nove vezes**: três máscaras × três cortes de raridade. Saem nove p-valores.
+Qual é *o* p-valor daquele gene?
+
+Pegar o menor dos nove e comparar com um limiar calculado como se fosse um teste só é **cobrar
+barato** — você garimpou nove e pagou por um. Mas tratar os nove como independentes é cobrar caro
+demais, porque eles são o mesmo gene com variantes sobrepostas.
+
+### A solução: a combinação de Cauchy
+
+Ela passa cada p-valor por uma transformação antes de somar:
+
+```
+p = 0,000001  →   318.310          p = 0,5  →    0
+p = 0,0001    →     3.183          p = 0,9  →   -3
+p = 0,01      →        32          p = 0,999 →  -318
+```
+
+Repare na assimetria: **evidência forte pode gritar, ausência de evidência só sussurra.** A média
+fica dominada pelo menor p-valor.
+
+E a mágica matemática: a distribuição de Cauchy tem cauda tão pesada que a média de vários valores
+tem *a mesma distribuição* que um só — **não importa o quanto estejam correlacionados.** É isso que
+permite combinar nossos nove testes sobrepostos sem precisar saber o quanto se sobrepõem.
+
+O que sai segue uma regra simples:
+
+```
+omnibus  ≈  menor p  ×  ( 9 ÷ em quantas das 9 células o sinal aparece )
+
+   sinal em 1 célula   →  9,0×   exatamente o preço de Bonferroni por nove olhadas
+   sinal em 3 células  →  3,0×
+   sinal nas 9         →  1,0×   nenhuma penalidade
+```
+
+Ou seja: **"pegue a melhor célula, e pague pelo tanto de garimpo que deu para achá-la."**
+
+### O que isso mudou no nosso resultado
+
+| | melhor valor | limiar | distância |
+|---|---|---|---|
+| menor célula | 4,21 × 10⁻⁶ | 2,79 × 10⁻⁶ | **1,5×** |
+| **omnibus (honesto)** | **3,02 × 10⁻⁵** | 2,79 × 10⁻⁶ | **10,8×** |
+
+Eu vinha reportando o 1,5×, que soa como *quase*. Pelo número honesto são quase **onze vezes**.
+
+A conclusão não muda — nada passa nos dois —, mas o tom muda muito, e tom importa em reunião:
+*"faltou pouco, numa coorte maior sai"* é uma frase bem diferente de *"faltou uma ordem de
+magnitude"*.
+
+### Um bônus: dá para ver quem garimpou mais
+
+A penalidade de cada gene é informação nova, que o p-valor sozinho escondia:
+
+| gene | penalidade | leitura |
+|---|---|---|
+| `PSG8` | **7,2×** | resultado vive numa célula só — é o mesmo gene que não tem componente de burden |
+| `PSMA7` | 2,8× | |
+| **`SIX1`** | **1,8×** | o mais consistente do topo, e o único gene de surdez estabelecido ali |
+
+O `SIX1` é **7º pelo menor p e 4º pelo omnibus**. Efeito consistente entre máscaras e cortes vale
+mais que p-valor afiado achado num canto — e o ranking bruto não mostrava isso.
+
+### Por que a Elena não tem esse número
+
+O SAIGE emite uma linha `Cauchy` só quando recebe várias anotações **na mesma execução**. Ela
+passava quatro, nós passamos uma — por isso nossos resultados têm zero linhas Cauchy.
+
+Mas o Cauchy do SAIGE agrega as anotações **dentro de uma célula**, não as nove células. Ela acaba
+com ~8,7 linhas Cauchy por gene e fica com o mesmo problema sem resolver. O nosso cálculo sobre as
+nove células responde mais do que o nativo responderia.
+
+---
+
+## Resultado 4 — o gráfico QQ: a ausência é real
 
 ### O que é um QQ
 
@@ -144,7 +223,7 @@ independentes, mesma resposta.
 
 ---
 
-## Resultado 4 — a maior parte do topo é frágil
+## Resultado 5 — a maior parte do topo é frágil
 
 Mesmo sem ninguém significativo, existe uma lista dos "mais próximos". Era de esperar que alguém
 pegasse essa lista e começasse a investigar os primeiros.
@@ -170,7 +249,7 @@ top-30 do AFR não é uma lista de 30 candidatos.
 
 ---
 
-## Resultado 5 — a figura pela qual tudo isso existiu
+## Resultado 6 — a figura pela qual tudo isso existiu
 
 Esta é a única figura que a Elena não tem equivalente, e é a que resume a replicação inteira.
 
@@ -197,7 +276,8 @@ de cada lista é diferente.
 ## O que concluímos
 
 **1. Nenhum achado.** Nada atinge significância, em nenhuma coorte, em nenhum dos dois braços — nem
-o nosso nem o dela. Nem por Bonferroni, nem por FDR, em nenhum nível de agregação.
+o nosso nem o dela. Nem por Bonferroni, nem por FDR, nem pelo omnibus por gene. E pelo número
+honesto a distância é de uma ordem de magnitude, não de 1,5×.
 
 **2. A ausência é real.** O teste está calibrado. Não encontramos nada porque não há nada a
 encontrar nesta coorte, com este tamanho. 6.752 casos é pouco para análise de variante rara.
