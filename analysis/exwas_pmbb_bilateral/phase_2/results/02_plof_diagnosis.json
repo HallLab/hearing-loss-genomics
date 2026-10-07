@@ -1,0 +1,61 @@
+{
+  "chromosome": "8",
+  "release_universe": 239514,
+  "var_anno_misaligned_genes": {
+    "pLOF": 0,
+    "pDM": 0,
+    "pLOF_pDM": 0,
+    "ALL": 0
+  },
+  "pLOF": {
+    "pipeline": 36014,
+    "release": 9807,
+    "shared": 9198,
+    "pipeline_only": 26816,
+    "  absent_from_release_universe": 3228,
+    "  present_with_other_annotation": 23588,
+    "    by_release_annotation": {
+      "other_missense": 19155,
+      "damaging_missense": 4057,
+      "synonymous": 376
+    },
+    "    LoF_on_some_transcript": 1919,
+    "    LoF_on_NO_transcript": 21669,
+    "      of those, SpliceAI >= 0.2": 2824,
+    "      SpliceAI at 0.5": 1229,
+    "      SpliceAI at 0.8": 547,
+    "    RESIDUAL_meets_neither_criterion": 18845,
+    "      pct_of_pipeline_mask": 52.3,
+    "      by_release_annotation": {
+      "other_missense": 18419,
+      "synonymous": 317,
+      "damaging_missense": 109
+    },
+    "release_only": 609
+  },
+  "pDM": {
+    "pipeline": 27001,
+    "release": 23125,
+    "shared": 10697,
+    "pipeline_only": 16304,
+    "  absent_from_release_universe": 58,
+    "  present_with_other_annotation": 16246,
+    "    by_release_annotation": {
+      "other_missense": 16244,
+      "synonymous": 1,
+      "pLoF": 1
+    },
+    "    LoF_on_some_transcript": 37,
+    "    LoF_on_NO_transcript": 16209,
+    "      of those, SpliceAI >= 0.2": 0,
+    "      SpliceAI at 0.5": 0,
+    "      SpliceAI at 0.8": 0,
+    "    RESIDUAL_meets_neither_criterion": 16209,
+    "      pct_of_pipeline_mask": 60.0,
+    "      by_release_annotation": {
+      "other_missense": 16208,
+      "synonymous": 1
+    },
+    "release_only": 12428
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "chromosome": "8",
+  "raised_by": "Nikki Palmiero, 2026-10-05",
+  "A_revel_parsing": {
+    "missense_rows": 542709,
+    "rows_with_a_score__as_parsed": 65806,
+    "rows_with_a_score__reading_the_list": 517274,
+    "pct_recovered": 95.3,
+    "variants_passing_REVEL_0.5__as_parsed": 5391,
+    "variants_passing_REVEL_0.5__correct": 20618,
+    "undercount": 15227,
+    "pct_of_correct_that_was_lost": 73.9
+  },
+  "B_biotype": {
+    "scope": "genome-wide, gene level",
+    "symbols_in_release_vep": 25940,
+    "of_which_protein_coding": 18289,
+    "by_mask": {
+      "pLOF": {
+        "genes": 19038,
+        "genes_not_protein_coding": 1101,
+        "pct_genes": 5.8,
+        "entries": 1002120,
+        "entries_on_non_coding_genes": 20078,
+        "pct_entries": 2.0,
+        "examples": [
+          "-",
+          "A1BG-AS1",
+          "ABCA11P",
+          "ABCA9-AS1",
+          "ACBD3-AS1",
+          "ACSL3-AS1",
+          "ACTA2-AS1",
+          "ACTN1-DT"
+        ]
+      },
+      "pDM": {
+        "genes": 17336,
+        "genes_not_protein_coding": 8,
+        "pct_genes": 0.0,
+        "entries": 720983,
+        "entries_on_non_coding_genes": 264,
+        "pct_entries": 0.0,
+        "examples": [
+          "-",
+          "CASP12",
+          "CD300H",
+          "OR10J3",
+          "PNLIPRP2",
+          "PTCHD3",
+          "TRGJP",
+          "TRGV9"
+        ]
+      },
+      "pLOF_pDM": {
+        "genes": 19057,
+        "genes_not_protein_coding": 1101,
+        "pct_genes": 5.8,
+        "entries": 1717883,
+        "entries_on_non_coding_genes": 20342,
+        "pct_entries": 1.2,
+        "examples": [
+          "-",
+          "A1BG-AS1",
+          "ABCA11P",
+          "ABCA9-AS1",
+          "ACBD3-AS1",
+          "ACSL3-AS1",
+          "ACTA2-AS1",
+          "ACTN1-DT"
+        ]
+      }
+    },
+    "reading": "Large in genes, small in variants, and both are true. 1,101 genes carry a burden test that cannot mean anything -- a lncRNA has no protein to lose function of -- while only about 2% of mask entries sit on them. Reporting only the 2% would understate it; only the 1,101 would overstate it.",
+    "pDM_barely_affected": "8 genes, because a missense call requires a protein by definition. pDM's defect is the REVEL parsing above, not this."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "phenotype": "bilateral sensorineural, premise P1",
+  "pc_counts": {
+    "combined": 5,
+    "EUR": 4,
+    "AFR": 3
+  },
+  "cohorts": {
+    "combined": {
+      "requested": 53919,
+      "written": 53910,
+      "dropped_for_missing_covariate": 9,
+      "missing_by_column": {
+        "AGE": 9,
+        "AGE2": 9
+      },
+      "cases": 3164,
+      "controls": 50746,
+      "n_pcs": 5,
+      "file": "combined.txt"
+    },
+    "EUR": {
+      "requested": 40150,
+      "written": 40143,
+      "dropped_for_missing_covariate": 7,
+      "missing_by_column": {
+        "AGE": 7,
+        "AGE2": 7
+      },
+      "cases": 2547,
+      "controls": 37596,
+      "n_pcs": 4,
+      "file": "EUR.txt"
+    },
+    "AFR": {
+      "requested": 10539,
+      "written": 10539,
+      "dropped_for_missing_covariate": 0,
+      "missing_by_column": {},
+      "cases": 490,
+      "controls": 10049,
+      "n_pcs": 3,
+      "file": "AFR.txt"
+    }
+  }
+}

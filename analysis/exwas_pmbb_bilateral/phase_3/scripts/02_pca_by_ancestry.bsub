@@ -1,0 +1,82 @@
+#!/bin/bash
+#BSUB -J repl_pca[1-2]
+#BSUB -q epistasis_normal
+#BSUB -o logs/repl_pca.%J.%I.out
+#BSUB -e logs/repl_pca.%J.%I.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+# 64 GB, not 16: --pca builds the full N x N relationship matrix, so memory grows
+# with the SQUARE of sample count. 16 GB held AFR (14,927^2 x 8 = 1.8 GB) and was
+# killed on EUR (51,867^2 x 8 = 21.5 GB) -- see 02b_pca_eur_resume.bsub.
+#BSUB -n 4
+#BSUB -W 24:00
+#
+# Phase 3 / step 6 prerequisite — within-ancestry PCA for the corrected arm.
+#
+# WHY THIS EXISTS. The pipeline's own within-ancestry PCA was run after the cohort
+# had already been cut against the imputed .fam, so the 431 participants Phase 1
+# restores have no principal components: 203 in EUR, 34 in AFR. Three ways out, and
+# only one is defensible:
+#
+#   using the release's global PCs instead -- inside EUR, PC1 of a global PCA is busy
+#     separating continents and carries almost nothing about structure within Europe.
+#     A methodological regression, and the pipeline got this right.
+#   dropping the 237 without PCs -- excluding people for missing data, which is the
+#     defect being corrected. 203 of them from the group already excluded once.
+#   re-running the PCA without the pre-filter  <-- this
+#
+# SCOPE. Run over everyone with exome data in each ancestry group (EUR 51,867, AFR
+# 14,927), not over the corrected cohort. Two reasons. It covers both arms from one
+# calculation, so the arms differ only in cohort and a later difference stays
+# attributable. And it is the same design the pipeline used -- its PCA ran over the
+# keep list (51,632 / 14,878), not over the analysis cohort -- minus the improper cut.
+#
+# NOTE. These PCs will NOT be identical to the pipeline's, even for people present in
+# both: a PCA over a different sample set yields different eigenvectors. The
+# reproduction arm therefore keeps the pipeline's PCs; only the corrected arm uses
+# these.
+#
+# Parameters are the pipeline's own (step7_ldprune.bsub), unchanged on purpose:
+#   --geno 0.01 --maf 0.01 --hwe 1e-6, then --indep-pairwise 50 5 0.2
+# Common variants, note -- the opposite end of the frequency spectrum from the rare
+# variants being tested. One PCA per ancestry; nothing here varies by MAF threshold
+# or by mask.
+#
+# Outputs .eigenvec (per-person PCs) and .eigenval -- the latter being a fresh scree
+# for the corrected set, so the 4/3 decision can be re-checked rather than inherited.
+
+set -euo pipefail
+module load plink/1.9-20210416
+
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_3
+IN=/static/PMBB/PMBB-Release-2026-4.0/Exome/all_variants_NF/PMBB-Release-2026-4.0_genetic_exome.nf.all_chromosomes
+OUT=${BASE}/data/pca
+mkdir -p ${OUT} ${BASE}/logs
+
+case ${LSB_JOBINDEX} in
+  1) GROUP=EUR ;;
+  2) GROUP=AFR ;;
+  *) echo "bad index"; exit 1 ;;
+esac
+KEEP=${BASE}/data/${GROUP}_keep.txt
+echo "=== ${GROUP} — $(wc -l < ${KEEP}) samples requested ==="
+
+# 1. common, well-genotyped, HWE-consistent variants within this ancestry
+plink --bfile ${IN} --keep ${KEEP} --allow-extra-chr --autosome \
+      --geno 0.01 --maf 0.01 --hwe 1e-6 \
+      --make-bed --out ${OUT}/${GROUP}.common
+echo "variants after MAF/geno/HWE: $(wc -l < ${OUT}/${GROUP}.common.bim)"
+
+# 2. LD pruning — correlated variants would let one genomic region dominate a PC
+plink --bfile ${OUT}/${GROUP}.common --allow-extra-chr \
+      --indep-pairwise 50 5 0.2 --out ${OUT}/${GROUP}.ldprune
+plink --bfile ${OUT}/${GROUP}.common --allow-extra-chr \
+      --extract ${OUT}/${GROUP}.ldprune.prune.in \
+      --make-bed --out ${OUT}/${GROUP}.common_ldpruned
+echo "variants after LD pruning: $(wc -l < ${OUT}/${GROUP}.common_ldpruned.bim)"
+
+# 3. the PCA itself
+plink --bfile ${OUT}/${GROUP}.common_ldpruned --allow-extra-chr \
+      --pca 20 --out ${OUT}/${GROUP}
+echo "samples in eigenvec: $(wc -l < ${OUT}/${GROUP}.eigenvec)"
+echo "=== ${GROUP} done ==="

@@ -1,0 +1,52 @@
+{
+  "chromosome": "8",
+  "release": {
+    "genes": 654,
+    "variants": 239684,
+    "ensg_unmapped_to_symbol": 1,
+    "by_annotation": {
+      "synonymous": 64688,
+      "other_missense": 142017,
+      "damaging_missense": 23139,
+      "pLoF": 9808
+    }
+  },
+  "pipeline": {
+    "pLOF": {
+      "genes": 676,
+      "variants": 36210
+    },
+    "pDM": {
+      "genes": 625,
+      "variants": 27002
+    },
+    "pLOF_pDM": {
+      "genes": 677,
+      "variants": 63017
+    },
+    "ALL": {
+      "genes": 896,
+      "variants": 762921
+    }
+  },
+  "comparison": {
+    "pLOF_vs_pLoF": {
+      "genes_pipeline_only": 59,
+      "genes_release_only": 9,
+      "genes_shared": 617,
+      "genes_identical_variant_set": 5,
+      "variants_pipeline_only": 26816,
+      "variants_release_only": 607,
+      "variants_shared": 9198
+    },
+    "pDM_vs_damaging_missense": {
+      "genes_pipeline_only": 10,
+      "genes_release_only": 18,
+      "genes_shared": 615,
+      "genes_identical_variant_set": 0,
+      "variants_pipeline_only": 16304,
+      "variants_release_only": 12428,
+      "variants_shared": 10697
+    }
+  }
+}

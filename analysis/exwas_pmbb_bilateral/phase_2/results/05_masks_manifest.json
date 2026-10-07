@@ -1,0 +1,34 @@
+{
+  "corrected_rule": "exact term match on real LoF, OR any splice annotation with SpliceAI >= 0.2",
+  "annotation_rows_read": 165369501,
+  "variants_passing_corrected_pLOF": 483255,
+  "variants_that_are_pDM": 673962,
+  "rewritten": {
+    "pLOF": {
+      "kept": 409179,
+      "dropped": 592941,
+      "reannotated_as_pDM": 0,
+      "file": "corrected_pLOF.txt"
+    },
+    "pLOF_pDM": {
+      "kept": 1126909,
+      "dropped": 590163,
+      "reannotated_as_pDM": 811,
+      "file": "corrected_pLOF_pDM.txt"
+    }
+  },
+  "unchanged": {
+    "ALL": {
+      "symlink_to": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/masks_deduplicated/ALL.txt",
+      "reason": "the defect does not involve this mask"
+    },
+    "pDM": {
+      "symlink_to": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/masks_deduplicated/pDM.txt",
+      "reason": "the defect does not involve this mask"
+    }
+  },
+  "reproduction_arm": {
+    "location": "/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/masks_deduplicated",
+    "note": "the pipeline's masks as they ran; not copied, they are a stable input"
+  }
+}

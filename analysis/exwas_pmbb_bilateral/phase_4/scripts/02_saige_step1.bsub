@@ -1,0 +1,88 @@
+#!/bin/bash
+#
+# Phase 4, step 1 -- SAIGE null models, one per cohort.
+#
+# Fits the expectation of who has hearing loss from age, sex, batch, ancestry
+# and relatedness, WITHOUT looking at any gene. Relatedness is the expensive
+# part -- 1.45 billion pairs for the combined cohort -- and it does not depend
+# on the gene, which is why it is computed once here and reused by all 594
+# tasks of step 2.
+#
+#   combined  53,910   3,164 cases   5 PCs
+#   EUR       40,143   2,547 cases   4 PCs
+#   AFR       10,539     490 cases   3 PCs
+#
+# Phenotype: bilateral sensorineural only (premise P1). PC counts: P7.
+# Batch declared categorical: P8 -- without --qCovarColList, SAIGE reads batch
+# 1/2/3 as a quantity and assumes batch 2 sits halfway between 1 and 3.
+#
+# GRM genotypes, all local to this folder (see PROVENANCE.md):
+#   combined  phase_3/data/pca/ALL.common_ldpruned   38,833 markers
+#   EUR       phase_3/data/pca/EUR.common_ldpruned   53,920 markers
+#   AFR       phase_3/data/pca/AFR.common_ldpruned  114,694 markers
+#
+# Carried forward, not fixed here: the combined GRM is thin, because --hwe 1e-6
+# applied across ancestries removes 176k variants where the same filter within
+# EUR removes 19k. Hardy-Weinberg departure in a structured sample is expected
+# and is not evidence of genotyping error, so the filter is doing the wrong job.
+# Rebuilding it means deciding how to handle HWE across ancestries, which is a
+# question for the lab rather than a thing to settle mid-phase.
+#
+#BSUB -J s1_bilat[1-3]
+#BSUB -q epistasis_normal
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/step1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/step1.%J.%I.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+#BSUB -n 8
+#BSUB -W 24:00
+
+set -euo pipefail
+module load apptainer/1.4.1
+
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+
+COV=${BASE}/phase_3/results/covariates
+PCA=${BASE}/phase_3/data/pca
+OUT=${BASE}/phase_4/results/step1
+
+case ${LSB_JOBINDEX} in
+  1) GROUP=combined; PLINK=${PCA}/ALL.common_ldpruned
+     COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4,PC5" ;;
+  2) GROUP=EUR;      PLINK=${PCA}/EUR.common_ldpruned
+     COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4" ;;
+  3) GROUP=AFR;      PLINK=${PCA}/AFR.common_ldpruned
+     COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3" ;;
+  *) echo "bad job index ${LSB_JOBINDEX}" >&2; exit 1 ;;
+esac
+
+PHENO=${COV}/${GROUP}.txt
+mkdir -p ${OUT}/${GROUP}
+
+echo "===================================="
+echo "SAIGE step 1 -- bilateral sensorineural"
+echo "cohort : ${GROUP}"
+echo "pheno  : ${PHENO}  ($(( $(wc -l < ${PHENO}) - 1 )) samples)"
+echo "GRM    : ${PLINK}  ($(wc -l < ${PLINK}.bim) markers)"
+echo "covars : ${COVARS}   qcovars: SEX,Batch"
+echo "start  : $(date)"
+echo "===================================="
+
+apptainer exec -B /project -B /project/hall -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step1_fitNULLGLMM.R \
+  --plinkFile=${PLINK} \
+  --phenoFile=${PHENO} \
+  --phenoCol=PHENO \
+  --covarColList=${COVARS} \
+  --qCovarColList=SEX,Batch \
+  --sampleIDColinphenoFile=IID \
+  --traitType=binary \
+  --outputPrefix=${OUT}/${GROUP}/${GROUP} \
+  --outputPrefix_varRatio=${OUT}/${GROUP}/${GROUP}.varianceRatio.txt \
+  --IsOverwriteVarianceRatioFile=TRUE \
+  --nThreads=8
+
+echo "${GROUP} done : $(date)"
+ls -lh ${OUT}/${GROUP}

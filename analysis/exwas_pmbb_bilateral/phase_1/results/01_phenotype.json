@@ -1,0 +1,50 @@
+{
+  "definition": {
+    "cases": "SO_396.2 and SO_396.8 present on the same date, on >= 2 distinct dates",
+    "controls": "no ear-family evidence from conditions_phecode_x or observation",
+    "source": "Douglas Epstein, meeting 2026-10-02"
+  },
+  "counts": {
+    "cohort_with_exome": 70925,
+    "cases": 3164,
+    "controls": 50755,
+    "excluded_total": 17006,
+    "excluded_hearing_loss_not_bilateral_sensorineural": 7595,
+    "excluded_other_ear_evidence_only": 9411,
+    "cases_lost_to_one_date_rule": 2695
+  },
+  "by_ancestry": {
+    "AFR": {
+      "cases": 490,
+      "controls": 10049
+    },
+    "AMR": {
+      "cases": 37,
+      "controls": 769
+    },
+    "EAS": {
+      "cases": 43,
+      "controls": 1002
+    },
+    "EUR": {
+      "cases": 2547,
+      "controls": 37603
+    },
+    "SAS": {
+      "cases": 32,
+      "controls": 800
+    },
+    "UNKNOWN0": {
+      "cases": 12,
+      "controls": 466
+    },
+    "UNKNOWN1": {
+      "cases": 2,
+      "controls": 54
+    },
+    "UNKNOWN2": {
+      "cases": 1,
+      "controls": 12
+    }
+  }
+}

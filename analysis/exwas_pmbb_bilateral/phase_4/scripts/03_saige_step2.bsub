@@ -1,0 +1,131 @@
+#!/bin/bash
+#
+# Phase 4, step 3 of 3 -- SAIGE step 2: the gene burden association tests.
+#
+# Phenotype: bilateral sensorineural only (premise P1).
+#
+#   3 cohorts (combined, EUR, AFR)
+# x 22 chromosomes
+# x 3 masks (pLOF, pDM, pLOF_pDM)        <- rebuilt in phase 2
+# x 3 max-MAF cutoffs (1e-4, 1e-3, 1e-2)
+# = 594 tasks
+#
+# The ALL mask is deliberately not run.  Andre's call, and the reasoning holds:
+# a burden test over every variant in the gene pools synonymous and intronic
+# variants that carry no mechanism in with the ones that do, so it dilutes
+# rather than tests anything.  It is also by far the most expensive mask --
+# 15,951,289 entries against 1,340,936 for pLOF_pDM.  The ALL group files stay
+# on disk (phase_2/results/masks_v2/ and phase_4/data/masks_by_chrom/ALL/) so
+# the decision is reversible, and phase 5 simply has nothing to compare against
+# Elena's ALL results.
+#
+# Every SAIGE parameter below is taken from Elena's own
+# saige_hearing_pipeline.config, with two exceptions, both noted inline:
+# the group files and --annotation_in_groupTest.
+#
+# Genotypes: Elena's rarevariant_geneburden/plink_deduplicated/chr<N>_deduplicated.
+# We reuse these rather than rebuild.  They carry all 70,925 and all 57,498 of
+# our combined cohort are present (checked), and all 47,818 chr1 pLOF variant
+# IDs in our rebuilt masks resolve against the chr1 .bim, so the ID convention
+# (chr:pos:ref:alt) matches ours exactly.
+#
+#BSUB -J s2_bilat[1-594]
+#BSUB -q epistasis_normal
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/step2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/step2.%J.%I.err
+#BSUB -M 64000
+#BSUB -R "rusage[mem=64000]"
+#BSUB -n 4
+#BSUB -W 12:00
+
+set -euo pipefail
+
+module load apptainer/1.4.1
+
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+
+STEP1=${BASE}/phase_4/results/step1
+MASKDIR=${BASE}/phase_4/data/masks_by_chrom
+PLINKDIR=${ELENA}/rarevariant_geneburden/plink_deduplicated
+OUT=${BASE}/phase_4/results/step2
+
+COHORTS=(combined EUR AFR)
+MASKS=(pLOF pDM pLOF_pDM)
+MAFS=(0.0001 0.001 0.01)
+
+# --annotation_in_groupTest must name the annotation labels that actually
+# appear in the group file.  Elena passes all four for every mask
+# ('ALL,pLOF,pDM,pLOF:pDM'), which makes SAIGE look for categories the file
+# does not contain, and makes the pLOF_pDM run re-emit pLOF-only and pDM-only
+# tests that the standalone pLOF and pDM runs already produce.  We pass the
+# one category each file holds, so each mask yields exactly one test per gene.
+ANNOS=(pLOF pDM "pLOF:pDM")
+
+########################################
+# decode the job index
+#   594 = 3 groups x 22 chr x 3 masks x 3 mafs
+########################################
+J=$(( LSB_JOBINDEX - 1 ))
+
+MAF_I=$(( J % 3 ))
+MASK_I=$(( (J / 3) % 3 ))
+CHR=$(( (J / 9) % 22 + 1 ))
+GRP_I=$(( J / 198 ))
+
+GROUP=${COHORTS[${GRP_I}]}
+MASK=${MASKS[${MASK_I}]}
+ANNO=${ANNOS[${MASK_I}]}
+MAF=${MAFS[${MAF_I}]}
+
+PLINK=${PLINKDIR}/chr${CHR}_deduplicated
+GROUPFILE=${MASKDIR}/${MASK}/chr${CHR}.txt
+MODEL=${STEP1}/${GROUP}/${GROUP}.rda
+VARRATIO=${STEP1}/${GROUP}/${GROUP}.varianceRatio.txt.varianceRatio.txt
+
+mkdir -p ${OUT}/${GROUP}/${MASK}
+RESULT=${OUT}/${GROUP}/${MASK}/${GROUP}_chr${CHR}_${MASK}_maf${MAF}.txt
+
+echo "===================================="
+echo "SAIGE step 2 -- corrected arm"
+echo "task    : ${LSB_JOBINDEX} / 594"
+echo "cohort  : ${GROUP}"
+echo "chr     : ${CHR}"
+echo "mask    : ${MASK}  (annotation '${ANNO}', $(( $(wc -l < ${GROUPFILE}) / 2 )) genes)"
+echo "max MAF : ${MAF}"
+echo "out     : ${RESULT}"
+echo "start   : $(date)"
+echo "===================================="
+
+for F in ${PLINK}.bed ${GROUPFILE} ${MODEL} ${VARRATIO}; do
+  [[ -s ${F} ]] || { echo "MISSING INPUT: ${F}" >&2; exit 1; }
+done
+
+apptainer exec -B /project -B /project/hall -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed \
+  --bimFile=${PLINK}.bim \
+  --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${MODEL} \
+  --varianceRatioFile=${VARRATIO} \
+  --groupFile=${GROUPFILE} \
+  --SAIGEOutputFile=${RESULT} \
+  --minMAF=0 \
+  --maxMAF_in_groupTest=${MAF} \
+  --minMAC=1 \
+  --annotation_in_groupTest="${ANNO}" \
+  --LOCO=FALSE \
+  --is_Firth_beta=TRUE \
+  --is_single_in_groupTest=FALSE \
+  --is_output_moreDetails=TRUE \
+  --is_no_weight_in_groupTest=TRUE \
+  --is_overwrite_output=TRUE
+
+echo "===================================="
+echo "done : $(date)"
+ls -lh ${RESULT}*
+echo "===================================="
