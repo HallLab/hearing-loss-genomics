@@ -105,9 +105,25 @@ the 9 cells per gene, using the same ACAT statistic SAIGE uses:
 | AFR | 7.23 × 10⁻⁶ | 2.17 × 10⁻⁵ | 2.81 × 10⁻⁶ | no |
 
 Nothing passes, and the omnibus is **further** from passing than the best cell — by a factor of 3 to
-7. That is the expected direction and it is informative: our top genes carry signal in one cell
-only, so averaging in the eight where they show nothing dilutes it. A gene with a consistent effect
-across masks and cutoffs would move the other way.
+7.
+
+The mechanism is worth stating correctly, because the obvious reading of it is wrong. The null cells
+do not *dilute* anything: ACAT transforms each p through `tan((0.5 − p)π)`, which sends a p of
+4.2 × 10⁻⁶ to 75,790 and a p of 0.4 to 0.32, so the average is set almost entirely by the smallest
+value and the rest contribute nothing either way. What comes out follows a simple rule:
+
+```
+omnibus  ≈  smallest p  ×  ( 9 / how many of the 9 cells carry the signal )
+
+   signal in 1 cell   ->  9.0x   exactly the Bonferroni price for 9 looks
+   signal in 3 cells  ->  3.0x
+   signal in all 9    ->  1.0x   no penalty at all
+```
+
+So the omnibus is "take the best cell, and pay for how much searching it took to find it". Our top
+genes land at 3–7×, which says their signal sits in roughly one or two cells of nine. A gene with a
+consistent effect across masks and cutoffs would pay nothing — and would therefore have been more
+convincing at the same best p-value than the genes we actually have.
 
 It also exposes something about the headline numbers. Taking the smallest of 9 correlated p-values
 per gene and setting it against `0.05/genes` is mildly anti-conservative — it does not charge for
