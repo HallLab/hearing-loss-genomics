@@ -9,9 +9,9 @@
     "cases": 3164,
     "controls": 50755,
     "excluded_total": 17006,
-    "excluded_hearing_loss_not_bilateral_sensorineural": 7595,
-    "excluded_other_ear_evidence_only": 9411,
-    "cases_lost_to_one_date_rule": 2695
+    "excluded_bilateral_sensorineural_but_one_date_only": 2695,
+    "excluded_hearing_loss_never_bilateral_sensorineural": 4900,
+    "excluded_other_ear_evidence_only": 9411
   },
   "by_ancestry": {
     "AFR": {

@@ -95,9 +95,12 @@ controls = cohort - any_ear
 
 # ---- everyone else is excluded, and the reasons are counted ----
 excluded = cohort - cases - controls
-hl_not_bilateral_sn = (any_ear & set(ear[ear.code.str.startswith("SO_396")].pid)
-                       ) - cases
-other_ear_only = excluded - hl_not_bilateral_sn
+hearing_loss = set(ear[ear.code.str.startswith("SO_396")].pid)
+# Split rather than lumped: 'one date' people DO have the target phenotype and
+# fail only the rule of 2, which is a different reason from not having it.
+bilat_sn_one_date = one_date - cases
+hl_never_bilat_sn = hearing_loss - cases - bilat_sn_one_date
+other_ear_only = excluded - hearing_loss
 
 status = pd.Series("excluded", index=sorted(cohort), dtype=object)
 status.loc[sorted(controls)] = "control"
@@ -120,9 +123,9 @@ report = {
         "cases": len(cases),
         "controls": len(controls),
         "excluded_total": len(excluded),
-        "excluded_hearing_loss_not_bilateral_sensorineural": len(hl_not_bilateral_sn),
+        "excluded_bilateral_sensorineural_but_one_date_only": len(bilat_sn_one_date),
+        "excluded_hearing_loss_never_bilateral_sensorineural": len(hl_never_bilat_sn),
         "excluded_other_ear_evidence_only": len(other_ear_only),
-        "cases_lost_to_one_date_rule": len(one_date - cases),
     },
     "by_ancestry": {
         a: {"cases": int(((frame.ancestry == a) & (frame.PHENO == 1)).sum()),
@@ -136,8 +139,10 @@ print(f"cohort with exome   {len(cohort):>7,}")
 print(f"  cases             {len(cases):>7,}   bilateral sensorineural, >= 2 dates")
 print(f"  controls          {len(controls):>7,}   no ear evidence at all")
 print(f"  excluded          {len(excluded):>7,}")
-print(f"    of which, hearing loss but not bilateral sensorineural: "
-      f"{len(hl_not_bilateral_sn):,}")
+print(f"    bilateral sensorineural, but on one date only        : "
+      f"{len(bilat_sn_one_date):,}")
+print(f"    hearing loss, never bilateral sensorineural          : "
+      f"{len(hl_never_bilat_sn):,}")
 print(f"    other ear evidence only                              : "
       f"{len(other_ear_only):,}")
 print("\nby ancestry:")
