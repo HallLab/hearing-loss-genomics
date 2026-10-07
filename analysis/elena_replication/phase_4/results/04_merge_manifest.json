@@ -7,21 +7,42 @@
       "genes": 17943,
       "bonferroni_0.05": 3.1257814453613406e-07,
       "min_pvalue": 4.21416448725953e-06,
-      "file": "burden_combined.tsv"
+      "file": "burden_combined.tsv",
+      "omnibus": {
+        "genes": 17943,
+        "min_omnibus_p": 3.0151295949853996e-05,
+        "bar": 2.786602017499861e-06,
+        "n_significant": 0,
+        "file": "omnibus_combined.tsv"
+      }
     },
     "EUR": {
       "rows": 159197,
       "genes": 17928,
       "bonferroni_0.05": 3.140762702814752e-07,
       "min_pvalue": 1.53667322401185e-05,
-      "file": "burden_EUR.tsv"
+      "file": "burden_EUR.tsv",
+      "omnibus": {
+        "genes": 17928,
+        "min_omnibus_p": 6.905988850580691e-05,
+        "bar": 2.788933511825078e-06,
+        "n_significant": 0,
+        "file": "omnibus_EUR.tsv"
+      }
     },
     "AFR": {
       "rows": 153296,
       "genes": 17789,
       "bonferroni_0.05": 3.2616637094249036e-07,
       "min_pvalue": 7.22823550812557e-06,
-      "file": "burden_AFR.tsv"
+      "file": "burden_AFR.tsv",
+      "omnibus": {
+        "genes": 17789,
+        "min_omnibus_p": 2.1680768442888798e-05,
+        "bar": 2.810725729383327e-06,
+        "n_significant": 0,
+        "file": "omnibus_AFR.tsv"
+      }
     }
   }
 }

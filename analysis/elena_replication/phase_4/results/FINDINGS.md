@@ -29,11 +29,50 @@ nine decimals, so hers did the same. It is the sample: 11,334 people, 1,285 case
 
 ## Results — 594 of 594 cells, 472,453 tests
 
-| cohort | tests | genes | min p | 0.05/tests | 0.05/genes |
+**The headline is the per-gene omnibus.** Each gene is tested 9 times and those tests are heavily
+correlated, so neither the smallest cell nor the raw test count is an honest summary. The Cauchy
+combination gives one p-value per gene with the multiple testing across the grid already paid, and
+the bar is then unambiguous:
+
+| cohort | genes | **omnibus p** | bar 0.05/genes | significant |
+|---|---:|---|---|---|
+| combined | 17,943 | **3.02 × 10⁻⁵** | 2.79 × 10⁻⁶ | **0** |
+| EUR | 17,928 | **6.91 × 10⁻⁵** | 2.79 × 10⁻⁶ | **0** |
+| AFR | 17,789 | **2.17 × 10⁻⁵** | 2.81 × 10⁻⁶ | **0** |
+
+Written out because the difference in tone matters: by the smallest cell the combined cohort misses
+by **1.5×**, which sounds like nearly. By the honest number it misses by **10.8×**. "A larger cohort
+would get there" and "short by an order of magnitude" are different sentences, and the second is
+the true one.
+
+The per-cell view, which the omnibus is built from and which stays in the tables:
+
+| cohort | tests | genes | min cell p | 0.05/tests | 0.05/genes |
 |---|---:|---:|---|---|---|
 | combined | 159,960 | 17,943 | 4.21 × 10⁻⁶ | 3.13 × 10⁻⁷ | 2.79 × 10⁻⁶ |
 | EUR | 159,197 | 17,928 | 1.54 × 10⁻⁵ | 3.14 × 10⁻⁷ | 2.79 × 10⁻⁶ |
 | AFR | 153,296 | 17,789 | 7.23 × 10⁻⁶ | 3.26 × 10⁻⁷ | 2.81 × 10⁻⁶ |
+
+### What the search penalty exposes
+
+`omnibus_<cohort>.tsv` carries `search_penalty` = omnibus ÷ best cell, which is how much of the nine
+the gene needed searching to find. Among the top 100 it runs 1.7× to 8.2×, median 3.0×. The top of
+the combined list:
+
+| gene | omnibus | best cell | penalty | where the best cell was |
+|---|---|---|---|---|
+| `PSG8` | 3.02 × 10⁻⁵ | 4.21 × 10⁻⁶ | **7.2×** | pLOF, maf 0.01 |
+| `PSMA7` | 3.91 × 10⁻⁵ | 1.39 × 10⁻⁵ | 2.8× | pDM, maf 0.0001 |
+| `BPTF` | 4.47 × 10⁻⁵ | 1.43 × 10⁻⁵ | 3.1× | pDM, maf 0.001 |
+| **`SIX1`** | 9.30 × 10⁻⁵ | 5.24 × 10⁻⁵ | **1.8×** | pLOF_pDM, maf 0.0001 |
+
+`PSG8` pays the most — almost the full 9× — which says its result lives in a single cell. It is the
+same gene Finding 2 flags for having no burden component at all. Two independent diagnostics, one
+conclusion.
+
+`SIX1` pays the least of the top genes, and it is the one established deafness gene among them. A
+consistent effect across masks and cutoffs is more convincing than a sharper p-value found in one
+corner, and the raw ranking hides that: `SIX1` is 7th by smallest cell and 4th by omnibus.
 
 **No gene reaches exome-wide significance in any cohort**, under either defensible denominator —
 one test per mask × MAF combination, or one per gene. The corrected arm finds nothing. A third,

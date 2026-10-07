@@ -30,6 +30,37 @@ the remaining gap, where a task died exactly on a row boundary.
 
 Pass --allow-running to merge anyway, for a deliberate look at partial results.
 
+
+THE HEADLINE NUMBER IS THE PER-GENE OMNIBUS, NOT THE SMALLEST CELL.
+
+Each gene is tested 9 times (3 masks x 3 max-MAF cutoffs) and those tests are
+heavily correlated -- same gene, overlapping variants. Reporting the smallest of
+the nine against a per-gene Bonferroni bar is anti-conservative: it does not
+charge for the nine looks. Reporting it against a per-test bar is too strict,
+because the nine are not nine independent questions.
+
+The Cauchy / ACAT combination settles it. It transforms each p through
+tan((0.5-p)*pi), averages, and transforms back. The Cauchy distribution is
+heavy-tailed enough that the average of Cauchy variables has the same
+distribution as a single one WHATEVER their correlation, so no correlation
+structure has to be known or assumed. What comes out follows:
+
+    omnibus ~= smallest p x ( 9 / how many of the 9 cells carry the signal )
+
+      signal in 1 cell   -> 9.0x, exactly the Bonferroni price for nine looks
+      signal in all 9    -> 1.0x, no penalty
+
+So the omnibus is "the best cell, priced for how much searching it took". One
+p-value per gene, with the multiple testing across the grid already paid, and no
+denominator left to defend: the bar is 0.05 / genes.
+
+This is NOT a substitute for SAIGE's own `Cauchy` rows, and is better than them
+for this purpose. SAIGE emits a Cauchy row combining the ANNOTATIONS requested
+within one run -- one mask, one MAF, one chromosome. Ours emit none, because we
+pass one annotation per mask and there is nothing to combine; and a pipeline
+that does emit them still ends up with ~9 Cauchy rows per gene, which leaves the
+same question unanswered. Raised by Nikki Palmiero.
+
 Input : phase_4/results/step2/<cohort>/<mask>/<cohort>_chr<N>_<mask>_maf<M>.txt
 Output: phase_4/results/burden_<cohort>.tsv   (one per cohort)
         phase_4/results/burden_all_cohorts.tsv
@@ -60,6 +91,13 @@ EXPECTED_HEADER = [
     "BETA_Burden", "SE_Burden", "MAC", "MAC_case", "MAC_control",
     "Number_rare", "Number_ultra_rare",
 ]
+
+def acat(p):
+    """Cauchy combination. The statistic SAIGE uses, applied across the grid."""
+    import numpy as np
+    p = np.clip(np.asarray(p, dtype=float), 1e-300, 1 - 1e-16)
+    return float(0.5 - np.arctan(np.mean(np.tan((0.5 - p) * np.pi))) / np.pi)
+
 
 FNAME = re.compile(r"^(?P<cohort>\w+)_chr(?P<chr>\d+)_(?P<mask>\w+)_maf(?P<maf>[\d.]+)\.txt$")
 
@@ -213,8 +251,46 @@ def main():
             "file": path.name,
         }
 
+
+    # ---- 5. the per-gene omnibus, which is the headline ----
+    omni_frames = []
+    for cohort in COHORTS:
+        sub = merged[merged["Cohort"] == cohort]
+        om = (sub.groupby("Region")
+                 .apply(lambda g: pd.Series({
+                     "omnibus_p": acat(g.Pvalue.values),
+                     "best_cell_p": float(g.Pvalue.min()),
+                     "best_cell_mask": g.loc[g.Pvalue.idxmin(), "Mask"],
+                     "best_cell_maf": g.loc[g.Pvalue.idxmin(), "max_MAF"],
+                     "n_cells": int(len(g)),
+                 }), include_groups=False)
+                 .reset_index())
+        om["search_penalty"] = om.omnibus_p / om.best_cell_p
+        om["Cohort"] = cohort
+        bar = 0.05 / len(om)
+        om["bonferroni_bar"] = bar
+        om["significant"] = om.omnibus_p < bar
+        om.sort_values("omnibus_p").to_csv(OUT / f"omnibus_{cohort}.tsv",
+                                           sep="\t", index=False)
+        omni_frames.append(om)
+        manifest["by_cohort"][cohort]["omnibus"] = {
+            "genes": int(len(om)),
+            "min_omnibus_p": float(om.omnibus_p.min()),
+            "bar": bar,
+            "n_significant": int(om.significant.sum()),
+            "file": f"omnibus_{cohort}.tsv",
+        }
+    pd.concat(omni_frames, ignore_index=True).to_csv(
+        OUT / "omnibus_all_cohorts.tsv", sep="\t", index=False)
+
     merged.to_csv(OUT / "burden_all_cohorts.tsv", sep="\t", index=False)
     (OUT / "04_merge_manifest.json").write_text(json.dumps(manifest, indent=2))
+
+    print("\nper-gene omnibus (Cauchy), the headline number:")
+    for cohort in COHORTS:
+        v = manifest["by_cohort"][cohort]["omnibus"]
+        print(f"  {cohort:9s} {v['genes']:>6,} genes  min omnibus p {v['min_omnibus_p']:.3g}  "
+              f"bar {v['bar']:.2e}  significant {v['n_significant']}")
 
     print(f"{len(found)} cells, {len(merged):,} rows")
     for cohort, v in manifest["by_cohort"].items():
