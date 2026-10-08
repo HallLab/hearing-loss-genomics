@@ -73,8 +73,11 @@ de Manhattan.
 A **linha vermelha** é o limiar. Com ~18 mil genes testados, muitos parecem interessantes por puro
 azar — a linha é onde se separa o que resiste à correção.
 
-Os nossos: [`figures/omnibus_<coorte>.png`](../figures/). **Nenhum ponto cruza a linha.** Não há
-skyline — há uma cidade plana.
+![Manhattan do omnibus](../figures/manhattan_omnibus.png)
+
+**Nenhum ponto cruza a linha vermelha, em nenhuma das três coortes.** Não há skyline — há uma cidade
+plana. O `min q` anotado em cada painel é o menor q-valor do FDR daquela coorte: 0,22, 0,15 e 0,16.
+Nem por Bonferroni, nem por FDR.
 
 ### O QQ
 
@@ -93,15 +96,24 @@ O resumo é o **λ**: 1,0 é perfeito.
 
 ### O que apareceu
 
-```
-combined   pDM 0,944   pLOF 0,964   pLOF;pDM 0,952
-EUR        pDM 0,999   pLOF 0,958   pLOF;pDM 0,984
-AFR        pDM 0,843   pLOF 0,664   pLOF;pDM 0,972
-```
+![QQ do omnibus](../figures/qq_omnibus.png)
 
-Perto de 1, levemente conservador. **Não está inflado**, o que invalidaria tudo; **não está
-deflacionado** a ponto de esconder sinal. O 0,664 do AFR/pLOF é o único fora da faixa, e é a coorte
-de 490 casos — tamanho, não método.
+Os pontos ficam colados na diagonal e dentro da faixa cinza. **Não está inflado**, o que invalidaria
+tudo; **não está deflacionado** a ponto de esconder sinal.
+
+**Dois níveis de λ, e a diferença entre eles é informativa:**
+
+| coorte | λ do omnibus | λ das células (maf 0,01) |
+|---|---:|---|
+| combined | 0,805 | pDM 0,944 · pLOF 0,964 · pLOF;pDM 0,952 |
+| EUR | 0,846 | pDM 0,999 · pLOF 0,958 · pLOF;pDM 0,984 |
+| AFR | 0,677 | pDM 0,843 · pLOF 0,664 · pLOF;pDM 0,972 |
+
+O λ do **omnibus é mais baixo** porque ele já cobrou pelas nove olhadas — é conservador **de
+propósito**. O das células é o teste cru, antes dessa cobrança. Os dois estão abaixo de 1, o que é a
+direção segura: um teste conservador não inventa achado.
+
+O 0,677 do AFR é o mais baixo, e é a coorte de 490 casos — tamanho, não método.
 
 Isso é o que autoriza dizer **"não tem nada aí"** em vez de só *"nada passou"*.
 

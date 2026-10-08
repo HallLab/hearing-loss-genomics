@@ -127,15 +127,14 @@ def manhattan(d, cohort, ax=None, mask=None, maf=None, label_top=5):
         ax.scatter(s.x[m], y[m], s=3, linewidths=0,
                    color="#3b6ea5" if c % 2 else "#9ab4d1")
 
-    # Bonferroni over the genes IN THIS PANEL -- that is, this panel treated as
-    # if it were the only analysis. It is the most permissive bar in play: it
-    # does not charge for having looked at nine panels per cohort, which the
-    # 0.05/tests bar in the findings does. Drawn because nothing crosses even
-    # this one, so the conclusion does not turn on the choice.
+    # Bonferroni over the genes in this cohort. Here a panel is a cohort and the
+    # point plotted is the per-gene omnibus, which has already paid for the nine
+    # cells (premise P10) -- so this is the honest bar, not a permissive stand-in
+    # as it was when a panel meant one mask-by-MAF cell.
     bar_genes = 0.05 / s.Region.nunique()
     ax.axhline(-np.log10(bar_genes), color="#c0392b", lw=0.9,
-               label=f"Bonferroni, this panel alone: 0.05/{s.Region.nunique():,} genes "
-                     f"= {bar_genes:.1e}")
+               label=f"Bonferroni: 0,05 / {s.Region.nunique():,} genes "
+                     f"= {bar_genes:.1e}".replace(".", ",", 1))
 
     # No FDR line: Benjamini-Hochberg's cutoff is the largest p with q < 0.05,
     # and there is none, so a line would have nowhere to sit. The smallest q is
