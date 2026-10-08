@@ -83,86 +83,124 @@ pode ser `stop_gained` num e `missense` noutro. Esse detalhe é a causa de um do
 
 ---
 
-## Os quatro defeitos encontrados
+## As regras, exatamente como estão no código
 
-A Fase 2 começou como verificação e virou reconstrução. Quatro defeitos, quatro causas diferentes.
+Quatro regras, uma por máscara. Estão no
+[`phase_2/scripts/07_rebuild_masks.py`](../phase_2/scripts/07_rebuild_masks.py) e são curtas o
+bastante para caber aqui inteiras.
 
-### 1 — três termos de baixo impacto entraram como pLOF
+### `pLOF` — quebra a proteína
 
-A lista de termos "quebra o gene" do pipeline incluía três que o próprio VEP classifica como
-**IMPACT = LOW**:
+Uma variante entra se **qualquer** uma das duas condições vale:
 
 ```
-splice_donor_5th_base_variant
-splice_donor_region_variant
-splice_polypyrimidine_tract_variant
+1.  a consequência é exatamente um destes sete termos:
+
+      stop_gained            põe um ponto final no meio
+      frameshift_variant     embaralha a leitura dali em diante
+      splice_acceptor_variant  ┐ destrói o ponto onde o RNA é costurado
+      splice_donor_variant     ┘
+      start_lost             apaga o códon de início
+      stop_lost              apaga o códon de parada
+      transcript_ablation    elimina o transcrito inteiro
+
+2.  OU a consequência menciona "splice" de qualquer outra forma
+    E o SpliceAI é >= 0,2
 ```
 
-São variantes **perto** do ponto de emenda, não nele. Podem atrapalhar, e na maioria das vezes não
-atrapalham. Estavam escritas uma a uma no script — não é filtro esquecido, é uma decisão que alguém
-tomou.
+A segunda condição é o **portão do SpliceAI**, e é o que separa as variantes de splice que
+importam das que só ficam perto. Há vários termos de splice de impacto baixo — `splice_donor_region`,
+`splice_polypyrimidine_tract` e outros — que descrevem variantes **próximas** ao ponto de emenda.
+Elas podem atrapalhar a costura, e na maioria das vezes não atrapalham. O SpliceAI é quem decide
+caso a caso, e só passa quem ele aponta.
 
-### 2 — o filtro do SpliceAI nunca foi aplicado
+**Correspondência é exata, não por substring.** Procurar `"splice_donor_variant"` dentro do texto da
+consequência também casaria com `splice_donor_region_variant`, que é outra coisa. A comparação é
+termo a termo.
 
-Esse é o grande. O plano de análise dizia: variante de splice só conta como pLOF **se o SpliceAI
-passar de 0,2**. O código calculava o escore do SpliceAI e **nunca o usava**.
+### `pDM` — troca um aminoácido de forma provavelmente danosa
 
-**63,8% das entradas da máscara pLOF não passavam no próprio critério documentado** —
-694.802 de 1.089.876, em todos os 22 cromossomos.
+```
+o AlphaMissense classifica como "pathogenic" ou "likely_pathogenic"
+OU
+o maior REVEL entre os transcritos é >= 0,5
+```
 
-A intenção estava escrita, o número estava calculado, e o `if` não existia.
-
-### 3 — o REVEL foi lido errado · *levantado pela Nikki*
-
-O campo REVEL do VEP não é um número. É uma **lista**, um valor por transcrito:
+**"o maior entre os transcritos"** é a parte que importa. O VEP devolve o REVEL como uma **lista**,
+um valor por transcrito, porque a mesma variante pode ser missense num transcrito e outra coisa
+noutro:
 
 ```
 REVEL_score = ".,0.65,0.712,."
 ```
 
-O código converteu esse texto para número de uma vez só. Texto com vírgulas não vira número — o
-resultado é *vazio*, e a variante foi tratada como se não tivesse escore.
+A regra lê a lista e pega o maior valor. Tratar esse texto como um número só devolve vazio, e a
+variante some da máscara.
+
+### `pLOF_pDM` — a união
+
+As duas juntas. Quando uma variante satisfaz as duas regras — acontece com **11.517** delas, por
+serem perda de função num transcrito e missense noutro — ela entra rotulada como `pLOF`. O rótulo
+mais forte vence.
+
+### `ALL` — tudo
+
+Toda variante do gene presente no conjunto de genótipos, sem filtro de dano.
+
+### E uma condição que vale para as quatro
 
 ```
-linhas missense com escore, como foi lido   :   65.806
-linhas missense com escore, lendo a lista   :  517.274     (95,3% estavam lá)
-
-variantes passando REVEL ≥ 0,5, como lido   :    5.391
-variantes passando REVEL ≥ 0,5, correto     :   20.618
-                                    perdidas:   15.227     (73,9%)
+BIOTYPE == protein_coding
 ```
 
-**Três de cada quatro variantes danosas sumiram da máscara pDM.**
+O gene precisa codificar proteína. Um teste de perda de função pergunta se **perder a função da
+proteína** se associa à doença — num lncRNA ou pseudogene não há proteína para perder, e o teste
+roda, dá um número, e o número não significa nada.
 
-### 4 — genes que não produzem proteína · *levantada pela Nikki*
+Isso retira **1.101 genes de 19.038**. Aplicamos também à máscara `ALL`, que a rigor não faz
+afirmação sobre dano: um gene sem proteína não é candidato a nada neste desenho, então deixá-lo em
+qualquer máscara só gasta correção múltipla.
 
-**1.101 genes de 19.038** na máscara pLOF não codificam proteína — são lncRNA, pseudogenes, RNAs
-antisense.
+---
 
-Um teste de perda de função pergunta se **perder a função da proteína** se associa à doença. Esses
-genes não têm proteína para perder. O teste roda, dá um número, e o número não pode significar nada.
+## Por que essas regras e não outras
 
-Lembra do `TMC3-AS1`? Era o gene **nº 1** dos resultados dela, e é um lncRNA. Esse defeito.
+Elas não foram inventadas aqui. São as regras do plano de análise original do estudo, **aplicadas
+como escritas** — e a Fase 2 da `elena_replication` existe porque a implementação que rodou se
+afastava delas em quatro pontos.
+
+A história completa, com os quatro defeitos, o tamanho de cada um e quem achou, está em
+[`elena_replication/docs/09_fase_2_resumo.pt.md`](../../elena_replication/docs/09_fase_2_resumo.pt.md)
+— e em detalhe no
+[`05_phase_2_fechamento.pt.md`](../../elena_replication/docs/05_phase_2_fechamento.pt.md).
+
+Aqui basta saber que as máscaras desta análise seguem as regras acima, e que isso foi verificado.
 
 ---
 
 ## O resultado
 
-Todas as quatro máscaras reconstruídas do zero, direto da anotação da release:
+As quatro máscaras, construídas do zero a partir da anotação da release:
 
-| máscara | antes | depois | |
-|---|---:|---:|---|
-| `pLOF` | 1.002.120 | **462.144** | −54% · saiu o que falhava no SpliceAI |
-| `pDM` | 720.983 | **890.332** | **+23%** · voltou o que o REVEL tinha perdido |
-| `pLOF_pDM` | 1.717.883 | **1.340.936** | −22% |
-| `ALL` | 21.415.507 | **15.951.289** | −26% · saíram os genes não-codificantes |
+| máscara | genes | variantes |
+|---|---:|---:|
+| `pLOF` | 17.841 | 462.144 |
+| `pDM` | 17.623 | 890.332 |
+| `pLOF_pDM` | 17.945 | 1.340.936 |
+| `ALL` | 18.038 | 15.951.289 |
 
-Repare que o `pDM` **cresceu**. Os outros encolheram porque tiravam coisa que não devia estar; o pDM
-cresceu porque recuperou coisa que devia e não estava. Defeitos em direções opostas.
+Uma leitura que ajuda a calibrar a escala: são ~18 mil genes com proteína no exoma humano, e
+praticamente todos aparecem nas três primeiras máscaras. O que muda entre elas não é *quais genes*,
+e sim **quantas variantes cada gene leva para o teste** — 26 por gene na `pLOF`, 51 na `pDM`, 75 na
+união.
 
-E só três dessas máscaras são usadas: a `ALL` ficou de fora por decisão sua, com o Doug chegando à
-mesma posição por conta própria três dias antes — *"why would you ever use the all category... it's
-going to give you a lot of noise"*.
+A `ALL` tem 884 variantes por gene, e é por isso que ela não é usada. Decisão sua, e o Doug chegou
+à mesma por conta própria três dias antes:
+
+> *"why would you ever use the all category... it's going to give you a lot of noise"*
+
+**Esta análise roda as três primeiras.** A `ALL` fica no disco, para a decisão ser reversível sem
+reconstruir nada.
 
 ---
 
@@ -182,9 +220,8 @@ teste. Tudo que toca em quem é caso.
 
 ## Em aberto
 
-- **De onde veio a lista de termos de splice?** Os três de baixo impacto estão escritos à mão no
-  script. Alguém decidiu incluí-los, e o motivo não está registrado em lugar nenhum. Pergunta para a
-  Elena ou a Nikki.
+- **O portão do SpliceAI em 0,2.** É o valor do plano de análise e é defensável, mas é escolha.
+  Mover para 0,5 tornaria a `pLOF` bem mais estrita, e ninguém mediu o quanto.
 - **REVEL 0,5 ou 0,6?** Usamos 0,5 como primário. É o valor mais comum na literatura, mas é escolha,
   não lei.
 - **O AlphaMissense não cobre tudo.** Para genes sem escore, só o REVEL decide. Quantos genes ficam
