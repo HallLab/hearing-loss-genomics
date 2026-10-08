@@ -146,21 +146,59 @@ e foram dois controles que mostraram isso.
 
 ### Controle 1 — segurar o tamanho fixo
 
-Metade dos casos sumiu junto com a restrição. Então: pegar o fenótipo **amplo**, sortear **3.164**
-casos — o número exato do restrito —, e rodar tudo de novo. Cinco vezes, porque um sorteio só pode
-dar sorte.
+#### O problema de comparar 5 com 0
+
+Comparar o braço amplo (5 genes) com o restrito (0) parece provar que a restrição destruiu o sinal.
+Só que **duas coisas mudaram ao mesmo tempo**:
 
 ```
-amplo, 6.752 casos          5 genes ClinGen no top-50
-amplo a 3.164, 5 sorteios   2, 0, 1, 2, 3
-restrito, 3.164             0
+amplo      6.752 casos,  definição larga
+restrito   3.164 casos,  definição estrita
+           └──┬───┘      └──────┬───────┘
+          metade dos        a mudança que
+          casos sumiu       queremos avaliar
 ```
 
-**O enriquecimento não é artefato de tamanho** — agrupando os sorteios, 8 genes em 250 vagas contra
-1,3 esperados, p = 6,4 × 10⁻⁵.
+Se o enriquecimento sumiu, foi pela **definição** ou simplesmente porque **metade dos casos foi
+embora**? Com esses dois números não dá para saber — eles estão confundidos.
 
-**Mas o zero do restrito está dentro da faixa do acaso.** Os sorteios dão média 1,6, e
-P(0 | Poisson 1,6) = 0,20. Um dos cinco também deu zero.
+#### A saída: mudar uma coisa só
+
+Pegar o fenótipo **amplo** — a definição larga, intocada — e sortear ao acaso **3.164** casos, o
+número exato do restrito. Agora o tamanho é o mesmo e **só a definição difere**. Rodar tudo de novo,
+do modelo nulo até o fim.
+
+**E repetir cinco vezes.** Um sorteio só pode calhar de pegar justamente os casos informativos, ou
+justamente os inúteis — e eu ficaria livre para reportar o que saiu. Com cinco, o que importa não é
+cada número e sim **a faixa que eles cobrem**.
+
+#### Para que os cinco números servem
+
+```
+amplo, 6.752 casos               5
+amplo a 3.164, 5 sorteios        2 · 0 · 1 · 2 · 3     ← a régua
+restrito, 3.164                  0
+```
+
+Os cinco sorteios **são a régua**. Eles respondem: *"com 3.164 casos e a definição larga, quanto se
+consegue achar?"* A resposta é **entre 0 e 3, em média 1,6**.
+
+Com a régua na mão, as duas perguntas originais ficam respondidas:
+
+**O enriquecimento é real ou é artefato de tamanho?** Real. Agrupando os cinco sorteios, 8 genes em
+250 vagas contra 1,3 esperados — p = 6,4 × 10⁻⁵. Mesmo com metade dos casos, a definição larga ainda
+acha biologia conhecida. **Então a queda de 5 para ~1,6 é o preço do tamanho.**
+
+**E o zero do restrito é anormal?** Não. Ele cai **dentro** da faixa que o acaso produz: a média dos
+sorteios é 1,6, P(0 | Poisson 1,6) = 0,20, e **um dos cinco sorteios também deu zero**.
+
+```
+5    →  1,6     isso é tamanho de amostra      (medido)
+1,6  →  0       isso não se distingue de azar  (com uma observação)
+```
+
+Sem os cinco sorteios eu teria comparado 5 com 0 e concluído errado — foi exatamente o que escrevi
+antes de rodá-los.
 
 ### Controle 2 — rodar os casos descartados
 
