@@ -184,6 +184,13 @@ Por ancestralidade:
 | EAS | 43 | 1.002 |
 | AMR | 37 | 769 |
 | SAS | 32 | 800 |
+| `UNKNOWN0/1/2` | 15 | 532 |
+| **total** | **3.164** | **50.755** |
+
+As três linhas `UNKNOWN` são pessoas que a classificação de ancestralidade da release não conseguiu
+atribuir a nenhum dos grupos de referência do 1000 Genomes. São 15 casos — pequeno, mas a tabela
+precisa fechar com o total, senão quem somar as cinco primeiras acha 3.149 e fica procurando os 15
+que faltam.
 
 ---
 
