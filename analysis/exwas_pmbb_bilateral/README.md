@@ -68,7 +68,7 @@ phase_2/   variant masks                   copied, validated upstream, not re-ru
 phase_3/   ancestry PCA + covariates       PCA copied; covariates built here
 phase_4/   SAIGE step 1 and step 2         BUILT HERE
 phase_5/   results, figures, tables        BUILT HERE
-docs/      plain-language notes
+andre_notes/  reference and plain-language notes
 ```
 
 ## What it inherits without re-deciding
