@@ -16,6 +16,37 @@
 **Nothing is significant in any cohort.** The headline is SAIGE's own `Cauchy` row — one p-value per
 gene with the nine-cell search already priced in (premise **P10**), so the bar is unambiguous.
 
+### `FBXO25` — where the naive reading and the honest one disagree
+
+Worth stating before someone finds it in the cell-level table and reports it. In EUR, one cell
+**does** clear the per-gene bar:
+
+| | p | bar |
+|---|---|---|
+| `FBXO25`, best cell (pLOF) | **1.52 × 10⁻⁶** | 2.79 × 10⁻⁶ |
+| `FBXO25`, omnibus | 1.37 × 10⁻⁵ | 2.79 × 10⁻⁶ |
+
+Its search penalty is **9.0×** — the maximum — meaning the signal sits in exactly one cell of nine.
+The nine:
+
+```
+pLOF       1e-4 / 1e-3 / 1e-2     1.5e-06   1.5e-06   1.5e-06      <- the same test three times
+pDM        1e-4 / 1e-3 / 1e-2     0.86      1.00      1.00
+pLOF;pDM   1e-4 / 1e-3 / 1e-2     3.2e-04   0.031     0.031
+```
+
+The three pLOF cells are identical because `Number_rare = 0`: every variant is ultra-rare and SAIGE
+collapsed them into one unit, so the three MAF cutoffs select the same set. It is **one** test, not
+three.
+
+And it rests on **18 alleles — 7 in 2,547 cases, 11 in 37,596 controls.** The rate difference is
+real (0.14% against 0.015%) and the whole result would move if two carriers were reclassified.
+
+So: taking the smallest of nine correlated tests and setting it against a bar built for one test
+produces a significant gene here. Charging for the nine, which is what the omnibus does, does not.
+This is the clearest case in the analysis for why the omnibus is the headline, and `FBXO25` should
+be reported as what it is — the closest thing to a signal, not a finding.
+
 Top by omnibus: combined `PCBD1`, `TJAP1`, `LSMEM2` · EUR `FBXO25`, `PCBD1`, `TJAP1` ·
 AFR `IGSF9`, `OR6Y1`, `RAET1E`.
 

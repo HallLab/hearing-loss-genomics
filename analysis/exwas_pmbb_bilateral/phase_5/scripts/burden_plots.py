@@ -33,8 +33,8 @@ MAFS = [0.0001, 0.001, 0.01]
 CHI2_MEDIAN = chi2.ppf(0.5, 1)          # 0.4549364, not 0.456
 
 PCS = {"combined": 5, "EUR": 4, "AFR": 3}
-N = {"combined": 57498, "EUR": 42779, "AFR": 11334}
-CASES = {"combined": 6752, "EUR": 5183, "AFR": 1285}
+N = {"combined": 53910, "EUR": 40143, "AFR": 10539}
+CASES = {"combined": 3164, "EUR": 2547, "AFR": 490}
 
 
 def style():
@@ -48,14 +48,27 @@ def style():
 
 
 def burden():
-    """Our results, with a genome coordinate per gene."""
+    """The cell-level results, with a genome coordinate per gene."""
     d = pd.read_csv(HERE / "results/burden_all_cohorts.tsv", sep="\t")
     d["Pvalue"] = pd.to_numeric(d["Pvalue"])
+    # one call covers the grid here, so the mask lives in Group (premise P10)
+    d["Mask"] = d["Group"].replace({"pLOF;pDM": "pLOF_pDM"})
     pos = pd.read_csv(HERE / "results/gene_positions.tsv", sep="\t")
     return d.merge(pos[["Region", "POS", "coord_source"]], on="Region", how="left")
 
 
-def hers(three_masks_only=True):
+def omnibus(cohort):
+    """The per-gene Cauchy row, which is this analysis's headline.
+
+    The table already carries CHR from the merge; only POS has to be joined,
+    and joining CHR as well would collide into CHR_x/CHR_y.
+    """
+    d = pd.read_csv(HERE / f"results/omnibus_{cohort}.tsv", sep="\t")
+    pos = pd.read_csv(HERE / "results/gene_positions.tsv", sep="\t")
+    return d.merge(pos[["Region", "POS"]], on="Region", how="left")
+
+
+def _unused_hers(three_masks_only=True):
     """Her merged results, for the side-by-side.
 
     Her table carries two defects Phase 4 documented and this has to survive:

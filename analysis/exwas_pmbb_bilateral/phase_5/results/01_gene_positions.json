@@ -1,0 +1,56 @@
+{
+  "source": {
+    "metadata": 17797,
+    "masks": 144,
+    "neither": 0
+  },
+  "checks": {
+    "chrom_disagreement": 0,
+    "variants_outside_metadata_interval": 429,
+    "examples_chrom": [],
+    "examples_outside": [
+      {
+        "gene": "AP4B1",
+        "metadata": "113812379-113901237",
+        "our_variants": "113895069-113904713"
+      },
+      {
+        "gene": "ARHGAP29",
+        "metadata": "94246951-94411036",
+        "our_variants": "94173919-94231646"
+      },
+      {
+        "gene": "ATP1A1",
+        "metadata": "116378437-116421301",
+        "our_variants": "116374230-116403964"
+      },
+      {
+        "gene": "BCL10",
+        "metadata": "85276388-85448124",
+        "our_variants": "85267635-85276325"
+      },
+      {
+        "gene": "C2CD4D",
+        "metadata": "151841877-151851549",
+        "our_variants": "151838022-151838963"
+      },
+      {
+        "gene": "CD101",
+        "metadata": "117025481-117060845",
+        "our_variants": "117001823-117034135"
+      },
+      {
+        "gene": "CDC20",
+        "metadata": "43351247-43358861",
+        "our_variants": "43359165-43363124"
+      },
+      {
+        "gene": "CLCA4",
+        "metadata": "86569024-86704484",
+        "our_variants": "86547170-86580220"
+      }
+    ]
+  },
+  "genes_tested": 17941,
+  "genes_placed": 17941
+}

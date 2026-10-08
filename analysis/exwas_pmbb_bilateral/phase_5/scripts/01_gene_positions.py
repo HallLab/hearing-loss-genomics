@@ -42,7 +42,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 AUTOSOMES = {str(c) for c in range(1, 23)}
 
 # ---- genes we actually tested ----
-burden = pd.read_csv(REPL / "phase_4/results/burden_all_cohorts.tsv", sep="\t",
+burden = pd.read_csv(HERE / "results/burden_all_cohorts.tsv", sep="\t",
                      usecols=["Region", "CHR"])
 tested = burden.drop_duplicates("Region").set_index("Region")["CHR"].astype(int)
 print(f"genes tested: {len(tested):,}")
