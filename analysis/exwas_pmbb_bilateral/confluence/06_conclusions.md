@@ -153,6 +153,84 @@ between this result and a finding is sample size and phenotype quality — not a
 
 ---
 
+## Appendix — the top 50 of each arm
+
+Combined cohort. p-values are the per-gene omnibus in every arm, so the three columns are the same
+quantity. **‡** marks a ClinGen Definitive or Strong hearing-loss gene, **†** one at a weaker
+classification.
+
+Counts: **Elena 2**, **Replication 5**, **Bilateral 0** at Definitive/Strong — against 0.26 expected
+by chance in each. The caveat from the comparison above applies: no pair of these counts is
+statistically distinguishable from another.
+
+Two things to notice while scanning.
+
+`TMC3-AS1` is **rank 1 in Elena's arm** and absent from the other two. It is an `lncRNA` — a gene
+with no protein — so a loss-of-function burden test on it cannot mean anything, and the whole result
+rests on two variants. It was removed by the mask rebuild, along with 1,101 other non-coding genes.
+This is the clearest single example of why Phase 2 mattered.
+
+`FBXO25` sits at rank 4 of the Bilateral arm. One of its nine cells clears the per-gene bar; its
+omnibus does not. [Phase 5](05_results.md) explains why.
+
+| # | Elena | p | Replication | p | Bilateral | p |
+|---:|---|---|---|---|---|---|
+| 1 | `TMC3-AS1` | 5e-06 | `PSG8` | 3e-05 | `PCBD1` | 2.1e-05 |
+| 2 | `PSG8` | 5.4e-05 | `PSMA7` | 3.9e-05 | `TJAP1` | 2.5e-05 |
+| 3 | `PTPN23` | 7.2e-05 | `BPTF` | 4.5e-05 | `LSMEM2` | 8.3e-05 |
+| 4 | `EFCAB12` | 8.6e-05 | `SIX1` **‡** | 9.3e-05 | `FBXO25` | 0.00015 |
+| 5 | `MCC` | 0.00011 | `LSMEM2` | 0.00012 | `MCC` | 0.00054 |
+| 6 | `PSMA7` | 0.00012 | `PTPN23` | 0.00013 | `ODR4` | 0.00054 |
+| 7 | `CLEC4E` | 0.00021 | `TSPAN33` | 0.00019 | `ENKD1` | 0.00061 |
+| 8 | `GRIK1` | 0.00028 | `CLEC4E` | 0.00035 | `C17orf67` | 0.00067 |
+| 9 | `TSPAN33` | 0.00029 | `CHP2` | 0.00041 | `PALS1` | 0.00083 |
+| 10 | `C17orf67` | 0.00031 | `LGALS8` | 0.00046 | `CHP2` | 0.00085 |
+| 11 | `COCH` **‡** | 0.00036 | `GYS2` | 0.00064 | `APCDD1L` | 0.0009 |
+| 12 | `GYS2` | 0.00037 | `THAP3` | 0.00086 | `TMEM120A` | 0.001 |
+| 13 | `GOLGA6L9` | 0.00041 | `EPS8L2` † | 0.00095 | `MSMO1` | 0.0013 |
+| 14 | `NUP153-AS1` | 0.00072 | `ATP5ME` | 0.001 | `RREB1` | 0.0014 |
+| 15 | `RAB39A` | 0.00076 | `RIPPLY3` | 0.001 | `LRRC19` | 0.0014 |
+| 16 | `FXYD1` | 0.0008 | `C17orf67` | 0.001 | `H2BC12` | 0.0015 |
+| 17 | `SIX1` **‡** | 0.00092 | `MAP1LC3A` | 0.0012 | `ZNF446` | 0.0015 |
+| 18 | `LETM1` | 0.00097 | `ME3` | 0.0013 | `MALT1` | 0.0016 |
+| 19 | `AGAP13P` | 0.0011 | `GJB3` **‡** | 0.0013 | `POLH` | 0.0016 |
+| 20 | `LRRC19` | 0.0011 | `ZKSCAN8` | 0.0013 | `INS` | 0.0016 |
+| 21 | `EDARADD` | 0.0012 | `JPH4` | 0.0013 | `SHISA3` | 0.0017 |
+| 22 | `ZKSCAN8` | 0.0012 | `ST8SIA6` | 0.0013 | `SRSF11` | 0.0017 |
+| 23 | `CHL1` | 0.0012 | `COCH` **‡** | 0.0014 | `ZNF507` | 0.0017 |
+| 24 | `CIMIP1` | 0.0012 | `GLT8D2` | 0.0015 | `TMEM109` | 0.0017 |
+| 25 | `MFSD4A` | 0.0013 | `RGSL1` | 0.0016 | `PENK` | 0.0019 |
+| 26 | `FDPS` | 0.0014 | `PCED1B` | 0.0016 | `BMP8B` | 0.0019 |
+| 27 | `WDR43` | 0.0014 | `C17orf58` | 0.0016 | `CLEC4E` | 0.0019 |
+| 28 | `TGM1` | 0.0014 | `FAM81B` | 0.0017 | `ZBTB11` | 0.0019 |
+| 29 | `DNAH2` | 0.0015 | `TJAP1` | 0.0018 | `BTN2A1` | 0.0019 |
+| 30 | `PGD` | 0.0016 | `CIMIP1` | 0.0019 | `ZWINT` | 0.002 |
+| 31 | `JPH4` | 0.0016 | `PGS1` | 0.0019 | `CYTH4` | 0.0021 |
+| 32 | `PRSS46P` | 0.0017 | `PCBD1` | 0.002 | `ABHD4` | 0.0022 |
+| 33 | `PAK6` | 0.0018 | `CHL1` | 0.002 | `PLSCR2` | 0.0023 |
+| 34 | `MEN1` | 0.0018 | `MYO6` **‡** | 0.0023 | `LPAR6` | 0.0023 |
+| 35 | `EXTL1` | 0.0019 | `IL1RN` | 0.0025 | `SETD5` | 0.0024 |
+| 36 | `EEFSEC` | 0.0019 | `TMPRSS3` **‡** | 0.0026 | `KCNE2` | 0.0025 |
+| 37 | `ETS1` | 0.0021 | `OR10G8` | 0.0027 | `DDIAS` | 0.0025 |
+| 38 | `AVIL` | 0.0022 | `RAE1` | 0.0027 | `SNRNP40` | 0.0025 |
+| 39 | `RTBDN` | 0.0022 | `CST7` | 0.0027 | `PRR23E` | 0.0025 |
+| 40 | `PCED1B` | 0.0022 | `USP4` | 0.003 | `CTSG` | 0.0025 |
+| 41 | `IL1RN` | 0.0024 | `DES` | 0.003 | `GYS2` | 0.0025 |
+| 42 | `C17orf58` | 0.0024 | `CCNL1` | 0.003 | `OR10G8` | 0.0025 |
+| 43 | `NT5C2` | 0.0025 | `GRIK1` | 0.0031 | `SRPRB` | 0.0026 |
+| 44 | `TJAP1` | 0.0025 | `VEZF1` | 0.0032 | `ADAMTS10` | 0.0026 |
+| 45 | `CATSPER4` | 0.0028 | `ZNF644` | 0.0035 | `PLAC9` | 0.0026 |
+| 46 | `DDX60L` | 0.0029 | `SAMM50` | 0.0035 | `HSP90AA1` | 0.0026 |
+| 47 | `BIVM` | 0.003 | `CFH` | 0.0035 | `RAB3A` | 0.0026 |
+| 48 | `ACAN` | 0.003 | `PRKG1` | 0.0035 | `UBAC1` | 0.0026 |
+| 49 | `PITX3` | 0.0031 | `FGF7` | 0.0037 | `ZNF644` | 0.0026 |
+| 50 | `ZNF654` | 0.0031 | `FAM86B1` | 0.0038 | `OXGR1` | 0.0027 |
+
+*Full tables for all three cohorts, with each arm's rank and ClinGen classification:
+`phase_5/results/top50_{combined,EUR,AFR}.tsv`*
+
+---
+
 *Full detail: [`phase_5/results/FINDINGS.md`](../phase_5/results/FINDINGS.md) ·
 three-way notebook: [`phase_5/notebooks/01_three_way.ipynb`](../phase_5/notebooks/01_three_way.ipynb) ·
 premises and their sources: [`PREMISES.md`](../PREMISES.md) ·
