@@ -2,7 +2,7 @@
 
 **Autor:** Andre Rico · **Data:** 2026-10-08
 **Cópia de trabalho pessoal, em português.** Não é página de Confluence.
-Versão canônica: [`phase_2/results/FINDINGS.md`](../phase_2/results/FINDINGS.md) ·
+Evidência herdada: [`phase_2/results/FINDINGS.md`](../phase_2/results/FINDINGS.md) (documento da replicação, copiado) ·
 Premissas: [`PREMISES.md`](../PREMISES.md) · Fase anterior:
 [`phase_01_analise_pt.md`](phase_01_analise_pt.md)
 

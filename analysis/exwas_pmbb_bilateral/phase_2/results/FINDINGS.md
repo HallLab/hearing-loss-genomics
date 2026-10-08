@@ -1,3 +1,16 @@
+> **INHERITED DOCUMENT — this is `analysis/elena_replication/phase_2/results/FINDINGS.md`,**
+> **copied here unchanged.** It describes the replication's audit, which has two arms and is
+> written against the pipeline it was auditing. It is **not** a findings file for this analysis.
+>
+> It is kept because phase 2's outputs were produced by that work and carried over rather than
+> recomputed, so this is the evidence behind them — see [`../../PROVENANCE.md`](../../PROVENANCE.md).
+> Where it says "corrected arm", that is the arm whose outputs this folder inherited.
+>
+> This analysis's own account of phase 2 is in
+> [`../../andre_notes/phase_02_analise_pt.md`](../../andre_notes/phase_02_analise_pt.md).
+
+---
+
 # Phase 2 — which variants count
 
 **Status:** chr8 pilot complete; genome-wide pending · **Date:** 2026-09-30
