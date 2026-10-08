@@ -1,0 +1,33 @@
+{
+  "cells_files": 66,
+  "cell_rows": 471615,
+  "by_cohort": {
+    "combined": {
+      "genes": 17941,
+      "cell_tests": 159859,
+      "min_omnibus_p": 2.05218293898302e-05,
+      "min_cell_p": 4.8452404618482e-06,
+      "bar": 2.7869126581572935e-06,
+      "n_significant": 0,
+      "median_search_penalty": 2.142024745136015
+    },
+    "EUR": {
+      "genes": 17921,
+      "cell_tests": 159007,
+      "min_omnibus_p": 1.36587372316624e-05,
+      "min_cell_p": 1.51763747018471e-06,
+      "bar": 2.7900228781876014e-06,
+      "n_significant": 0,
+      "median_search_penalty": 2.0502354132453413
+    },
+    "AFR": {
+      "genes": 17778,
+      "cell_tests": 152749,
+      "min_omnibus_p": 9.1395602938027e-06,
+      "min_cell_p": 3.39972973595337e-06,
+      "bar": 2.812464844189448e-06,
+      "n_significant": 0,
+      "median_search_penalty": 1.9278997964903224
+    }
+  }
+}
