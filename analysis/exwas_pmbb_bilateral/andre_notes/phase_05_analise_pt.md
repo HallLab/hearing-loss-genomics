@@ -182,6 +182,10 @@ Em cinza, as cinco metades aleatórias — **o que o acaso produz nesse tamanho*
 braços reais. O restrito (0) e o complemento (1) caem **dentro** da nuvem cinza; só o conjunto
 completo, com 6.752 casos, sai dela.
 
+*(As figuras estão rotuladas em inglês de propósito: elas serão reaproveitadas na documentação do
+laboratório, e texto em português dentro de documento em inglês lê pior que o contrário — aqui a
+prosa ao redor explica de todo jeito.)*
+
 ### A conclusão
 
 **O enriquecimento precisa dos 6.752 casos juntos.** O nulo da restrição é **perda de poder, não

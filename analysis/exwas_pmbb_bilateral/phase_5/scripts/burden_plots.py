@@ -133,8 +133,8 @@ def manhattan(d, cohort, ax=None, mask=None, maf=None, label_top=5):
     # as it was when a panel meant one mask-by-MAF cell.
     bar_genes = 0.05 / s.Region.nunique()
     ax.axhline(-np.log10(bar_genes), color="#c0392b", lw=0.9,
-               label=f"Bonferroni: 0,05 / {s.Region.nunique():,} genes "
-                     f"= {bar_genes:.1e}".replace(".", ",", 1))
+               label=f"Bonferroni: 0.05 / {s.Region.nunique():,} genes "
+                     f"= {bar_genes:.1e}")
 
     # No FDR line: Benjamini-Hochberg's cutoff is the largest p with q < 0.05,
     # and there is none, so a line would have nowhere to sit. The smallest q is

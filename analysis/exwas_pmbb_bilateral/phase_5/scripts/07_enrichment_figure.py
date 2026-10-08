@@ -17,6 +17,9 @@ rather than reason about it; `node` is not installed on this host, so that was
 not possible. Using the documented values as-is, in the two-colour emphasis
 form, is the mitigation.
 
+Labelled in English: these figures are lifted into the English documentation,
+and Portuguese text inside an English document reads worse than the reverse.
+
 Output: figures/clingen_enrichment.png
 """
 import json
@@ -40,17 +43,17 @@ by = {r["label"]: r for r in co["rows"]}
 
 EXPECTED = 0.26
 rows = [
-    ("fenótipo amplo", "6.752 casos", 5,
+    ("broad phenotype", "6,752 cases", 5,
      "SIX1 · GJB3 · COCH · MYO6 · TMPRSS3", ACCENT),
-    (None, None, None, None, None),                      # separador
-    ("amplo, sorteio 1", "3.164", 2, "COCH · SIX1", MUTED),
-    ("amplo, sorteio 2", "3.164", 0, "", MUTED),
-    ("amplo, sorteio 3", "3.164", 1, "ACTG1", MUTED),
-    ("amplo, sorteio 4", "3.164", 2, "COCH · TMPRSS3", MUTED),
-    ("amplo, sorteio 5", "3.164", 3, "GJB3 · MYO6 · SIX1", MUTED),
+    (None, None, None, None, None),                      # separator
+    ("broad, draw 1", "3,164", 2, "COCH · SIX1", MUTED),
+    ("broad, draw 2", "3,164", 0, "", MUTED),
+    ("broad, draw 3", "3,164", 1, "ACTG1", MUTED),
+    ("broad, draw 4", "3,164", 2, "COCH · TMPRSS3", MUTED),
+    ("broad, draw 5", "3,164", 3, "GJB3 · MYO6 · SIX1", MUTED),
     (None, None, None, None, None),
-    ("restrito  (bilateral neuro.)", "3.164", 0, "", ACCENT),
-    ("complemento  (os descartados)", "3.588", 1, "SIX1", ACCENT),
+    ("restricted  (bilateral SN)", "3,164", 0, "", ACCENT),
+    ("complement  (what it discards)", "3,588", 1, "SIX1", ACCENT),
 ]
 
 plt.rcParams.update({
@@ -80,23 +83,23 @@ for i, (label, n, val, genes, color) in enumerate(rows):
                 color=INK2)
 
 ax.axvline(EXPECTED, color="#c0392b", lw=1.4, zorder=1)
-ax.text(EXPECTED, max(ys) + 0.75, f"  esperado por acaso: {EXPECTED}",
+ax.text(EXPECTED, max(ys) + 0.75, f"  expected by chance: {EXPECTED}",
         ha="left", va="center", fontsize=9, color="#c0392b")
 
 ax.set_xlim(-0.05, 6.9)
 ax.set_ylim(min(ys) - 0.9, max(ys) + 1.2)
 ax.set_yticks([])
 ax.set_xticks(range(0, 7))
-ax.set_xlabel("genes ClinGen Definitive/Strong entre os 50 primeiros", color=INK2)
+ax.set_xlabel("ClinGen Definitive/Strong genes in the top 50", color=INK2)
 for s in ("top", "right", "left"):
     ax.spines[s].set_visible(False)
 ax.grid(axis="x", color="#eeeeee", lw=0.8, zorder=0)
 ax.set_axisbelow(True)
 
-fig.suptitle("Genes de surdez conhecidos no topo da lista — coorte combinada",
+fig.suptitle("Known deafness genes at the top of the list — combined cohort",
              x=0.125, ha="left", fontsize=13, y=1.02)
 fig.text(0.125, 0.955,
-         "cinza: metades aleatórias do fenótipo amplo, o que o acaso produz nesse tamanho",
+         "grey: random halves of the broad phenotype — what chance produces at this sample size",
          ha="left", fontsize=9, color=INK2)
 fig.savefig(HERE / "figures/clingen_enrichment.png")
 print("figures/clingen_enrichment.png")
