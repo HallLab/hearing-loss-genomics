@@ -53,6 +53,22 @@ acabam no grupo controle, que é justamente onde não podem estar.
 
 As 70.925 pessoas com dado de exoma, e a coluna `Class` com a ancestralidade de cada uma.
 
+### Repare que filtramos em duas camadas de código diferentes
+
+Não é inconsistência — é imposição das tabelas:
+
+| tabela | filtro | camada |
+|---|---|---|
+| `conditions_phecode_x` | `SO_39[0-9]` | **PhecodeX** |
+| `observation` | `388.3x`, `H93.1x` | **ICD** |
+
+A tabela `observation` **não tem coluna de phecode**. Ela guarda o código ICD cru. Então para
+alcançar aqueles 25.094 eventos de tinnitus não há escolha: ou se filtra por ICD ali, ou se perdem
+as 556 pessoas.
+
+A regra geral vale guardar: **a camada de código é determinada pela tabela, não pela sua
+preferência.** Detalhes em [`00_pmbb_codes.md`](00_pmbb_codes.md).
+
 ### Fonte auxiliar — a tabela mestra de códigos
 
 ```
@@ -201,15 +217,48 @@ coisas diferentes, e nenhum dos dois estava errado sobre a própria pergunta.
 | B | ≥2 datas de `.2` **e** ≥2 de `.8`, contadas em separado | 3.259 |
 | **C** | **≥2 datas em que a MESMA data tem `.2` e `.8`** | **3.164** |
 
-Minha primeira implementação usou a **A**. O problema: uma consulta com `H90.0 "Conductive hearing
-loss, bilateral"` contribui `.8` e conta para o total — ou seja, **perda condutiva empurrando alguém
-para caso**, numa definição escrita justamente para excluí-la.
+Minha primeira implementação usou a **A**.
 
-A **B** ainda deixa uma consulta neurossensorial-unilateral somar com uma condutiva-bilateral e virar
-um caso que nunca foi diagnosticado com perda bilateral neurossensorial.
+### Uma pessoa real que mostra o problema
 
-A **C** é o que a frase significa: em pelo menos duas datas distintas, o diagnóstico registrado foi
-bilateral neurossensorial.
+`PMBB2551063181373`, nove consultas em 16 anos:
+
+| data | códigos | o que significa |
+|---|---|---|
+| 2008-07-07 | `.1` `.8` | condutiva, bilateral |
+| 2010-03-13 | `.1` `.8` | condutiva, bilateral |
+| 2010-12-17 | `.2` `.3` `.9` | neurossensorial + mista, **unilateral** |
+| 2015-11-15 | `.1` `.8` | condutiva, bilateral |
+| 2019-04-26 | `.1` `.8` | condutiva, bilateral |
+| 2019-12-06 | `.1` `.9` | condutiva, unilateral |
+| 2020-01-24 | `.3` `.9` | mista, unilateral |
+| 2023-09-04 | `.8` | bilateral, tipo não registrado |
+| 2024-11-02 | `.1` `.8` | condutiva, bilateral |
+
+**Essa pessoa nunca foi diagnosticada com perda bilateral neurossensorial.** Nenhuma consulta tem
+`.2` e `.8` juntos. O que ela tem é condutiva bilateral seis vezes, e uma única consulta com
+neurossensorial *unilateral*.
+
+```
+leitura A — datas que carregam .2 OU .8    →  8 datas  →  VIRA CASO
+leitura C — datas em que a MESMA data tem os dois  →  0  →  não é caso
+```
+
+O erro é tratar `.2` e `.8` como evidências do mesmo diagnóstico, quando são eixos independentes. O
+`.8` significa apenas *"bilateral"* — e perda **condutiva** bilateral também o carrega. Então cada
+consulta de otite bilateral entra na contagem de uma definição escrita para excluir perda condutiva.
+A pessoa junta `.8` por seis consultas de condutiva, pega um `.2` solto de outra doença, e a soma de
+dois eixos colhidos em **momentos diferentes** monta um diagnóstico que nunca existiu.
+
+A **B** tem o mesmo defeito de forma mais branda: ainda deixa uma consulta neurossensorial-unilateral
+somar com uma condutiva-bilateral.
+
+A **C** é o que a frase significa: em pelo menos duas datas distintas, **o diagnóstico registrado
+naquela data** foi bilateral neurossensorial.
+
+**A regra:** dois eixos só significam um diagnóstico quando aparecem juntos **na mesma linha do
+prontuário**. Separados no tempo, são duas doenças diferentes somadas por engano. São **865 pessoas**
+que a leitura frouxa incluiria.
 
 Peguei isso comparando as três entre si. **Nada mais adiante no pipeline teria notado** — as três
 produzem uma coorte plausível, rodam até o fim e dão p-valores.
