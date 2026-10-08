@@ -1,0 +1,8 @@
+{
+  "broad_cases": 6752,
+  "restricted_cases": 3164,
+  "complement_cases": 3588,
+  "controls": 50746,
+  "n": 54334,
+  "note": "complement is 13% larger than the 3,164 comparison points; that biases toward finding enrichment, so a null is a strong null"
+}

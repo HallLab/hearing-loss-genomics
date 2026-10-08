@@ -57,73 +57,72 @@ it harder.
 
 ---
 
-## Finding 3 — the ranking carries real biology; whether the restriction removes it is unresolved
+## Finding 3 — the ranking carries real biology, and the restriction is exonerated
 
-**This finding has been rewritten twice, and the history is kept because it is the useful part.**
-First version: four known genes moved the wrong way, "probably means nothing". Second: the ClinGen
-test showed enrichment in the broad arm and none in the restricted one, so "the restriction removes
-signal". The size-matched control says the second was overstated.
+**Written three times. The sequence is kept because it is the useful part:** "four known genes moved
+the wrong way, probably nothing" → "the restriction removes signal" → this, which two controls
+settled and which withdraws the middle version.
 
-### What the ClinGen test found
+### The observation
 
 Every ClinGen Hearing Loss GCEP gene at Definitive or Strong — 100 genes, 93 in our tested set.
-In the broad combined analysis, five sit in the top 50 where chance predicts 0.26:
+In the broad combined analysis five sit in the top 50 against 0.26 expected:
 
 ```
-SIX1  #4  ·  GJB3  #19  ·  COCH  #23  ·  MYO6  #34  ·  TMPRSS3  #36      p = 5.9 × 10⁻⁶
+SIX1 #4  ·  GJB3 #19  ·  COCH #23  ·  MYO6 #34  ·  TMPRSS3 #36        p = 5.9 × 10⁻⁶
 ```
 
-In the restricted arm, none of the 93 reaches the top 250.
+In the restricted arm, none of the 93 reaches the top 250. The tempting reading — that restricting
+the phenotype threw out the cases carrying the biology — took two controls to test, and did not
+survive either.
 
-### What the size-matched control found
+### Control 1 — hold the sample size fixed
 
-The broad cohort was drawn down to 3,164 cases — the restricted arm's exact count — five times, and
-re-run end to end. 115 jobs. The decision rule was written into the script before the result existed.
+The broad cohort drawn down to 3,164 cases, the restricted arm's exact count, five independent
+times, re-run end to end. Decision rule written into the script before the result existed.
 
-| | ClinGen in top 50 | expected |
-|---|---:|---:|
-| broad, 6,752 cases | **5** | 0.26 |
-| broad at 3,164 cases, five draws | **2 · 0 · 1 · 2 · 3** | 0.26 each |
-| restricted, 3,164 cases | **0** | 0.26 |
+### Control 2 — run the cases the restriction discards
 
-Two things follow, and they point different ways.
+The restricted cases are a strict subset of the broad ones, so the complement is exactly the 3,588
+the restriction throws away: unilateral, conductive, mixed, and mostly unspecified hearing loss.
 
-**The enrichment is not an artifact of sample size.** Pooled over the five draws, 8 ClinGen genes
-fall in 250 top-50 slots against 1.3 expected — p = 6.4 × 10⁻⁵. The broad phenotype's ranking still
-carries known deafness biology when it has only 3,164 cases to work with. That is worth having
-established: it means the ordering of these lists is not pure noise, which the phase's own null
-result might otherwise suggest.
+| | cases | ClinGen in top 50 | expected | p |
+|---|---:|---:|---:|---|
+| **broad, all cases** | 6,752 | **5** | 0.26 | 5.9 × 10⁻⁶ |
+| broad subsampled, draws 1–5 | 3,164 | 2 · 0 · 1 · 2 · 3 | 0.26 | — |
+| **restricted** (bilateral SN) | 3,164 | **0** | 0.26 | 1 |
+| **complement** (what it discards) | 3,588 | **1** — `SIX1` | 0.26 | 0.23 |
 
-**But the restricted arm's zero is inside the range chance produces.** The draws average 1.6, and
-P(0 | Poisson 1.6) = 0.20. One of the five draws also returned zero. So:
+### What the two controls establish
+
+**The enrichment is real and survives size-matching.** Pooled over the five draws, 8 ClinGen genes
+in 250 top-50 slots against 1.3 expected, p = 6.4 × 10⁻⁵. The broad phenotype's ranking carries
+known deafness biology even at 3,164 cases. Worth having established against a phase whose headline
+is null: the ordering of these lists is not pure noise.
+
+**Neither half carries it, and neither half is unusual.** Against the random-half distribution
+(mean 1.6):
 
 ```
-5  ->  1.6    attributable to halving the cases
-1.6 ->  0     not distinguishable from sampling variation, with one observation
+restricted   0   P(<= 0) = 0.20    within range
+complement   1   P(<= 1) = 0.53    within range
 ```
 
-### The honest statement
+Neither is distinguishable from a random half of the same size. And the halves do not add up:
+0 + 1 = 1 against 5 for the whole. **The enrichment needs the full 6,752 together.**
 
-The restriction's null is **consistent with lost power alone**. It may also have removed signal; the
-data here cannot separate the two, because the restricted arm is one fixed set rather than a draw,
-and its result sits where a low draw would sit.
+### The conclusion, and the claim withdrawn
 
-My second version of this finding said the restriction removes signal. That claim is withdrawn.
-What survives is the weaker and better-supported one: the ranking carries biology, and the
-restricted arm is too small to show it.
+**The restriction's null is lost power, not lost signal.** The phenotype decision is not shown to
+discard biology, and the second version of this finding — which said it did — is withdrawn.
 
-### The test that would resolve it
+The reason the halves do not carry it is ordinary and worth stating plainly: at 3,164 cases nothing
+in this study is detectable, so which 3,164 you pick barely matters. The signal is thin enough that
+it only clears the noise when every case is in.
 
-The restricted cases are a strict subset of the broad ones — 3,164 of 6,752, with the complement
-being exactly the **3,588 the restriction excludes**. Running that complement as its own case set
-asks the question directly:
-
-- complement shows the enrichment → the signal lives in the cases the restriction throws away, and
-  the phenotype decision is costly
-- complement shows nothing → the signal lives in the cases the restriction keeps, and its null here
-  is power, full stop
-
-One SAIGE run, same size as the others. It is the cleanest remaining question in this analysis.
+`SIX1` deserves a note as the one gene that shows up almost everywhere it could: top 50 in the full
+broad arm, in two of five random draws, and the only one in the complement's top 50. Still 33× short
+of significance, still not a finding — but it is the most consistent thing in this analysis.
 
 ---
 
@@ -141,11 +140,12 @@ able to support it.
 
 ## What this phase does not answer
 
-**Whether the restriction is right.** Still open, and now open with numbers rather than opinion. The
-broad ranking carries known deafness biology that survives size-matching; the restricted arm shows
-none, but its null is consistent with power alone. The restriction remains defensible on clinical
-grounds and is not condemned by this evidence. The complement run in Finding 3 is what would
-settle it.
+**Whether the restriction is right.** Settled as far as this data can settle it: the restriction is
+not shown to discard signal, and its null is power. It stays defensible on clinical grounds and now
+has a measurement behind it rather than only an argument. What this does **not** say is that the
+restriction is better — only that it is not worse for the reason that was suspected. At 3,164 cases
+neither definition can show anything, which is a statement about the cohort rather than about either
+phenotype.
 
 **Whether a bigger cohort would find something.** Both arms are null at this size. 3,164 cases is
 small for rare-variant burden, and 6,752 was not large either.

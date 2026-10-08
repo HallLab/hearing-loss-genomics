@@ -1,0 +1,32 @@
+#!/bin/bash
+# Complement run -- step 2, 22 chromosomes, whole grid per call.
+#BSUB -J comp2[1-22]
+#BSUB -q epistasis_normal
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.err
+#BSUB -M 96000
+#BSUB -R "rusage[mem=96000]"
+#BSUB -n 4
+#BSUB -W 24:00
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+C=${BASE}/phase_5/complement
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+CHR=${LSB_JOBINDEX}
+PLINK=${ELENA}/rarevariant_geneburden/plink_deduplicated/chr${CHR}_deduplicated
+mkdir -p ${C}/results/step2
+apptainer exec -B /project -B /project/hall -B /static ${SIF} \
+  /app/.pixi/envs/default/bin/Rscript /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed --bimFile=${PLINK}.bim --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${C}/results/step1/complement.rda \
+  --varianceRatioFile=${C}/results/step1/complement.varianceRatio.txt.varianceRatio.txt \
+  --groupFile=${BASE}/phase_4/data/masks_by_chrom/pLOF_pDM/chr${CHR}.txt \
+  --SAIGEOutputFile=${C}/results/step2/complement_chr${CHR}.txt \
+  --minMAF=0 --maxMAF_in_groupTest=0.0001,0.001,0.01 --minMAC=1 \
+  --annotation_in_groupTest="pLOF,pDM,pLOF:pDM" \
+  --LOCO=FALSE --is_Firth_beta=TRUE --is_single_in_groupTest=FALSE \
+  --is_output_moreDetails=TRUE --is_no_weight_in_groupTest=TRUE \
+  --is_overwrite_output=TRUE
