@@ -1,0 +1,40 @@
+{
+  "source": "/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt",
+  "broad_cases": 6752,
+  "controls": 50746,
+  "target_cases": 3164,
+  "replicates": 5,
+  "seed": 20261008,
+  "draws": {
+    "rep1": {
+      "cases": 3164,
+      "controls": 50746,
+      "n": 53910,
+      "file": "rep1.txt"
+    },
+    "rep2": {
+      "cases": 3164,
+      "controls": 50746,
+      "n": 53910,
+      "file": "rep2.txt"
+    },
+    "rep3": {
+      "cases": 3164,
+      "controls": 50746,
+      "n": 53910,
+      "file": "rep3.txt"
+    },
+    "rep4": {
+      "cases": 3164,
+      "controls": 50746,
+      "n": 53910,
+      "file": "rep4.txt"
+    },
+    "rep5": {
+      "cases": 3164,
+      "controls": 50746,
+      "n": 53910,
+      "file": "rep5.txt"
+    }
+  }
+}

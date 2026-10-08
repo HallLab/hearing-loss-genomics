@@ -57,75 +57,73 @@ it harder.
 
 ---
 
-## Finding 3 — the broad phenotype carries real signal, and the restriction removes it
+## Finding 3 — the ranking carries real biology; whether the restriction removes it is unresolved
 
-**This finding replaces an earlier version of itself.** The first reading of this phase said four
-known deafness genes moving the wrong way "probably means nothing", on the grounds that both arms
-are null and ranks wander inside a null. The systematic test says otherwise, and the earlier
-conclusion was wrong.
+**This finding has been rewritten twice, and the history is kept because it is the useful part.**
+First version: four known genes moved the wrong way, "probably means nothing". Second: the ClinGen
+test showed enrichment in the broad arm and none in the restricted one, so "the restriction removes
+signal". The size-matched control says the second was overstated.
 
-### What was tested
+### What the ClinGen test found
 
-Every ClinGen Hearing Loss GCEP gene at Definitive or Strong — **100 genes, 93 of them in our tested
-set** — against both arms, by two tests that fail in different ways. The whole list, not four genes
-picked by eye.
-
-### Known deafness genes cluster at the top of the broad arm
-
-| arm · cohort | top 50 | top 100 | top 250 | top 500 |
-|---|---|---|---|---|
-| **broad · combined** | **5 / 0.26 · p = 5.9 × 10⁻⁶** | 5 / 0.52 · p = 1.7 × 10⁻⁴ | 6 / 1.3 · p = 1.9 × 10⁻³ | 7 / 2.6 · p = 0.015 |
-| broad · EUR | 2 / 0.26 · p = 0.028 | 2 / 0.52 · p = 0.095 | 3 / 1.3 · p = 0.14 | 4 / 2.6 · p = 0.26 |
-| broad · AFR | 0 / 0.26 | 2 / 0.52 · p = 0.096 | 2 / 1.3 · p = 0.38 | 4 / 2.6 · p = 0.27 |
-| **restricted · combined** | **0** | **0** | **0** | 2 / 2.6 · p = 0.74 |
-| restricted · EUR | 0 | 0 | 1 / 1.3 · p = 0.73 | 4 / 2.6 · p = 0.26 |
-| restricted · AFR | 0 | 0 | 2 / 1.3 · p = 0.38 | 4 / 2.6 · p = 0.27 |
-
-Five of the fifty best genes in the broad combined analysis are established deafness genes, where
-chance predicts a quarter of one:
+Every ClinGen Hearing Loss GCEP gene at Definitive or Strong — 100 genes, 93 in our tested set.
+In the broad combined analysis, five sit in the top 50 where chance predicts 0.26:
 
 ```
-SIX1     #4   p 9.3e-05     DFNA23 / branchio-oto-renal
-GJB3     #19  p 1.3e-03     DFNA2B, connexin 31
-COCH     #23  p 1.4e-03     DFNA9
-MYO6     #34  p 2.3e-03     DFNA22 / DFNB37
-TMPRSS3  #36  p 2.6e-03     DFNB8/10
+SIX1  #4  ·  GJB3  #19  ·  COCH  #23  ·  MYO6  #34  ·  TMPRSS3  #36      p = 5.9 × 10⁻⁶
 ```
 
-**Under the restricted phenotype, not one appears in the top 250.**
+In the restricted arm, none of the 93 reaches the top 250.
 
-The excess survives Bonferroni over all 60 tests run here (2 arms × 3 cohorts × 2 tiers × 5 cutoffs;
-bar 8.3 × 10⁻⁴). It decays smoothly as the cutoff widens, which is the shape a genuine
-top-concentrated signal has and a fluke usually does not.
+### What the size-matched control found
 
-### What this does and does not establish
+The broad cohort was drawn down to 3,164 cases — the restricted arm's exact count — five times, and
+re-run end to end. 115 jobs. The decision rule was written into the script before the result existed.
 
-**It does not make any gene significant.** `SIX1` at 9.3 × 10⁻⁵ is still 33× short of the bar. The
-claim is about the *list*, not about any member of it: the ranking carries biology.
+| | ClinGen in top 50 | expected |
+|---|---:|---:|
+| broad, 6,752 cases | **5** | 0.26 |
+| broad at 3,164 cases, five draws | **2 · 0 · 1 · 2 · 3** | 0.26 each |
+| restricted, 3,164 cases | **0** | 0.26 |
 
-**It is not fully independent of what prompted it.** Four of the five drivers are the genes noticed
-by hand, which is what motivated running this. The test does use all 93 tested ClinGen genes rather
-than those four, and it adds `MYO6`, which was not among them — but a test built after seeing the
-pattern it then confirms deserves the caveat stated rather than omitted.
+Two things follow, and they point different ways.
 
-**Power is the live alternative and it is not settled here.** The restricted arm has half the cases,
-so its null could be lost power rather than lost signal. Against that: under pure power loss the
-ClinGen genes should still sit high, just less sharply. Instead their median rank is 7,104 of 8,971
-— no better than a random gene — and none reaches the top 250. That is a stronger absence than power
-alone predicts, but it is an argument, not a measurement.
+**The enrichment is not an artifact of sample size.** Pooled over the five draws, 8 ClinGen genes
+fall in 250 top-50 slots against 1.3 expected — p = 6.4 × 10⁻⁵. The broad phenotype's ranking still
+carries known deafness biology when it has only 3,164 cases to work with. That is worth having
+established: it means the ordering of these lists is not pure noise, which the phase's own null
+result might otherwise suggest.
 
-**The measurement that would settle it:** subsample the broad cohort to 3,164 cases, drawn to match
-the restricted arm's size, and re-run. If the enrichment survives at matched N, the restriction
-removed signal. If it vanishes, the restriction only removed cases. That is one more SAIGE run.
+**But the restricted arm's zero is inside the range chance produces.** The draws average 1.6, and
+P(0 | Poisson 1.6) = 0.20. One of the five draws also returned zero. So:
 
-### Mann-Whitney finds nothing, and the disagreement is the point
+```
+5  ->  1.6    attributable to halving the cases
+1.6 ->  0     not distinguishable from sampling variation, with one observation
+```
 
-Across all arms and cohorts, p > 0.12. ClinGen genes are **not** shifted as a body — their median
-rank sits at or below the overall median everywhere.
+### The honest statement
 
-Both tests are right. There is no mass shift of 93 genes; there is a handful at the very top. That
-is exactly what a rare-variant study with a few real genes and no power for the rest looks like, and
-it is why the top-N test was run alongside the one that uses every gene.
+The restriction's null is **consistent with lost power alone**. It may also have removed signal; the
+data here cannot separate the two, because the restricted arm is one fixed set rather than a draw,
+and its result sits where a low draw would sit.
+
+My second version of this finding said the restriction removes signal. That claim is withdrawn.
+What survives is the weaker and better-supported one: the ranking carries biology, and the
+restricted arm is too small to show it.
+
+### The test that would resolve it
+
+The restricted cases are a strict subset of the broad ones — 3,164 of 6,752, with the complement
+being exactly the **3,588 the restriction excludes**. Running that complement as its own case set
+asks the question directly:
+
+- complement shows the enrichment → the signal lives in the cases the restriction throws away, and
+  the phenotype decision is costly
+- complement shows nothing → the signal lives in the cases the restriction keeps, and its null here
+  is power, full stop
+
+One SAIGE run, same size as the others. It is the cleanest remaining question in this analysis.
 
 ---
 
@@ -143,11 +141,11 @@ able to support it.
 
 ## What this phase does not answer
 
-**Whether the restriction is right.** Finding 3 moved this from opinion toward measurement, and the
-measurement is unfavourable: the broad phenotype's ranking carries known deafness biology and the
-restricted one's does not. The restriction remains defensible on clinical grounds — unilateral loss
-really is less likely to be genetic — but it now has evidence against it that did not exist when it
-was adopted. The size-matched subsample is what would close the argument.
+**Whether the restriction is right.** Still open, and now open with numbers rather than opinion. The
+broad ranking carries known deafness biology that survives size-matching; the restricted arm shows
+none, but its null is consistent with power alone. The restriction remains defensible on clinical
+grounds and is not condemned by this evidence. The complement run in Finding 3 is what would
+settle it.
 
 **Whether a bigger cohort would find something.** Both arms are null at this size. 3,164 cases is
 small for rare-variant burden, and 6,752 was not large either.

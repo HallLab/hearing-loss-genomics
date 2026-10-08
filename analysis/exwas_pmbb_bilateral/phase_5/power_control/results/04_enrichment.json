@@ -1,0 +1,206 @@
+{
+  "gene_set": "ClinGen HL GCEP, Definitive+Strong",
+  "n_gene_set": 100,
+  "arms": {
+    "broad_full_6752_cases": {
+      "label": "broad phenotype, 6,752 cases",
+      "genes_tested": 17943,
+      "clingen_tested": 93,
+      "median_rank_clingen": 8607,
+      "top_n": {
+        "50": {
+          "observed": 5,
+          "expected": 0.26,
+          "p": 5.913701953749668e-06
+        },
+        "100": {
+          "observed": 5,
+          "expected": 0.52,
+          "p": 0.00017139720823923274
+        },
+        "250": {
+          "observed": 6,
+          "expected": 1.3,
+          "p": 0.001911848420829462
+        }
+      },
+      "top50_genes": [
+        "COCH",
+        "GJB3",
+        "MYO6",
+        "SIX1",
+        "TMPRSS3"
+      ]
+    },
+    "restricted_3164_cases": {
+      "label": "bilateral sensorineural, 3,164 cases",
+      "genes_tested": 17941,
+      "clingen_tested": 93,
+      "median_rank_clingen": 7104,
+      "top_n": {
+        "50": {
+          "observed": 0,
+          "expected": 0.26,
+          "p": 1.0
+        },
+        "100": {
+          "observed": 0,
+          "expected": 0.52,
+          "p": 1.0
+        },
+        "250": {
+          "observed": 0,
+          "expected": 1.3,
+          "p": 1.0
+        }
+      },
+      "top50_genes": []
+    }
+  },
+  "replicates": {
+    "rep1": {
+      "label": "broad phenotype subsampled to 3,164 cases, draw 1",
+      "genes_tested": 17939,
+      "clingen_tested": 93,
+      "median_rank_clingen": 9505,
+      "top_n": {
+        "50": {
+          "observed": 2,
+          "expected": 0.26,
+          "p": 0.02772389776253722
+        },
+        "100": {
+          "observed": 2,
+          "expected": 0.52,
+          "p": 0.09503203960363153
+        },
+        "250": {
+          "observed": 3,
+          "expected": 1.3,
+          "p": 0.14040663008787904
+        }
+      },
+      "top50_genes": [
+        "COCH",
+        "SIX1"
+      ]
+    },
+    "rep2": {
+      "label": "broad phenotype subsampled to 3,164 cases, draw 2",
+      "genes_tested": 17940,
+      "clingen_tested": 93,
+      "median_rank_clingen": 8853,
+      "top_n": {
+        "50": {
+          "observed": 0,
+          "expected": 0.26,
+          "p": 1.0
+        },
+        "100": {
+          "observed": 1,
+          "expected": 0.52,
+          "p": 0.4061842154877663
+        },
+        "250": {
+          "observed": 3,
+          "expected": 1.3,
+          "p": 0.14039002038560067
+        }
+      },
+      "top50_genes": []
+    },
+    "rep3": {
+      "label": "broad phenotype subsampled to 3,164 cases, draw 3",
+      "genes_tested": 17940,
+      "clingen_tested": 93,
+      "median_rank_clingen": 10614,
+      "top_n": {
+        "50": {
+          "observed": 1,
+          "expected": 0.26,
+          "p": 0.22912416791177345
+        },
+        "100": {
+          "observed": 1,
+          "expected": 0.52,
+          "p": 0.4061842154877663
+        },
+        "250": {
+          "observed": 2,
+          "expected": 1.3,
+          "p": 0.3727502684185876
+        }
+      },
+      "top50_genes": [
+        "ACTG1"
+      ]
+    },
+    "rep4": {
+      "label": "broad phenotype subsampled to 3,164 cases, draw 4",
+      "genes_tested": 17941,
+      "clingen_tested": 93,
+      "median_rank_clingen": 9415,
+      "top_n": {
+        "50": {
+          "observed": 2,
+          "expected": 0.26,
+          "p": 0.027718210920327356
+        },
+        "100": {
+          "observed": 2,
+          "expected": 0.52,
+          "p": 0.0950142384568952
+        },
+        "250": {
+          "observed": 6,
+          "expected": 1.3,
+          "p": 0.0019129130324940006
+        }
+      },
+      "top50_genes": [
+        "COCH",
+        "TMPRSS3"
+      ]
+    },
+    "rep5": {
+      "label": "broad phenotype subsampled to 3,164 cases, draw 5",
+      "genes_tested": 17940,
+      "clingen_tested": 93,
+      "median_rank_clingen": 8974,
+      "top_n": {
+        "50": {
+          "observed": 3,
+          "expected": 0.26,
+          "p": 0.00221610336861723
+        },
+        "100": {
+          "observed": 4,
+          "expected": 0.52,
+          "p": 0.0018154608578900544
+        },
+        "250": {
+          "observed": 8,
+          "expected": 1.3,
+          "p": 4.6665312061384743e-05
+        }
+      },
+      "top50_genes": [
+        "GJB3",
+        "MYO6",
+        "SIX1"
+      ]
+    }
+  },
+  "verdict_inputs": {
+    "broad_full_top50": 5,
+    "restricted_top50": 0,
+    "replicate_top50": [
+      2,
+      0,
+      1,
+      2,
+      3
+    ],
+    "replicate_median": 2.0
+  }
+}
