@@ -124,6 +124,11 @@ the restriction throws away: unilateral, conductive, mixed, and mostly unspecifi
 | **restricted** (bilateral SN) | 3,164 | **0** | 0.26 | 1 |
 | **complement** (what it discards) | 3,588 | **1** — `SIX1` | 0.26 | 0.23 |
 
+![ClinGen enrichment across the four arms](../../figures/clingen_enrichment.png)
+
+The five random halves are in grey — what chance produces at this sample size. The restricted arm
+and the complement both fall inside that cloud; only the full 6,752 sits outside it.
+
 ### What the two controls establish
 
 **The enrichment is real and survives size-matching.** Pooled over the five draws, 8 ClinGen genes

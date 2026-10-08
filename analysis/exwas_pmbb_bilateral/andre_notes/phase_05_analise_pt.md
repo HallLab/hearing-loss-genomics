@@ -162,6 +162,14 @@ complemento, 3.588 casos    1 gene (SIX1)    p = 0,23
 **Nenhuma das duas metades carrega o enriquecimento, e nenhuma é anormal.** E elas não somam:
 0 + 1 = 1, contra 5 do conjunto inteiro.
 
+### Os quatro braços numa figura
+
+![enriquecimento ClinGen](../figures/clingen_enrichment.png)
+
+Em cinza, as cinco metades aleatórias — **o que o acaso produz nesse tamanho**. Em azul, os três
+braços reais. O restrito (0) e o complemento (1) caem **dentro** da nuvem cinza; só o conjunto
+completo, com 6.752 casos, sai dela.
+
 ### A conclusão
 
 **O enriquecimento precisa dos 6.752 casos juntos.** O nulo da restrição é **perda de poder, não
