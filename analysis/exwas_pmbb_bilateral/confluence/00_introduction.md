@@ -1,6 +1,7 @@
 # Rare-variant gene burden in bilateral sensorineural hearing loss
 
 **PMBB Release 2026-4.0 · SAIGE-GENE+ · October 2026**
+Hall Lab × Epstein Lab · Penn
 
 ---
 
@@ -20,6 +21,86 @@ and the signal sits below the detection floor. **[Full reasoning in the conclusi
 
 ---
 
+## Why this study exists
+
+Adult-onset hearing loss is one of the most common sensory disorders, and its genetic contribution
+is poorly characterised. Many genes are known to cause **congenital** deafness; whether rare variants
+in those same genes also raise the risk of hearing loss acquired later in life is a different
+question, and a biobank with both exome sequencing and decades of clinical records is one of the few
+places it can be asked.
+
+**Hui et al. 2023** (*PLOS Genetics*, [doi:10.1371/journal.pgen.1010584](https://doi.org/10.1371/journal.pgen.1010584))
+did exactly that in PMBB and answered yes: rare deleterious variants in known congenital hearing-loss
+genes do raise adult-onset risk, with four novel candidates emerging alongside. That study used
+**40,627 people** and phenotyped on phecode 389 — hearing loss of any kind.
+
+This work extends that line into **PMBB Release 2026-4.0**, which has **70,925 people with exome
+data**, and sharpens the phenotype.
+
+---
+
+## Where this analysis sits
+
+```
+  Hui et al. 2023          PMBB ~40k · phecode 389 · burden in known HL genes
+        │                  the precedent this line extends
+        ▼
+  ExWAS on PMBB v4         70,925 with exomes · single-variant + rare-variant burden
+        │                  summer 2026 · results presented as a poster
+        ▼
+  Replication              the same pipeline re-run and audited
+        │                  found 4 mask defects and 2 cohort defects
+        ▼
+  THIS ANALYSIS            the corrected pipeline + the clinical phenotype
+        │                  bilateral sensorineural only
+        ▼
+  next                     audiograms · a larger cohort · external replication
+```
+
+Each step is a response to the one above it. The replication exists because results should be
+checked before they are built on; **this analysis exists because the replication showed the pipeline
+was sound once corrected, and the remaining question was whether the phenotype was right.**
+
+`analysis/elena_replication/` holds the audit. The [conclusions](06_conclusions.md) set this
+analysis against it directly.
+
+---
+
+## Why bilateral sensorineural
+
+Hui et al. and the PMBB v4 ExWAS both used the broad definition — any hearing loss. Narrowing to
+bilateral sensorineural **halves the case count, 6,752 → 3,164**, which is a real cost. Four reasons
+it is still the right phenotype for a genetic study:
+
+**1 · Unilateral loss is usually environmental.** Hearing lost in one ear points to something that
+happened to that ear — trauma, infection, noise exposure on one side, a tumour. A genetic cause
+affects both cochleae. Including unilateral cases adds people whose deafness has a known
+non-genetic explanation.
+
+> "unilateral hearing loss we exclude, because it's less likely genetic, more likely environment
+> related" — **D. Epstein**, 2026-10-02
+
+**2 · Conductive loss is a different organ.** Conductive loss is mechanical — the ossicles, the
+middle ear, the eardrum — while sensorineural loss is the cochlea and the auditory nerve. They share
+a symptom and almost nothing else. Of the **109 Definitive/Strong gene–disease pairs** in the ClinGen
+hearing-loss panel, **none is labelled as conductive hearing loss**.
+
+**3 · The target phenotype is bilateral sensorineural.** Presbycusis — age-related hearing loss, the
+condition this line of work is ultimately about — is bilateral and sensorineural by definition. Its
+ICD code `H91.13` qualifies under this restriction.
+
+**4 · It is how the clinical side defines the condition.** A phenotype a clinician would not
+recognise is hard to act on, whatever it does for statistical power.
+
+### And the cost was measured, not assumed
+
+Halving the cases could have thrown away the signal. Two controls were run to find out — the broad
+phenotype drawn down to the same case count five times, and the discarded cases run as their own
+case set. **The restriction's null is lost power, not lost biology.** Details in the
+[conclusions](06_conclusions.md).
+
+---
+
 ## The cohort in one table
 
 | | N |
@@ -33,7 +114,9 @@ Analysed as three cohorts: **combined** (53,910 · 3,164 cases), **EUR** (40,143
 
 ---
 
-## The pipeline
+## The analysis pipeline
+
+The five phases this publication documents, inside the box marked *THIS ANALYSIS* above.
 
 ```
    PMBB v4                PHASE 1              PHASE 2            PHASE 3
