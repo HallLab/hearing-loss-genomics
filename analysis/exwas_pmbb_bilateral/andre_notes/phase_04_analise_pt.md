@@ -249,6 +249,55 @@ seção seguinte.
 
 ---
 
+## O que o SAIGE corrige, e o que fica conosco
+
+Pergunta que sempre aparece: **o SAIGE já aplica Bonferroni?** Não. Ele corrige em dois níveis e
+deixa o terceiro inteiramente para quem lê.
+
+```
+┌─ dentro de UM gene, varrendo o ρ do SKAT-O ─────── o SAIGE corrige
+│
+├─ dentro de UM gene, as 9 células (Cauchy) ──────── o SAIGE corrige
+│
+└─ entre os ~18.000 GENES ────────────────────────── NÓS corrigimos
+```
+
+**Nível 1 — o SKAT-O.** Ele varre os valores de `ρ` e fica com o melhor; pegar o melhor de vários
+sem pagar seria trapaça, e ele paga. Dá para verificar: se fosse o mínimo cru, o `Pvalue` seria
+**sempre igual** ao menor entre burden e SKAT. Em **471.567 de 471.615** testes ele é maior ou igual.
+
+**Nível 2 — o Cauchy.** Combina as nove células com a penalidade embutida — a regra do
+`9 ÷ células com sinal`.
+
+**Nível 3 — entre genes.** O SAIGE **não faz nada**, e os valores que ele entrega são crus:
+
+| coorte | menor Cauchy | se já viesse corrigido × nº de genes |
+|---|---|---|
+| combined | 2,05 × 10⁻⁵ | seria 0,37 |
+| EUR | 1,37 × 10⁻⁵ | seria 0,24 |
+| AFR | 9,14 × 10⁻⁶ | seria 0,16 |
+
+E a distribuição confirma — fração abaixo de 0,05 é **0,048**, abaixo de 0,25 é **0,213**, abaixo de
+0,5 é **0,454**. Praticamente uniforme, que é a assinatura de p-valor cru sob o nulo. Corrigido,
+estaria empilhado perto de 1.
+
+### Uma confusão adjacente, que o nome provoca
+
+O **SPA** — o *saddlepoint* de `step2_SPAtests.R` — **não é correção de teste múltiplo.** Ele torna o
+p-valor de **um** teste exato na cauda, quando casos e controles estão desbalanceados. É precisão do
+teste individual, não ajuste por quantidade de testes. Duas coisas de natureza diferente que o nome
+deixa parecidas.
+
+### Por que isso importa aqui
+
+A correção entre genes é **decisão nossa**, e é por isso que o denominador recebeu tanta atenção. O
+SAIGE não tem opinião: entrega 17.941 p-valores crus e o que fazer com eles é problema de quem lê.
+
+Nossa escolha: **`0,05 / genes`** como barra principal, com o FDR reportado ao lado. E o omnibus
+existe justamente para que esse denominador possa ser `genes`, e não `genes × 9`.
+
+---
+
 ## O desenho que torna o Cauchy possível
 
 Cada gene é testado **nove vezes**: três máscaras × três cortes de raridade. Saem nove p-valores, e

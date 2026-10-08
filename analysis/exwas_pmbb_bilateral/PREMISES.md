@@ -130,6 +130,15 @@ Three Bonferroni denominators are defensible and they differ ninefold, so the on
 be named rather than implied. Benjamini-Hochberg is reported alongside, because it is the lenient
 correction and where a weak real effect would appear first.
 
+**SAIGE corrects nothing across genes**, and this is worth stating because the opposite is widely
+assumed. It corrects twice *within* a gene — SKAT-O pays for sweeping rho, and the Cauchy row pays
+for the nine cells — and then hands over raw p-values. Checked rather than taken on trust: the
+omnibus p-values are uniform under the null (0.048 below 0.05, 0.454 below 0.5), which they would
+not be if any gene-level adjustment had been applied.
+
+So the gene-level correction is entirely this analysis's decision, which is why the denominator gets
+the attention it does.
+
 ## P10 · SAIGE runs the whole grid in one call · **R, measured 2026-10-07**
 
 Not inherited — this analysis is the first to do it, and it came out of Nikki Palmiero asking why
