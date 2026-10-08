@@ -28,6 +28,32 @@ combine into a "case" never diagnosed with bilateral sensorineural loss.
 **Moves: cases 6,752 → 3,164.** A 53% cut. Of the 3,588 lost, all still have hearing loss — they are
 excluded, never moved to controls.
 
+### Tested after the fact, and it holds
+
+This premise was adopted on clinical grounds alone. Phase 5 then found that known deafness genes
+cluster at the top of the **broad** analysis (5 ClinGen Definitive/Strong genes in the top 50
+against 0.26 expected, p = 5.9 × 10⁻⁶) and nowhere near the top of the restricted one — which looks
+like evidence that this premise throws away real biology.
+
+Two controls say it does not:
+
+| | cases | ClinGen in top 50 |
+|---|---:|---:|
+| broad, all | 6,752 | 5 |
+| broad subsampled to 3,164, five draws | 3,164 | 2 · 0 · 1 · 2 · 3 |
+| **restricted (this premise)** | 3,164 | **0** |
+| the cases this premise discards | 3,588 | 1 |
+
+Neither half differs from a random half of the same size — P(0) = 0.20 and P(≤1) = 0.53 against the
+draws — and the halves do not add up, 0 + 1 against 5. The enrichment needs all 6,752 together.
+
+**So the restricted arm's null is lost power, not lost biology, and this premise is not shown to
+discard signal.** What that does *not* say is that it is better; at 3,164 cases neither definition
+can show anything, which is a fact about the cohort rather than about either phenotype.
+
+Full write-up and both controls: [`phase_5/results/FINDINGS.md`](phase_5/results/FINDINGS.md)
+Finding 3.
+
 This also resolves a discrepancy raised in the meeting. Doug counted roughly 4,000 from the PMBB
 phenotype browser using the bilateral sensorineural ICD code; the master code table shows
 `H90.3 Sensorineural hearing loss, bilateral` on 3,964 people. He and the pipeline were counting
