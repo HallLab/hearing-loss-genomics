@@ -50,22 +50,119 @@ quem**. Idêntico quer você teste o primeiro gene ou o décimo oitavo milésimo
 
 **O que depende do gene** — as mutações raras naquele gene.
 
+---
+
 ### Passo 1 — a linha de base
 
 Constrói a expectativa de quem tem perda auditiva **sem olhar nenhum gene**. Roda uma vez por
 coorte: três vezes no total.
 
-O parentesco é a parte caríssima. Com 53.910 pessoas, saber quem é parente de quem exige comparar
-**cada par**: 1,45 bilhão de pares. E isso não tem nada a ver com o gene testado.
+**Não é um modelo por pessoa — é um modelo só, sobre as 53.910.** Ele *produz* um número por pessoa,
+mas o modelo é um.
 
-Uma analogia: para avaliar se uma escola ensina bem, primeiro você monta a previsão de nota de cada
-aluno a partir do que **não** tem a ver com a escola — renda, notas anteriores. Depois pergunta,
-escola por escola, se os alunos vão melhor do que a previsão dizia. Montar a previsão uma vez e
-reusá-la em todas é o que torna a conta viável.
+A fórmula que o SAIGE registrou no log:
+
+```
+PHENO ~ AGE + AGE2 + SEX + Batch + PC1 + PC2 + PC3 + PC4 + PC5
+```
+
+Só que isso é metade. O modelo completo é uma regressão logística **mista** — o `MM` de
+`fitNULLGLMM`, de *Mixed Model*:
+
+```
+                    ┌──────────── efeitos fixos ─────────────┐   ┌── aleatório ──┐
+  logit( P(casoᵢ) ) = β₀ + β₁·AGEᵢ + β₂·AGEᵢ² + β₃·SEXᵢ + ... +         bᵢ
+
+  com    b ~ Normal( 0 , τ · GRM )
+```
+
+**O `b` é o parentesco.** Um valor por pessoa, e pessoas aparentadas têm valores **correlacionados**
+— a matriz GRM, aquela de 1,45 bilhão de pares, é quem diz o quanto. Sem esse termo, dois irmãos
+entrariam no modelo como se fossem dois indivíduos independentes, e a semelhança genética entre eles
+viraria sinal falso.
+
+O **`τ`** (tau) é o tamanho desse efeito: quanto do fenótipo o parentesco explica. O SAIGE o aprende
+por iteração, e dá para ver acontecendo no log:
+
+```
+inital tau is  1 0
+tau:  1 0.1040913
+tau:  1 0.1544189
+tau:  1 0.1553402      ← convergiu
+```
+
+É o `tau₂` que aparece na tabela de resultados. **Quando ele converge para zero — como no AFR — o
+termo aleatório desaparece e o modelo *vira* a regressão logística comum** que você descreveu.
+
+### O que realmente atravessa para o passo 2: os resíduos
+
+Aqui está a ideia que faz os dois passos serem uma coisa só, e não duas etapas administrativas.
+
+O que interessa não é o ajuste — é o quanto cada pessoa **escapa** dele:
+
+```
+resíduoᵢ  =  yᵢ − μ̂ᵢ        y = 1 se caso, 0 se controle
+                              μ̂ = probabilidade que o modelo previu
+```
+
+| | o modelo previu | é caso? | resíduo | leitura |
+|---|---|---|---|---|
+| pessoa A | 8% | sim | **+0,92** | muito surpreendente |
+| pessoa B | 40% | sim | +0,60 | meio esperado |
+| pessoa C | 35% | não | −0,35 | esperado |
+
+A pessoa A é **surpreendente**: idade, sexo, ancestralidade e parentesco dela não explicam o
+diagnóstico. Sobrou algo por explicar.
+
+---
 
 ### Passo 2 — a pergunta por gene
 
-Para cada gene, verifica se as mutações raras explicam algo **além** daquela expectativa.
+E a pergunta vira uma só:
+
+> **As variantes raras deste gene estão concentradas nas pessoas surpreendentes?**
+
+Formalmente, para a soma (*burden*), colapsa-se as variantes do gene num número por pessoa e
+calcula-se:
+
+```
+  Gᵢ = Σⱼ wⱼ · genótipoᵢⱼ          a carga de dano da pessoa i naquele gene
+
+  S  = Σᵢ Gᵢ · ( yᵢ − μ̂ᵢ )          o escore
+       └─────────┬──────────┘
+         carga × surpresa, somado sobre todo mundo
+```
+
+Se quem carrega o gene é justamente quem surpreende, os dois fatores são grandes juntos e `S` fica
+longe de zero. Se o gene está espalhado igualmente entre surpreendentes e esperados, os termos
+positivos e negativos se cancelam e `S` fica perto de zero.
+
+Para a dispersão (*SKAT*) a conta é a mesma, mas sem colapsar e elevando ao quadrado, o que mata o
+sinal de menos:
+
+```
+  Sⱼ = Σᵢ genótipoᵢⱼ · ( yᵢ − μ̂ᵢ )      um escore por variante
+
+  Q  = Σⱼ wⱼ² · Sⱼ²                     soma dos quadrados
+```
+
+Em ambos, **o `(yᵢ − μ̂ᵢ)` vem pronto do passo 1**. É literalmente a única coisa do modelo nulo que o
+passo 2 precisa — e é por isso que ele não tem que reajustar nada.
+
+### O variance ratio, o segundo truque
+
+Calcular a **variância** de `S` exigiria a matriz de parentesco inteira em cada gene — caro de novo.
+Então o SAIGE faz uma conta barata, com uma versão esparsa, e corrige:
+
+```
+  Var(S)  ≈  r × Var_barata(S)
+```
+
+Esse `r` é o **variance ratio** — estimado uma vez no passo 1, a partir de marcadores sorteados, e
+reusado em todos os genes. Os nossos: 0,9847, 0,9942 e 1,0000. Perto de 1 significa que a conta
+barata quase não erra.
+
+---
 
 ### E há uma razão que não é só economia
 
@@ -74,8 +171,22 @@ covariáveis e o gene ao mesmo tempo, eles competiriam pela mesma variação, e 
 absorver parte do sinal real dentro das covariáveis. Separando, a linha de base fica congelada antes
 de qualquer gene ser perguntado — e **todos os genes são medidos com a mesma régua**.
 
+Uma analogia: para avaliar se uma escola ensina bem, primeiro você monta a previsão de nota de cada
+aluno a partir do que **não** tem a ver com a escola — renda, notas anteriores. A diferença entre a
+nota real e a previsão é o resíduo. Depois pergunta, escola por escola, se os alunos dela escapam da
+previsão para cima. Montar a previsão uma vez e reusá-la em todas é o que torna a conta viável.
+
 **Consequência prática:** os 66 trabalhos do passo 2 se apoiam nos três modelos nulos do passo 1.
 Um erro no passo 1 contamina tudo; não existe gene que escape.
+
+### O que atravessa, em arquivo
+
+```
+combined.rda                      372 MB   o modelo ajustado, com os resíduos
+combined.varianceRatio.txt         57 B    um número: 0,9847
+```
+
+372 megabytes e um número, calculados uma vez em ~15 minutos, lidos pelas 22 tarefas daquela coorte.
 
 ---
 
@@ -89,8 +200,9 @@ Não é razão de verossimilhança. O SAIGE usa um **teste de score**.
 | Wald | ajusta com o gene, olha efeito sobre erro | 1, com o gene |
 | **score** | ajusta **só sem** o gene, e pergunta "para que lado ele gostaria de se mover?" | 1, sem o gene |
 
-O score só precisa do modelo do passo 1 — é literalmente o que torna a estrutura de dois passos
-possível. E tem uma segunda vantagem: com dado raro ele continua **válido** onde os outros quebram.
+O score só precisa do modelo do passo 1 — do resíduo `(yᵢ − μ̂ᵢ)`, como no Conceito 2. É literalmente
+o que torna a estrutura de dois passos possível. E tem uma segunda vantagem: com dado raro ele
+continua **válido** onde os outros quebram.
 Um gene com 5 alelos todos em casos é separação perfeita; o Wald e o LRT precisariam estimar um
 efeito que vai para infinito. O score nunca estima nada sob a alternativa.
 
@@ -103,17 +215,37 @@ sairiam otimistas demais, e exatamente nos genes mais raros.
 
 ## Conceito 4 — os quatro p-valores por gene
 
-**`Pvalue_Burden` — a soma.** "Quantos alelos danosos essa pessoa carrega aqui?" Forte se todas as
-mutações empurram para o mesmo lado; frágil se metade é danosa e metade protetora, porque se
-cancelam.
+As estatísticas estão no Conceito 2; aqui é o que cada uma **responde**, e quando cada uma falha.
 
-**`Pvalue_SKAT` — a dispersão.** Soma os efeitos **ao quadrado**, então direção deixa de importar.
-Sobrevive a direções misturadas; perde força quando todas apontam para o mesmo lado. O "kernel" do
-nome é só uma forma de medir **o quanto duas pessoas se parecem** naquele gene.
+**`Pvalue_Burden` — a soma** (`S = Σᵢ Gᵢ · resíduoᵢ`).
+Forte se todas as mutações do gene empurram para o mesmo lado. **Frágil se metade é danosa e metade
+protetora** — na soma elas se cancelam e o teste não vê nada.
 
-**`Pvalue` — o SKAT-O.** A mistura dos dois, com peso escolhido pelo próprio dado.
+**`Pvalue_SKAT` — a dispersão** (`Q = Σⱼ wⱼ² · Sⱼ²`).
+Elevar ao quadrado mata o sinal de menos, então direção deixa de importar: danosas e protetoras
+contribuem igual. **Sobrevive a direções misturadas; perde força quando todas apontam para o mesmo
+lado**, porque jogou fora a informação de direção.
 
-**`Cauchy` — o omnibus.** Este é o principal, e é o que esta análise reporta.
+O "kernel" do nome (*Sequence Kernel Association Test*) é só uma forma de medir **o quanto duas
+pessoas se parecem** naquele gene. O SKAT pergunta: quem se parece aqui também se parece no
+fenótipo?
+
+**`Pvalue` — o SKAT-O, a mistura.** Os dois são casos extremos de uma mesma família:
+
+```
+  Q(ρ)  =  (1 − ρ) · Q_SKAT  +  ρ · Q_Burden            ρ entre 0 e 1
+
+     ρ = 0  →  SKAT puro      (só dispersão)
+     ρ = 1  →  Burden puro    (só soma)
+```
+
+O SKAT-O varre os valores de `ρ`, pega o melhor, e **corrige o p-valor por ter varrido** — senão
+escolher o melhor de vários seria trapaça. Resultado: funciona nos dois cenários, sem precisar
+adivinhar antes qual deles é o seu gene.
+
+**`Cauchy` — o omnibus.** Este é o principal, e é o que esta análise reporta. Enquanto o SKAT-O
+combina **duas estatísticas dentro de uma célula**, o Cauchy combina **as nove células** — é a
+seção seguinte.
 
 ---
 
