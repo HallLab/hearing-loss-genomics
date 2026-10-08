@@ -1,0 +1,239 @@
+{
+  "design": {
+    "Elena": {
+      "phenotype": "SO_396 (broad)",
+      "masks": "original",
+      "pcs": "5 / 9 / 10",
+      "cases": {
+        "combined": 6712
+      }
+    },
+    "Replication": {
+      "phenotype": "SO_396 (broad)",
+      "masks": "rebuilt",
+      "pcs": "5 / 4 / 3",
+      "cases": {
+        "combined": 6752
+      }
+    },
+    "Bilateral": {
+      "phenotype": "bilateral sensorineural",
+      "masks": "rebuilt",
+      "pcs": "5 / 4 / 3",
+      "cases": {
+        "combined": 3164
+      }
+    }
+  },
+  "her_rows_dropped": 699784,
+  "cohorts": {
+    "combined": {
+      "arms": {
+        "Elena": {
+          "genes": 19042,
+          "min_omnibus_p": 4.996791879985363e-06,
+          "bar": 2.625774603508035e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 2,
+          "clingen_expected": 0.24,
+          "clingen_p": 0.024834123917178316,
+          "clingen_genes": [
+            "COCH",
+            "SIX1"
+          ],
+          "top5": [
+            "TMC3-AS1",
+            "PSG8",
+            "PTPN23",
+            "EFCAB12",
+            "MCC"
+          ]
+        },
+        "Replication": {
+          "genes": 17943,
+          "min_omnibus_p": 3.0151295949854e-05,
+          "bar": 2.786602017499861e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 5,
+          "clingen_expected": 0.26,
+          "clingen_p": 5.913701953749668e-06,
+          "clingen_genes": [
+            "COCH",
+            "GJB3",
+            "MYO6",
+            "SIX1",
+            "TMPRSS3"
+          ],
+          "top5": [
+            "PSG8",
+            "PSMA7",
+            "BPTF",
+            "SIX1",
+            "LSMEM2"
+          ]
+        },
+        "Bilateral": {
+          "genes": 17941,
+          "min_omnibus_p": 2.05218293898302e-05,
+          "bar": 2.7869126581572935e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 0,
+          "clingen_expected": 0.26,
+          "clingen_p": 1.0,
+          "clingen_genes": [],
+          "top5": [
+            "PCBD1",
+            "TJAP1",
+            "LSMEM2",
+            "FBXO25",
+            "MCC"
+          ]
+        }
+      },
+      "top50_overlap": {
+        "Elena vs Replication": 18,
+        "Elena vs Bilateral": 6,
+        "Replication vs Bilateral": 9
+      }
+    },
+    "EUR": {
+      "arms": {
+        "Elena": {
+          "genes": 18939,
+          "min_omnibus_p": 1.3581181747046589e-05,
+          "bar": 2.6400549131421937e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 4,
+          "clingen_expected": 0.25,
+          "clingen_p": 0.00010555830956824582,
+          "clingen_genes": [
+            "COCH",
+            "SIX1",
+            "TMPRSS3",
+            "TPRN"
+          ],
+          "top5": [
+            "TMC3-AS1",
+            "SIX1",
+            "CHGB",
+            "SLCO1B7",
+            "BPTF"
+          ]
+        },
+        "Replication": {
+          "genes": 17928,
+          "min_omnibus_p": 6.905988850580691e-05,
+          "bar": 2.788933511825078e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 2,
+          "clingen_expected": 0.26,
+          "clingen_p": 0.027755206637233056,
+          "clingen_genes": [
+            "SIX1",
+            "TPRN"
+          ],
+          "top5": [
+            "ATP13A4",
+            "CHGB",
+            "FGD3",
+            "SIX1",
+            "PSMA7"
+          ]
+        },
+        "Bilateral": {
+          "genes": 17921,
+          "min_omnibus_p": 1.36587372316624e-05,
+          "bar": 2.7900228781876014e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 0,
+          "clingen_expected": 0.26,
+          "clingen_p": 1.0,
+          "clingen_genes": [],
+          "top5": [
+            "FBXO25",
+            "PCBD1",
+            "TJAP1",
+            "OXGR1",
+            "ODR4"
+          ]
+        }
+      },
+      "top50_overlap": {
+        "Elena vs Replication": 18,
+        "Elena vs Bilateral": 6,
+        "Replication vs Bilateral": 11
+      }
+    },
+    "AFR": {
+      "arms": {
+        "Elena": {
+          "genes": 18680,
+          "min_omnibus_p": 3.492415239314539e-05,
+          "bar": 2.676659528907923e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 1,
+          "clingen_expected": 0.25,
+          "clingen_p": 0.22110556915957785,
+          "clingen_genes": [
+            "GJB3"
+          ],
+          "top5": [
+            "MLLT6",
+            "ELOB",
+            "IGSF9",
+            "PIGH",
+            "FBN3"
+          ]
+        },
+        "Replication": {
+          "genes": 17789,
+          "min_omnibus_p": 2.16807684428888e-05,
+          "bar": 2.810725729383327e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 0,
+          "clingen_expected": 0.26,
+          "clingen_p": 1.0,
+          "clingen_genes": [],
+          "top5": [
+            "CFH",
+            "MLLT6",
+            "TMOD2",
+            "ACLY",
+            "MAP9"
+          ]
+        },
+        "Bilateral": {
+          "genes": 17778,
+          "min_omnibus_p": 9.1395602938027e-06,
+          "bar": 2.812464844189448e-06,
+          "significant": false,
+          "clingen_tested": 93,
+          "clingen_in_top50": 0,
+          "clingen_expected": 0.26,
+          "clingen_p": 1.0,
+          "clingen_genes": [],
+          "top5": [
+            "IGSF9",
+            "OR6Y1",
+            "RAET1E",
+            "RFC1",
+            "CREBZF"
+          ]
+        }
+      },
+      "top50_overlap": {
+        "Elena vs Replication": 18,
+        "Elena vs Bilateral": 5,
+        "Replication vs Bilateral": 6
+      }
+    }
+  }
+}
