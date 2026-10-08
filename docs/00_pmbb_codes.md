@@ -95,13 +95,17 @@ SO_396.2
 
 ### The 18 body-system prefixes in PMBB v4
 
-With the number of distinct codes each carries in the release:
+With the number of distinct codes each carries in this release, largest first:
 
 ```
-BI 101    CA 229    CM 233    CV 192    DE 123    EM 158
-GE 178    GI 196    GU 174    ID 135    MB  38    MS 263
-NB  56    NS 223    PP 118    RE 142    SO 285    SS  69
+SO 311    CM 293    MS 279    GE 256    CA 244    NS 236
+GI 206    CV 194    GU 177    EM 173    ID 150    RE 147
+PP 129    DE 128    NB 104    BI 102    SS  78    MB  50
 ```
+
+(Counted over the whole table. A sample of the first few million rows undercounts every one of
+them by 5–50%, because the rare codes are not evenly spread through the file — worth knowing before
+quoting a number you got in a hurry.)
 
 **`SO` is Sense Organs** — eye and ear together. `SO_375.11` is a lacrimal gland disorder,
 `SO_396` is hearing loss. The full category key is in the PhecodeX publication; the prefixes
