@@ -1,0 +1,134 @@
+{
+  "poster": "Horizontal Draft LANS Poster - SUIP-PGSIP.pptx",
+  "claims": [
+    {
+      "gene": "KNL1",
+      "variant": "chr15:40611486:A:G",
+      "cohort": "Combined",
+      "p": 3.51e-12
+    },
+    {
+      "gene": "KNL1",
+      "variant": "chr15:40611486:A:G",
+      "cohort": "EUR",
+      "p": 7.21e-12
+    },
+    {
+      "gene": "ZFPM1",
+      "variant": "chr16:88533289:A:C",
+      "cohort": "EUR",
+      "p": 2.46e-10
+    },
+    {
+      "gene": "ZFPM1",
+      "variant": "chr16:88533290:G:C",
+      "cohort": "EUR",
+      "p": 2.52e-10
+    },
+    {
+      "gene": "ZFPM1",
+      "variant": "chr16:88533290:G:C",
+      "cohort": "Combined",
+      "p": 4.54e-09
+    },
+    {
+      "gene": "ZFPM1",
+      "variant": "chr16:88533289:A:C",
+      "cohort": "Combined",
+      "p": 6.18e-09
+    }
+  ],
+  "release_metrics": {
+    "chr15:40611486:A:G": {
+      "in_release": true,
+      "release_id": "chr15_40611486_A_G",
+      "call_rate": 0.2013,
+      "maf": 0.28437,
+      "passes_poster_qc": false
+    },
+    "chr16:88533289:A:C": {
+      "in_release": true,
+      "release_id": "chr16_88533289_A_C",
+      "call_rate": 0.9617,
+      "maf": 0.29476,
+      "passes_poster_qc": false
+    },
+    "chr16:88533290:G:C": {
+      "in_release": true,
+      "release_id": "chr16_88533290_G_C",
+      "call_rate": 0.9473,
+      "maf": 0.28283,
+      "passes_poster_qc": false
+    }
+  },
+  "stage_trail": {
+    "chr15:40611486:A:G": [
+      {
+        "stage": "PMBB v4 release",
+        "variants_on_chrom": 546760,
+        "present": true
+      },
+      {
+        "stage": "variant_qc (named for call rate)",
+        "variants_on_chrom": 476227,
+        "present": false
+      },
+      {
+        "stage": "allele_ids",
+        "variants_on_chrom": 469424,
+        "present": false
+      },
+      {
+        "stage": "deduplicated (what step 2 reads)",
+        "variants_on_chrom": 469422,
+        "present": false
+      }
+    ],
+    "chr16:88533289:A:C": [
+      {
+        "stage": "PMBB v4 release",
+        "variants_on_chrom": 780404,
+        "present": true
+      },
+      {
+        "stage": "variant_qc (named for call rate)",
+        "variants_on_chrom": 670730,
+        "present": true
+      },
+      {
+        "stage": "allele_ids",
+        "variants_on_chrom": 662670,
+        "present": false
+      },
+      {
+        "stage": "deduplicated (what step 2 reads)",
+        "variants_on_chrom": 662667,
+        "present": false
+      }
+    ],
+    "chr16:88533290:G:C": [
+      {
+        "stage": "PMBB v4 release",
+        "variants_on_chrom": 780404,
+        "present": true
+      },
+      {
+        "stage": "variant_qc (named for call rate)",
+        "variants_on_chrom": 670730,
+        "present": true
+      },
+      {
+        "stage": "allele_ids",
+        "variants_on_chrom": 662670,
+        "present": false
+      },
+      {
+        "stage": "deduplicated (what step 2 reads)",
+        "variants_on_chrom": 662667,
+        "present": false
+      }
+    ]
+  },
+  "poster_qc_quoted": "variants with a genotype call rate < 0.99 and a Minor Allele Frequency (MAF) < 0.01 were removed",
+  "call_rate_floor": 0.99
+}

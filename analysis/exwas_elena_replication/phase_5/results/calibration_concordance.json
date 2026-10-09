@@ -1,0 +1,413 @@
+{
+  "combined": {
+    "n_ours": 70366,
+    "n_hers": 70429,
+    "n_shared": 70333,
+    "only_ours": 33,
+    "only_hers": 96,
+    "lambda_ours": 0.9893237371028961,
+    "lambda_hers": 0.9918608772777501,
+    "pearson_r_neglog10p": 0.9886293515142902,
+    "spearman_rho": 0.9780282121504129,
+    "min_p_ours": 3.01644e-06,
+    "min_p_hers": 2.565945e-06,
+    "n_disagree_over_1_log": 0,
+    "share_of_those_in_mhc": null,
+    "worst_15": [
+      {
+        "variant": "17:80475458:G:T",
+        "p_hers": 0.00167833,
+        "p_ours": 0.007374409,
+        "gene": "NPTX1",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00613934
+      },
+      {
+        "variant": "11:119179643:T:C",
+        "p_hers": 0.01976899,
+        "p_ours": 0.08632923,
+        "gene": "NLRX1",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.0096699
+      },
+      {
+        "variant": "1:150110399:CA:C",
+        "p_hers": 0.05725957,
+        "p_ours": 0.1793603,
+        "gene": "",
+        "consequence": "",
+        "missing_rate_ours": 0.00733939
+      },
+      {
+        "variant": "16:81036261:C:CCCGGCG",
+        "p_hers": 0.341562,
+        "p_ours": 0.9954066,
+        "gene": "",
+        "consequence": "",
+        "missing_rate_ours": 0.00986121
+      },
+      {
+        "variant": "11:126445161:C:A",
+        "p_hers": 0.002755788,
+        "p_ours": 0.007440608,
+        "gene": "KIRREL3",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00424363
+      },
+      {
+        "variant": "16:50079060:G:GT",
+        "p_hers": 0.4186705,
+        "p_ours": 0.1583612,
+        "gene": "",
+        "consequence": "",
+        "missing_rate_ours": 0.000434798
+      },
+      {
+        "variant": "12:107710540:C:G",
+        "p_hers": 0.02175865,
+        "p_ours": 0.05681085,
+        "gene": "PWP1",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00401753
+      },
+      {
+        "variant": "11:117929318:G:A",
+        "p_hers": 0.006545269,
+        "p_ours": 0.01688294,
+        "gene": "TMPRSS13",
+        "consequence": "5_prime_UTR_variant",
+        "missing_rate_ours": 0.000139135
+      },
+      {
+        "variant": "19:44820214:C:A",
+        "p_hers": 0.2042765,
+        "p_ours": 0.5229207,
+        "gene": "BCAM",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00707851
+      },
+      {
+        "variant": "20:42780324:A:G",
+        "p_hers": 0.008454269,
+        "p_ours": 0.0216055,
+        "gene": "PTPRT",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.000243487
+      },
+      {
+        "variant": "1:217631425:A:G",
+        "p_hers": 0.00285593,
+        "p_ours": 0.001119205,
+        "gene": "GPATCH2",
+        "consequence": "upstream_gene_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "12:51821318:G:T",
+        "p_hers": 0.05190455,
+        "p_ours": 0.1261027,
+        "gene": "-",
+        "consequence": "intron_variant,non_coding_transcript_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "8:143867664:C:T",
+        "p_hers": 0.01652476,
+        "p_ours": 0.006802445,
+        "gene": "EPPK1",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "16:56829115:G:A",
+        "p_hers": 0.2093298,
+        "p_ours": 0.08630912,
+        "gene": "NUP93",
+        "consequence": "splice_donor_region_variant,intron_variant",
+        "missing_rate_ours": 3.47838e-05
+      },
+      {
+        "variant": "19:3110363:C:T",
+        "p_hers": 0.005875644,
+        "p_ours": 0.002435223,
+        "gene": "GNA11",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00106091
+      }
+    ]
+  },
+  "EUR": {
+    "n_ours": 74536,
+    "n_hers": 74528,
+    "n_shared": 74483,
+    "only_ours": 53,
+    "only_hers": 45,
+    "lambda_ours": 0.9991429726865932,
+    "lambda_hers": 0.9907426664146346,
+    "pearson_r_neglog10p": 0.9789529418252586,
+    "spearman_rho": 0.9618900244761218,
+    "min_p_ours": 2.116137e-05,
+    "min_p_hers": 1.985446e-05,
+    "n_disagree_over_1_log": 14,
+    "share_of_those_in_mhc": 1.0,
+    "worst_15": [
+      {
+        "variant": "6:31142614:G:C",
+        "p_hers": 0.6632739,
+        "p_ours": 0.01019892,
+        "gene": "CCHCR1",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 9.35038e-05
+      },
+      {
+        "variant": "6:31138632:A:G",
+        "p_hers": 0.3464159,
+        "p_ours": 0.008915991,
+        "gene": "CCHCR1",
+        "consequence": "downstream_gene_variant",
+        "missing_rate_ours": 0.000210384
+      },
+      {
+        "variant": "6:31157381:T:C",
+        "p_hers": 0.2498012,
+        "p_ours": 0.009491136,
+        "gene": "TCF19",
+        "consequence": "upstream_gene_variant",
+        "missing_rate_ours": 0.000140256
+      },
+      {
+        "variant": "6:31111459:A:G",
+        "p_hers": 0.6689738,
+        "p_ours": 0.03334057,
+        "gene": "CDSN",
+        "consequence": "downstream_gene_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:31112112:G:C",
+        "p_hers": 0.7021909,
+        "p_ours": 0.03567776,
+        "gene": "CDSN",
+        "consequence": "downstream_gene_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:31587880:A:G",
+        "p_hers": 0.3224692,
+        "p_ours": 0.01679811,
+        "gene": "NCR3",
+        "consequence": "downstream_gene_variant",
+        "missing_rate_ours": 0.00023376
+      },
+      {
+        "variant": "6:31111866:C:T",
+        "p_hers": 0.690086,
+        "p_ours": 0.036049,
+        "gene": "CDSN",
+        "consequence": "downstream_gene_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32829907:A:G",
+        "p_hers": 0.1678214,
+        "p_ours": 0.009191917,
+        "gene": "TAP2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 2.3376e-05
+      },
+      {
+        "variant": "6:30103553:C:T",
+        "p_hers": 0.1186573,
+        "p_ours": 0.01010225,
+        "gene": "TRIM31",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:30103502:T:G",
+        "p_hers": 0.1299329,
+        "p_ours": 0.01170041,
+        "gene": "TRIM31",
+        "consequence": "3_prime_UTR_variant",
+        "missing_rate_ours": 7.01279e-05
+      },
+      {
+        "variant": "6:30590700:GA:G",
+        "p_hers": 0.2253687,
+        "p_ours": 0.02098896,
+        "gene": "",
+        "consequence": "",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:30583509:G:A",
+        "p_hers": 0.2313789,
+        "p_ours": 0.02186152,
+        "gene": "ABCF1",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00582061
+      },
+      {
+        "variant": "6:31163088:G:A",
+        "p_hers": 0.7663472,
+        "p_ours": 0.07398971,
+        "gene": "TCF19",
+        "consequence": "3_prime_UTR_variant",
+        "missing_rate_ours": 0.00397391
+      },
+      {
+        "variant": "6:30489955:C:T",
+        "p_hers": 0.2998038,
+        "p_ours": 0.02981993,
+        "gene": "HLA-E",
+        "consequence": "synonymous_variant",
+        "missing_rate_ours": 2.3376e-05
+      },
+      {
+        "variant": "6:31148469:G:A",
+        "p_hers": 0.8501863,
+        "p_ours": 0.08694445,
+        "gene": "CCHCR1",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 7.01279e-05
+      }
+    ]
+  },
+  "AFR": {
+    "n_ours": 117953,
+    "n_hers": 117943,
+    "n_shared": 117723,
+    "only_ours": 230,
+    "only_hers": 220,
+    "lambda_ours": 1.0206900876898248,
+    "lambda_hers": 1.0119831464751252,
+    "pearson_r_neglog10p": 0.9896688336703807,
+    "spearman_rho": 0.9807974249350918,
+    "min_p_ours": 4.108922e-06,
+    "min_p_hers": 3.69612e-06,
+    "n_disagree_over_1_log": 16,
+    "share_of_those_in_mhc": 1.0,
+    "worst_15": [
+      {
+        "variant": "6:32394656:C:A",
+        "p_hers": 0.9539186,
+        "p_ours": 0.03153006,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00167637
+      },
+      {
+        "variant": "6:32394968:G:A",
+        "p_hers": 0.9716496,
+        "p_ours": 0.03288834,
+        "gene": "BTNL2",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32394862:G:A",
+        "p_hers": 0.9716496,
+        "p_ours": 0.03288834,
+        "gene": "BTNL2",
+        "consequence": "synonymous_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32394925:T:C",
+        "p_hers": 0.9716496,
+        "p_ours": 0.03288834,
+        "gene": "BTNL2",
+        "consequence": "synonymous_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32394926:G:T",
+        "p_hers": 0.9716496,
+        "p_ours": 0.03288834,
+        "gene": "BTNL2",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32394892:T:G",
+        "p_hers": 0.9716496,
+        "p_ours": 0.03288834,
+        "gene": "BTNL2",
+        "consequence": "synonymous_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32393900:G:A",
+        "p_hers": 0.9602245,
+        "p_ours": 0.0335797,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00361743
+      },
+      {
+        "variant": "6:32393917:G:A",
+        "p_hers": 0.9767035,
+        "p_ours": 0.03453524,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00308805
+      },
+      {
+        "variant": "6:32395055:G:A",
+        "p_hers": 0.9991987,
+        "p_ours": 0.0360214,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.0
+      },
+      {
+        "variant": "6:32394964:C:T",
+        "p_hers": 0.9839283,
+        "p_ours": 0.03794331,
+        "gene": "BTNL2",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 8.82301e-05
+      },
+      {
+        "variant": "6:32401866:A:G",
+        "p_hers": 0.9984601,
+        "p_ours": 0.04189255,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00105876
+      },
+      {
+        "variant": "6:32394065:G:A",
+        "p_hers": 0.9779616,
+        "p_ours": 0.04298807,
+        "gene": "BTNL2",
+        "consequence": "splice_region_variant,splice_polypyrimidine_tract_variant,intron_variant",
+        "missing_rate_ours": 0.00449974
+      },
+      {
+        "variant": "6:32395997:G:A",
+        "p_hers": 0.9467476,
+        "p_ours": 0.04300297,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00123522
+      },
+      {
+        "variant": "6:32394117:A:G",
+        "p_hers": 0.8880201,
+        "p_ours": 0.05334751,
+        "gene": "BTNL2",
+        "consequence": "intron_variant",
+        "missing_rate_ours": 0.00335274
+      },
+      {
+        "variant": "6:32393972:G:C",
+        "p_hers": 0.8671557,
+        "p_ours": 0.0616415,
+        "gene": "BTNL2",
+        "consequence": "missense_variant",
+        "missing_rate_ours": 0.0125287
+      }
+    ]
+  }
+}
