@@ -1,0 +1,537 @@
+{
+  "self_check": {
+    "combined": {
+      "spearman_callrate_vs_neglog10p": 0.0030068039498304736,
+      "p": 0.42510833834588674,
+      "worst_decile_cut": 0.99751296,
+      "spearman_worst_decile": 0.006697837090136726,
+      "p_worst_decile": 0.5732157124752288,
+      "median_callrate_top100": 0.999869561,
+      "median_callrate_rest": 0.999895649,
+      "mannwhitney_p": 0.8168030084962441
+    },
+    "EUR": {
+      "spearman_callrate_vs_neglog10p": 0.0019874829278336316,
+      "p": 0.5874054075334696,
+      "worst_decile_cut": 0.99742864,
+      "spearman_worst_decile": 0.00757105502390549,
+      "p_worst_decile": 0.5123524405109834,
+      "median_callrate_top100": 0.99991818415,
+      "median_callrate_rest": 0.99988312,
+      "mannwhitney_p": 0.4776381907193711
+    },
+    "AFR": {
+      "spearman_callrate_vs_neglog10p": -0.003643203461992521,
+      "p": 0.2108530858237947,
+      "worst_decile_cut": 0.99744133,
+      "spearman_worst_decile": 0.007408717250716208,
+      "p_worst_decile": 0.42013694820875835,
+      "median_callrate_top100": 0.9999117699,
+      "median_callrate_rest": 0.9999117699,
+      "mannwhitney_p": 0.9524122613596472
+    }
+  },
+  "top": {
+    "combined": [
+      {
+        "variant": "20:33064486:G:A",
+        "p": 3.01644e-06,
+        "beta": 0.0926669,
+        "af": 0.366326,
+        "call_rate": 1.0,
+        "gene": "BPIFB3",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 18.61
+      },
+      {
+        "variant": "20:33034277:G:A",
+        "p": 3.339975e-06,
+        "beta": 0.0898937,
+        "af": 0.493191,
+        "call_rate": 0.9999478243,
+        "gene": "BPIFB6",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 17.27
+      },
+      {
+        "variant": "20:33100435:C:T",
+        "p": 4.739076e-06,
+        "beta": 0.0879974,
+        "af": 0.375204,
+        "call_rate": 0.999895649,
+        "gene": "BPIFB4",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 13.5
+      },
+      {
+        "variant": "1:242124382:T:C",
+        "p": 2.247618e-05,
+        "beta": -0.145245,
+        "af": 0.0962642,
+        "call_rate": 0.99700859,
+        "gene": "PLD5",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.803
+      },
+      {
+        "variant": "7:150692505:T:C",
+        "p": 2.299186e-05,
+        "beta": -0.155253,
+        "af": 0.0810376,
+        "call_rate": 0.9999826081,
+        "gene": "GIMAP2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.035
+      },
+      {
+        "variant": "3:38009200:G:A",
+        "p": 2.322667e-05,
+        "beta": -0.191349,
+        "af": 0.0521409,
+        "call_rate": 0.999895649,
+        "gene": "VILL",
+        "consequence": "downstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 6.165
+      },
+      {
+        "variant": "20:33059320:C:T",
+        "p": 2.322974e-05,
+        "beta": 0.0846149,
+        "af": 0.35023,
+        "call_rate": 0.99488678,
+        "gene": "BPIFB3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.771
+      },
+      {
+        "variant": "3:38011313:C:T",
+        "p": 2.468469e-05,
+        "beta": -0.19102,
+        "af": 0.0519235,
+        "call_rate": 0.9999478243,
+        "gene": "VILL",
+        "consequence": "downstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 21.3
+      },
+      {
+        "variant": "20:33060058:C:A",
+        "p": 2.860804e-05,
+        "beta": 0.0836334,
+        "af": 0.360995,
+        "call_rate": 0.999199972,
+        "gene": "BPIFB3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 1.18
+      },
+      {
+        "variant": "16:70659792:G:C",
+        "p": 4.167784e-05,
+        "beta": -0.344535,
+        "af": 0.0163397,
+        "call_rate": 0.999652162,
+        "gene": "MTSS2",
+        "consequence": "downstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.842
+      },
+      {
+        "variant": "3:37997441:G:C",
+        "p": 4.253544e-05,
+        "beta": -0.188707,
+        "af": 0.0500278,
+        "call_rate": 0.999060837,
+        "gene": "VILL",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 2.58
+      },
+      {
+        "variant": "18:36717790:C:T",
+        "p": 4.378408e-05,
+        "beta": 0.0792658,
+        "af": 0.38937,
+        "call_rate": 0.99820863,
+        "gene": "FHOD3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.381
+      },
+      {
+        "variant": "22:36933957:C:T",
+        "p": 6.020606e-05,
+        "beta": 0.0899091,
+        "af": 0.223295,
+        "call_rate": 0.9999826081,
+        "gene": "CSF2RB",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 4.473
+      },
+      {
+        "variant": "3:133755303:T:G",
+        "p": 9.277331e-05,
+        "beta": -0.122235,
+        "af": 0.101873,
+        "call_rate": 0.99885213,
+        "gene": "TF",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.025
+      },
+      {
+        "variant": "3:169381204:G:A",
+        "p": 0.0001026836,
+        "beta": -0.125954,
+        "af": 0.112447,
+        "call_rate": 0.9999826081,
+        "gene": "MECOM",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 19.54
+      }
+    ],
+    "EUR": [
+      {
+        "variant": "3:133755303:T:G",
+        "p": 2.116137e-05,
+        "beta": -0.150167,
+        "af": 0.112088,
+        "call_rate": 0.99857407,
+        "gene": "TF",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.025
+      },
+      {
+        "variant": "19:32976670:G:A",
+        "p": 5.45234e-05,
+        "beta": -0.105462,
+        "af": 0.236027,
+        "call_rate": 0.9999298721,
+        "gene": "CEP89",
+        "consequence": "upstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 4.505
+      },
+      {
+        "variant": "16:70659792:G:C",
+        "p": 6.797685e-05,
+        "beta": -0.342716,
+        "af": 0.0204423,
+        "call_rate": 0.999532481,
+        "gene": "MTSS2",
+        "consequence": "downstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.842
+      },
+      {
+        "variant": "7:150720957:G:A",
+        "p": 7.621987e-05,
+        "beta": -0.153455,
+        "af": 0.0918091,
+        "call_rate": 0.999485729,
+        "gene": "GIMAP1",
+        "consequence": "3_prime_UTR_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.814
+      },
+      {
+        "variant": "6:109001498:T:A",
+        "p": 0.0001012089,
+        "beta": 0.305971,
+        "af": 0.0166086,
+        "call_rate": 0.999812992,
+        "gene": "SESN1",
+        "consequence": "splice_polypyrimidine_tract_variant,intron_variant",
+        "impact": "LOW",
+        "cadd": 4.801
+      },
+      {
+        "variant": "1:119916301:G:A",
+        "p": 0.0001149565,
+        "beta": 0.280857,
+        "af": 0.0191098,
+        "call_rate": 1.0,
+        "gene": "NOTCH2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.509
+      },
+      {
+        "variant": "22:36933957:C:T",
+        "p": 0.000118451,
+        "beta": 0.0983082,
+        "af": 0.226817,
+        "call_rate": 0.999976624,
+        "gene": "CSF2RB",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 4.473
+      },
+      {
+        "variant": "2:239087503:G:A",
+        "p": 0.0001198501,
+        "beta": 0.148764,
+        "af": 0.0782276,
+        "call_rate": 0.999368849,
+        "gene": "HDAC4",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.267
+      },
+      {
+        "variant": "7:150692505:T:C",
+        "p": 0.0001306417,
+        "beta": -0.152699,
+        "af": 0.0859651,
+        "call_rate": 1.0,
+        "gene": "GIMAP2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.035
+      },
+      {
+        "variant": "10:68914045:T:C",
+        "p": 0.0001439252,
+        "beta": 0.196185,
+        "af": 0.0412819,
+        "call_rate": 1.0,
+        "gene": "DDX50",
+        "consequence": "splice_polypyrimidine_tract_variant,intron_variant",
+        "impact": "LOW",
+        "cadd": 22.3
+      },
+      {
+        "variant": "6:84161714:AGAG:A",
+        "p": 0.0001480813,
+        "beta": -0.185584,
+        "af": 0.0576451,
+        "call_rate": 0.99871432,
+        "gene": "",
+        "consequence": "",
+        "impact": "",
+        "cadd": null
+      },
+      {
+        "variant": "3:89341725:C:T",
+        "p": 0.0001640419,
+        "beta": -0.251129,
+        "af": 0.0302836,
+        "call_rate": 0.999672737,
+        "gene": "EPHA3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 17.07
+      },
+      {
+        "variant": "3:38009200:G:A",
+        "p": 0.0001834448,
+        "beta": -0.189275,
+        "af": 0.0520115,
+        "call_rate": 0.999859744,
+        "gene": "VILL",
+        "consequence": "downstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 6.165
+      },
+      {
+        "variant": "6:109001497:A:AAG",
+        "p": 0.0001836108,
+        "beta": 0.295592,
+        "af": 0.0165852,
+        "call_rate": 0.999976624,
+        "gene": "",
+        "consequence": "",
+        "impact": "",
+        "cadd": null
+      },
+      {
+        "variant": "7:1440006:C:A",
+        "p": 0.0001946096,
+        "beta": 0.212052,
+        "af": 0.0351574,
+        "call_rate": 1.0,
+        "gene": "MICALL2",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 0.012
+      }
+    ],
+    "AFR": [
+      {
+        "variant": "7:31775671:C:G",
+        "p": 4.108922e-06,
+        "beta": 0.677702,
+        "af": 0.0149991,
+        "call_rate": 1.0,
+        "gene": "PDE1C",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 0.333
+      },
+      {
+        "variant": "2:15554053:T:C",
+        "p": 4.526026e-06,
+        "beta": 0.715558,
+        "af": 0.0146903,
+        "call_rate": 1.0,
+        "gene": "NBAS",
+        "consequence": "splice_region_variant,intron_variant",
+        "impact": "LOW",
+        "cadd": 2.769
+      },
+      {
+        "variant": "8:124699641:C:T",
+        "p": 9.347837e-06,
+        "beta": 0.257597,
+        "af": 0.146859,
+        "call_rate": 0.999117699,
+        "gene": "MTSS1",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.358
+      },
+      {
+        "variant": "14:91993960:A:G",
+        "p": 1.052732e-05,
+        "beta": -0.986998,
+        "af": 0.0194547,
+        "call_rate": 0.99744133,
+        "gene": "TRIP11",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 6.755
+      },
+      {
+        "variant": "14:91995262:C:T",
+        "p": 1.172984e-05,
+        "beta": -0.981516,
+        "af": 0.0192783,
+        "call_rate": 0.999117699,
+        "gene": "TRIP11",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 8.062
+      },
+      {
+        "variant": "14:92005759:A:G",
+        "p": 1.421874e-05,
+        "beta": -0.951439,
+        "af": 0.0197194,
+        "call_rate": 1.0,
+        "gene": "TRIP11",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.781
+      },
+      {
+        "variant": "14:91972925:A:C",
+        "p": 1.722079e-05,
+        "beta": -0.942219,
+        "af": 0.0194547,
+        "call_rate": 0.999470619,
+        "gene": "TRIP11",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 4.59
+      },
+      {
+        "variant": "14:92071111:C:A",
+        "p": 2.093681e-05,
+        "beta": -0.933223,
+        "af": 0.0193665,
+        "call_rate": 0.999558849,
+        "gene": "ATXN3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 6.553
+      },
+      {
+        "variant": "14:92003469:T:C",
+        "p": 2.313197e-05,
+        "beta": -0.908459,
+        "af": 0.0199841,
+        "call_rate": 1.0,
+        "gene": "TRIP11",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 4.893
+      },
+      {
+        "variant": "7:64069578:A:G",
+        "p": 2.772033e-05,
+        "beta": 0.181092,
+        "af": 0.477237,
+        "call_rate": 0.9999117699,
+        "gene": "ZNF727",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 5.954
+      },
+      {
+        "variant": "2:23706705:G:A",
+        "p": 3.142888e-05,
+        "beta": 0.727325,
+        "af": 0.0110729,
+        "call_rate": 0.99964708,
+        "gene": "KLHL29",
+        "consequence": "3_prime_UTR_variant",
+        "impact": "MODIFIER",
+        "cadd": 12.38
+      },
+      {
+        "variant": "2:26312073:T:C",
+        "p": 3.850988e-05,
+        "beta": -0.812605,
+        "af": 0.0198959,
+        "call_rate": 1.0,
+        "gene": "ADGRF3",
+        "consequence": "missense_variant,splice_region_variant",
+        "impact": "MODERATE",
+        "cadd": 6.021
+      },
+      {
+        "variant": "1:207050746:G:C",
+        "p": 3.965713e-05,
+        "beta": 0.718339,
+        "af": 0.0103229,
+        "call_rate": 1.0,
+        "gene": "PFKFB2",
+        "consequence": "upstream_gene_variant",
+        "impact": "MODIFIER",
+        "cadd": 7.739
+      },
+      {
+        "variant": "4:86831823:C:G",
+        "p": 4.438768e-05,
+        "beta": -1.11222,
+        "af": 0.013411,
+        "call_rate": 1.0,
+        "gene": "SLC10A6",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 22.0
+      },
+      {
+        "variant": "1:23436065:C:T",
+        "p": 4.516394e-05,
+        "beta": 0.688043,
+        "af": 0.0117346,
+        "call_rate": 0.9999117699,
+        "gene": "ASAP3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.072
+      }
+    ]
+  }
+}
