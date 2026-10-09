@@ -70,4 +70,45 @@ the same thing can happen again and be survivable.
 
 ## What came back
 
-*(filled in by `04_readout.py` after the runs complete)*
+Job `49576788` (15 step 1 fits) and `49576789` (330 step 2 tasks), plus `49576838`
+re-running one task that exited before SAIGE started.
+
+| cohort | bilateral restriction | five random draws | draw mean | Poisson p | verdict |
+|---|---:|---|---:|---:|---|
+| combined | **2** | 8, 5, 7, 3, 5 | 5.6 | 0.976 | selection |
+| EUR | **4** | 5, 6, 3, 7, 3 | 4.8 | 0.706 | selection |
+| AFR | **8** | 18, 13, 10, 15, 15 | 14.2 | 0.972 | selection |
+
+**The rule fires on its first clause in all three cohorts: `k_obs ≤ max(draws)`.** The
+strengthening variants are not reported as findings.
+
+### It is not marginal, and it runs the other way
+
+In every cohort the observed count is **below the mean of the random draws**, and in
+combined and AFR it is below or equal to every individual draw. Removing 3,588 cases
+*at random* produces more variants that "get stronger" than removing the 3,588 who do
+not have bilateral sensorineural hearing loss.
+
+So the restriction is not merely failing to concentrate signal — it is slightly less
+productive of apparent strengthening than chance. Whatever `BCAM` looked like, there
+is nothing there.
+
+### Why the draws produce so many
+
+Roughly 70,000 to 118,000 variants are compared per cohort. Remove half the cases and
+every p-value moves; a handful move more than one log unit in the lucky direction and
+land under 1e-4 purely because the estimate is noisier on fewer cases. AFR shows this
+most strongly (mean 14.2) because 490 cases is where the estimates are noisiest.
+
+Reading the top of that list as biology is choosing winners after the race. That is
+exactly what this control exists to prevent, and it is what would have happened here:
+`chr19:44819634` and `chr19:44819705` in `BCAM` were about to be written up as the
+arm's most interesting result.
+
+### What this does not say
+
+It does not say bilateral sensorineural is the wrong phenotype. It says that **at this
+cohort size the restriction cannot demonstrate subtype specificity**, because the
+noise introduced by halving the cases is larger than any sharpening it might produce.
+With 3,164 cases the question is unanswerable either way — the same conclusion the
+burden arm's power control reached, by a different route.

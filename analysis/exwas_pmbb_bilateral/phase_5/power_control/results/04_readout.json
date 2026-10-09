@@ -1,0 +1,54 @@
+{
+  "criterion": {
+    "log10_gain_over": 1.0,
+    "p_below": 0.0001
+  },
+  "n_draws": 5,
+  "cohorts": {
+    "combined": {
+      "k_observed": 2,
+      "n_compared": 70269,
+      "k_draws": [
+        8,
+        5,
+        7,
+        3,
+        5
+      ],
+      "draw_mean": 5.6,
+      "draw_max": 8,
+      "poisson_p": 0.9755940994712127,
+      "verdict": "SELECTION -- within what random case removal produces"
+    },
+    "EUR": {
+      "k_observed": 4,
+      "n_compared": 74451,
+      "k_draws": [
+        5,
+        6,
+        3,
+        7,
+        3
+      ],
+      "draw_mean": 4.8,
+      "draw_max": 7,
+      "poisson_p": 0.7057700835034357,
+      "verdict": "SELECTION -- within what random case removal produces"
+    },
+    "AFR": {
+      "k_observed": 8,
+      "n_compared": 117360,
+      "k_draws": [
+        18,
+        13,
+        10,
+        15,
+        15
+      ],
+      "draw_mean": 14.2,
+      "draw_max": 18,
+      "poisson_p": 0.9716896667083098,
+      "verdict": "SELECTION -- within what random case removal produces"
+    }
+  }
+}

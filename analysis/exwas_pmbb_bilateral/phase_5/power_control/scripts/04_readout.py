@@ -33,7 +33,7 @@ P_CEIL = 1e-4
 
 def in_flight():
     live = []
-    for n in ("pc_s1", "pc_s2"):
+    for n in ("pc_s1", "pc_s2", "pc_s2_retry"):
         try:
             out = subprocess.run(["bjobs", "-J", n], capture_output=True,
                                  text=True, timeout=60).stdout
