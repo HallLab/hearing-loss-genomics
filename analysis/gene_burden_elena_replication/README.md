@@ -1,8 +1,15 @@
 # Elena Replication — independent verification of the PMBB v4 rare-variant pipeline
 
-**Status:** OPEN — scope fixed, no runs yet
-**Author:** Andre Rico · **Opened:** 2026-09-28
+**Status:** COMPLETE — all five phases run · 6,752 cases · 0 significant genes
+**Author:** Andre Rico · **Opened:** 2026-09-28 · **Completed:** 2026-10-09
 **Target:** Elena's PMBB v4 SAIGE-GENE+ pipeline (`analysis/elena/`)
+
+> **This document is still written as a plan.** It states what the arm intended to do,
+> not what it found. The results live in `phase_*/results/FINDINGS.md`; phase 4 ran 594
+> tasks and 472,453 tests with a minimum omnibus of 3.02e-05 / 6.91e-05 / 2.17e-05
+> against bars near 2.8e-06, and phase 5 found the project's one positive result — five
+> ClinGen Definitive/Strong deafness genes in the combined top 50 against 0.26 expected,
+> p = 5.9e-06. Rewriting this file as a record rather than a plan is outstanding.
 
 ---
 
