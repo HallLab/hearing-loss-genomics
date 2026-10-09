@@ -110,9 +110,24 @@ Fixing both before running is the point. The choice decides whether `KNL1` and `
 
 ## P7 — The declared targets
 
-`KNL1` and `ZFPM1`, from the summer poster. Their p-values in this arm will be reported
-**whatever they are**, in their own named section, not left to be found in a top-50 table.
-A target that fails to replicate is a result.
+`KNL1` and `ZFPM1`, from the summer poster, which lists them under "Genome Wide
+Significant Results Total: 6" at p 3.51e-12 to 2.52e-10.
+
+**Amended 2026-10-09, after phase 4 ran.** The three variants the poster names
+(chr15:40611486:A:G, chr16:88533289:A:C, chr16:88533290:G:C) are absent from the
+genotype files both before and after deduplication, from Elena's raw SAIGE output, and
+from her own annotated result tables. There is therefore no target in this data to hit
+or miss, and this premise as originally written assumed one.
+
+What is still done, unchanged: the two genes' p-values are reported in their own named
+section whatever they are. In her delivered results they are 0.33 (KNL1) and 0.26
+(ZFPM1); no variant of ours in either gene clears any bar. See
+`phase_4/results/FINDINGS.md` for the five places each poster variant was searched for.
+
+The open question belongs to the group, not to this arm: which variant set produced the
+poster's six hits. Until that is answered the poster's numbers and the delivered numbers
+are not on the same axis, and this arm claims neither to have replicated nor to have
+refuted them.
 
 ## P8 — What this arm does not have
 

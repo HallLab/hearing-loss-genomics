@@ -4,10 +4,15 @@
 Covers two rounds of work on the PMBB v4 exome analysis, set against the original run.
 
 > **Scope.** This is the **rare-variant gene burden** arm — SAIGE-GENE on variants at
-> MAF ≤ 0.01, 0.001 and 0.0001. It is not the single-variant ExWAS (MAF > 0.01, SAIGE)
-> that the summer poster reported. The two arms test disjoint variant sets, so the genes
-> on the poster cannot appear in the tables below. See [Introduction](00_introduction.md)
-> for where each arm sits in the pipeline.
+> MAF ≤ 0.01, 0.001 and 0.0001. It is not the single-variant ExWAS (MAF ≥ 0.01, SAIGE)
+> that the summer poster reported, and the two arms test disjoint variant sets.
+>
+> The poster's variants therefore cannot appear here, being above this arm's frequency
+> ceiling. The *genes* do appear — `KNL1` and `ZFPM1` are both in the burden rankings,
+> at p 0.015 to 0.28, i.e. ranked but nowhere near significant. See
+> [Introduction](00_introduction.md) for where each arm sits in the pipeline, and
+> `analysis/exwas_elena_replication/phase_4/results/FINDINGS.md` for what became of the
+> poster's six reported hits.
 
 ---
 

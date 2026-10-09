@@ -2,8 +2,6 @@
   "cohorts": {
     "combined": {
       "variants_on_file": 13223743,
-      "variants_tested": 70383,
-      "secondary_bar": 7.103988178963671e-07,
       "primary_bar": 5e-08,
       "alt1_spectrum": {
         "0": 12080815,
@@ -16,12 +14,15 @@
         "0.999": 0,
         "0.9999": 0
       },
-      "high_frequency_bins": 0
+      "high_frequency_bins": 0,
+      "variants_tested_plink2_census": 70383,
+      "secondary_bar_preregistered": 7.103988178963671e-07,
+      "variants_tested_saige": 70366,
+      "secondary_bar_final": 7.105704459540119e-07,
+      "authoritative": "variants_tested_saige"
     },
     "EUR": {
       "variants_on_file": 13223743,
-      "variants_tested": 74553,
-      "secondary_bar": 6.70663823052057e-07,
       "primary_bar": 5e-08,
       "alt1_spectrum": {
         "0": 12448698,
@@ -34,12 +35,15 @@
         "0.999": 0,
         "0.9999": 0
       },
-      "high_frequency_bins": 0
+      "high_frequency_bins": 0,
+      "variants_tested_plink2_census": 74553,
+      "secondary_bar_preregistered": 6.70663823052057e-07,
+      "variants_tested_saige": 74536,
+      "secondary_bar_final": 6.708167865192659e-07,
+      "authoritative": "variants_tested_saige"
     },
     "AFR": {
       "variants_on_file": 13223743,
-      "variants_tested": 117996,
-      "secondary_bar": 4.237431777348385e-07,
       "primary_bar": 5e-08,
       "alt1_spectrum": {
         "0": 11869076,
@@ -52,9 +56,15 @@
         "0.999": 0,
         "0.9999": 0
       },
-      "high_frequency_bins": 0
+      "high_frequency_bins": 0,
+      "variants_tested_plink2_census": 117996,
+      "secondary_bar_preregistered": 4.237431777348385e-07,
+      "variants_tested_saige": 117953,
+      "secondary_bar_final": 4.2389765415038196e-07,
+      "authoritative": "variants_tested_saige"
     }
   },
   "premise": "P6",
-  "tested_definition": "MAF >= 0.01"
+  "tested_definition": "MAF >= 0.01",
+  "note": "plink2 computes MAF over observed genotypes, SAIGE over the whole cohort, so the plink2 census is an upper bound. See phase_2/results/FINDINGS.md."
 }

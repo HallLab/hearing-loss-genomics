@@ -113,16 +113,23 @@ rather than in bookkeeping.
 
 ## P7 — The declared targets
 
-`KNL1` and `ZFPM1`, from the summer poster — but with a caveat this arm must state
-plainly: they were found on the **broad** phenotype, so this arm cannot replicate them.
-Restricting to bilateral sensorineural drops 3,588 cases, and a target that weakens here
-is confounded between "the association was phenotype-specific" and "we lost the power to
-see it". The power control in `../gene_burden_pmbb_bilateral/phase_5/power_control/`
-already showed that confound is real for the burden arm.
+`KNL1` and `ZFPM1`, from the summer poster — with two caveats this arm must state
+plainly.
 
-Their p-values are reported **whatever they are**, in their own named section, with that
-caveat attached. The arm that can actually replicate them is
-`../exwas_elena_replication/`.
+**First, amended 2026-10-09:** the three variants the poster names are absent from the
+genotypes, from Elena's raw SAIGE output and from her own annotated tables. See
+`../exwas_elena_replication/phase_4/results/FINDINGS.md`. There is no target in this
+data to hit or miss.
+
+**Second**, even if there were: they were found on the **broad** phenotype, so this arm
+could not replicate them. Restricting to bilateral sensorineural drops 3,588 cases, and
+a target that weakens here is confounded between "the association was phenotype-specific"
+and "we lost the power to see it". The power control in
+`../gene_burden_pmbb_bilateral/phase_5/power_control/` already showed that confound is
+real for the burden arm.
+
+Their p-values are reported **whatever they are**, in their own named section, with both
+caveats attached.
 
 ## P8 — What this arm does not have
 

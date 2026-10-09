@@ -80,3 +80,77 @@ how P6 was already written.
 Histogram boundaries were placed at 0.0001, 0.001, 0.01, 0.05 and their mirrors, so
 counting at any of those thresholds later is a recount of these files rather than a
 re-read of the genotypes.
+
+**Correction to the reasoning originally recorded here.** The script's header says a
+per-variant frequency file was avoided because plink2 can only compress output with
+zstd and this environment lacks both the CLI and python's `zstandard`. That is wrong:
+`zs` is an optional modifier, and plain `--freq` writes uncompressed text. The
+histogram is still the right output for this phase — it is three orders of magnitude
+smaller and answers the question asked — but it was chosen for a reason that does not
+hold. Per-variant counts were in fact readable all along, and were used to diagnose
+the discrepancy below.
+
+---
+
+## Reconciliation against what SAIGE actually tested
+
+Phase 4 ran, and the counts above are **not** what SAIGE tested:
+
+| cohort | plink2 census | SAIGE tested | difference |
+|---|---:|---:|---:|
+| combined | 70,383 | 70,366 | −17 (−0.024%) |
+| EUR | 74,553 | 74,536 | −17 (−0.023%) |
+| AFR | 117,996 | 117,953 | −43 (−0.036%) |
+
+41 of the 66 cells differ, by 1 to 6 variants. **Every single difference is negative** —
+SAIGE never tests more than the census predicts.
+
+### The mechanism, verified
+
+The two tools compute MAF over different denominators:
+
+| | denominator |
+|---|---|
+| plink2 | `ALT_CTS / OBS_CT` — observed genotypes only |
+| SAIGE | `ALT_CTS / 2N` — the whole cohort |
+
+For a variant with missing genotypes, plink2's MAF is therefore the larger of the two,
+and a variant can sit above 1% for plink2 and below it for SAIGE. The reverse is
+impossible, which is why all 41 discrepancies point the same way.
+
+Checked variant by variant on AFR chr1, the worst cell (−6):
+
+| variant | ALT | OBS_CT | 2N | MAF obs | MAF 2N |
+|---|---:|---:|---:|---:|---:|
+| 1:18885456:G:A | 226 | 22,582 | 22,668 | 0.0100080 | 0.0099700 |
+| 1:21561304:C:A | 226 | 22,544 | 22,668 | 0.0100248 | 0.0099700 |
+| 1:114720447:T:C | 226 | 22,588 | 22,668 | 0.0100053 | 0.0099700 |
+| 1:156596312:T:A | 225 | 22,442 | 22,668 | 0.0100258 | 0.0099259 |
+| 1:161675397:A:G | 224 | 22,388 | 22,668 | 0.0100054 | 0.0098818 |
+| 1:248639253:G:A | 221 | 22,088 | 22,668 | 0.0100054 | 0.0097494 |
+
+All six straddle the threshold in exactly the predicted way, and zero variants went the
+other direction (tested by SAIGE but not counted by plink2).
+
+### What this means for the filter
+
+**SAIGE's effective MAF floor is stricter than a nominal 1% for any variant carrying
+missingness.** At 5% missing it requires an observed MAF of about 1.053% to pass. The
+tested set is therefore slightly smaller and slightly cleaner than the census suggested
+— boundary variants with the most missing data are the ones dropped.
+
+### What this means for the bar
+
+The denominator of the secondary bar is what SAIGE tested, not what plink2 counted:
+
+| cohort | pre-registered bar | final bar |
+|---|---:|---:|
+| combined | 7.104e-07 | **7.106e-07** |
+| EUR | 6.707e-07 | **6.709e-07** |
+| AFR | 4.237e-07 | **4.239e-07** |
+
+The bars move in the fourth significant figure. **The pre-registration held** — this is
+the outcome that makes the exercise worth doing: the threshold was fixed before any
+p-value existed, and reconciling it afterwards against the true test count changed
+nothing that any conclusion rests on. The primary bar of 5e-8 is unaffected, being a
+convention rather than a count.
