@@ -131,6 +131,41 @@ cell structure of the burden arm's phase 4 collapses to one test per variant.
 
 One test per variant per cohort, 3 cohorts x 22 chromosomes = **66 step 2 tasks**.
 
+## P9 — Functional annotation of whatever clears a bar
+
+Registered **before** step 2 runs, so that annotating the hits is a planned step and
+not a response to the hits being unconvincing.
+
+Every variant clearing either bar (P6) gets annotated and reported next to its p-value:
+VEP consequence, affected gene and transcript, and AlphaMissense score via ANNOVAR
+`dbnsfp45a_canonical`. The same tooling the burden arms used — see
+`reference_vep_annovar_lpc` and Biofilter 4 on LPC.
+
+**Why this is not optional here.** In the burden arm, annotation *builds* the test:
+SAIGE-GENE tests genes, and a gene test needs a rule for which variants enter it, which
+is what the `pLOF` and `pDM` masks are. This arm has no grouping, so annotation decides
+nothing about what is tested — every variant is tested individually whatever its
+consequence class.
+
+That is precisely the gap the 2026-10-02 meeting identified. Douglas Epstein:
+
+> *"if the variants that associated were not pathogenic, then I just... I didn't
+> understand the value of that [...] from a biological standpoint, it's unclear what
+> that would mean."*
+
+Nikki Palmiero, on the original ExWAS results:
+
+> *"these all mostly focused on common variants. And for the most part, we don't really
+> see much of the damaging there anyway."*
+
+A common-variant ExWAS produces statistical association without saying whether the
+variant does anything. Annotating the hits turns that from an unanswerable question in
+a meeting into a column in a table. If the associated variants are not damaging, that
+is the finding, and it is reported as one.
+
+**Pre-registered now so it is not a choice made later:** the annotation is reported for
+every variant that clears a bar, including ones where it weakens the story.
+
 ---
 
 ## Phase map
@@ -141,4 +176,4 @@ One test per variant per cohort, 3 cohorts x 22 chromosomes = **66 step 2 tasks*
 | 2 — variants | MAF census only; no build |
 | 3 — covariates | **inherited** from `../gene_burden_pmbb_bilateral/phase_3/` |
 | 4 — test | SAIGE single-variant, step 1 reused |
-| 5 — results | this arm, plus the four-way comparison |
+| 5 — results | this arm, annotation of hits (P9), four-way comparison |
