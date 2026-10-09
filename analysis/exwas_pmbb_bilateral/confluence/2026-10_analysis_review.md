@@ -101,14 +101,35 @@ Restricting to bilateral sensorineural takes cases **6,752 → 3,164**.
 
 ## Results
 
+Each cell names the best gene in that cohort. The p-value is the **per-gene omnibus** — one number
+per gene, with the nine-way search across masks and frequency cutoffs already charged for.
+
 | | combined | EUR | AFR |
 |---|---|---|---|
-| **Replication**, best omnibus | 3.02 × 10⁻⁵ | 6.91 × 10⁻⁵ | 2.17 × 10⁻⁵ |
-| **Bilateral**, best omnibus | 2.05 × 10⁻⁵ | 1.37 × 10⁻⁵ | 9.14 × 10⁻⁶ |
-| bar `0.05/genes` | 2.79 × 10⁻⁶ | 2.79 × 10⁻⁶ | 2.81 × 10⁻⁶ |
+| **Replication** | `PSG8` · 3.02 × 10⁻⁵ | `ATP13A4` · 6.91 × 10⁻⁵ | `CFH` · 2.17 × 10⁻⁵ |
+| **Bilateral** | `PCBD1` · 2.05 × 10⁻⁵ | `FBXO25` · 1.37 × 10⁻⁵ | `IGSF9` · 9.14 × 10⁻⁶ |
+| **significance threshold** | 2.79 × 10⁻⁶ | 2.79 × 10⁻⁶ | 2.81 × 10⁻⁶ |
+| how far short | 7× to 11× | 5× to 25× | 3× to 8× |
 
-Nothing passes, in either round, under Bonferroni or FDR. λ runs 0.68 to 1.00 — the test is
-calibrated and slightly conservative, so the absence is informative rather than inconclusive.
+**What the threshold is.** We test about 17,900 genes per cohort, so some will look impressive by
+chance alone. Bonferroni divides the usual 0.05 by the number of tests —
+`0.05 / 17,941 = 2.79 × 10⁻⁶` — which holds the probability of *any* false positive across the whole
+scan at 5%. A gene has to beat that number, not 0.05, to count.
+
+Nothing does, in either round, and Benjamini-Hochberg finds nothing either: the smallest q-values
+are 0.15 to 0.22.
+
+**None of the six genes above is a candidate.** They are the closest things to a signal, and each is
+fragile in a way the p-value alone hides:
+
+- `FBXO25` rests on **18 alleles**, 7 of them in cases, and its signal sits in exactly one of the
+  nine mask-by-frequency cells — the maximum concentration possible.
+- `CFH` tops AFR on **five alleles, all in cases.** Remove one carrier and it is gone.
+- `PSG8` has a p-value of **0.40** on its burden component: the signal is all dispersion, with no
+  consistent direction behind it.
+
+λ runs 0.68 to 1.00 across both rounds — the test is calibrated and slightly conservative, so the
+absence is informative rather than inconclusive.
 
 ### The one positive result
 
