@@ -1,6 +1,8 @@
 # Common-variant ExWAS — broad hearing loss (replication)
 
-**Status:** scaffolded 2026-10-09 · nothing run yet
+**Status:** all phases complete · 6,752 cases · 0 significant variants
+**Result:** replicates the delivered run at r = 0.98–0.99; the summer
+poster's six significant results fail the poster's own call-rate filter
 **Release:** PMBB-Release-2026-4.0 · **Test:** SAIGE single-variant
 **Scope:** variants at **MAF >= 0.01** — *not* the rare-variant gene burden, which is
 `../gene_burden_elena_replication/`

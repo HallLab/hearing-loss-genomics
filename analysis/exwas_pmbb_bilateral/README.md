@@ -1,6 +1,8 @@
 # Common-variant ExWAS — bilateral sensorineural hearing loss
 
-**Status:** scaffolded 2026-10-09 · nothing run yet
+**Status:** all phases complete · 3,164 cases · 0 significant variants
+**Result:** the one promising signal (`BCAM`, chr19) was shown by its own
+pre-registered power control to be selection, not subtype specificity
 **Release:** PMBB-Release-2026-4.0 · **Test:** SAIGE single-variant
 **Scope:** variants at **MAF >= 0.01** — *not* the rare-variant gene burden, which is
 `../gene_burden_pmbb_bilateral/`
