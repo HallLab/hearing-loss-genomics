@@ -48,7 +48,7 @@
 set -euo pipefail
 module load plink/1.9-20210416
 
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_3
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_3
 IN=/static/PMBB/PMBB-Release-2026-4.0/Exome/all_variants_NF/PMBB-Release-2026-4.0_genetic_exome.nf.all_chromosomes
 OUT=${BASE}/data/pca
 mkdir -p ${OUT} ${BASE}/logs

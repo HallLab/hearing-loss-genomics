@@ -2,8 +2,8 @@
 # Complement run -- step 2, 22 chromosomes, whole grid per call.
 #BSUB -J comp2[1-22]
 #BSUB -q epistasis_normal
-#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.out
-#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.err
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/complement/logs/s2.%J.%I.err
 #BSUB -M 96000
 #BSUB -R "rusage[mem=96000]"
 #BSUB -n 4
@@ -11,7 +11,7 @@
 set -euo pipefail
 module load apptainer/1.4.1
 SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
 C=${BASE}/phase_5/complement
 ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
 CHR=${LSB_JOBINDEX}

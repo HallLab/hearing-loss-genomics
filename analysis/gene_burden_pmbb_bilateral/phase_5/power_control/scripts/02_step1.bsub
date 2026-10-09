@@ -2,8 +2,8 @@
 # Power control, step 1 -- one null model per replicate. Combined cohort only.
 #BSUB -J pc1[1-5]
 #BSUB -q epistasis_normal
-#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.out
-#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.err
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.err
 #BSUB -M 64000
 #BSUB -R "rusage[mem=64000]"
 #BSUB -n 8
@@ -11,7 +11,7 @@
 set -euo pipefail
 module load apptainer/1.4.1
 SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
 PC=${BASE}/phase_5/power_control
 R=${LSB_JOBINDEX}
 mkdir -p ${PC}/results/step1/rep${R}

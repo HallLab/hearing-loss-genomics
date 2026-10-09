@@ -3,8 +3,8 @@
 # One call per task over the whole grid, so SAIGE's Cauchy row is the omnibus.
 #BSUB -J pc2[1-110]
 #BSUB -q epistasis_normal
-#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s2.%J.%I.out
-#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s2.%J.%I.err
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/power_control/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/power_control/logs/s2.%J.%I.err
 #BSUB -M 96000
 #BSUB -R "rusage[mem=96000]"
 #BSUB -n 4
@@ -12,7 +12,7 @@
 set -euo pipefail
 module load apptainer/1.4.1
 SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
 PC=${BASE}/phase_5/power_control
 ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
 J=$(( LSB_JOBINDEX - 1 ))

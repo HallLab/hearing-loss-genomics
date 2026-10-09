@@ -1,7 +1,13 @@
-# Hearing loss ExWAS — where we are
+# Hearing loss rare-variant gene burden — where we are
 
 **Review for the group · October 2026 · Hall Lab × Epstein Lab**
 Covers two rounds of work on the PMBB v4 exome analysis, set against the original run.
+
+> **Scope.** This is the **rare-variant gene burden** arm — SAIGE-GENE on variants at
+> MAF ≤ 0.01, 0.001 and 0.0001. It is not the single-variant ExWAS (MAF > 0.01, SAIGE)
+> that the summer poster reported. The two arms test disjoint variant sets, so the genes
+> on the poster cannot appear in the tables below. See [Introduction](00_introduction.md)
+> for where each arm sits in the pipeline.
 
 ---
 
@@ -209,8 +215,8 @@ more null results. They become worth doing if the cohort grows.
 | | |
 |---|---|
 | `analysis/elena_replication/` | the audit — per-phase findings, both arms, all evidence |
-| `analysis/exwas_pmbb_bilateral/` | the bilateral analysis, self-contained |
-| `analysis/exwas_pmbb_bilateral/confluence/` | the seven-page write-up this review summarises |
+| `analysis/gene_burden_pmbb_bilateral/` | the bilateral analysis, self-contained |
+| `analysis/gene_burden_pmbb_bilateral/confluence/` | the seven-page write-up this review summarises |
 | `…/phase_5/notebooks/01_three_way.ipynb` | the three-round comparison, reproducible |
 
 Every figure and number in this document regenerates from the scripts in those folders. What was

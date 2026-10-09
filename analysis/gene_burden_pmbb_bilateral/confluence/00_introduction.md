@@ -45,7 +45,7 @@ data**, and sharpens the phenotype.
   Hui et al. 2023          PMBB ~40k · phecode 389 · burden in known HL genes
         │                  the precedent this line extends
         ▼
-  ExWAS on PMBB v4         70,925 with exomes · single-variant + rare-variant burden
+  PMBB v4 exome analysis   70,925 with exomes · single-variant ExWAS + rare-variant burden
         │                  summer 2026 · results presented as a poster
         ▼
   Replication              the same pipeline re-run and audited
@@ -68,7 +68,7 @@ analysis against it directly.
 
 ## Why bilateral sensorineural
 
-Hui et al. and the PMBB v4 ExWAS both used the broad definition — any hearing loss. Narrowing to
+Hui et al. and the PMBB v4 analysis both used the broad definition — any hearing loss. Narrowing to
 bilateral sensorineural **halves the case count, 6,752 → 3,164**, which is a real cost. Four reasons
 it is still the right phenotype for a genetic study:
 
@@ -207,6 +207,6 @@ first of those.
 
 ---
 
-*Repository: `analysis/exwas_pmbb_bilateral/` · every figure and number regenerable from the
+*Repository: `analysis/gene_burden_pmbb_bilateral/` · every figure and number regenerable from the
 scripts in each phase · what was copied rather than computed is listed in
 [`PROVENANCE.md`](../PROVENANCE.md)*

@@ -16,7 +16,7 @@
 #
 set -euo pipefail
 
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
 IN=${BASE}/phase_2/results/masks_v2
 OUT=${BASE}/phase_4/data/masks_by_chrom
 

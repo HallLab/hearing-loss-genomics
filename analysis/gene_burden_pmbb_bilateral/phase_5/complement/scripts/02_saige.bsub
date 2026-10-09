@@ -3,8 +3,8 @@
 # Submitted as two arrays; this file is step 1.
 #BSUB -J comp1
 #BSUB -q epistasis_normal
-#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s1.%J.out
-#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/complement/logs/s1.%J.err
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/complement/logs/s1.%J.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral/phase_5/complement/logs/s1.%J.err
 #BSUB -M 64000
 #BSUB -R "rusage[mem=64000]"
 #BSUB -n 8
@@ -12,7 +12,7 @@
 set -euo pipefail
 module load apptainer/1.4.1
 SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
-BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
 C=${BASE}/phase_5/complement
 mkdir -p ${C}/results/step1
 apptainer exec -B /project -B /project/hall -B /static ${SIF} \

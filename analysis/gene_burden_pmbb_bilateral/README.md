@@ -1,7 +1,8 @@
-# ExWAS PMBB — bilateral sensorineural hearing loss
+# Rare-variant gene burden — bilateral sensorineural hearing loss
 
-**Status:** Phase 1 complete · Phases 2–3 inherited · Phases 4–5 to run
+**Status:** all five phases complete · 3,164 cases · 0 significant genes
 **Release:** PMBB-Release-2026-4.0 · **Test:** SAIGE-GENE+ rare-variant gene burden
+**Scope:** variants at MAF ≤ 0.01, 0.001, 0.0001 — *not* the single-variant ExWAS (MAF > 0.01)
 
 ---
 

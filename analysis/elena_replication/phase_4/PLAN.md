@@ -143,7 +143,7 @@ the native reading is arguably the cleaner one, since a variant that truncates t
 really a missense story.
 
 Not changed here: this replication is finished and its numbers are reported. The finding is carried
-into `analysis/exwas_pmbb_bilateral`, which has not run yet.
+into `analysis/gene_burden_pmbb_bilateral`, which has not run yet.
 
 ### 4.3 Group files split by chromosome
 
