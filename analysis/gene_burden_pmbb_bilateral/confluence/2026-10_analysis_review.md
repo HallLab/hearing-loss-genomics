@@ -214,7 +214,7 @@ more null results. They become worth doing if the cohort grows.
 
 | | |
 |---|---|
-| `analysis/elena_replication/` | the audit — per-phase findings, both arms, all evidence |
+| `analysis/gene_burden_elena_replication/` | the audit — per-phase findings, both arms, all evidence |
 | `analysis/gene_burden_pmbb_bilateral/` | the bilateral analysis, self-contained |
 | `analysis/gene_burden_pmbb_bilateral/confluence/` | the seven-page write-up this review summarises |
 | `…/phase_5/notebooks/01_three_way.ipynb` | the three-round comparison, reproducible |

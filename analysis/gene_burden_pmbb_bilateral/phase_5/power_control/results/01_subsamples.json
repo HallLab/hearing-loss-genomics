@@ -1,5 +1,5 @@
 {
-  "source": "/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt",
+  "source": "/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt",
   "broad_cases": 6752,
   "controls": 50746,
   "target_cases": 3164,

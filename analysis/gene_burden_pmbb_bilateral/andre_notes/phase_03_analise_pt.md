@@ -107,7 +107,7 @@ EUR ou do AFR, um PC global está ocupado separando continentes e diz quase nada
 interna — por isso esses dois usam PCA feita dentro da própria ancestralidade.
 
 > O histórico de como se chegou a 5/4/3, incluindo o que o estudo original usava, está em
-> [`elena_replication/docs/07_pcs_explicados.pt.md`](../../elena_replication/docs/07_pcs_explicados.pt.md).
+> [`gene_burden_elena_replication/docs/07_pcs_explicados.pt.md`](../../gene_burden_elena_replication/docs/07_pcs_explicados.pt.md).
 
 ---
 

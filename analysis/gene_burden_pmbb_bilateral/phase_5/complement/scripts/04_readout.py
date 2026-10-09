@@ -42,7 +42,7 @@ HERE = Path(__file__).resolve().parents[1]
 EX = HERE.parent.parent
 PC = EX / "phase_5/power_control"
 BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/"
-             "elena_replication/phase_4/results")
+             "gene_burden_elena_replication/phase_4/results")
 
 cg = pd.read_csv(EX / "phase_5/data/clingen_hl_genes.tsv", sep="\t")
 GENES = set(cg[cg.best_classification.isin(["Definitive", "Strong"])].gene)

@@ -79,7 +79,7 @@ and the test returns a number that cannot mean anything. This removes **1,101 ge
 
 These masks were **not rebuilt for this analysis**. They depend on the genome annotation and the
 damage rules, neither of which changes when the phenotype changes, so they were carried over from
-`analysis/elena_replication` and verified byte-for-byte. Rebuilding would reproduce the same files.
+`analysis/gene_burden_elena_replication` and verified byte-for-byte. Rebuilding would reproduce the same files.
 
 The rules above are the study's original analysis plan, applied as written. Where the earlier
 implementation diverged from them is documented in that folder and is not repeated here.

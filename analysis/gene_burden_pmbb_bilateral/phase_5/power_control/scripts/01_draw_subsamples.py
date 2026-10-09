@@ -22,7 +22,7 @@ identical between the two arms anyway.
 Only the combined cohort. That is where the enrichment is, and running EUR and
 AFR would add 150 jobs to answer a question neither is powered to settle.
 
-Input : elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt
+Input : gene_burden_elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt
 Output: phase_5/power_control/data/rep<N>.txt  (5 covariate files)
 """
 import json
@@ -31,7 +31,7 @@ from pathlib import Path
 import pandas as pd
 
 HERE = Path(__file__).resolve().parents[1]
-BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/"
+BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_elena_replication/"
              "phase_3/results/covariates/corrected_combined_covariates.txt")
 TARGET_CASES = 3164          # the restricted arm, exactly
 N_REP = 5

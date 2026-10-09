@@ -41,7 +41,7 @@ from scipy.stats import mannwhitneyu, hypergeom
 
 HERE = Path(__file__).resolve().parents[1]
 BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/"
-             "elena_replication/phase_4/results")
+             "gene_burden_elena_replication/phase_4/results")
 OUT = HERE / "results"
 
 cg = pd.read_csv(HERE / "data/clingen_hl_genes.tsv", sep="\t")

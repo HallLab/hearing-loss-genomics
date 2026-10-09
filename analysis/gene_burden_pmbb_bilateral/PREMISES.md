@@ -4,7 +4,7 @@ Every choice this analysis makes, where it came from, and what it moves. Nothing
 each line was argued somewhere, and the source is named so it can be challenged.
 
 Two sources: **M** = the meeting of 2026-10-02 with Douglas Epstein and Nicole Palmiero.
-**R** = a finding from `analysis/elena_replication/`, with its phase.
+**R** = a finding from `analysis/gene_burden_elena_replication/`, with its phase.
 
 ---
 

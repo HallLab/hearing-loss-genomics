@@ -40,7 +40,7 @@ from pathlib import Path
 import pandas as pd
 
 HERE = Path(__file__).resolve().parents[1]
-BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/elena_replication/"
+BROAD = Path("/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_elena_replication/"
              "phase_3/results/covariates/corrected_combined_covariates.txt")
 RESTRICTED = HERE.parent.parent / "phase_3/results/covariates/combined.txt"
 

@@ -1,4 +1,4 @@
-> **INHERITED DOCUMENT — this is `analysis/elena_replication/phase_3/results/FINDINGS.md`,**
+> **INHERITED DOCUMENT — this is `analysis/gene_burden_elena_replication/phase_3/results/FINDINGS.md`,**
 > **copied here unchanged.** It describes the replication's audit, which has two arms and is
 > written against the pipeline it was auditing. It is **not** a findings file for this analysis.
 >

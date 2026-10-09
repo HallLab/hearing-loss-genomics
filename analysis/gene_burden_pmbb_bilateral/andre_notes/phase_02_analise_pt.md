@@ -19,7 +19,7 @@ todas, o sinal de verdade afunda no ruído.
 Então antes de testar, é preciso decidir **quais variantes contam**. Essa decisão vira uma
 **máscara**.
 
-> **Esta fase não foi refeita aqui.** As máscaras vêm da `elena_replication`, copiadas prontas e
+> **Esta fase não foi refeita aqui.** As máscaras vêm da `gene_burden_elena_replication`, copiadas prontas e
 > conferidas byte a byte. Elas dependem da anotação do genoma e **não dependem de quem é caso**, então
 > trocar o fenótipo não as invalida. O que está descrito abaixo foi o trabalho feito lá.
 
@@ -166,13 +166,13 @@ qualquer máscara só gasta correção múltipla.
 ## Por que essas regras e não outras
 
 Elas não foram inventadas aqui. São as regras do plano de análise original do estudo, **aplicadas
-como escritas** — e a Fase 2 da `elena_replication` existe porque a implementação que rodou se
+como escritas** — e a Fase 2 da `gene_burden_elena_replication` existe porque a implementação que rodou se
 afastava delas em quatro pontos.
 
 A história completa, com os quatro defeitos, o tamanho de cada um e quem achou, está em
-[`elena_replication/docs/09_fase_2_resumo.pt.md`](../../elena_replication/docs/09_fase_2_resumo.pt.md)
+[`gene_burden_elena_replication/docs/09_fase_2_resumo.pt.md`](../../gene_burden_elena_replication/docs/09_fase_2_resumo.pt.md)
 — e em detalhe no
-[`05_phase_2_fechamento.pt.md`](../../elena_replication/docs/05_phase_2_fechamento.pt.md).
+[`05_phase_2_fechamento.pt.md`](../../gene_burden_elena_replication/docs/05_phase_2_fechamento.pt.md).
 
 Aqui basta saber que as máscaras desta análise seguem as regras acima, e que isso foi verificado.
 

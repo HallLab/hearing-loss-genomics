@@ -4,7 +4,7 @@ import hashlib, subprocess
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-SRC = HERE.parent / "elena_replication"
+SRC = HERE.parent / "gene_burden_elena_replication"
 EL = HERE.parent / "elena"
 SKIP_DIRS = {"logs", "step1", "step2", "masks_by_chrom", "test_native",
              "power_control", "complement", "__pycache__"}

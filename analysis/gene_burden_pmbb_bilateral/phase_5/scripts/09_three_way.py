@@ -34,7 +34,7 @@ import pandas as pd
 from scipy.stats import hypergeom
 
 HERE = Path(__file__).resolve().parents[2]
-REPL = HERE.parent / "elena_replication"
+REPL = HERE.parent / "gene_burden_elena_replication"
 ELENA = (HERE.parent / "elena" / "HL_only_rarevariant" /
          "newmasks_combined_gene_results.csv")
 MASKS = ["pLOF", "pDM", "pLOF_pDM"]

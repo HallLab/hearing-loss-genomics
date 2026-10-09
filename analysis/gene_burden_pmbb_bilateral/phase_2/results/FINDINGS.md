@@ -1,4 +1,4 @@
-> **INHERITED DOCUMENT — this is `analysis/elena_replication/phase_2/results/FINDINGS.md`,**
+> **INHERITED DOCUMENT — this is `analysis/gene_burden_elena_replication/phase_2/results/FINDINGS.md`,**
 > **copied here unchanged.** It describes the replication's audit, which has two arms and is
 > written against the pipeline it was auditing. It is **not** a findings file for this analysis.
 >
@@ -109,7 +109,7 @@ mask files are structurally sound. Whatever happened, happened before they were 
 ### Credit where it is due
 
 The documented definition came from the analysis-plan documents collected in
-`elena_replication/elena_publishes/`. Without it, this finding would have been written as
+`gene_burden_elena_replication/elena_publishes/`. Without it, this finding would have been written as
 "synonymous variants cannot be loss-of-function, therefore the mask is broken" — a conclusion that
 ignores a deliberate, documented design choice and would have been wrong in its reasoning even where
 it happened to be right in its conclusion. The definition narrowed the claim from *most of the mask

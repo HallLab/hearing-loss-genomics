@@ -9,7 +9,7 @@
 ## What this is
 
 The analysis this group stands behind: the corrected pipeline from
-`analysis/elena_replication/`, run on the phenotype the clinical lead considers the phenotype.
+`analysis/gene_burden_elena_replication/`, run on the phenotype the clinical lead considers the phenotype.
 
 It is **not** a replication and carries no second arm. The replication exists to answer *what was
 done, and what was wrong with it*, and it stays frozen for that purpose. This folder answers a

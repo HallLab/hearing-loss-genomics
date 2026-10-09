@@ -61,7 +61,7 @@ Each step is a response to the one above it. The replication exists because resu
 checked before they are built on; **this analysis exists because the replication showed the pipeline
 was sound once corrected, and the remaining question was whether the phenotype was right.**
 
-`analysis/elena_replication/` holds the audit. The [conclusions](06_conclusions.md) set this
+`analysis/gene_burden_elena_replication/` holds the audit. The [conclusions](06_conclusions.md) set this
 analysis against it directly.
 
 ---
@@ -199,7 +199,7 @@ with the same p-value in all nine cells is more convincing than one that needed 
 
 | | |
 |---|---|
-| `analysis/elena_replication/` | the audit this analysis descends from — what the earlier pipeline did, and the four mask and two cohort defects found in it |
+| `analysis/gene_burden_elena_replication/` | the audit this analysis descends from — what the earlier pipeline did, and the four mask and two cohort defects found in it |
 | `analysis/elena/HL_only_ExWAS/` | single-variant association on the same cohort, **common** variants (MAF ≥ 0.01) — complementary, and testing a disjoint variant set |
 
 The three-arm comparison in the [conclusions](06_conclusions.md) sets this analysis against the
