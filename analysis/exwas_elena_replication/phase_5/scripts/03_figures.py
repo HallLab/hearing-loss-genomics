@@ -72,12 +72,17 @@ def fig_qq():
                        label=f"{label}  λ={lam(p):.3f}")
         hi = max(ax.get_xlim()[1], ax.get_ylim()[1])
         ax.plot([0, hi], [0, hi], color=GREY, lw=0.8, ls="--")
-        ax.axhline(-np.log10(PRIMARY), color=RED, lw=0.9, ls=":")
+        bar = -np.log10(PRIMARY)
+        ax.axhline(bar, color=RED, lw=0.9, ls=":")
+        ax.set_ylim(top=bar + 1.1)
+        ax.text(ax.get_xlim()[1], bar + 0.12, "5e-8", ha="right", va="bottom",
+                fontsize=7, color=RED)
         ax.set_title(c)
         ax.set_xlabel("expected  $-\\log_{10}p$")
         if c == "combined":
             ax.set_ylabel("observed  $-\\log_{10}p$")
-        ax.legend(loc="upper left", fontsize=7, markerscale=3)
+        ax.legend(loc="upper left", fontsize=7, markerscale=3,
+                  bbox_to_anchor=(0.0, 0.88))
     fig.suptitle("Single-variant calibration: nothing approaches 5e-8 in either run",
                  fontsize=10)
     fig.tight_layout()
