@@ -1,0 +1,537 @@
+{
+  "self_check": {
+    "combined": {
+      "spearman_callrate_vs_neglog10p": -0.00011091688043108126,
+      "p": 0.976530739619398,
+      "worst_decile_cut": 0.99749583,
+      "spearman_worst_decile": 0.012065712625695212,
+      "p_worst_decile": 0.3102292430529669,
+      "median_callrate_top100": 0.99984233,
+      "median_callrate_rest": 0.999888703,
+      "mannwhitney_p": 0.340295481288015
+    },
+    "EUR": {
+      "spearman_callrate_vs_neglog10p": -0.0034302189093905503,
+      "p": 0.34892872501065775,
+      "worst_decile_cut": 0.99740926,
+      "spearman_worst_decile": 0.021921943901590368,
+      "p_worst_decile": 0.05765906239596138,
+      "median_callrate_top100": 0.9998879006,
+      "median_callrate_rest": 0.9999003562,
+      "mannwhitney_p": 0.5938643323765775
+    },
+    "AFR": {
+      "spearman_callrate_vs_neglog10p": -0.0030503089906604814,
+      "p": 0.29462735567061493,
+      "worst_decile_cut": 0.99743809,
+      "spearman_worst_decile": 0.007690414930919828,
+      "p_worst_decile": 0.4027434316182191,
+      "median_callrate_top100": 0.999810229,
+      "median_callrate_rest": 0.9999051143,
+      "mannwhitney_p": 0.14697746200398923
+    }
+  },
+  "top": {
+    "combined": [
+      {
+        "variant": "7:150692505:T:C",
+        "p": 3.079439e-05,
+        "beta": -0.218391,
+        "af": 0.0815155,
+        "call_rate": 0.9999814506,
+        "gene": "GIMAP2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.035
+      },
+      {
+        "variant": "19:44819705:A:T",
+        "p": 6.401094e-05,
+        "beta": 0.268006,
+        "af": 0.0331849,
+        "call_rate": 1.0,
+        "gene": "BCAM",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 3.605
+      },
+      {
+        "variant": "19:44819634:C:T",
+        "p": 7.472425e-05,
+        "beta": 0.262593,
+        "af": 0.0342052,
+        "call_rate": 1.0,
+        "gene": "BCAM",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 9.599
+      },
+      {
+        "variant": "2:241668509:A:G",
+        "p": 8.895936e-05,
+        "beta": 0.128618,
+        "af": 0.201336,
+        "call_rate": 0.999833055,
+        "gene": "ATG4B",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.279
+      },
+      {
+        "variant": "6:30987582:G:A",
+        "p": 0.0001229786,
+        "beta": 0.187511,
+        "af": 0.0809776,
+        "call_rate": 1.0,
+        "gene": "MUC21",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 8.268
+      },
+      {
+        "variant": "1:150983106:A:G",
+        "p": 0.0001725637,
+        "beta": -0.339677,
+        "af": 0.0287145,
+        "call_rate": 0.9999629011,
+        "gene": "ANXA9",
+        "consequence": "start_lost",
+        "impact": "HIGH",
+        "cadd": 20.9
+      },
+      {
+        "variant": "16:1200831:G:A",
+        "p": 0.0001784674,
+        "beta": 0.321776,
+        "af": 0.0203673,
+        "call_rate": 0.999777407,
+        "gene": "CACNA1H",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.433
+      },
+      {
+        "variant": "15:90913377:A:G",
+        "p": 0.0001801877,
+        "beta": 0.372646,
+        "af": 0.0139863,
+        "call_rate": 1.0,
+        "gene": "MAN2A2",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 8.834
+      },
+      {
+        "variant": "5:142011876:C:T",
+        "p": 0.0001995559,
+        "beta": 0.359098,
+        "af": 0.0152105,
+        "call_rate": 0.999870154,
+        "gene": "GNPDA1",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 1.631
+      },
+      {
+        "variant": "3:133755303:T:G",
+        "p": 0.0002038374,
+        "beta": -0.163807,
+        "af": 0.102226,
+        "call_rate": 0.99884994,
+        "gene": "TF",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.025
+      },
+      {
+        "variant": "7:150572454:G:T",
+        "p": 0.0002088196,
+        "beta": -0.157026,
+        "af": 0.136403,
+        "call_rate": 0.9999258023,
+        "gene": "GIMAP4",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 3.42
+      },
+      {
+        "variant": "22:20537281:A:G",
+        "p": 0.0002132617,
+        "beta": 0.100493,
+        "af": 0.409776,
+        "call_rate": 0.99395288,
+        "gene": "MED15",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.687
+      },
+      {
+        "variant": "8:94387103:G:A",
+        "p": 0.0002148879,
+        "beta": 0.250102,
+        "af": 0.0333983,
+        "call_rate": 1.0,
+        "gene": "RAD54B",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 7.101
+      },
+      {
+        "variant": "7:16465716:C:T",
+        "p": 0.000224468,
+        "beta": 0.146137,
+        "af": 0.130634,
+        "call_rate": 0.999369319,
+        "gene": "SOSTDC1",
+        "consequence": "5_prime_UTR_variant",
+        "impact": "MODIFIER",
+        "cadd": 13.17
+      },
+      {
+        "variant": "2:241678436:A:G",
+        "p": 0.0002338873,
+        "beta": 0.121282,
+        "af": 0.198933,
+        "call_rate": 0.999777407,
+        "gene": "DTYMK",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 1.552
+      }
+    ],
+    "EUR": [
+      {
+        "variant": "19:44819634:C:T",
+        "p": 9.473053e-06,
+        "beta": 0.301405,
+        "af": 0.0415016,
+        "call_rate": 1.0,
+        "gene": "BCAM",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 9.599
+      },
+      {
+        "variant": "19:44819705:A:T",
+        "p": 1.271622e-05,
+        "beta": 0.298381,
+        "af": 0.0413148,
+        "call_rate": 1.0,
+        "gene": "BCAM",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 3.605
+      },
+      {
+        "variant": "1:85259670:GCCGGAAA:G",
+        "p": 2.628874e-05,
+        "beta": 0.124838,
+        "af": 0.419152,
+        "call_rate": 0.99588969,
+        "gene": "",
+        "consequence": "",
+        "impact": "",
+        "cadd": null
+      },
+      {
+        "variant": "1:119916301:G:A",
+        "p": 3.134006e-05,
+        "beta": 0.393729,
+        "af": 0.0189323,
+        "call_rate": 1.0,
+        "gene": "NOTCH2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.509
+      },
+      {
+        "variant": "12:39319974:C:A",
+        "p": 5.593151e-05,
+        "beta": 0.242319,
+        "af": 0.0579055,
+        "call_rate": 0.9999003562,
+        "gene": "KIF21A",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 19.45
+      },
+      {
+        "variant": "7:150692505:T:C",
+        "p": 9.6767e-05,
+        "beta": -0.220157,
+        "af": 0.0863164,
+        "call_rate": 1.0,
+        "gene": "GIMAP2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.035
+      },
+      {
+        "variant": "7:150720957:G:A",
+        "p": 0.0001160306,
+        "beta": -0.21082,
+        "af": 0.0922328,
+        "call_rate": 0.999451959,
+        "gene": "GIMAP1",
+        "consequence": "3_prime_UTR_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.814
+      },
+      {
+        "variant": "4:155785283:T:G",
+        "p": 0.0001169081,
+        "beta": 0.452113,
+        "af": 0.0128042,
+        "call_rate": 0.999451959,
+        "gene": "GUCY1B1",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.723
+      },
+      {
+        "variant": "3:133755303:T:G",
+        "p": 0.0001182083,
+        "beta": -0.1879,
+        "af": 0.112597,
+        "call_rate": 0.99855517,
+        "gene": "TF",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 3.025
+      },
+      {
+        "variant": "1:176692093:C:T",
+        "p": 0.0001279167,
+        "beta": 0.248393,
+        "af": 0.049498,
+        "call_rate": 0.999875445,
+        "gene": "PAPPA2",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 1.438
+      },
+      {
+        "variant": "11:1445490:G:A",
+        "p": 0.0002014242,
+        "beta": -0.145677,
+        "af": 0.187106,
+        "call_rate": 0.999352315,
+        "gene": "BRSK2",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.638
+      },
+      {
+        "variant": "3:133756968:G:A",
+        "p": 0.0002212305,
+        "beta": 0.222665,
+        "af": 0.0556261,
+        "call_rate": 1.0,
+        "gene": "TF",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 24.0
+      },
+      {
+        "variant": "2:240557353:C:A",
+        "p": 0.0002339448,
+        "beta": 0.139771,
+        "af": 0.170565,
+        "call_rate": 0.999701069,
+        "gene": "ANKMY1",
+        "consequence": "splice_acceptor_variant",
+        "impact": "HIGH",
+        "cadd": 21.7
+      },
+      {
+        "variant": "13:31151237:T:C",
+        "p": 0.0002449866,
+        "beta": -0.130942,
+        "af": 0.231834,
+        "call_rate": 0.99740926,
+        "gene": "HSPH1",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 5.398
+      },
+      {
+        "variant": "20:57561480:A:G",
+        "p": 0.0002685126,
+        "beta": -0.107898,
+        "af": 0.499689,
+        "call_rate": 0.999875445,
+        "gene": "PCK1",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 7.388
+      }
+    ],
+    "AFR": [
+      {
+        "variant": "7:158133844:C:T",
+        "p": 1.073871e-06,
+        "beta": 1.06589,
+        "af": 0.0123351,
+        "call_rate": 1.0,
+        "gene": "PTPRN2",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 1.221
+      },
+      {
+        "variant": "8:108241705:G:A",
+        "p": 1.251528e-05,
+        "beta": 0.955158,
+        "af": 0.0123351,
+        "call_rate": 0.9913654,
+        "gene": "EIF3E",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.142
+      },
+      {
+        "variant": "16:90027670:A:G",
+        "p": 5.815378e-05,
+        "beta": 0.597241,
+        "af": 0.0360566,
+        "call_rate": 1.0,
+        "gene": "GAS8",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 16.58
+      },
+      {
+        "variant": "1:240776091:C:T",
+        "p": 5.989195e-05,
+        "beta": 0.592752,
+        "af": 0.038571,
+        "call_rate": 0.99563526,
+        "gene": "RGS7",
+        "consequence": "3_prime_UTR_variant",
+        "impact": "MODIFIER",
+        "cadd": 14.25
+      },
+      {
+        "variant": "11:76206290:C:T",
+        "p": 6.645179e-05,
+        "beta": -0.337506,
+        "af": 0.241816,
+        "call_rate": 1.0,
+        "gene": "WNT11",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.449
+      },
+      {
+        "variant": "10:132145230:TG:T",
+        "p": 8.197526e-05,
+        "beta": 0.548845,
+        "af": 0.0453079,
+        "call_rate": 0.996679,
+        "gene": "",
+        "consequence": "",
+        "impact": "",
+        "cadd": null
+      },
+      {
+        "variant": "17:37529811:G:C",
+        "p": 8.620601e-05,
+        "beta": 0.881579,
+        "af": 0.0152766,
+        "call_rate": 1.0,
+        "gene": "SYNRG",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 0.441
+      },
+      {
+        "variant": "20:45305463:G:A",
+        "p": 8.803504e-05,
+        "beta": 0.746178,
+        "af": 0.0202106,
+        "call_rate": 0.999240915,
+        "gene": "MATN4",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 1.121
+      },
+      {
+        "variant": "12:3281397:A:G",
+        "p": 9.008004e-05,
+        "beta": 0.876933,
+        "af": 0.0144701,
+        "call_rate": 0.999146029,
+        "gene": "TSPAN9",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 4.458
+      },
+      {
+        "variant": "19:11116878:C:T",
+        "p": 9.904382e-05,
+        "beta": 0.424471,
+        "af": 0.0835468,
+        "call_rate": 0.9999051143,
+        "gene": "LDLR",
+        "consequence": "synonymous_variant",
+        "impact": "LOW",
+        "cadd": 4.113
+      },
+      {
+        "variant": "11:120240442:G:A",
+        "p": 0.0001099188,
+        "beta": 0.793297,
+        "af": 0.0166524,
+        "call_rate": 0.999810229,
+        "gene": "POU2F3",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 4.122
+      },
+      {
+        "variant": "2:70832980:G:A",
+        "p": 0.0001139543,
+        "beta": 0.918797,
+        "af": 0.0122403,
+        "call_rate": 1.0,
+        "gene": "CD207",
+        "consequence": "missense_variant",
+        "impact": "MODERATE",
+        "cadd": 0.001
+      },
+      {
+        "variant": "18:3188721:A:G",
+        "p": 0.0001181694,
+        "beta": 0.74058,
+        "af": 0.0203055,
+        "call_rate": 1.0,
+        "gene": "MYOM1",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 10.85
+      },
+      {
+        "variant": "5:151303304:G:A",
+        "p": 0.0001215894,
+        "beta": 0.569689,
+        "af": 0.0391878,
+        "call_rate": 1.0,
+        "gene": "SLC36A3",
+        "consequence": "frameshift_variant",
+        "impact": "HIGH",
+        "cadd": 5.415
+      },
+      {
+        "variant": "20:63407404:C:T",
+        "p": 0.0001220375,
+        "beta": 0.783771,
+        "af": 0.0179334,
+        "call_rate": 0.999810229,
+        "gene": "KCNQ2",
+        "consequence": "intron_variant",
+        "impact": "MODIFIER",
+        "cadd": 11.99
+      }
+    ]
+  }
+}

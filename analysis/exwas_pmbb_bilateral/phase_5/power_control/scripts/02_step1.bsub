@@ -1,0 +1,70 @@
+#!/bin/bash
+#BSUB -J pc_s1[1-15]
+#BSUB -q epistasis_normal
+#BSUB -n 8
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 6:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control/logs/s1.%J.%I.err
+#
+# Power control, step 1 -- 3 cohorts x 5 draws = 15 null models.
+#
+# These cannot be inherited. The null model is fitted to the phenotype vector, and
+# each draw has a different set of cases, so each needs its own fit. That is the
+# whole cost of this control and it is about 8 minutes per cohort.
+#
+# GRM genotypes are the BROAD arm's, because the draws are subsets of the broad
+# cohort, not of the bilateral one. Using the bilateral arm's PCA files would miss
+# drawn cases that the bilateral restriction had excluded.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+PC=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_5/power_control
+BROAD=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_elena_replication
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+OUT=${PC}/results/step1
+
+COHORTS=(combined EUR AFR)
+I=$(( LSB_JOBINDEX - 1 ))
+COHORT=${COHORTS[$(( I / 5 ))]}
+DRAW=$(( I % 5 + 1 ))
+
+case ${COHORT} in
+  combined) PLINK=${ELENA}/rarevariantExWAS/exome_ldpruned/ALL.common_ldpruned
+            COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4,PC5" ;;
+  EUR)      PLINK=${BROAD}/phase_3/data/pca/EUR.common_ldpruned
+            COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3,PC4" ;;
+  AFR)      PLINK=${BROAD}/phase_3/data/pca/AFR.common_ldpruned
+            COVARS="AGE,AGE2,SEX,Batch,PC1,PC2,PC3" ;;
+esac
+
+PHENO=${PC}/data/${COHORT}_draw${DRAW}.txt
+TAG=${COHORT}_draw${DRAW}
+for F in ${PHENO} ${PLINK}.bed ${PLINK}.bim ${PLINK}.fam; do
+  [ -s "${F}" ] || { echo "MISSING: ${F}" >&2; exit 1; }
+done
+
+mkdir -p ${OUT}/${TAG}
+echo "power control step 1 -- ${TAG}"
+echo "  pheno : ${PHENO}  ($(( $(wc -l < ${PHENO}) - 1 )) samples)"
+echo "  GRM   : ${PLINK}"
+echo "  start : $(date)"
+
+apptainer exec -B /project -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step1_fitNULLGLMM.R \
+  --plinkFile=${PLINK} \
+  --phenoFile=${PHENO} \
+  --phenoCol=PHENO \
+  --covarColList=${COVARS} \
+  --qCovarColList=SEX,Batch \
+  --sampleIDColinphenoFile=IID \
+  --traitType=binary \
+  --outputPrefix=${OUT}/${TAG}/${TAG} \
+  --outputPrefix_varRatio=${OUT}/${TAG}/${TAG}.varianceRatio.txt \
+  --IsOverwriteVarianceRatioFile=TRUE \
+  --nThreads=8
+
+echo "${TAG} done : $(date)"

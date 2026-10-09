@@ -1,0 +1,144 @@
+#!/bin/bash
+#BSUB -J exwas_s2_bil[1-66]
+#BSUB -q epistasis_normal
+#BSUB -n 4
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 8:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral/phase_4/logs/s2.%J.%I.err
+#
+# Phase 4 -- SAIGE single-variant step 2. 3 cohorts x 22 chromosomes = 66 tasks.
+#
+# There is no step 1 here. The null model is inherited from the burden arm
+# (premise P3): same people, same phenotype, same covariates, same GRM, so the
+# fitted model is identical and refitting it would only re-pay for 1.45 billion
+# relatedness pairs. Elena's own config did this -- step1_outdir points at her
+# rare-variant run.
+#
+# WHAT IS ABSENT, AND WHY
+#   --groupFile                no genes. Each variant is tested on its own, so
+#                              there is nothing to group and no mask to apply.
+#   --maxMAF_in_groupTest      the MAF grid belongs to the burden arm. Here a
+#                              single floor replaces it.
+#   --annotation_in_groupTest  no functional classes. Annotation does not decide
+#                              what is tested in this arm; it is applied to
+#                              whatever clears a bar, in phase 5 (premise P9).
+#   --is_no_weight_in_groupTest, --is_single_in_groupTest
+#                              both are group-test options.
+# Dropping --groupFile is what puts SAIGE in single-variant mode. Nothing else
+# selects it.
+#
+# ON --minMAF AND --minMAC
+# SAIGE uses "the higher threshold between minMAC and minMAF". With minMAF=0.01
+# the MAC implied is ~1,150 in combined and ~227 in AFR, so minMAF always binds
+# and minMAC=1 does nothing. It is kept because Elena's config sets min_mac = 1,
+# and fidelity to her filter is the point of this arm.
+#
+# EXPECTED ROW COUNTS -- an upper bound, not an equality
+# The phase 2 census counted, per cohort and chromosome, how many variants sit at
+# MAF >= 0.01 according to plink2. SAIGE applies its own filter, and the two do
+# not agree exactly, because they compute MAF over different denominators:
+#
+#   plink2  ALT_CTS / OBS_CT   -- observed genotypes only
+#   SAIGE   ALT_CTS / 2N       -- the whole cohort
+#
+# So for any variant with missing genotypes, plink2's MAF is the higher of the
+# two, and a variant can sit above 1% for plink2 and below it for SAIGE. The
+# reverse cannot happen. Verified on AFR chr1, where all 6 of the 6 differing
+# variants matched that prediction exactly and none went the other way; across
+# all 66 cells every one of the 41 discrepancies was in the same direction.
+#
+# The practical effect: SAIGE's floor is slightly STRICTER than a nominal 1% for
+# any variant carrying missingness. At 5% missing it requires an observed MAF of
+# about 1.053%.
+#
+# So the census is an upper bound. The check below enforces that, plus a cap on
+# how far short a cell may fall -- the largest observed shortfall was 6 variants
+# in a cell of 11,887 (0.05%), so anything past 0.5% is a real failure and not
+# this mechanism.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+BASE=/project/hall/analysis/hearing-loss-genomics/analysis/exwas_pmbb_bilateral
+BURDEN=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_pmbb_bilateral
+GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/plink_deduplicated
+STEP1=${BURDEN}/phase_4/results/step1
+OUT=${BASE}/phase_4/results/step2
+
+# COHORTS, not GROUPS: GROUPS is a bash special variable holding unix GIDs.
+COHORTS=(combined EUR AFR)
+
+I=$(( LSB_JOBINDEX - 1 ))
+COHORT=${COHORTS[$(( I / 22 ))]}
+CHR=$(( I % 22 + 1 ))
+
+PLINK=${GENO}/chr${CHR}_deduplicated
+MODEL=${STEP1}/${COHORT}/${COHORT}.rda
+# Doubled suffix is literal: a full filename was passed to --outputPrefix_varRatio
+# in the burden arm's step 1, where SAIGE wanted a stem.
+VARRATIO=${STEP1}/${COHORT}/${COHORT}.varianceRatio.txt.varianceRatio.txt
+RESULT=${OUT}/${COHORT}/${COHORT}_chr${CHR}.txt
+
+for F in ${PLINK}.bed ${PLINK}.bim ${PLINK}.fam ${MODEL} ${VARRATIO}; do
+  [ -s "${F}" ] || { echo "MISSING or EMPTY INPUT: ${F}" >&2; exit 1; }
+done
+
+mkdir -p ${OUT}/${COHORT}
+echo "===================================="
+echo "SAIGE step 2 -- single variant, MAF >= 0.01, bilateral sensorineural"
+echo "task   : ${LSB_JOBINDEX} / 66"
+echo "cohort : ${COHORT}"
+echo "chrom  : ${CHR}  ($(wc -l < ${PLINK}.bim) variants on file)"
+echo "model  : ${MODEL}  (inherited, premise P3)"
+echo "out    : ${RESULT}"
+echo "start  : $(date)"
+echo "===================================="
+
+apptainer exec -B /project -B /project/hall -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed \
+  --bimFile=${PLINK}.bim \
+  --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${MODEL} \
+  --varianceRatioFile=${VARRATIO} \
+  --SAIGEOutputFile=${RESULT} \
+  --minMAF=0.01 \
+  --minMAC=1 \
+  --LOCO=FALSE \
+  --is_Firth_beta=TRUE \
+  --is_output_moreDetails=TRUE \
+  --is_overwrite_output=TRUE
+
+# The row count must equal the phase 2 census for this exact cell. SAIGE creates
+# the output file when the task STARTS, so existence proves nothing -- that lesson
+# cost us 15 empty cells in the burden arm's merge.
+HIST=${BASE}/phase_2/results/census/${COHORT}.chr${CHR}.afreq.alt1.bins
+CEILING=$(awk 'NR>1 && ($1=="0.01"||$1=="0.05"||$1=="0.95") {s+=$2} END {print s+0}' ${HIST})
+GOT=$(( $(wc -l < ${RESULT}) - 1 ))
+SHORT=$(( CEILING - GOT ))
+echo "rows: ${GOT}   plink2 ceiling: ${CEILING}   shortfall: ${SHORT}"
+
+if [ "${GOT}" -le 0 ]; then
+  echo "REFUSING: ${COHORT} chr${CHR} produced no tested variants" >&2
+  exit 1
+fi
+if [ "${SHORT}" -lt 0 ]; then
+  echo "REFUSING: ${COHORT} chr${CHR} tested ${GOT}, above the plink2 ceiling of ${CEILING}." >&2
+  echo "SAIGE's denominator is larger than plink2's, so it cannot test MORE variants." >&2
+  echo "This is not the missingness mechanism -- something else is wrong." >&2
+  exit 1
+fi
+# 0.5% is 10x the largest shortfall seen across all 66 cells.
+if [ "${SHORT}" -gt $(( CEILING / 200 )) ]; then
+  echo "REFUSING: ${COHORT} chr${CHR} tested ${GOT} of a possible ${CEILING}," >&2
+  echo "a shortfall of ${SHORT} (>0.5%). Too large for the missingness mechanism." >&2
+  exit 1
+fi
+
+echo "done : $(date)"
+ls -lh ${RESULT}

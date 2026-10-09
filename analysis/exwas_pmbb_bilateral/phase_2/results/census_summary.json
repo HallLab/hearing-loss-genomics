@@ -1,0 +1,60 @@
+{
+  "cohorts": {
+    "combined": {
+      "variants_on_file": 13223743,
+      "variants_tested": 70374,
+      "secondary_bar": 7.104896694802058e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12059248,
+        "0.0001": 848438,
+        "0.001": 245683,
+        "0.01": 35237,
+        "0.05": 35137,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "EUR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 74585,
+      "secondary_bar": 6.703760809814306e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12478297,
+        "0.0001": 543115,
+        "0.001": 127746,
+        "0.01": 37854,
+        "0.05": 36731,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "AFR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 118083,
+      "secondary_bar": 4.2343097651651806e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 11929126,
+        "0.0001": 888795,
+        "0.001": 287739,
+        "0.01": 86447,
+        "0.05": 31636,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    }
+  },
+  "premise": "P6",
+  "tested_definition": "MAF >= 0.01"
+}

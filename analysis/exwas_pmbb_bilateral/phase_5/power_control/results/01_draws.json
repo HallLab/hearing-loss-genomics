@@ -1,0 +1,123 @@
+{
+  "seed": 20261009,
+  "n_draws": 5,
+  "draws": {
+    "combined": {
+      "source": "analysis/gene_burden_elena_replication/phase_3/results/covariates/corrected_combined_covariates.txt",
+      "broad_cases": 6752,
+      "controls": 50746,
+      "cases_kept": 3164,
+      "cases_dropped": 3588,
+      "files": [
+        {
+          "draw": 1,
+          "file": "combined_draw1.txt",
+          "samples": 53910,
+          "cases": 3164
+        },
+        {
+          "draw": 2,
+          "file": "combined_draw2.txt",
+          "samples": 53910,
+          "cases": 3164
+        },
+        {
+          "draw": 3,
+          "file": "combined_draw3.txt",
+          "samples": 53910,
+          "cases": 3164
+        },
+        {
+          "draw": 4,
+          "file": "combined_draw4.txt",
+          "samples": 53910,
+          "cases": 3164
+        },
+        {
+          "draw": 5,
+          "file": "combined_draw5.txt",
+          "samples": 53910,
+          "cases": 3164
+        }
+      ]
+    },
+    "EUR": {
+      "source": "analysis/gene_burden_elena_replication/phase_3/results/covariates/corrected_EUR_covariates.txt",
+      "broad_cases": 5183,
+      "controls": 37596,
+      "cases_kept": 2547,
+      "cases_dropped": 2636,
+      "files": [
+        {
+          "draw": 1,
+          "file": "EUR_draw1.txt",
+          "samples": 40143,
+          "cases": 2547
+        },
+        {
+          "draw": 2,
+          "file": "EUR_draw2.txt",
+          "samples": 40143,
+          "cases": 2547
+        },
+        {
+          "draw": 3,
+          "file": "EUR_draw3.txt",
+          "samples": 40143,
+          "cases": 2547
+        },
+        {
+          "draw": 4,
+          "file": "EUR_draw4.txt",
+          "samples": 40143,
+          "cases": 2547
+        },
+        {
+          "draw": 5,
+          "file": "EUR_draw5.txt",
+          "samples": 40143,
+          "cases": 2547
+        }
+      ]
+    },
+    "AFR": {
+      "source": "analysis/gene_burden_elena_replication/phase_3/results/covariates/corrected_AFR_covariates.txt",
+      "broad_cases": 1285,
+      "controls": 10049,
+      "cases_kept": 490,
+      "cases_dropped": 795,
+      "files": [
+        {
+          "draw": 1,
+          "file": "AFR_draw1.txt",
+          "samples": 10539,
+          "cases": 490
+        },
+        {
+          "draw": 2,
+          "file": "AFR_draw2.txt",
+          "samples": 10539,
+          "cases": 490
+        },
+        {
+          "draw": 3,
+          "file": "AFR_draw3.txt",
+          "samples": 10539,
+          "cases": 490
+        },
+        {
+          "draw": 4,
+          "file": "AFR_draw4.txt",
+          "samples": 10539,
+          "cases": 490
+        },
+        {
+          "draw": 5,
+          "file": "AFR_draw5.txt",
+          "samples": 10539,
+          "cases": 490
+        }
+      ]
+    }
+  }
+}
