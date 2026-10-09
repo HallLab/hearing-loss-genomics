@@ -50,20 +50,42 @@ Significant Results Total: 6", lists:
 | ZFPM1 | chr16:88533289:A:C | EUR | 2.46e-10 |
 | ZFPM1 | chr16:88533290:G:C | EUR | 2.52e-10 |
 
-Three unique variants. Each was searched for in five places:
+Three unique variants. **All three exist in the PMBB v4 release, and all three fail the
+quality filter the poster itself describes.**
 
-| searched | found |
-|---|---|
-| `plink_deduplicated/chr{15,16}_deduplicated.bim` | **no** |
-| `plink_deduplicated/chr{15,16}_allele_ids.bim` (pre-deduplication) | **no** |
-| her raw SAIGE output, `HL_only_ExWAS/saige_results/` | **no** |
-| her annotated results, `HL_ExWAS_FullyAnnotated_AllVariants_*.csv` | **no** |
-| our merged results | **no** |
+The poster's methods read: *"variants with a genotype call rate < 0.99 and a Minor Allele
+Frequency (MAF) < 0.01 were removed."* Measured on the release:
 
-Deduplication removed 2 variants on chr15 and 3 on chr16, so it is not the explanation.
-The positions sit in dense regions — chr15 has tested variants at 40611381, 40611396,
-40611397, 40611403 and 40611412, roughly 15 bp apart — so the region is covered while
-the exact position is not.
+| variant | missing | call rate | MAF | poster p |
+|---|---:|---:|---:|---:|
+| `chr15_40611486_A_G` | 56,646 / 70,925 | **0.2013** | 0.284 | 3.51e-12 |
+| `chr16_88533289_A_C` | 2,717 / 70,925 | 0.9617 | 0.295 | 2.46e-10 |
+| `chr16_88533290_G_C` | 3,736 / 70,925 | 0.9473 | 0.283 | 2.52e-10 |
+
+**The KNL1 variant carrying the 3.51e-12 is genotyped in 20% of the cohort.** 79.9% of
+participants have no call at that position. Differential missingness between cases and
+controls is the standard way such a variant produces an enormous spurious p-value, and
+excluding it is precisely what a call-rate filter is for.
+
+### Where each was dropped
+
+| stage | chr16 variants | poster variants present |
+|---|---:|---|
+| PMBB v4 release | 780,404 | yes |
+| her `variant_qc/chr16_callrate.bim` | 670,730 | **yes** |
+| her `plink_deduplicated/chr16_allele_ids.bim` | 662,670 | no |
+| her `chr16_deduplicated.bim` | 662,667 | no |
+
+The chr15 variant (call rate 0.20) was removed at the `variant_qc` stage. The two chr16
+variants survived it and were dropped at the `allele_ids` stage.
+
+A true 0.99 call-rate filter applied to the release leaves **475,376** variants on chr16.
+Her `chr16_callrate.bim` holds **670,730**. So the stage named for call rate is not
+filtering at 0.99 — it is considerably more permissive, which is how two variants at
+0.96 and 0.95 passed through it.
+
+The variants are absent from her raw SAIGE output, her annotated tables and our merged
+results, which is consistent: by the time step 2 ran they were gone.
 
 Where the genes *are* present, they carry no signal:
 
@@ -72,34 +94,33 @@ Where the genes *are* present, they carry no signal:
 | KNL1 | 7 variants, 40,621,979–40,657,328, best p **0.33** | 3.51e-12 at 40,611,486 |
 | ZFPM1 | 7 variants, 88,453,619–88,534,952, best p **0.26** | 2.46e-10 at 88,533,289 |
 
-The ZFPM1 poster position falls inside the range of her tested variants; the KNL1
-position sits about 10 kb below hers.
-
 ### What this is, and what it is not
 
-**It is not a failed replication.** We reproduce her delivered results at r ≈ 0.98–0.99.
-What cannot be reproduced is a set of variants that is absent from the genotypes, from
-her raw SAIGE output, and from her own annotated tables.
+**It is not a disagreement between our results and hers.** We reproduce her delivered
+results at r ≈ 0.98–0.99, and her own `Significance` column reads "Not significant"
+throughout. The poster disagrees with her own pipeline's output, not with ours.
 
-The most likely explanation is chronology rather than error: the poster was prepared
-during the summer, and the delivered files are dated 2 October, uploaded by Nikki on the
-day of the meeting — after Doug questioned the common-variant results and Nikki offered
-to "adjust … and resend those values". A revised run on a reworked variant set would
-produce exactly this pattern.
+The sequence that fits: the poster was prepared over the summer from a run that still
+contained low-call-rate variants; the QC was later tightened and the variant set reworked;
+the delivered files are dated 2 October, uploaded on the day of the meeting, and contain
+nothing significant. Doug's reaction in that meeting — *"I wasn't excited about any of
+those genes"* and *"if the variants that associated were not pathogenic, then I didn't
+understand the value of that"* — turns out to have been right for a more concrete reason
+than was available to him at the time.
 
-**The open question for the group is which variant set produced the poster's six hits**,
-because it is not the one in `rarevariant_geneburden/plink_deduplicated/`. Until that is
-answered, the poster's numbers and the delivered numbers cannot be placed on the same
-axis, and neither this arm nor any future one can be said to have replicated or failed
-to replicate them.
+**This is what a replication is for.** The arm Doug deprioritised as "just contributing
+noise" is the one that produced the most consequential finding of the project so far, and
+it did so by failing to reproduce a result rather than by finding one.
 
 ### Consequence for premise P7
 
 P7 named KNL1 and ZFPM1 as "declared targets" whose p-values this arm would report
 whatever they are. That is still done — they are reported above, at p 0.26 and 0.33 in
-her data and with no variant of ours clearing any bar. But the premise assumed a target
-that existed in the data to be hit or missed. It does not. P7 has been rewritten to say
-so rather than left standing as though the comparison were clean.
+her data and with no variant of ours clearing any bar.
+
+But the premise assumed a target that could be hit or missed. The three variants behind
+it fail the poster's own stated QC, so there was never a result there to replicate. P7 is
+amended to say that, rather than left standing as though the comparison were clean.
 
 ---
 
