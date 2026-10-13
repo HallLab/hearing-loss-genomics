@@ -1,0 +1,218 @@
+{
+  "cohorts": {
+    "combined": {
+      "Elena": {
+        "n": 57632,
+        "cases": 6712,
+        "controls": 50920
+      },
+      "Replication": {
+        "n": 57498,
+        "cases": 6752,
+        "controls": 50746
+      },
+      "Bilateral": {
+        "n": 53910,
+        "cases": 3164,
+        "controls": 50746
+      }
+    },
+    "EUR": {
+      "Elena": {
+        "n": 43016,
+        "cases": 5160,
+        "controls": 37856
+      },
+      "Replication": {
+        "n": 42779,
+        "cases": 5183,
+        "controls": 37596
+      },
+      "Bilateral": {
+        "n": 40143,
+        "cases": 2547,
+        "controls": 37596
+      }
+    },
+    "AFR": {
+      "Elena": {
+        "n": 11387,
+        "cases": 1279,
+        "controls": 10108
+      },
+      "Replication": {
+        "n": 11334,
+        "cases": 1285,
+        "controls": 10049
+      },
+      "Bilateral": {
+        "n": 10539,
+        "cases": 490,
+        "controls": 10049
+      }
+    }
+  },
+  "exwas": {
+    "combined": {
+      "Elena": {
+        "tested": 70429,
+        "declared_n_tests": 70429,
+        "min_p": 2.565945e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 7.099348279827913e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Replication": {
+        "tested": 70366,
+        "min_p": 3.01644e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 7.105704459540119e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Bilateral": {
+        "tested": 70350,
+        "min_p": 3.079439e-05,
+        "bar_primary": 5e-08,
+        "bar_secondary": 7.107320540156362e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      }
+    },
+    "EUR": {
+      "Elena": {
+        "tested": 74528,
+        "declared_n_tests": 74528,
+        "min_p": 1.985446e-05,
+        "bar_primary": 5e-08,
+        "bar_secondary": 6.708887934735938e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Replication": {
+        "tested": 74536,
+        "min_p": 2.116137e-05,
+        "bar_primary": 5e-08,
+        "bar_secondary": 6.708167865192659e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Bilateral": {
+        "tested": 74566,
+        "min_p": 9.473053e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 6.705468980500496e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      }
+    },
+    "AFR": {
+      "Elena": {
+        "tested": 117943,
+        "declared_n_tests": 117943,
+        "min_p": 3.69612e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 4.239335950416727e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Replication": {
+        "tested": 117953,
+        "min_p": 4.108922e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 4.2389765415038196e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      },
+      "Bilateral": {
+        "tested": 118049,
+        "min_p": 1.073871e-06,
+        "bar_primary": 5e-08,
+        "bar_secondary": 4.235529314098383e-07,
+        "hits_primary": 0,
+        "hits_secondary": 0
+      }
+    }
+  },
+  "burden": {
+    "combined": {
+      "Elena": {
+        "genes": 19042,
+        "cell_tests": 160672,
+        "min_cell_p": 3.33138383867837e-06,
+        "best_gene": "TMC3-AS1",
+        "bar": 9.334627735045923e-07,
+        "hits": 0
+      },
+      "Replication": {
+        "genes": 17943,
+        "min_omnibus_p": 3.0151295949853996e-05,
+        "best_gene": "PSG8",
+        "bar": 2.786602017499861e-06,
+        "hits": 0,
+        "min_cell_p": 4.21416448725953e-06
+      },
+      "Bilateral": {
+        "genes": 17941,
+        "min_omnibus_p": 2.05218293898302e-05,
+        "best_gene": "PCBD1",
+        "bar": 2.7869126581572935e-06,
+        "hits": 0,
+        "min_cell_p": 4.8452404618482e-06
+      }
+    },
+    "EUR": {
+      "Elena": {
+        "genes": 18939,
+        "cell_tests": 159587,
+        "min_cell_p": 9.05487101143798e-06,
+        "best_gene": "TMC3-AS1",
+        "bar": 2.07176778388951e-06,
+        "hits": 0
+      },
+      "Replication": {
+        "genes": 17928,
+        "min_omnibus_p": 6.905988850580691e-05,
+        "best_gene": "ATP13A4",
+        "bar": 2.788933511825078e-06,
+        "hits": 0,
+        "min_cell_p": 1.53667322401185e-05
+      },
+      "Bilateral": {
+        "genes": 17921,
+        "min_omnibus_p": 1.36587372316624e-05,
+        "best_gene": "FBXO25",
+        "bar": 2.7900228781876014e-06,
+        "hits": 0,
+        "min_cell_p": 1.51763747018471e-06
+      }
+    },
+    "AFR": {
+      "Elena": {
+        "genes": 18680,
+        "cell_tests": 151171,
+        "min_cell_p": 4.95366693697985e-06,
+        "best_gene": "IGSF9",
+        "bar": 9.877518767285659e-07,
+        "hits": 0
+      },
+      "Replication": {
+        "genes": 17789,
+        "min_omnibus_p": 2.1680768442888798e-05,
+        "best_gene": "CFH",
+        "bar": 2.810725729383327e-06,
+        "hits": 0,
+        "min_cell_p": 7.22823550812557e-06
+      },
+      "Bilateral": {
+        "genes": 17778,
+        "min_omnibus_p": 9.1395602938027e-06,
+        "best_gene": "IGSF9",
+        "bar": 2.812464844189448e-06,
+        "hits": 0,
+        "min_cell_p": 3.39972973595337e-06
+      }
+    }
+  }
+}
