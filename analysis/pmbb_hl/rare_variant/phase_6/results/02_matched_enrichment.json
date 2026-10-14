@@ -1,0 +1,36 @@
+{
+  "draws": 2000,
+  "seed": 20261014,
+  "log10_mac_window": 0.1,
+  "top_n": 50,
+  "arms": {
+    "broad_combined": {
+      "observed": 5,
+      "draw_mean": 0.198,
+      "draw_max": 3,
+      "draw_distribution": {
+        "0": 1641,
+        "1": 324,
+        "2": 33,
+        "3": 2
+      },
+      "empirical_p": 0.0,
+      "clingen_median_mac": 453.0,
+      "others_median_mac": 190.0
+    },
+    "broad_EUR": {
+      "observed": 2,
+      "draw_mean": 0.238,
+      "draw_max": 3,
+      "draw_distribution": {
+        "0": 1573,
+        "1": 383,
+        "2": 39,
+        "3": 5
+      },
+      "empirical_p": 0.022,
+      "clingen_median_mac": 251.0,
+      "others_median_mac": 107.0
+    }
+  }
+}
