@@ -89,11 +89,38 @@ Nenhuma chegou perto de nenhuma das duas.
 **1. O MHC.** Nossos PCs (4 e 3) deixam inflação naquela região que os dela (9 e 10) não
 deixam — λ de 1,34 no EUR contra 0,97 dela.
 
-- *Se perguntarem:* é real e eu reporto por iniciativa própria, não por ser pego. Fora do
-  MHC as duas rodadas são indistinguíveis (λ 0,99 contra 0,99). E λ de 1,34 em 1.032
-  variantes não fabrica um resultado em 5e-8 — o menor p do EUR é 2,12e-05.
-- *O que não fazer:* minimizar. É uma limitação nossa e está no documento com o mesmo
-  peso dos defeitos dela.
+<details>
+<summary><b>O que isso quer dizer, destrinchado</b></summary>
+
+**MHC** = cromossomo 6, posições 28,5 a 33,4 milhões. Os genes do sistema imune. É a
+região mais variável do genoma, e é onde as frequências de alelo mais diferem entre
+ancestralidades — populações diferentes enfrentaram patógenos diferentes.
+
+**PCs** = alguns números por pessoa que resumem a ancestralidade genética dela. Entram no
+modelo para dizer ao teste: *não credite a um gene uma diferença que é de ancestralidade*.
+Sem eles, um alelo comum em europeus pareceria associado à doença só porque há mais
+europeus entre os casos.
+
+**λ = 1,34** = naquela região, nossos p-valores estão 34% menores do que deveriam. Não é
+um gene associado; é viés de fundo afetando a região inteira.
+
+**Por que acontece:** 4 PCs capturam os eixos grandes de ancestralidade e perdem a
+estrutura fina. Na maior parte do genoma a estrutura fina não importa. No MHC importa.
+</details>
+
+- *Se perguntarem*, três fatos, nesta ordem:
+  1. **Fora do MHC somos indistinguíveis dela** — λ 0,995 contra 0,992 no EUR.
+  2. **Nada no MHC chegou perto.** Nosso melhor resultado do EUR (`3:133755303:T:G`,
+     gene `TF`) **não está no MHC**. O melhor *dentro* do MHC é **p = 2,67e-03**, contra
+     uma barra de 5e-8 — cinco ordens de grandeza de distância.
+  3. **Corrigir por λ pioraria os p-valores, não melhoraria.** Um p de 1e-05 corrigido
+     por 1,339 vira 1,35e-04, 13,5× pior. Ou seja, a inflação nos faz *superestimar*
+     significância ali — ela não pode ter criado um achado falso, só inflado números que
+     já eram irrelevantes. É a direção segura do erro.
+
+- *O que não fazer:* minimizar. É limitação nossa e está no documento com o mesmo peso
+  dos defeitos dela. E tem consequência real: **qualquer análise futura que foque o MHC
+  não deve herdar 4 PCs** — ali a escolha dela é a certa.
 
 **2. Os braços de ExWAS herdam coorte, covariáveis e modelo nulo dos de burden.**
 Se aquelas pastas mudarem, os ExWAS ficam desatualizados e nada avisa.
