@@ -1,0 +1,401 @@
+{
+  "clingen_sha256": "67b27ac88081d4e3e566454da7f930d6ee579e6db8a7b561f818da76675ee0df",
+  "clingen_genes": 167,
+  "arms": {
+    "broad_combined": {
+      "definitive_strong": {
+        "genes_tested": 17943,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 5,
+            "expected": 0.259,
+            "p": 5.913701953749668e-06,
+            "genes": [
+              "SIX1",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6"
+            ]
+          },
+          "100": {
+            "observed": 5,
+            "expected": 0.518,
+            "p": 0.00017139720823923274,
+            "genes": [
+              "SIX1",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6"
+            ]
+          },
+          "250": {
+            "observed": 6,
+            "expected": 1.296,
+            "p": 0.001911848420829462,
+            "genes": [
+              "SIX1",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6",
+              "ACTG1"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17943,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 6,
+            "expected": 0.312,
+            "p": 6.56731045422408e-07,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6"
+            ]
+          },
+          "100": {
+            "observed": 7,
+            "expected": 0.624,
+            "p": 3.0335754584361946e-06,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6",
+              "ATP11A"
+            ]
+          },
+          "250": {
+            "observed": 8,
+            "expected": 1.56,
+            "p": 0.0001734804844432038,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "GJB3",
+              "COCH",
+              "TMPRSS3",
+              "MYO6",
+              "ATP11A",
+              "ACTG1"
+            ]
+          }
+        }
+      }
+    },
+    "broad_EUR": {
+      "definitive_strong": {
+        "genes_tested": 17928,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 2,
+            "expected": 0.259,
+            "p": 0.027755206637233056,
+            "genes": [
+              "SIX1",
+              "TPRN"
+            ]
+          },
+          "100": {
+            "observed": 2,
+            "expected": 0.519,
+            "p": 0.09513003457333997,
+            "genes": [
+              "SIX1",
+              "TPRN"
+            ]
+          },
+          "250": {
+            "observed": 3,
+            "expected": 1.297,
+            "p": 0.14058950417841126,
+            "genes": [
+              "SIX1",
+              "TPRN",
+              "TMPRSS3"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17928,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 3,
+            "expected": 0.312,
+            "p": 0.0037578163497943144,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "TPRN"
+            ]
+          },
+          "100": {
+            "observed": 4,
+            "expected": 0.625,
+            "p": 0.0035719930820181187,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "TPRN",
+              "ATP11A"
+            ]
+          },
+          "250": {
+            "observed": 5,
+            "expected": 1.562,
+            "p": 0.020364996035966053,
+            "genes": [
+              "SIX1",
+              "EPS8L2",
+              "TPRN",
+              "ATP11A",
+              "TMPRSS3"
+            ]
+          }
+        }
+      }
+    },
+    "broad_AFR": {
+      "definitive_strong": {
+        "genes_tested": 17789,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.261,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.523,
+            "p": 0.40881969002311946,
+            "genes": [
+              "GJB3"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.307,
+            "p": 0.3766901952165672,
+            "genes": [
+              "GJB3",
+              "DNMT1"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17789,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.315,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.63,
+            "p": 0.4691960769594014,
+            "genes": [
+              "GJB3"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.574,
+            "p": 0.46853750661905164,
+            "genes": [
+              "GJB3",
+              "DNMT1"
+            ]
+          }
+        }
+      }
+    },
+    "bilateral_combined": {
+      "definitive_strong": {
+        "genes_tested": 17941,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.259,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.518,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 0,
+            "expected": 1.296,
+            "p": 1.0,
+            "genes": []
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17941,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.312,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.624,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 1,
+            "expected": 1.561,
+            "p": 0.7933158401347329,
+            "genes": [
+              "ATP11A"
+            ]
+          }
+        }
+      }
+    },
+    "bilateral_EUR": {
+      "definitive_strong": {
+        "genes_tested": 17921,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.259,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.519,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 1,
+            "expected": 1.297,
+            "p": 0.7301485901745117,
+            "genes": [
+              "SLITRK6"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17921,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.312,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.625,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.562,
+            "p": 0.46470341954397076,
+            "genes": [
+              "ATP11A",
+              "SLITRK6"
+            ]
+          }
+        }
+      }
+    },
+    "bilateral_AFR": {
+      "definitive_strong": {
+        "genes_tested": 17778,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.262,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.523,
+            "p": 0.4090129750434198,
+            "genes": [
+              "GJB3"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.308,
+            "p": 0.3769794448296842,
+            "genes": [
+              "GJB3",
+              "LMX1A"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17778,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.315,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.63,
+            "p": 0.46940529582505813,
+            "genes": [
+              "GJB3"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.575,
+            "p": 0.4688588606896275,
+            "genes": [
+              "GJB3",
+              "LMX1A"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
