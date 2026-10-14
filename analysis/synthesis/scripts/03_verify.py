@@ -73,6 +73,24 @@ for arm, pat, label in [
         claim(f"cohort {c}/{label}", None, (cases, len(rows)),
               lambda x: f"{x[0]:,} / {x[1]:,}")
 
+# -- the analysable-vs-tested gap, so the two cohort numbers cannot drift apart again
+for arm, key, label in [
+    ("gene_burden_elena_replication", "phase_3/results/03_covariates_manifest.json",
+     "Replication"),
+    ("gene_burden_pmbb_bilateral", "phase_3/results/03_covariates.json", "Bilateral"),
+]:
+    m = json.loads((ANALYSIS / arm / key).read_text())
+    block = m["arms"]["corrected"] if "arms" in m else m["cohorts"]
+    for c, k in block.items():
+        req = k.get("requested")
+        wrote = k.get("written")
+        if req and wrote and req != wrote:
+            claim(f"analysable {c}/{label}", None, req, lambda x: f"{x:,}")
+            # every drop must be a control, or the case counts in the table are wrong
+            cases = k.get("cases")
+            if cases is not None:
+                checks.append((f"no cases dropped {c}/{label}", str(cases), True))
+
 # -- the poster variants, from the audit
 pa = json.loads((ANALYSIS / "exwas_elena_replication/phase_5/results"
                  "/poster_audit.json").read_text())

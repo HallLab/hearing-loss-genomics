@@ -38,7 +38,17 @@ posso chamar de "replicação do bilateral"**.
 | **Variante rara chega ~10× mais perto** que variante comum | burden 1,9–25× · ExWAS 21–616× |
 | **A replicação do ExWAS bate com a entrega dela** | r = 0,98–0,99 · 99,9% das variantes em comum |
 | **O único resultado positivo** | genes de surdez do ClinGen no topo do burden: 5 no top-50 contra 0,26 esperado, **p = 5,9e-06** |
-| **Coorte** | 6.752 casos (amplo) · 3.164 (bilateral) · ~50.746 controles nos dois |
+| **Coorte** | 6.752 casos (amplo) · 3.164 (bilateral) · 50.746 controles nos dois |
+
+> **Cuidado com dois números de coorte.** A fase 1 diz **57.507** (a coorte analisável);
+> as tabelas de resultado dizem **57.498** (o que o SAIGE testou). A diferença são 9
+> pessoas sem valor de idade, derrubadas na fase 3 — e **as 9 são controles**, nenhum
+> caso se perde. Vale o mesmo para o EUR (42.786 → 42.779, 7 controles) e para o
+> bilateral (53.919 → 53.910, as mesmas 9 pessoas). O AFR não perde ninguém.
+>
+> *Se alguém apontar a diferença:* os dois números estão certos e medem coisas
+> diferentes. 57.507 é a coorte, 57.498 é o teste. Se eu citar um número de coorte num
+> slide de resultado, uso o testado.
 
 ---
 

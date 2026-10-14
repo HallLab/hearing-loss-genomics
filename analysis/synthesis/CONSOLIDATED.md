@@ -32,16 +32,34 @@ Elena never ran a bilateral analysis; that column is new work, not replication.
 
 ### Cohorts
 
+**Cases, and the sample count SAIGE actually tested:**
+
 | cohort | Elena | Replication | Bilateral |
 |---|---|---|---|
 | combined | 6,712 / 57,632 | 6,752 / 57,498 | 3,164 / 53,910 |
 | EUR | 5,160 / 43,016 | 5,183 / 42,779 | 2,547 / 40,143 |
 | AFR | 1,279 / 11,387 | 1,285 / 11,334 | 490 / 10,539 |
 
-*cases / total.* The replication's cohort differs from the original by **+40 cases and
-−174 controls** in combined, from two defects found in the case/control rule. The
-bilateral cohort is **nested inside** the replication's: the same 50,746 controls, and
-every one of its 3,164 cases is also a case there.
+> **Two cohort numbers exist for our arms, and this table shows the second.** Phase 1
+> defines the *analysable* cohort — everyone the phenotype can call a case or a control.
+> Phase 3 then drops anyone missing a covariate, and what is left is what SAIGE tested:
+>
+> | | analysable | tested | dropped | why |
+> |---|---:|---:|---:|---|
+> | Replication combined | **57,507** | 57,498 | 9 | no `AGE` value |
+> | Replication EUR | 42,786 | 42,779 | 7 | no `AGE` value |
+> | Bilateral combined | 53,919 | 53,910 | 9 | the same 9 people |
+> | Bilateral EUR | 40,150 | 40,143 | 7 | the same 7 people |
+>
+> **Every dropped person is a control; no case is lost anywhere**, so the case counts in
+> the table are the phase 1 counts unchanged. AFR loses nobody. If a number from the
+> phase 1 documents does not match this table, that is the reason — 57,507 is the cohort,
+> 57,498 is the test.
+
+The replication's cohort differs from the original by **+40 cases and −174 controls** in
+combined, from two defects found in the case/control rule. The bilateral cohort is
+**nested inside** the replication's: the same 50,746 controls, and every one of its 3,164
+cases is also a case there.
 
 ---
 
