@@ -1,0 +1,65 @@
+{
+  "primary_bar": 5e-08,
+  "arms": {
+    "broad_combined": {
+      "tested": 70366,
+      "plink2_ceiling": 70383,
+      "shortfall": 17,
+      "secondary_bar": 7.105704459540119e-07,
+      "min_p": 2.132997e-06,
+      "best_variant": "20:33064486:G:A",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "broad_EUR": {
+      "tested": 74536,
+      "plink2_ceiling": 74553,
+      "shortfall": 17,
+      "secondary_bar": 6.708167865192659e-07,
+      "min_p": 2.473988e-05,
+      "best_variant": "3:133755303:T:G",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "broad_AFR": {
+      "tested": 117953,
+      "plink2_ceiling": 117996,
+      "shortfall": 43,
+      "secondary_bar": 4.2389765415038196e-07,
+      "min_p": 4.08317e-06,
+      "best_variant": "7:31775671:C:G",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "bilateral_combined": {
+      "tested": 70350,
+      "plink2_ceiling": 70374,
+      "shortfall": 24,
+      "secondary_bar": 7.107320540156362e-07,
+      "min_p": 2.880281e-05,
+      "best_variant": "7:150692505:T:C",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "bilateral_EUR": {
+      "tested": 74566,
+      "plink2_ceiling": 74585,
+      "shortfall": 19,
+      "secondary_bar": 6.705468980500496e-07,
+      "min_p": 1.660536e-05,
+      "best_variant": "19:44819634:C:T",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "bilateral_AFR": {
+      "tested": 118049,
+      "plink2_ceiling": 118083,
+      "shortfall": 34,
+      "secondary_bar": 4.235529314098383e-07,
+      "min_p": 7.672101e-07,
+      "best_variant": "7:158133844:C:T",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    }
+  }
+}

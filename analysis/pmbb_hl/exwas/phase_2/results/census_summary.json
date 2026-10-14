@@ -1,0 +1,114 @@
+{
+  "cohorts": {
+    "broad_combined": {
+      "variants_on_file": 13223743,
+      "variants_tested": 70383,
+      "secondary_bar": 7.103988178963671e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12080815,
+        "0.0001": 826073,
+        "0.001": 246472,
+        "0.01": 35251,
+        "0.05": 35132,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "broad_EUR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 74553,
+      "secondary_bar": 6.70663823052057e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12448698,
+        "0.0001": 572134,
+        "0.001": 128358,
+        "0.01": 37825,
+        "0.05": 36728,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "broad_AFR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 117996,
+      "secondary_bar": 4.237431777348385e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 11869076,
+        "0.0001": 944450,
+        "0.001": 292221,
+        "0.01": 86371,
+        "0.05": 31625,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "bilateral_combined": {
+      "variants_on_file": 13223743,
+      "variants_tested": 70374,
+      "secondary_bar": 7.104896694802058e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12059248,
+        "0.0001": 848438,
+        "0.001": 245683,
+        "0.01": 35237,
+        "0.05": 35137,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "bilateral_EUR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 74585,
+      "secondary_bar": 6.703760809814306e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12478297,
+        "0.0001": 543115,
+        "0.001": 127746,
+        "0.01": 37854,
+        "0.05": 36731,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "bilateral_AFR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 118083,
+      "secondary_bar": 4.2343097651651806e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 11929126,
+        "0.0001": 888795,
+        "0.001": 287739,
+        "0.01": 86447,
+        "0.05": 31636,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    }
+  },
+  "premise": "P6",
+  "tested_definition": "MAF >= 0.01"
+}

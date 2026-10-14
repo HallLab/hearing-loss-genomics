@@ -1,0 +1,57 @@
+#!/bin/bash
+#BSUB -J hl_census[1-132]
+#BSUB -q epistasis_normal
+#BSUB -n 4
+#BSUB -M 24000
+#BSUB -R "select[mem>=24000] rusage[mem=24000]"
+#BSUB -W 2:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/exwas/phase_2/logs/census.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/exwas/phase_2/logs/census.%J.%I.err
+#
+# Phase 2 -- MAF census, 2 phenotypes x 3 cohorts x 22 chromosomes = 132 tasks.
+#
+# WHY IT RUNS TWICE. MAF is a property of the sample set. The bilateral cohort is not a
+# relabelling of the broad one -- it has 3,588 fewer cases -- so a variant can clear 1%
+# in one and not the other, and the denominator of the secondary bar differs.
+#
+# WHAT IT WRITES. A histogram, not a per-variant file: the boundaries sit at every
+# threshold this project might want, so another cutoff is a recount rather than a re-read
+# of 600 GB of genotypes.
+#
+# ON THE MIRROR BINS. plink2 reports ALT1 frequency, which is not MAF: an ALT allele at
+# 0.995 has MAF 0.005. So MAF >= 0.01 is ALT1 frequency in [0.01, 0.99], and the bins
+# above 0.95 are included to measure that rather than assume REF is always major.
+#
+set -euo pipefail
+PLINK2=/appl/plink2-20240804/plink2
+P=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/exwas/phase_2
+GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/plink_deduplicated
+OUT=${P}/results/census
+
+PHENOS=(broad bilateral)
+COHORTS=(combined EUR AFR)
+I=$(( LSB_JOBINDEX - 1 ))
+PHENO=${PHENOS[$(( I / 66 ))]}
+COHORT=${COHORTS[$(( (I / 22) % 3 ))]}
+CHR=$(( I % 22 + 1 ))
+TAG=${PHENO}_${COHORT}
+
+KEEP=${P}/data/${TAG}.keep
+BFILE=${GENO}/chr${CHR}_deduplicated
+STEM=${OUT}/${TAG}.chr${CHR}
+
+for F in ${KEEP} ${BFILE}.bed ${BFILE}.bim ${BFILE}.fam; do
+  [ -s "${F}" ] || { echo "MISSING or EMPTY: ${F}" >&2; exit 1; }
+done
+mkdir -p ${OUT}
+
+${PLINK2} --bfile ${BFILE} --keep ${KEEP} \
+  --freq bins-only alt1bins=0.0001,0.001,0.01,0.05,0.95,0.99,0.999,0.9999 \
+  --out ${STEM} --threads 4 --memory 20000
+
+HIST=${STEM}.afreq.alt1.bins
+[ -s "${HIST}" ] || { echo "plink2 wrote no histogram: ${HIST}" >&2; exit 1; }
+SUM=$(awk 'NR>1 {s+=$2} END {print s+0}' ${HIST})
+BIM=$(wc -l < ${BFILE}.bim)
+[ "${SUM}" -eq "${BIM}" ] || { echo "REFUSING: histogram sums to ${SUM}, .bim has ${BIM}" >&2; exit 1; }
+echo "${TAG} chr${CHR}: ${SUM} variants binned, matches .bim"
