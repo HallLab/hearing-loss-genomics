@@ -1,0 +1,94 @@
+{
+  "pc_source": "release exome PCA",
+  "rule": "80% of the top-20 variance",
+  "arms": {
+    "broad": {
+      "combined": {
+        "analysable": 57507,
+        "written": 57498,
+        "dropped_for_missing": 9,
+        "missing_by_column": {
+          "AGE": 9,
+          "AGE2": 9
+        },
+        "cases": 6752,
+        "controls": 50746,
+        "n_pcs": 11,
+        "variance_pct": 80.3,
+        "pc_source": "release exome combined",
+        "file": "broad_combined.txt"
+      },
+      "EUR": {
+        "analysable": 42786,
+        "written": 42779,
+        "dropped_for_missing": 7,
+        "missing_by_column": {
+          "AGE": 7,
+          "AGE2": 7
+        },
+        "cases": 5183,
+        "controls": 37596,
+        "n_pcs": 15,
+        "variance_pct": 83.3,
+        "pc_source": "release exome EUR",
+        "file": "broad_EUR.txt"
+      },
+      "AFR": {
+        "analysable": 11334,
+        "written": 11334,
+        "dropped_for_missing": 0,
+        "missing_by_column": {},
+        "cases": 1285,
+        "controls": 10049,
+        "n_pcs": 16,
+        "variance_pct": 84.1,
+        "pc_source": "release exome AFR",
+        "file": "broad_AFR.txt"
+      }
+    },
+    "bilateral": {
+      "combined": {
+        "analysable": 53919,
+        "written": 53910,
+        "dropped_for_missing": 9,
+        "missing_by_column": {
+          "AGE": 9,
+          "AGE2": 9
+        },
+        "cases": 3164,
+        "controls": 50746,
+        "n_pcs": 11,
+        "variance_pct": 80.3,
+        "pc_source": "release exome combined",
+        "file": "bilateral_combined.txt"
+      },
+      "EUR": {
+        "analysable": 40150,
+        "written": 40143,
+        "dropped_for_missing": 7,
+        "missing_by_column": {
+          "AGE": 7,
+          "AGE2": 7
+        },
+        "cases": 2547,
+        "controls": 37596,
+        "n_pcs": 15,
+        "variance_pct": 83.3,
+        "pc_source": "release exome EUR",
+        "file": "bilateral_EUR.txt"
+      },
+      "AFR": {
+        "analysable": 10539,
+        "written": 10539,
+        "dropped_for_missing": 0,
+        "missing_by_column": {},
+        "cases": 490,
+        "controls": 10049,
+        "n_pcs": 16,
+        "variance_pct": 84.1,
+        "pc_source": "release exome AFR",
+        "file": "bilateral_AFR.txt"
+      }
+    }
+  }
+}

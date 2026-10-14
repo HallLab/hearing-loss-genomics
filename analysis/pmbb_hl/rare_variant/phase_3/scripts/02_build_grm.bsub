@@ -1,0 +1,58 @@
+#!/bin/bash
+#BSUB -J grm[1-2]
+#BSUB -q epistasis_normal
+#BSUB -n 4
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 6:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_3/logs/grm.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_3/logs/grm.%J.%I.err
+#
+# Phase 3 -- LD-pruned genotypes for the GRM, EUR and AFR.
+#
+# WHY THIS IS REBUILT AND THE PCA IS NOT. These are two different artefacts and the
+# first pass conflated them. The release's exome PCA covers 100% of the analysable
+# cohort, so there is nothing to fix there. The original run's pruned genotypes are a
+# different matter: they were built over a keep list that had already been cut, and
+# 196 EUR and 34 AFR members of the corrected cohort are absent from them. SAIGE
+# intersects its phenotype file with the GRM, so those people would be dropped from
+# the analysis without any message.
+#
+# SCOPE. Everyone with exome data in the ancestry group (EUR 51,867, AFR 14,927), not
+# the analysis cohort. The GRM describes relatedness between people and does not
+# depend on which phenotype is being tested, so one build serves both arms -- and a
+# later difference between the arms stays attributable to the cohort.
+#
+# COMBINED IS NOT REBUILT. The original's ALL.common_ldpruned covers all 70,925, so it
+# has no gap. It does carry a separate problem, recorded in FINDINGS and not silently
+# fixed here: --hwe 1e-6 applied across ancestries removes far more than the same
+# filter applied within one, leaving the combined GRM thinner than the EUR one despite
+# more samples.
+#
+# PARAMETERS are the original's own, unchanged, so that the only difference is the
+# sample set.
+#
+set -euo pipefail
+module load plink/1.9-20210416
+P=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_3
+IN=/static/PMBB/PMBB-Release-2026-4.0/Exome/all_variants_NF/PMBB-Release-2026-4.0_genetic_exome.nf.all_chromosomes
+OUT=${P}/data/grm
+
+GROUPS_=(EUR AFR)
+G=${GROUPS_[$(( LSB_JOBINDEX - 1 ))]}
+KEEP=${P}/data/${G}.keep
+[ -s "${KEEP}" ] || { echo "MISSING: ${KEEP}" >&2; exit 1; }
+mkdir -p ${OUT}
+
+echo "group: ${G}   keep: $(wc -l < ${KEEP}) samples"
+plink --bfile ${IN} --keep ${KEEP} --allow-extra-chr --autosome \
+      --geno 0.01 --maf 0.01 --hwe 1e-6 --make-bed --out ${OUT}/${G}.common
+plink --bfile ${OUT}/${G}.common --allow-extra-chr \
+      --indep-pairwise 50 5 0.2 --out ${OUT}/${G}.ldprune
+plink --bfile ${OUT}/${G}.common --allow-extra-chr \
+      --extract ${OUT}/${G}.ldprune.prune.in --make-bed --out ${OUT}/${G}.common_ldpruned
+
+N=$(wc -l < ${OUT}/${G}.common_ldpruned.fam)
+M=$(wc -l < ${OUT}/${G}.common_ldpruned.bim)
+echo "${G}: ${N} samples, ${M} markers after pruning"
+[ "${N}" -eq "$(wc -l < ${KEEP})" ] || { echo "REFUSING: kept ${N}, expected $(wc -l < ${KEEP})" >&2; exit 1; }
