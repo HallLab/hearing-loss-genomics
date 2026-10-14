@@ -1,0 +1,75 @@
+{
+  "release": "PMBB-Release-2026-4.0",
+  "exome_cohort": 70925,
+  "controls": 50755,
+  "min_dates": 2,
+  "arms": {
+    "broad": {
+      "cases": 6752,
+      "controls": 50755,
+      "analysable": 57507,
+      "excluded_one_date_only": 4007,
+      "excluded_other_ear": 9411,
+      "by_ancestry": {
+        "AFR": {
+          "cases": 1285,
+          "controls": 10049
+        },
+        "AMR": {
+          "cases": 75,
+          "controls": 769
+        },
+        "EAS": {
+          "cases": 102,
+          "controls": 1002
+        },
+        "EUR": {
+          "cases": 5183,
+          "controls": 37603
+        },
+        "SAS": {
+          "cases": 70,
+          "controls": 800
+        },
+        "UNK": {
+          "cases": 37,
+          "controls": 532
+        }
+      }
+    },
+    "bilateral": {
+      "cases": 3164,
+      "controls": 50755,
+      "analysable": 53919,
+      "excluded_one_date_only": 2695,
+      "excluded_other_ear": 14311,
+      "by_ancestry": {
+        "AFR": {
+          "cases": 490,
+          "controls": 10049
+        },
+        "AMR": {
+          "cases": 37,
+          "controls": 769
+        },
+        "EAS": {
+          "cases": 43,
+          "controls": 1002
+        },
+        "EUR": {
+          "cases": 2547,
+          "controls": 37603
+        },
+        "SAS": {
+          "cases": 32,
+          "controls": 800
+        },
+        "UNK": {
+          "cases": 15,
+          "controls": 532
+        }
+      }
+    }
+  },
+  "bilateral_nested_in_broad": true
+}
