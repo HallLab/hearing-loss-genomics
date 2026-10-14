@@ -1,0 +1,16 @@
+#!/bin/bash
+#BSUB -J masks[1-22]
+#BSUB -q epistasis_normal
+#BSUB -n 2
+#BSUB -M 16000
+#BSUB -R "select[mem>=16000] rusage[mem=16000]"
+#BSUB -W 2:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_2/logs/mask.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_2/logs/mask.%J.%I.err
+#
+# Phase 2 -- one chromosome per task. The release VEP is 106 GB; the first pass read
+# it serially. Splitting it lets a single bad chromosome fail loudly rather than
+# poisoning the whole run, and chr21 takes 9 seconds.
+#
+set -euo pipefail
+python3 /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_2/scripts/01_build_masks.py ${LSB_JOBINDEX}

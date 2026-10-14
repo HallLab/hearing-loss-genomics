@@ -1,0 +1,26 @@
+{
+  "source": "release VEP, rebuilt per chromosome",
+  "annotation_rows_in_cohort": 139846060,
+  "fixes": {
+    "dropped_not_protein_coding": 71443642,
+    "splice_rejected_by_spliceai_gate": 2780725,
+    "pdm_from_revel": 1366320,
+    "pdm_from_alphamissense": 1437808,
+    "plof_by_exact_term": 1038387,
+    "plof_by_spliceai_gate": 426418
+  },
+  "masks": {
+    "pLOF": {
+      "genes": 17841,
+      "entries": 462144
+    },
+    "pDM": {
+      "genes": 17623,
+      "entries": 890332
+    },
+    "pLOF_pDM": {
+      "genes": 17945,
+      "entries": 1340936
+    }
+  }
+}
