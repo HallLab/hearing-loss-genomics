@@ -1,0 +1,55 @@
+#!/bin/bash
+#BSUB -J pcx_s1[1-2]
+#BSUB -q epistasis_normal
+#BSUB -n 8
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 4:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pc_choice/logs/s1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pc_choice/logs/s1.%J.%I.err
+#
+# PC choice experiment, step 1 -- one null model per arm.
+# The GRM is the same in both arms: only the PC covariates differ, so any
+# difference in the readout is attributable to the PCs and to nothing else.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+PC=/project/hall/analysis/hearing-loss-genomics/analysis/pc_choice
+REPL=/project/hall/analysis/hearing-loss-genomics/analysis/gene_burden_elena_replication
+PLINK=${REPL}/phase_3/data/pca/EUR.common_ldpruned
+OUT=${PC}/results/step1
+
+ARMS=(A_exome10 B_imputed9)
+NPCS=(10 9)
+I=$(( LSB_JOBINDEX - 1 ))
+ARM=${ARMS[$I]}
+N=${NPCS[$I]}
+
+PHENO=${PC}/data/EUR_${ARM}.txt
+COVARS="AGE,AGE2,SEX,Batch$(for k in $(seq 1 $N); do printf ',PC%s' $k; done)"
+
+for F in ${PHENO} ${PLINK}.bed ${PLINK}.bim ${PLINK}.fam; do
+  [ -s "${F}" ] || { echo "MISSING: ${F}" >&2; exit 1; }
+done
+mkdir -p ${OUT}/${ARM}
+echo "arm: ${ARM}   PCs: ${N}"
+echo "covars: ${COVARS}"
+echo "pheno : ${PHENO}  ($(( $(wc -l < ${PHENO}) - 1 )) samples)"
+echo "start : $(date)"
+
+apptainer exec -B /project -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step1_fitNULLGLMM.R \
+  --plinkFile=${PLINK} \
+  --phenoFile=${PHENO} \
+  --phenoCol=PHENO \
+  --covarColList=${COVARS} \
+  --qCovarColList=SEX,Batch \
+  --sampleIDColinphenoFile=IID \
+  --traitType=binary \
+  --outputPrefix=${OUT}/${ARM}/${ARM} \
+  --outputPrefix_varRatio=${OUT}/${ARM}/${ARM}.varianceRatio.txt \
+  --IsOverwriteVarianceRatioFile=TRUE \
+  --nThreads=8
+echo "${ARM} done : $(date)"
