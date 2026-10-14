@@ -1,0 +1,110 @@
+{
+  "q_bar": 0.1,
+  "alpha": 0.05,
+  "arms": {
+    "broad_combined": {
+      "genes": 17943,
+      "cells": 159948,
+      "duplicate_cells_dropped": 1542,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1100,
+        "pDM == pLOF;pDM": 442
+      },
+      "bonferroni_bar": 2.786602017499861e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 2.8835660537518404e-05,
+      "min_q": 0.19838248476213394,
+      "best_gene": "BPTF",
+      "differs_from_saige_cauchy": 715,
+      "compared_to_saige_cauchy": 17943
+    },
+    "broad_EUR": {
+      "genes": 17928,
+      "cells": 159179,
+      "duplicate_cells_dropped": 2164,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1366,
+        "pDM == pLOF;pDM": 798
+      },
+      "bonferroni_bar": 2.788933511825078e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 3.311960188306928e-05,
+      "min_q": 0.47701380116613734,
+      "best_gene": "GYS2",
+      "differs_from_saige_cauchy": 481,
+      "compared_to_saige_cauchy": 17928
+    },
+    "broad_AFR": {
+      "genes": 17789,
+      "cells": 153251,
+      "duplicate_cells_dropped": 6512,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 2575,
+        "pDM == pLOF;pDM": 3937
+      },
+      "bonferroni_bar": 2.810725729383327e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 1.395084266558877e-05,
+      "min_q": 0.24817154017815862,
+      "best_gene": "CFH",
+      "differs_from_saige_cauchy": 875,
+      "compared_to_saige_cauchy": 17789
+    },
+    "bilateral_combined": {
+      "genes": 17941,
+      "cells": 159859,
+      "duplicate_cells_dropped": 1614,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1138,
+        "pDM == pLOF;pDM": 475,
+        "pDM == pLOF": 1
+      },
+      "bonferroni_bar": 2.7869126581572935e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 2.0614840249344457e-05,
+      "min_q": 0.23935841074153982,
+      "best_gene": "PCBD1",
+      "differs_from_saige_cauchy": 525,
+      "compared_to_saige_cauchy": 17941
+    },
+    "bilateral_EUR": {
+      "genes": 17921,
+      "cells": 159007,
+      "duplicate_cells_dropped": 2271,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1409,
+        "pDM == pLOF;pDM": 861,
+        "pDM == pLOF": 1
+      },
+      "bonferroni_bar": 2.7900228781876014e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 6.326047797988732e-06,
+      "min_q": 0.11336910258775607,
+      "best_gene": "FBXO25",
+      "differs_from_saige_cauchy": 424,
+      "compared_to_saige_cauchy": 17921
+    },
+    "bilateral_AFR": {
+      "genes": 17778,
+      "cells": 152749,
+      "duplicate_cells_dropped": 6911,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 2717,
+        "pDM == pLOF;pDM": 4194
+      },
+      "bonferroni_bar": 2.812464844189448e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 1.4587014742939441e-05,
+      "min_q": 0.2593279480999774,
+      "best_gene": "IGSF9",
+      "differs_from_saige_cauchy": 787,
+      "compared_to_saige_cauchy": 17778
+    }
+  }
+}

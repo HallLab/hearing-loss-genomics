@@ -1,0 +1,84 @@
+#!/bin/bash
+#BSUB -J rv_s1[1-6]
+#BSUB -q epistasis_normal
+#BSUB -n 8
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 8:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/logs/s1.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/logs/s1.%J.%I.err
+#
+# Phase 4, step 1 -- six null models: 2 phenotypes x 3 cohorts.
+#
+# Fits the expectation of who is a case from age, sex, batch, ancestry and relatedness,
+# WITHOUT looking at any gene, and produces the residuals step 2 tests against. The
+# relatedness term is the expensive part and does not depend on the gene, which is why
+# this runs once and every step 2 task reuses it.
+#
+# PCs ARE THE RELEASE'S, at the count reaching 80% of the variance: 11 combined, 15 EUR,
+# 16 AFR. See phase 3 -- the first pass recomputed a PCA to close a gap that did not
+# exist, and this rebuild removes that divergence.
+#
+# GRM: EUR and AFR rebuilt in phase 3, because the original's pruned genotypes miss 196
+# and 34 cohort members. Combined reuses the original's ALL set, which covers all 70,925.
+#
+# Batch is declared categorical. Without --qCovarColList, SAIGE reads batch 1/2/3 as a
+# quantity and assumes batch 2 sits halfway between 1 and 3.
+#
+# COHORTS, not GROUPS: GROUPS is a bash special variable holding unix GIDs, and
+# ${GROUPS[2]} silently returns a group id instead of a cohort name.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+P=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4
+COV=${P}/../phase_3/results/covariates
+GRM=${P}/../phase_3/data/grm
+ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
+OUT=${P}/results/step1
+
+PHENOS=(broad bilateral)
+COHORTS=(combined EUR AFR)
+I=$(( LSB_JOBINDEX - 1 ))
+PHENO=${PHENOS[$(( I / 3 ))]}
+COHORT=${COHORTS[$(( I % 3 ))]}
+
+case ${COHORT} in
+  combined) PLINK=${ELENA}/rarevariantExWAS/exome_ldpruned/ALL.common_ldpruned; NPC=11 ;;
+  EUR)      PLINK=${GRM}/EUR.common_ldpruned;  NPC=15 ;;
+  AFR)      PLINK=${GRM}/AFR.common_ldpruned;  NPC=16 ;;
+esac
+COVARS="AGE,AGE2,SEX,Batch$(for k in $(seq 1 ${NPC}); do printf ',PC%s' $k; done)"
+PHENOFILE=${COV}/${PHENO}_${COHORT}.txt
+TAG=${PHENO}_${COHORT}
+
+for F in ${PHENOFILE} ${PLINK}.bed ${PLINK}.bim ${PLINK}.fam; do
+  [ -s "${F}" ] || { echo "MISSING: ${F}" >&2; exit 1; }
+done
+mkdir -p ${OUT}/${TAG}
+
+echo "===================================="
+echo "SAIGE step 1 -- ${TAG}"
+echo "pheno  : ${PHENOFILE}  ($(( $(wc -l < ${PHENOFILE}) - 1 )) samples)"
+echo "GRM    : ${PLINK}  ($(wc -l < ${PLINK}.bim) markers)"
+echo "covars : ${COVARS}"
+echo "start  : $(date)"
+echo "===================================="
+
+apptainer exec -B /project -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step1_fitNULLGLMM.R \
+  --plinkFile=${PLINK} \
+  --phenoFile=${PHENOFILE} \
+  --phenoCol=PHENO \
+  --covarColList=${COVARS} \
+  --qCovarColList=SEX,Batch \
+  --sampleIDColinphenoFile=IID \
+  --traitType=binary \
+  --outputPrefix=${OUT}/${TAG}/${TAG} \
+  --outputPrefix_varRatio=${OUT}/${TAG}/${TAG} \
+  --IsOverwriteVarianceRatioFile=TRUE \
+  --nThreads=8
+
+echo "${TAG} done : $(date)"
+ls -lh ${OUT}/${TAG}

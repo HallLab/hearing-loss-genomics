@@ -1,0 +1,77 @@
+#!/bin/bash
+#BSUB -J rv_s2[1-132]
+#BSUB -q epistasis_normal
+#BSUB -n 4
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 8:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/logs/s2.%J.%I.err
+#
+# Phase 4, step 2 -- 2 phenotypes x 3 cohorts x 22 chromosomes = 132 tasks.
+#
+# THE WHOLE GRID IN ONE CALL. --maxMAF_in_groupTest takes a comma list and
+# --annotation_in_groupTest takes the three annotation sets, so one invocation produces
+# all nine cells per gene instead of nine invocations producing one each. The first pass
+# learned this the expensive way: its replication arm ran 594 tasks where 66 would do.
+#
+# SAIGE ALSO EMITS ITS OWN Cauchy ROW per gene, combining the nine cells. We do not use
+# it. Measured on the first pass's chr21: SAIGE's Cauchy equals an ACAT over ALL cells in
+# 36 of 36 genes that contain duplicates, which means it combines the duplicate twice.
+# The merge recomputes the omnibus after removing duplicates -- see 04_merge_results.py.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+P=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4
+GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/plink_deduplicated
+STEP1=${P}/results/step1
+MASKS=${P}/data/masks_by_chrom
+OUT=${P}/results/step2
+
+PHENOS=(broad bilateral)
+COHORTS=(combined EUR AFR)
+I=$(( LSB_JOBINDEX - 1 ))
+PHENO=${PHENOS[$(( I / 66 ))]}
+COHORT=${COHORTS[$(( (I / 22) % 3 ))]}
+CHR=$(( I % 22 + 1 ))
+TAG=${PHENO}_${COHORT}
+
+PLINK=${GENO}/chr${CHR}_deduplicated
+MODEL=${STEP1}/${TAG}/${TAG}.rda
+VARRATIO=${STEP1}/${TAG}/${TAG}.varianceRatio.txt
+GROUPFILE=${MASKS}/chr${CHR}.txt
+RESULT=${OUT}/${TAG}/${TAG}_chr${CHR}.txt
+
+for F in ${PLINK}.bed ${MODEL} ${VARRATIO} ${GROUPFILE}; do
+  [ -s "${F}" ] || { echo "MISSING: ${F}" >&2; exit 1; }
+done
+mkdir -p ${OUT}/${TAG}
+
+echo "task ${LSB_JOBINDEX}/132 -- ${TAG} chr${CHR}  ($(( $(wc -l < ${GROUPFILE}) / 2 )) genes)"
+echo "start : $(date)"
+
+apptainer exec -B /project -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed --bimFile=${PLINK}.bim --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${MODEL} \
+  --varianceRatioFile=${VARRATIO} \
+  --groupFile=${GROUPFILE} \
+  --SAIGEOutputFile=${RESULT} \
+  --minMAF=0 \
+  --maxMAF_in_groupTest=0.0001,0.001,0.01 \
+  --minMAC=1 \
+  --annotation_in_groupTest="pLOF,pDM,pLOF:pDM" \
+  --LOCO=FALSE \
+  --is_Firth_beta=TRUE \
+  --is_single_in_groupTest=FALSE \
+  --is_output_moreDetails=TRUE \
+  --is_no_weight_in_groupTest=TRUE \
+  --is_overwrite_output=TRUE
+
+N=$(( $(wc -l < ${RESULT}) - 1 ))
+[ "${N}" -gt 0 ] || { echo "REFUSING: ${TAG} chr${CHR} produced no rows" >&2; exit 1; }
+echo "${TAG} chr${CHR}: ${N} rows"
+echo "done : $(date)"
