@@ -22,6 +22,15 @@ comparison below is clean.
 
 ![ClinGen](../figures/clingen.png)
 
+**How to read it.** Rank on x, p on y, so both bars are drawable — which they are not on
+a rank axis alone. Bonferroni is a single p-value and sits flat. **FDR is not a line at
+all**: Benjamini-Hochberg requires `p(k) ≤ (k/n)·q`, so its boundary rises with rank, and
+drawing it as a horizontal threshold would be wrong. A gene is significant where its
+point sits *above* one of the lines. None does, in any of the six cells.
+
+The ClinGen genes inside the top 50 are named — seven across all six arms, so the labels
+cost nothing, and naming all 93 would bury the point.
+
 Known deafness genes cluster at the top of the broad combined ranking far more than
 chance allows:
 

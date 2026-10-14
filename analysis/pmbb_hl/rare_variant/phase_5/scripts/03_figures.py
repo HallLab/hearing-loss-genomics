@@ -101,40 +101,78 @@ def fig_manhattan():
 
 
 def fig_clingen():
+    """Rank against p, which is the only axis pair on which BOTH bars are drawable.
+
+    The earlier version used rank alone. On a rank axis Bonferroni has no position --
+    it is a p-value threshold -- and FDR is not even a line: Benjamini-Hochberg requires
+    p(k) <= (k/n)*q, so its boundary rises with rank. Here rank is x and p is y, which
+    makes Bonferroni a horizontal line and the BH boundary the diagonal it actually is,
+    and the distance from each ClinGen gene to both is readable directly.
+
+    Only the ClinGen genes inside the top 50 are named: seven across the six arms, so
+    the labels cost nothing, and naming all 93 would bury the point.
+    """
     rep = json.loads((HERE / "results/02_enrichment.json").read_text())
     cg = pd.read_csv(HERE / "data/clingen_hl_genes.tsv", sep="\t")
     gene_set = set(cg[cg.best_classification.isin(["Definitive", "Strong"])].gene)
+    Q = 0.10
 
-    fig, axes = plt.subplots(3, 1, figsize=(11, 6.4), sharex=True)
-    for ax, cohort in zip(axes, COHORTS):
-        for i, pheno in enumerate(PHENOS):
+    fig, axes = plt.subplots(2, 3, figsize=(13.5, 7.6), sharey=True)
+    for r, pheno in enumerate(PHENOS):
+        for c, cohort in enumerate(COHORTS):
+            ax = axes[r, c]
             d = omnibus(pheno, cohort).sort_values("omnibus_p").reset_index(drop=True)
             d["rank"] = np.arange(1, len(d) + 1)
+            n = len(d)
+            bar = float(d.bonferroni_bar.iloc[0])
+
+            ax.plot(d["rank"], -np.log10(d.omnibus_p), color=INK_3, lw=1.0,
+                    zorder=1, label="all genes")
             hit = d[d.Region.isin(gene_set)]
-            y = 1 - i * 0.55
-            ax.scatter(hit["rank"], np.full(len(hit), y), s=26, marker="|",
-                       linewidths=1.3, color=PCOL[pheno])
+            ax.scatter(hit["rank"], -np.log10(hit.omnibus_p), s=22, zorder=3,
+                       color=PCOL[pheno], edgecolors=SURFACE, linewidths=0.6,
+                       label="ClinGen Definitive/Strong")
+
+            k = np.arange(1, n + 1)
+            ax.plot(k, -np.log10(k / n * Q), color="#1baf7a", lw=1.3, ls="-",
+                    zorder=2, label=f"FDR boundary, q = {Q:g}")
+            ax.axhline(-np.log10(bar), color="#c0392b", lw=1.3, zorder=2,
+                       label="Bonferroni, 0.05/genes")
+            ax.axvline(50, color=INK_3, lw=0.9, ls=":", zorder=1)
+
+            # staggered: in the combined arm five labels land within a few ranks
+            # of each other and stack illegibly at a fixed offset
+            top = hit[hit["rank"] <= 50].sort_values("rank")
+            for j, (_, g) in enumerate(top.iterrows()):
+                dy = 9 + (j % 3) * 11
+                ax.annotate(g.Region, (g["rank"], -np.log10(g.omnibus_p)),
+                            textcoords="offset points", xytext=(7, dy),
+                            fontsize=7.5, color=INK, fontweight="bold",
+                            arrowprops=dict(arrowstyle="-", lw=0.5, color=INK_3,
+                                            shrinkA=0, shrinkB=2))
+
             e = rep["arms"][f"{pheno}_{cohort}"]["definitive_strong"]["depths"]["50"]
-            # label ABOVE the strip: inline, the ticks run through the text
-            ax.text(1.05, y + 0.17, f"{pheno}: {e['observed']} in top 50 "
-                                    f"(expected {e['expected']:.2f}, "
-                                    f"p = {e['p']:.1e})",
-                    fontsize=7.5, va="center", color=INK_2)
-        ax.axvline(50, color="#c0392b", lw=1.0, ls="--")
-        ax.set_xscale("log")
-        ax.set_xlim(0.9, 2e4)
-        ax.set_ylim(0.15, 1.42)
-        ax.set_yticks([])
-        ax.set_ylabel(cohort, rotation=0, ha="right", va="center", fontsize=9.5)
-        ax.grid(axis="y", alpha=0)
-    axes[0].text(55, 1.33, "top 50", fontsize=7.5, color="#c0392b")
-    axes[-1].set_xlabel("rank of the gene among ~17,900, by omnibus p (log scale)")
-    fig.suptitle("Where the 93 tested ClinGen deafness genes fall in each ranking",
-                 fontsize=11.5, x=0.06, ha="left", y=1.03)
-    fig.text(0.06, 0.985, "each tick is one gene. The claim is about the ranking, not "
-             "about any gene: none of them is significant on its own.",
+            ax.set_xscale("log")
+            ax.set_xlim(0.8, 3e4)
+            ax.set_ylim(0, 6.4)
+            ax.set_title(f"{pheno} · {cohort}\n{e['observed']} ClinGen in top 50 "
+                         f"(expected {e['expected']:.2f}, p = {e['p']:.1e})",
+                         fontsize=8.5)
+            if c == 0:
+                ax.set_ylabel("$-\\log_{10}$ omnibus $p$")
+            if r == 1:
+                ax.set_xlabel("rank among ~17,900 genes (log)")
+    axes[0, 0].text(52, 0.25, "top 50", fontsize=7, color=INK_3)
+    axes[0, 2].legend(loc="upper right", fontsize=7)
+
+    fig.suptitle("Known deafness genes against both bars, in all six cells",
+                 fontsize=11.5, x=0.055, ha="left", y=1.0)
+    fig.text(0.055, 0.962,
+             "the FDR boundary rises with rank because Benjamini-Hochberg requires "
+             "p(k) \u2264 (k/n)\u00b7q — it is not a single threshold. A gene is "
+             "significant where its point sits ABOVE a line.",
              fontsize=8, color=INK_2, ha="left")
-    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.tight_layout(rect=(0, 0, 1, 0.945))
     fig.savefig(FIG / "clingen.png")
     plt.close(fig)
     return "clingen.png"
