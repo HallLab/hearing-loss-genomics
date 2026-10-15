@@ -127,6 +127,50 @@ duplicates**. Verified on the first pass's chr21: it equals an ACAT over all cel
 of 36 genes that contain duplicates, and over the deduplicated cells in only 35. The
 merge recomputes the omnibus itself.
 
+### A second kind of repeated cell, found 2026-10-15 — open
+
+The deduplication above is on one axis: **same cutoff, different mask**. There is a
+second axis it does not touch — **same mask, looser cutoff**. When a gene has no
+variants between two frequency ceilings, the looser cell contains exactly the variants
+of the tighter one and returns the identical p.
+
+`FBXO25` is the clean example and it is not a marginal one — it is the closest result
+this project has. Its 16 `pLOF` variants all sit below SAIGE's ultra-rare threshold
+(`n_rare = 0`), so its three `pLOF` cells are **one test counted three times**, and its
+best p enters the combination with weight 3/9 rather than 1/5.
+
+This is widespread, not exceptional: **56–68% of cells have at least one twin**,
+depending on the arm.
+
+**Neither treatment is invalid.** ACAT admits arbitrary non-negative weights, so the
+shipped `p_omnibus` is a legitimate p-value. But the weighting it implies is *"how many
+cutoffs did this test survive"*, which was never a stated choice and systematically
+favours genes whose signal is ultra-rare over genes whose signal appears only at looser
+cutoffs. That is a real asymmetry and it was not deliberate.
+
+| arm | min q, as reported | min q, counting each distinct test once |
+|---|---:|---:|
+| broad combined | 0.198 | 0.198 |
+| broad EUR | 0.477 | 0.446 |
+| broad AFR | 0.248 | 0.248 |
+| bilateral combined | 0.239 | 0.247 |
+| **bilateral EUR** | **0.113** | **0.188** |
+| bilateral AFR | 0.259 | 0.344 |
+| tinnitus combined | 0.343 | 0.411 |
+| tinnitus EUR | 0.712 | 0.801 |
+| tinnitus AFR | 0.496 | 0.608 |
+
+**No arm crosses any bar under either, in any cohort.** Nothing in this project's
+conclusions turns on the choice. One sentence does: `FBXO25` is "13% short of the FDR
+bar" as reported, and "88% short" with distinct tests — and since it is the nearest
+miss, that sentence gets quoted.
+
+**Status: open, and reported both ways.** Every cell carries `in_omnibus` (the dedup
+above, applied) and `is_representative` (this axis, not applied) in
+[`step2/all_cells.tsv`](step2/), alongside `p_omnibus` and `p_omnibus_distinct`, so the
+decision can be made on the numbers rather than inherited. It is worth raising with
+Nikki, since it is the same family of question she raised on 2026-10-14.
+
 ## One definitional choice, recorded
 
 11,540 variants are both pLOF and pDM. The SAIGE group file carries one annotation per
@@ -170,4 +214,7 @@ transient node failure seen twice before in this project. Re-run cleanly.
 | `results/omnibus_<phenotype>_<cohort>.tsv` | one row per gene: omnibus p, best cell, both bars, both verdicts |
 | `results/cells_<phenotype>_<cohort>.tsv` | the cells, before deduplication |
 | `results/04_merge.json` | counts, collisions, and the comparison against SAIGE's Cauchy |
-| `results/step1/`, `results/step2/` | SAIGE's own output |
+| **`results/step2/all_cells.tsv`** | **every cell of every arm in one table — 1.4M rows, gene × cohort × mask × MAF × p, with the omnibus joined on** |
+| **`results/step2/genes.tsv`** | **the same at gene level, 160,940 rows** |
+| `results/step2/README.md` | the columns, and a worked example |
+| `results/step1/`, `results/step2/<arm>/` | SAIGE's own output |
