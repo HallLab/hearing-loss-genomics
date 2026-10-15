@@ -10,12 +10,38 @@ Every number here is read from the file the phase that produced it wrote;
 
 ![How close](figures/how_close.png)
 
-**Twelve cells — two methods × two phenotypes × three cohorts. Nothing reaches its
-threshold in any of them.** The closest is 2.3× short; the furthest is 576×.
+**Eighteen cells across three runs — two methods × three runs × three cohorts. Nothing
+reaches its threshold in any of them.** The closest is 1.9× short; the furthest is 576×.
 
 The second thing the figure says is the useful one: **the rare-variant arms land an
-order of magnitude closer than the common-variant ones** — burden 2.3–12×, ExWAS
-15–576×.
+order of magnitude closer than the common-variant ones, in every run** — burden 1.9–13×,
+ExWAS 15–576×.
+
+| run | phenotype | what it is |
+|---|---|---|
+| **original run** | broad | the PMBB v4 analysis delivered in October |
+| **rebuild, broad** | broad | the same phenotype, this pipeline |
+| **rebuild, bilateral** | bilateral sensorineural | a phenotype the original never ran |
+
+> **The original run's burden figure is its omnibus recomputed by our method.** Its
+> delivered tables report **per-cell** p-values corrected within one MAF family —
+> `0.05/53,583` for combined, verified from its own `Pvalue_Bonferroni` column — across
+> the 160,672 cell tests it ran. Placing that beside our omnibus would compare a minimum
+> over nine times more tests. The figure instead uses the same ACAT over the same nine
+> cells for all three, so one quantity is judged by one rule.
+>
+> Its ExWAS figure needs no such adjustment: single-variant p against 5e-8 is the same
+> quantity in all three runs.
+
+### The original run is the closest of the three in combined, and the furthest in AFR
+
+Burden, combined: **1.9×** against our 10× and 7.4×. Burden, AFR: **13×** against our
+5.0× and 5.2×.
+
+Neither is a verdict on pipeline quality. The gene sets differ — its 19,042 genes
+include 651 antisense, 88 LINC and 14 microRNA genes that a `pLOF` mask should not
+contain, and more genes means both a looser bar and more chances at a small p. The
+comparison is here to show that **no run reaches its threshold**, not to rank them.
 
 ---
 

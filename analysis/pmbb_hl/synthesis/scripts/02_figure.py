@@ -26,14 +26,25 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parents[1]
 COHORTS = ["combined", "EUR", "AFR"]
-PHENOS = ["broad", "bilateral"]
-BLUE, ORANGE = "#2a78d6", "#eb6834"
+# Three series now. They are not three phenotypes: the original run and our broad arm
+# share a phenotype and differ in pipeline, while our bilateral arm is a different
+# phenotype we introduced. The original never ran bilateral, so there is no fourth.
+SERIES = ["original run", "rebuild, broad", "rebuild, bilateral"]
+BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"
 INK, INK_2, INK_3, SURFACE = "#1a1a19", "#5c5b55", "#8a8980", "#ffffff"
-PCOL = {"broad": BLUE, "bilateral": ORANGE}
+PCOL = {"original run": BLUE, "rebuild, broad": ORANGE,
+        "rebuild, bilateral": AQUA}
 
 
 def main():
-    d = json.loads((HERE / "results/consolidated.json").read_text())["cells"]
+    raw = json.loads((HERE / "results/consolidated.json").read_text())
+    d, elena = raw["cells"], raw["elena"]
+
+    def short(series, arm, cohort):
+        if series == "original run":
+            return elena[cohort][arm]["short_by"]
+        ph = "broad" if series.endswith("broad") else "bilateral"
+        return d[f"{arm}_{ph}_{cohort}"]["short_by"]
     plt.rcParams.update({
         "figure.dpi": 110, "savefig.dpi": 200, "savefig.bbox": "tight",
         "font.size": 9, "axes.spines.top": False, "axes.spines.right": False,
@@ -53,7 +64,7 @@ def main():
 
     for ax, (title, arm, note) in zip(axes, panels):
         for ci, cohort in enumerate(COHORTS[::-1]):
-            vals = [(p, d[f"{arm}_{p}_{cohort}"]["short_by"]) for p in PHENOS]
+            vals = [(s, short(s, arm, cohort)) for s in SERIES]
             ax.plot([min(v for _, v in vals), max(v for _, v in vals)],
                     [ci, ci], color=INK_3, lw=2, alpha=0.35,
                     solid_capstyle="round", zorder=1)
@@ -61,10 +72,17 @@ def main():
                 ax.plot(v, ci, "o", ms=9, color=PCOL[p], markeredgecolor=SURFACE,
                         markeredgewidth=2, zorder=3,
                         label=p if (ci == 2 and arm == "burden") else None)
+                # THREE distinct heights, not two alternating. With three series the
+                # first and third labels shared an offset, and wherever two runs agree
+                # closely -- 397x against 495x, 74x against 82x -- they overlapped
+                # into an unreadable smear.
+                dy = (22, -24, 9)[j]
                 ax.annotate(f"{v:.0f}×" if v >= 10 else f"{v:.1f}×",
-                            (v, ci), textcoords="offset points",
-                            xytext=(0, 11 if j == 0 else -17),
-                            ha="center", fontsize=7.5, color=INK_2)
+                            (v, ci), textcoords="offset points", xytext=(0, dy),
+                            ha="center", fontsize=7.5, color=INK_2,
+                            arrowprops=dict(arrowstyle="-", lw=0.4, color=INK_3,
+                                            shrinkA=0, shrinkB=4)
+                            if abs(dy) > 15 else None)
         ax.axvline(1.0, color=INK, lw=1.2, zorder=2)
         ax.annotate("threshold", xy=(1.0, -0.52), ha="center", va="center",
                     fontsize=7, color=INK)
@@ -72,7 +90,7 @@ def main():
         ax.set_yticklabels(COHORTS[::-1])
         ax.set_xscale("log")
         ax.set_xlim(0.72, 1400)
-        ax.set_ylim(-0.62, 2.62)
+        ax.set_ylim(-0.72, 2.78)
         ax.grid(axis="x", alpha=0.18, lw=0.5)
         ax.set_title(title, loc="left", fontweight="bold", pad=26)
         ax.text(0, 1.035, note, transform=ax.transAxes, fontsize=7.5,
@@ -80,12 +98,17 @@ def main():
 
     axes[-1].set_xlabel("how far the best result fell short of its own bar "
                         "(fold, log scale)")
-    axes[0].legend(loc="lower right", bbox_to_anchor=(1.0, 1.06), ncol=2,
+    axes[0].legend(loc="lower right", bbox_to_anchor=(1.0, 1.06), ncol=3,
                    fontsize=8.5, handletextpad=0.4, columnspacing=1.4)
-    fig.suptitle("Twelve cells. Nothing reaches its threshold in any of them.",
-                 fontsize=11.5, x=0.062, ha="left", y=1.105)
-    fig.text(0.062, 1.040, "and the rare-variant arms land an order of magnitude "
-             "closer than the common-variant ones", fontsize=9, color=INK_2, ha="left")
+    fig.suptitle("Eighteen cells across three runs. Nothing reaches its threshold "
+                 "in any of them.", fontsize=11.5, x=0.062, ha="left", y=1.125)
+    fig.text(0.062, 1.060, "the rare-variant arms land an order of magnitude closer "
+             "than the common-variant ones, in every run",
+             fontsize=9, color=INK_2, ha="left")
+    fig.text(0.062, 1.012, "the original run\u2019s burden figure is its omnibus "
+             "recomputed by our method \u2014 its delivered tables report per-cell "
+             "p-values corrected within one MAF family, which is not the same quantity",
+             fontsize=7.5, color=INK_3, ha="left")
 
     out = HERE / "figures/how_close.png"
     out.parent.mkdir(parents=True, exist_ok=True)

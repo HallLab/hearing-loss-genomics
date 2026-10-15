@@ -81,6 +81,43 @@ def main():
                 print(f"  {key:<26}{units:>9,}{minp:>11.2e}{bar:>11.2e}"
                       f"{minp/bar:>9.1f}x{hits:>6}")
 
+    # --- the original run, for comparison. Broad phenotype only: it never ran
+    # bilateral, so that column is new work rather than replication.
+    #
+    # Her burden omnibus is NOT her delivered p-value. Her tables report per-CELL
+    # p-values corrected within one MAF family (0.05/53,583 for combined, verified
+    # from her Pvalue_Bonferroni column) across the 160,672 cell tests she ran. Placing
+    # that beside our omnibus would compare a minimum over nine times more tests. So
+    # the figure uses her omnibus recomputed with the same ACAT over the same nine
+    # cells, from the first pass's three-way comparison, where all three are one
+    # quantity judged by one rule.
+    three_way = json.loads((ROOT.parent / "gene_burden_pmbb_bilateral/phase_5/results"
+                            / "09_three_way.json").read_text())
+    import csv
+    out["elena"] = {}
+    for c in COHORTS:
+        k = three_way["cohorts"][c]["arms"]["Elena"]
+        ps = []
+        f = (ROOT.parent / "elena/HL_only_ExWAS"
+             / f"HL_ExWAS_FullyAnnotated_AllVariants_{c}.csv")
+        with f.open() as fh:
+            for row in csv.DictReader(fh):
+                try:
+                    v = float(row["p.value"])
+                except (TypeError, ValueError):
+                    continue
+                if 0 < v <= 1:
+                    ps.append(v)
+        out["elena"][c] = {
+            "burden": {"units": k["genes"], "min_p": k["min_omnibus_p"],
+                       "bar": k["bar"], "short_by": k["min_omnibus_p"] / k["bar"]},
+            "exwas": {"units": len(ps), "min_p": min(ps), "bar": 5e-8,
+                      "short_by": min(ps) / 5e-8},
+        }
+        e = out["elena"][c]
+        print(f"  elena_{c:<20}burden {e['burden']['short_by']:>6.1f}x   "
+              f"exwas {e['exwas']['short_by']:>7.0f}x")
+
     out["matched_enrichment"] = matched["arms"]
     (OUT / "consolidated.json").write_text(json.dumps(out, indent=2) + "\n")
     print(f"\n  written: results/consolidated.json")
