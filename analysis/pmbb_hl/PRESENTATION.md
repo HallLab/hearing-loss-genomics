@@ -40,6 +40,42 @@ on the MAF filter; that is also what the original run did.*
 
 ---
 
+## 3b · What changed from the original run
+
+> **Same release, same variant calls, same SAIGE, same case rule.** The comparison is
+> like for like — only the four things below differ.
+>
+> | | original run | ours | why |
+> |---|---|---|---|
+> | **gene set** | 19,042 genes | **17,945** | theirs includes 651 antisense, 88 LINC and 14 microRNA genes. `pLOF` = predicted loss of function; a gene with no protein has none to lose |
+> | **splice variants** | `"splice"` matched as a substring | **`SpliceAI ≥ 0.2`** | the gate their own analysis plan specifies, never applied. It rejects 2.78M candidates and admits 426k |
+> | **pDM from REVEL** | multi-valued entries → `NaN` | **parsed as a list** | recovers 1,366,320 assignments — about ¾ of pDM. Found by Nikki Palmiero, 2026-10-05 |
+> | **PCs** | 5 / 9 / 10 → 64% / 61% / 59% of variance | **11 / 15 / 16 → 80% / 83% / 84%** | the 80% convention, on the release's own eigenvalues |
+>
+> **And how the nine cells become one answer:**
+>
+> | | original run | ours |
+> |---|---|---|
+> | combination | none — each cell reported separately | **ACAT omnibus**, one p per gene |
+> | duplicate cells | kept | **removed** before combining (Nikki, 2026-10-14) |
+> | correction | `0.05 / 53,583` within one MAF family, ×3 families | **`0.05 / 17,943` over genes**, plus FDR q < 0.10 |
+
+*The two bars are not comparable and that is the slide's one trap. Theirs is stricter per
+test — 9.3e-07 against our 2.8e-06 — but they have nine times more tests to hit it with.
+Minimum-over-160,672-cells against minimum-over-17,943-genes is not a ranking. Say this
+before anyone computes the ratio in their head.*
+
+*What the changes did NOT do is change the answer: nothing is significant in their run
+or in ours. The fixes are about being able to defend the gene list, not about rescuing a
+result.*
+
+*If asked how we know our pipeline is sound: on the ExWAS, where the methods barely
+differ, we reproduce their delivered files at Pearson r = 0.979–0.990 on −log₁₀p across
+70k–118k shared variants. We agree with their pipeline's output. The disagreement is
+with the poster, which is a separate matter — backup slide B1.*
+
+---
+
 ## 4 · Phenotypes
 
 > |  | definition | cases | analysable |
@@ -282,6 +318,37 @@ it could not be presented as a discovery. Full detail in `ZNF175.md`.*
 > Nine files each, `{broad,bilateral,tinnitus}_{combined,EUR,AFR}`.
 >
 > Each phase writes a `FINDINGS.md` beside its results.
+
+---
+
+## B1 · The poster, if it comes up
+
+> The summer poster reports **six genome-wide significant results** — `KNL1` and
+> `ZFPM1`, three unique variants across two cohorts.
+>
+> | variant | in the v4 release? | call rate | poster's own filter |
+> |---|---|---:|---|
+> | `chr15:40611486:A:G` | yes | **0.2013** | < 0.99 → should have been removed |
+> | `chr16:88533289:A:C` | yes | **0.9617** | < 0.99 → should have been removed |
+> | `chr16:88533290:G:C` | yes | **0.9473** | < 0.99 → should have been removed |
+>
+> > *"variants with a genotype call rate < 0.99 and a Minor Allele Frequency (MAF) <
+> > 0.01 were removed"* — the poster's own methods
+>
+> All three are **absent from the pipeline's own QC output**: they exist in the release
+> and do not survive `variant_qc`, which is the stage named for call rate. They were
+> never in the data step 2 reads.
+>
+> **We reproduce the delivered files at r = 0.979–0.990.** The poster disagrees with its
+> own pipeline's output, not with us.
+
+*Tone matters here. This is not "the poster is wrong about the biology" — it is "three
+variants did not clear a filter the poster says was applied". The fix is a correction,
+not a retraction of the project. Elena is an undergraduate on a summer programme; the
+finding belongs to the pipeline, not to a person.*
+
+*Have the numbers ready but do not volunteer this slide. It is for Nikki, and ideally
+before it reaches a room.*
 
 ---
 
