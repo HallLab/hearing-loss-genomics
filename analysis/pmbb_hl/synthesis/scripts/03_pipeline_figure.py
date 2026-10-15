@@ -88,8 +88,10 @@ def main():
     y, h = L.place(LEFT, FULL, "PHASE 1   who is in the study", [
         "broad      SO_396 or any child, ≥ 2 distinct dates     6,752 cases · 57,507 analysable",
         "bilateral  SO_396.2 AND SO_396.8 on the SAME date      3,164 cases · 53,919 analysable",
-        "controls   50,755 — no ear evidence from any source, SHARED by both arms",
-        "▷ refuses unless every bilateral case is also a broad case"], accent=INK)
+        "tinnitus   SO_397 or ICD 388.3x/H93.1x, ≥ 2 dates      2,859 cases · 53,614 analysable",
+        "controls   50,755 — no ear evidence from any source, SHARED by all three arms",
+        "▷ refuses unless every bilateral case is also a broad case",
+        "▷ tinnitus is NOT nested — 66% overlap, measured not asserted"], accent=INK)
     L.gap(); split_from = L.y + pt(16)
     L.arrow(0.5, y, L.y)
 
@@ -97,18 +99,18 @@ def main():
     y1, _ = L.place(LEFT, HALF, "PHASE 2   burden masks", [
         "22 tasks over the release VEP",
         "pLOF 17,841 · pDM 17,623 · pLOF_pDM 17,945 genes",
-        "one build serves both phenotypes — a mask depends",
+        "one build serves all three phenotypes — a mask depends",
         "on annotation, not on who is a case"], accent=BLUE)
     L.y = top
     y2, _ = L.place(RIGHT, HALF, "PHASE 2   ExWAS MAF census", [
-        "132 tasks — twice, once per phenotype",
-        "MAF ≥ 0.01 → 70,366 to 118,049 variants",
-        "MAF is a property of the SAMPLE SET, so the",
-        "bilateral cohort needs its own count"], accent=ORANGE)
+        "198 tasks — once per phenotype",
+        "MAF ≥ 0.01 → 70,287 to 118,067 variants",
+        "MAF is a property of the SAMPLE SET, so each",
+        "cohort needs its own count"], accent=ORANGE)
     L.gap()
     L.arrow(0.25, y1, L.y); L.arrow(0.75, y2, L.y)
 
-    y, h = L.place(LEFT, FULL, "PHASE 3   covariates and GRM        shared by both arms", [
+    y, h = L.place(LEFT, FULL, "PHASE 3   covariates and GRM        shared by all three arms", [
         "PCs from the RELEASE's exome PCA at 80% of the variance   combined 11 · EUR 15 · AFR 16",
         "GRM rebuilt for EUR and AFR; combined reused — it already covers all 70,925",
         "▷ refuses if anyone lacks a PC, which is the premise of using the release's"],
@@ -116,7 +118,7 @@ def main():
     L.gap(); L.arrow(0.5, y, L.y)
 
     y, h = L.place(LEFT, FULL, "PHASE 4   SAIGE  ·  step 1", [
-        "6 null models, 2 phenotypes × 3 cohorts    logit P(case) = Xβ + b,   b ~ N(0, τ·GRM)",
+        "9 null models, 3 phenotypes × 3 cohorts    logit P(case) = Xβ + b,   b ~ N(0, τ·GRM)",
         "fitted once and reused by every step 2 task — relatedness does not depend on the gene"],
         accent=INK)
     L.gap()
@@ -124,20 +126,20 @@ def main():
 
     top = L.y
     y1, _ = L.place(LEFT, HALF, "PHASE 4   burden  ·  step 2", [
-        "132 tasks, the whole grid per call",
+        "198 tasks, the whole grid per call",
         "3 masks × 3 MAF = 9 cells per gene",
-        "deduplicate   21,014 cells removed",
+        "deduplicate   31,765 cells removed",
         "Cauchy/ACAT   → one p per gene",
         "bars          0.05/genes  +  FDR q < 0.1",
         "17,943 genes tested"], accent=BLUE)
     L.y = top
     y2, _ = L.place(RIGHT, HALF, "PHASE 4   ExWAS  ·  step 2", [
-        "132 tasks, one test per variant",
+        "198 tasks, one test per variant",
         "MAF ≥ 0.01, no mask, no annotation",
         "step 1 INHERITED — the null model does not",
         "depend on the MAF filter",
         "bars          5e-8  +  0.05/variants",
-        "70,366 to 118,049 variants tested"], accent=ORANGE)
+        "70,287 to 118,067 variants tested"], accent=ORANGE)
     L.gap()
     L.arrow(0.25, y1, L.y); L.arrow(0.75, y2, L.y)
 
@@ -148,7 +150,7 @@ def main():
         accent=AQUA)
 
     fig.text(0.030, 0.978, "The pipeline", fontsize=15.5, fontweight="bold", color=INK)
-    fig.text(0.030, 0.952, "two analyses × two phenotypes × three cohorts = 18 cells. "
+    fig.text(0.030, 0.952, "two analyses × three phenotypes × three cohorts = 18 cells. "
              "Everything above step 2 is shared; the arms fork there, and the ExWAS "
              "does not refit the null model.", fontsize=8.8, color=INK_2)
 
