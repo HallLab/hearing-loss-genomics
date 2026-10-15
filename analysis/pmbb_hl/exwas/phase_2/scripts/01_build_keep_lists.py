@@ -32,6 +32,9 @@ COHORTS = {
     ("bilateral", "combined"): ("bilateral_combined.txt", 53_910),
     ("bilateral", "EUR"):      ("bilateral_EUR.txt",      40_143),
     ("bilateral", "AFR"):      ("bilateral_AFR.txt",      10_539),
+    ("tinnitus",  "combined"): ("tinnitus_combined.txt",  53_605),
+    ("tinnitus",  "EUR"):      ("tinnitus_EUR.txt",       39_724),
+    ("tinnitus",  "AFR"):      ("tinnitus_AFR.txt",       10_641),
 }
 
 def read_fam(path):

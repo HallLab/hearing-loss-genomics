@@ -17,6 +17,9 @@ comparison below is clean.
 | bilateral | combined | 2.06e-05 | `PCBD1` | 0 | 0.2394 | 0 |
 | bilateral | EUR | **6.33e-06** | **`FBXO25`** | 0 | **0.1134** | 0 |
 | bilateral | AFR | 1.46e-05 | `IGSF9` | 0 | 0.2593 | 0 |
+| tinnitus | combined | 1.91e-05 | `CTNNA3` | 0 | 0.3431 | 0 |
+| tinnitus | EUR | 6.75e-05 | `FXYD3` | 0 | 0.7117 | 0 |
+| tinnitus | AFR | 4.11e-05 | `POLD1` | 0 | 0.4961 | 0 |
 
 ## The one positive result survived the rebuild unchanged
 
@@ -26,7 +29,7 @@ comparison below is clean.
 a rank axis alone. Bonferroni is a single p-value and sits flat. **FDR is not a line at
 all**: Benjamini-Hochberg requires `p(k) ≤ (k/n)·q`, so its boundary rises with rank, and
 drawing it as a horizontal threshold would be wrong. A gene is significant where its
-point sits *above* one of the lines. None does, in any of the six cells.
+point sits *above* one of the lines. None does, in any of the nine cells.
 
 The ClinGen genes inside the top 50 are named — seven across all six arms, so the labels
 cost nothing, and naming all 93 would bury the point.
@@ -40,10 +43,20 @@ chance allows:
 | broad EUR | 2 | 0.26 | 2.78e-02 |
 | broad AFR | 0 | 0.26 | 1.00 |
 | bilateral, all three | 0 | 0.26 | 1.00 |
+| tinnitus, all three | 0 | 0.26 | 1.00 |
 
 The five are `SIX1`, `GJB3`, `COCH`, `TMPRSS3`, `MYO6`.
 
-**Identical to the first pass, to the digit, in all six arms and with the same five
+**The tinnitus arm finding zero is the closest thing to a negative control this project
+has.** ClinGen's panel is a list of **deafness** genes, not tinnitus genes, so it should
+not enrich here — and it does not, in any cohort. That is worth something, because 66%
+of the tinnitus cases are also hearing-loss cases: if the broad enrichment were an
+artefact of the pipeline rather than of the phenotype, those shared cases would have
+carried it across. It did not carry. The inference is weak on its own — the tinnitus
+arm has 2,859 cases and would likely miss a real enrichment too — but it points the
+right way.
+
+**Identical to the first pass, to the digit, in all six hearing-loss arms and with the same five
 genes.** That matters more than it looks. Between the two runs we changed the PCA source
 from one of our own to the release's, raised the PC counts from 5/4/3 to 11/15/16, and
 added deduplication before the combination. None of it moved the project's only positive

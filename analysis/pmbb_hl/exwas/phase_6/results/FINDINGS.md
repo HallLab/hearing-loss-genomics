@@ -1,6 +1,6 @@
 # ExWAS phase 6 — power
 
-**Run 2026-10-14.**
+**Run 2026-10-14; prevalence extended to three phenotypes 2026-10-15.**
 
 ![Power](../figures/power.png)
 
@@ -13,6 +13,25 @@ Cohort size needed for 80% power at p < 5e-8:
 | common variant (MAF 0.25) | 428k | 112k | 31k | 6k |
 
 This cohort is **57,498**.
+
+### Prevalence is not shared across the arms, and it drives the answer
+
+Information goes as `phi(1-phi)`, so a rarer phenotype needs a bigger cohort for the
+same variant at the same effect. Tinnitus at 5.3% cases carries 0.0505 against broad
+hearing loss's 0.1035 — **a factor of 2.05 in required cohort size**, not a rounding
+difference. At the median tested variant and OR 1.1:
+
+| phenotype | cases | prevalence | cohort needed |
+|---|---:|---:|---:|
+| broad | 6,752 | 11.7% | 444k |
+| bilateral | 3,164 | 5.9% | 833k |
+| tinnitus | 2,859 | 5.3% | 912k |
+
+The arms as run are 57,498 / 53,910 / 53,605. The full table at all three prevalences
+is in `04_power.json`.
+
+This is the number to carry into any replication proposal: **a cohort sized for the
+broad phenotype is half the size it needs to be for tinnitus.**
 
 ## Why the null, in one line
 

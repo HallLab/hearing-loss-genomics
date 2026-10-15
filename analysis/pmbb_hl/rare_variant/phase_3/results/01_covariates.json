@@ -89,6 +89,50 @@
         "pc_source": "release exome AFR",
         "file": "bilateral_AFR.txt"
       }
+    },
+    "tinnitus": {
+      "combined": {
+        "analysable": 53614,
+        "written": 53605,
+        "dropped_for_missing": 9,
+        "missing_by_column": {
+          "AGE": 9,
+          "AGE2": 9
+        },
+        "cases": 2859,
+        "controls": 50746,
+        "n_pcs": 11,
+        "variance_pct": 80.3,
+        "pc_source": "release exome combined",
+        "file": "tinnitus_combined.txt"
+      },
+      "EUR": {
+        "analysable": 39731,
+        "written": 39724,
+        "dropped_for_missing": 7,
+        "missing_by_column": {
+          "AGE": 7,
+          "AGE2": 7
+        },
+        "cases": 2128,
+        "controls": 37596,
+        "n_pcs": 15,
+        "variance_pct": 83.3,
+        "pc_source": "release exome EUR",
+        "file": "tinnitus_EUR.txt"
+      },
+      "AFR": {
+        "analysable": 10641,
+        "written": 10641,
+        "dropped_for_missing": 0,
+        "missing_by_column": {},
+        "cases": 592,
+        "controls": 10049,
+        "n_pcs": 16,
+        "variance_pct": 84.1,
+        "pc_source": "release exome AFR",
+        "file": "tinnitus_AFR.txt"
+      }
     }
   }
 }

@@ -65,33 +65,73 @@
       "secondary_bar": 4.235529314098383e-07,
       "hits_primary": 0,
       "hits_secondary": 0
+    },
+    "tinnitus_combined": {
+      "tested": 70287,
+      "lambda_all": 0.9802134565424416,
+      "lambda_outside_mhc": 0.9862281543077253,
+      "lambda_inside_mhc": 0.7215739283433659,
+      "n_mhc": 1023,
+      "min_p": 3.426837e-05,
+      "secondary_bar": 7.113691009717302e-07,
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "tinnitus_EUR": {
+      "tested": 74563,
+      "lambda_all": 0.9929967139618234,
+      "lambda_outside_mhc": 0.9945367954727057,
+      "lambda_inside_mhc": 0.8800677466097766,
+      "n_mhc": 1032,
+      "min_p": 1.25068e-05,
+      "secondary_bar": 6.705738771240428e-07,
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "tinnitus_AFR": {
+      "tested": 118067,
+      "lambda_all": 0.9920403769163483,
+      "lambda_outside_mhc": 0.9963084508564908,
+      "lambda_inside_mhc": 0.6062018653425335,
+      "n_mhc": 1236,
+      "min_p": 2.130643e-05,
+      "secondary_bar": 4.2348835830503024e-07,
+      "hits_primary": 0,
+      "hits_secondary": 0
     }
   },
   "cross_phenotype": {
-    "combined": {
+    "broad_vs_bilateral_combined": {
+      "relation": "nested: bilateral cases are a strict subset",
       "shared": 70269,
       "spearman": 0.3861128016779423,
-      "stronger_on_half_the_cases": 2,
+      "stronger_in_second": 2,
       "stronger_variants": [
         "19:44819634:C:T",
         "19:44819705:A:T"
-      ]
+      ],
+      "lead_variants_left": 70,
+      "sign_concordance": 1.0
     },
-    "EUR": {
+    "broad_vs_bilateral_EUR": {
+      "relation": "nested: bilateral cases are a strict subset",
       "shared": 74451,
       "spearman": 0.3989732323987372,
-      "stronger_on_half_the_cases": 4,
+      "stronger_in_second": 4,
       "stronger_variants": [
         "1:85259670:GCCGGAAA:G",
         "12:39319974:C:A",
         "19:44819634:C:T",
         "19:44819705:A:T"
-      ]
+      ],
+      "lead_variants_left": 68,
+      "sign_concordance": 1.0
     },
-    "AFR": {
+    "broad_vs_bilateral_AFR": {
+      "relation": "nested: bilateral cases are a strict subset",
       "shared": 117360,
       "spearman": 0.3037556506373869,
-      "stronger_on_half_the_cases": 7,
+      "stronger_in_second": 7,
       "stronger_variants": [
         "1:240776091:C:T",
         "7:158133844:C:T",
@@ -100,7 +140,68 @@
         "11:76206290:C:T",
         "12:3281397:A:G",
         "16:90027670:A:G"
-      ]
+      ],
+      "lead_variants_left": 134,
+      "sign_concordance": 1.0
+    },
+    "broad_vs_tinnitus_combined": {
+      "relation": "overlapping: 974 of 2,859 tinnitus cases are not broad cases",
+      "shared": 70194,
+      "spearman": 0.15419523926829898,
+      "stronger_in_second": 8,
+      "stronger_variants": [
+        "1:94205228:T:C",
+        "1:155320440:T:C",
+        "3:97648386:CA:C",
+        "11:1075850:G:A",
+        "11:1075920:G:A",
+        "17:39105864:C:T",
+        "19:51529710:G:C",
+        "22:45371489:A:G"
+      ],
+      "lead_variants_left": 69,
+      "sign_concordance": 0.9565217391304348
+    },
+    "broad_vs_tinnitus_EUR": {
+      "relation": "overlapping: 974 of 2,859 tinnitus cases are not broad cases",
+      "shared": 74400,
+      "spearman": 0.16388730372472526,
+      "stronger_in_second": 14,
+      "stronger_variants": [
+        "1:35826657:A:G",
+        "6:89693121:G:C",
+        "7:21601651:A:G",
+        "7:21615352:A:G",
+        "7:21617567:A:G",
+        "11:1075850:G:A",
+        "11:1075920:G:A",
+        "12:132844157:CCCAGCAACA:C",
+        "12:132847076:C:T",
+        "12:132857630:A:G",
+        "12:132861691:T:C",
+        "12:132887383:G:A",
+        "17:39105864:C:T",
+        "19:51529710:G:C"
+      ],
+      "lead_variants_left": 68,
+      "sign_concordance": 0.9705882352941176
+    },
+    "broad_vs_tinnitus_AFR": {
+      "relation": "overlapping: 974 of 2,859 tinnitus cases are not broad cases",
+      "shared": 117222,
+      "spearman": 0.15087067973742185,
+      "stronger_in_second": 7,
+      "stronger_variants": [
+        "5:14758467:C:T",
+        "7:135578987:A:G",
+        "11:27472332:C:G",
+        "11:128916398:C:T",
+        "14:75766055:C:T",
+        "15:42439619:G:C",
+        "21:44074305:C:T"
+      ],
+      "lead_variants_left": 133,
+      "sign_concordance": 0.9699248120300752
     }
   }
 }

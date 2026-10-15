@@ -2,7 +2,7 @@
 """
 Phase 1 -- the two cohorts, built in one pass.
 
-TWO PHENOTYPES, ONE SCRIPT, and that is the point. The broad and the bilateral arms
+THREE PHENOTYPES, ONE SCRIPT, and that is the point. The broad and the bilateral arms
 share a control definition and an ancestry source. Building them separately means the
 controls agree only if nobody edits one copy, and the two arms then differ for reasons
 nobody intended. Here they are the same objects by construction, and the nesting
@@ -48,8 +48,10 @@ ANC = REL / ("Exome/PCA/combined/PMBB-Release-2026-4.0_genetic_exome"
              ".commonsnps.samples_ancestries.tsv")
 OUT = HERE / "results"
 
+PHENOTYPES = ["broad", "bilateral", "tinnitus"]
 SENSORINEURAL = "SO_396.2"
 BILATERAL = "SO_396.8"
+TINNITUS = "SO_397"
 MIN_DATES = 2
 
 
@@ -68,6 +70,19 @@ def load_evidence(cohort):
 def cases_broad(ev):
     hl = ev[ev.code.str.match(r"^SO_396($|\.)")]
     n = hl.groupby("pid").date.nunique()
+    return set(n[n >= MIN_DATES].index), set(n[n == 1].index)
+
+
+def cases_tinnitus(ev):
+    """SO_397 or any child, OR the observation-table codes, on >= 2 distinct dates.
+
+    The second source is not optional. PMBB v4 moved the standard tinnitus ICD codes
+    (388.3x, H93.1x) out of the phecode files, which keep 3,016 of 28,110 events; the
+    other 25,094 exist only in OMOP `observation`. An arm built on the phecode files
+    alone would miss 89% of its own phenotype.
+    """
+    tin = ev[ev.code.str.match(rf"^{TINNITUS}($|\.)") | (ev.code == "OBS_TINNITUS")]
+    n = tin.groupby("pid").date.nunique()
     return set(n[n >= MIN_DATES].index), set(n[n == 1].index)
 
 
@@ -95,7 +110,10 @@ def main():
               "controls": len(controls), "min_dates": MIN_DATES, "arms": {}}
 
     built = {}
-    for name, fn in (("broad", cases_broad), ("bilateral", cases_bilateral)):
+    builders = {"broad": cases_broad, "bilateral": cases_bilateral,
+                "tinnitus": cases_tinnitus}
+    for name in PHENOTYPES:
+        fn = builders[name]
         cases, one_date = fn(ev)
         frame = pd.DataFrame(
             [(i, 1) for i in sorted(cases)] + [(i, 0) for i in sorted(controls)],
@@ -125,6 +143,11 @@ def main():
         print()
 
     # The nesting the later phases depend on. Asserted, not assumed.
+    #
+    # SCOPED TO ONE PAIR ON PURPOSE. Bilateral sensorineural is a kind of hearing loss,
+    # so every bilateral case must satisfy the broad rule. Tinnitus is NOT a kind of
+    # hearing loss -- it is a different symptom that often accompanies it -- so the
+    # same check applied to it would fail correctly and for the wrong reason.
     nested = built["bilateral"] <= built["broad"]
     report["bilateral_nested_in_broad"] = bool(nested)
     if not nested:
@@ -136,8 +159,21 @@ def main():
     print(f"nesting verified: all {len(built['bilateral']):,} bilateral cases are "
           f"also broad cases")
 
+    # The tinnitus arm OVERLAPS rather than nests, and the amount matters for every
+    # later comparison, so it is measured and recorded rather than left implicit.
+    overlap = built["tinnitus"] & built["broad"]
+    report["tinnitus_overlap_with_broad"] = {
+        "tinnitus_cases": len(built["tinnitus"]),
+        "also_broad_cases": len(overlap),
+        "share": round(len(overlap) / len(built["tinnitus"]), 3),
+        "tinnitus_only": len(built["tinnitus"] - built["broad"]),
+    }
+    o = report["tinnitus_overlap_with_broad"]
+    print(f"tinnitus overlaps rather than nests: {o['also_broad_cases']:,} of "
+          f"{o['tinnitus_cases']:,} ({100*o['share']:.0f}%) are also broad cases")
+
     (OUT / "01_cohorts.json").write_text(json.dumps(report, indent=2) + "\n")
-    print(f"\nwritten: results/cohort_broad.tsv, cohort_bilateral.tsv, 01_cohorts.json")
+    print(f"\nwritten: " + ", ".join(f"cohort_{p}.tsv" for p in PHENOTYPES) + ", 01_cohorts.json")
 
 
 if __name__ == "__main__":

@@ -41,9 +41,28 @@ PHASE4 = RV / "phase_4/results"
 PHASE5 = RV / "phase_5"
 OUT = HERE / "results"
 
-COHORT_N = {"combined": 57498, "EUR": 42779, "AFR": 11334}
-CASES = {"combined": 6752, "EUR": 5183, "AFR": 1285}
+# N AND CASES ARE READ, NOT WRITTEN DOWN. They were hardcoded at the broad arm's
+# values and reused for bilateral, which gave that arm 57,498 people when its model
+# was fitted on 53,910 -- 3,588 people it does not have. The error was conservative,
+# not optimistic: information goes as mac * phi * (1 - phi) with phi = cases/n, so an
+# inflated n dilutes the case fraction and makes the arm look LESS powered than it is
+# (bilateral combined: detectable OR 3.20 reported against 3.10 actual). Each
+# phenotype excludes a different set of "other ear" patients, so every arm has its
+# own N. Phase 3 already records what SAIGE was actually given; that is the source.
+PHASE3 = Path(__file__).resolve().parents[2] / "phase_3/results/01_covariates.json"
 POWER_TARGET = 0.80
+PHENOTYPES = ("broad", "bilateral", "tinnitus")
+
+
+def cohort_sizes():
+    arms = json.loads(PHASE3.read_text())["arms"]
+    out = {}
+    for pheno, cohorts in arms.items():
+        for cohort, e in cohorts.items():
+            # 'written' is the covariate file SAIGE read; 'analysable' still counts
+            # the people dropped for a missing AGE.
+            out[(pheno, cohort)] = (e["written"], e["cases"])
+    return out
 
 
 def detectable_or(mac, n, cases, alpha):
@@ -69,7 +88,8 @@ def main():
     report = {"power_target": POWER_TARGET, "arms": {}}
     rows = []
 
-    for pheno in ("broad", "bilateral"):
+    sizes = cohort_sizes()
+    for pheno in PHENOTYPES:
         for cohort in ("combined", "EUR", "AFR"):
             tag = f"{pheno}_{cohort}"
             cells = pd.read_csv(PHASE4 / f"cells_{tag}.tsv", sep="\t")
@@ -82,9 +102,9 @@ def main():
                 sys.exit(f"REFUSING: no pLOF;pDM cells at MAF 0.01 for {tag}")
             g = g.groupby("Region", as_index=False).MAC.max()
 
-            n, ca = COHORT_N[cohort], CASES[cohort] if pheno == "broad" else None
-            if pheno == "bilateral":
-                ca = {"combined": 3164, "EUR": 2547, "AFR": 490}[cohort]
+            if (pheno, cohort) not in sizes:
+                sys.exit(f"REFUSING: phase 3 records no cohort size for {tag}")
+            n, ca = sizes[(pheno, cohort)]
             g["detectable_or"] = [detectable_or(m, n, ca, alpha) for m in g.MAC]
             g["clingen"] = g.Region.isin(gene_set)
             g["phenotype"], g["cohort"] = pheno, cohort

@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J rv_s1[1-6]
+#BSUB -J rv_s1[1-9]
 #BSUB -q epistasis_normal
 #BSUB -n 8
 #BSUB -M 64000
@@ -38,7 +38,7 @@ GRM=${P}/../phase_3/data/grm
 ELENA=/project/hall/analysis/hearing-loss-genomics/analysis/elena
 OUT=${P}/results/step1
 
-PHENOS=(broad bilateral)
+PHENOS=(broad bilateral tinnitus)
 COHORTS=(combined EUR AFR)
 I=$(( LSB_JOBINDEX - 1 ))
 PHENO=${PHENOS[$(( I / 3 ))]}

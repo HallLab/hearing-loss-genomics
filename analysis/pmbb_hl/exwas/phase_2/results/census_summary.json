@@ -107,6 +107,60 @@
         "0.9999": 0
       },
       "high_frequency_bins": 0
+    },
+    "tinnitus_combined": {
+      "variants_on_file": 13223743,
+      "variants_tested": 70315,
+      "secondary_bar": 7.110858280594468e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12060594,
+        "0.0001": 847249,
+        "0.001": 245585,
+        "0.01": 35199,
+        "0.05": 35116,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "tinnitus_EUR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 74594,
+      "secondary_bar": 6.702951980052015e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 12412285,
+        "0.0001": 609453,
+        "0.001": 127411,
+        "0.01": 37853,
+        "0.05": 36741,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
+    },
+    "tinnitus_AFR": {
+      "variants_on_file": 13223743,
+      "variants_tested": 118100,
+      "secondary_bar": 4.233700254022015e-07,
+      "primary_bar": 5e-08,
+      "alt1_spectrum": {
+        "0": 11921990,
+        "0.0001": 894784,
+        "0.001": 288869,
+        "0.01": 86491,
+        "0.05": 31609,
+        "0.95": 0,
+        "0.99": 0,
+        "0.999": 0,
+        "0.9999": 0
+      },
+      "high_frequency_bins": 0
     }
   },
   "premise": "P6",

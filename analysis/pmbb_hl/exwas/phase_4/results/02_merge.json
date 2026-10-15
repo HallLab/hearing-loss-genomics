@@ -60,6 +60,36 @@
       "best_variant": "7:158133844:C:T",
       "hits_primary": 0,
       "hits_secondary": 0
+    },
+    "tinnitus_combined": {
+      "tested": 70287,
+      "plink2_ceiling": 70315,
+      "shortfall": 28,
+      "secondary_bar": 7.113691009717302e-07,
+      "min_p": 3.426837e-05,
+      "best_variant": "1:94205228:T:C",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "tinnitus_EUR": {
+      "tested": 74563,
+      "plink2_ceiling": 74594,
+      "shortfall": 31,
+      "secondary_bar": 6.705738771240428e-07,
+      "min_p": 1.25068e-05,
+      "best_variant": "17:39105864:C:T",
+      "hits_primary": 0,
+      "hits_secondary": 0
+    },
+    "tinnitus_AFR": {
+      "tested": 118067,
+      "plink2_ceiling": 118100,
+      "shortfall": 33,
+      "secondary_bar": 4.2348835830503024e-07,
+      "min_p": 2.130643e-05,
+      "best_variant": "5:14758467:C:T",
+      "hits_primary": 0,
+      "hits_secondary": 0
     }
   }
 }

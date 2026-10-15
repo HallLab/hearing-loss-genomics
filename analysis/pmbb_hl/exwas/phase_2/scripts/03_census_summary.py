@@ -26,7 +26,7 @@ BASE = Path("/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/exwas
 CENSUS = BASE / "phase_2/results/census"
 GENO = Path("/project/hall/analysis/hearing-loss-genomics/analysis/elena/"
             "rarevariant_geneburden/plink_deduplicated")
-COHORTS = [f"{p}_{c}" for p in ("broad", "bilateral")
+COHORTS = [f"{p}_{c}" for p in ("broad", "bilateral", "tinnitus")
            for c in ("combined", "EUR", "AFR")]
 CHROMS = list(range(1, 23))
 

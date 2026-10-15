@@ -5,7 +5,7 @@ retries. No step 1: the six null models are the burden arm's, reused because the
 model does not depend on the variant filter — which is what the original PMBB v4 run
 also did.
 
-## Nothing is significant, in any of the six cells
+## Nothing is significant, in any of the nine cells
 
 ![Manhattan](../figures/manhattan.png)
 
@@ -17,6 +17,9 @@ also did.
 | bilateral | combined | 70,350 | 7.11e-07 | 2.88e-05 | `7:150692505:T:C` | 0 | 0 |
 | bilateral | EUR | 74,566 | 6.71e-07 | 1.66e-05 | `19:44819634:C:T` | 0 | 0 |
 | bilateral | AFR | 118,049 | 4.24e-07 | **7.67e-07** | `7:158133844:C:T` | 0 | 0 |
+| tinnitus | combined | 70,287 | 7.11e-07 | 3.43e-05 | `1:94205228:T:C` | 0 | 0 |
+| tinnitus | EUR | 74,563 | 6.71e-07 | 1.25e-05 | `17:39105864:C:T` | 0 | 0 |
+| tinnitus | AFR | 118,067 | 4.23e-07 | 2.13e-05 | `5:14758467:C:T` | 0 | 0 |
 
 `chr7:158133844` in bilateral AFR is **1.8× short of the secondary bar** — the closest
 any ExWAS cell in this project has come. It is also one of the variants the first pass
@@ -50,6 +53,13 @@ from inflated to conservative. The hypothesis was right.
 The **bilateral** arms show the inflation the broad ones lost — 1.39, 1.23, 1.16 —
 with the same PCs, the same GRM and the same region. Only the phenotype differs.
 
+**The tinnitus arm, added 2026-10-15, argues for the first reading.** At a case count
+within 10% of bilateral's (2,859 against 3,164) it goes the *other* way: λ inside the
+MHC of 0.72, 0.88 and 0.61, deflated rather than inflated, against 0.99 or better
+outside it. Three arms at ~3,000 cases swinging from 1.39 to 0.61 on ~1,020 variants is
+what estimator noise looks like. It does not rule out the autoimmune reading, but it
+removes the reason to prefer it.
+
 Two readings, and this cannot separate them:
 
 - **noise.** 3,164 cases against 6,752, and λ is estimated on ~1,020 variants. All three
@@ -74,17 +84,38 @@ readout there. This arm needs no such caveat.
 The exact `qchisq(0.5, 1) = 0.4549364` is used, not the 0.456 rounded in the original
 run's `step10_1_QQplot.R`, which inflates λ by 0.23%.
 
-## Broad against bilateral: what the comparison can and cannot say
+## Comparing the arms: what each pair can and cannot say
 
-| cohort | shared variants | Spearman ρ | stronger on half the cases |
-|---|---:|---:|---:|
-| combined | 70,269 | 0.386 | 2 |
-| EUR | 74,451 | 0.399 | 4 |
-| AFR | 117,360 | 0.304 | 7 |
+Two pairs, and they are not the same kind of comparison.
 
-**ρ is reported only to make explicit that it is not a replication statistic.** The arms
-share every control and the bilateral cases are a strict subset of the broad ones, so
-agreement between them is the same data twice. A variant getting weaker says nothing
+**Broad against bilateral — nested.** Every bilateral case is a broad case, controls
+identical.
+
+| cohort | shared variants | Spearman ρ | stronger in bilateral | sign concordance |
+|---|---:|---:|---:|---:|
+| combined | 70,269 | 0.386 | 2 | 1.00 |
+| EUR | 74,451 | 0.399 | 4 | 1.00 |
+| AFR | 117,360 | 0.304 | 7 | 1.00 |
+
+**Broad against tinnitus — overlapping, not nested.** 974 of the 2,859 tinnitus cases
+are not broad cases; of those, 581 have no hearing-loss evidence at all and 393 have it
+on a single date, below the two-date rule. (Those two counts answer different questions
+and are easy to confuse.)
+
+| cohort | shared variants | Spearman ρ | stronger in tinnitus | sign concordance |
+|---|---:|---:|---:|---:|
+| combined | 70,194 | 0.154 | 8 | 0.96 |
+| EUR | 74,400 | 0.164 | 14 | 0.97 |
+| AFR | 117,222 | 0.151 | 7 | 0.97 |
+
+**ρ halves when the case set genuinely changes** — 0.39 nested against 0.15 overlapping
+— which is the expected direction and is the only thing these numbers establish.
+Concordance is computed only among variants reaching p < 1e-3 in the left arm; over
+70,000 near-null variants the betas are noise and the share sits at 0.5 by construction.
+
+**ρ is reported only to make explicit that it is not a replication statistic.** Both
+pairs share every one of the 50,755 controls, which induces agreement on its own. For
+the nested pair it is the same data twice. A variant getting weaker says nothing
 either — losing 53% of cases does that by itself.
 
 Only strengthening could be informative, and the first pass tested it: five random

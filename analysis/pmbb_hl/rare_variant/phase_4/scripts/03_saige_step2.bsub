@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J rv_s2[1-132]
+#BSUB -J rv_s2[1-198]
 #BSUB -q epistasis_normal
 #BSUB -n 4
 #BSUB -M 64000
@@ -30,7 +30,7 @@ STEP1=${P}/results/step1
 MASKS=${P}/data/masks_by_chrom
 OUT=${P}/results/step2
 
-PHENOS=(broad bilateral)
+PHENOS=(broad bilateral tinnitus)
 COHORTS=(combined EUR AFR)
 I=$(( LSB_JOBINDEX - 1 ))
 PHENO=${PHENOS[$(( I / 66 ))]}

@@ -69,7 +69,46 @@
           "controls": 532
         }
       }
+    },
+    "tinnitus": {
+      "cases": 2859,
+      "controls": 50755,
+      "analysable": 53614,
+      "excluded_one_date_only": 2911,
+      "excluded_other_ear": 14400,
+      "by_ancestry": {
+        "AFR": {
+          "cases": 592,
+          "controls": 10049
+        },
+        "AMR": {
+          "cases": 45,
+          "controls": 769
+        },
+        "EAS": {
+          "cases": 41,
+          "controls": 1002
+        },
+        "EUR": {
+          "cases": 2128,
+          "controls": 37603
+        },
+        "SAS": {
+          "cases": 36,
+          "controls": 800
+        },
+        "UNK": {
+          "cases": 17,
+          "controls": 532
+        }
+      }
     }
   },
-  "bilateral_nested_in_broad": true
+  "bilateral_nested_in_broad": true,
+  "tinnitus_overlap_with_broad": {
+    "tinnitus_cases": 2859,
+    "also_broad_cases": 1885,
+    "share": 0.659,
+    "tinnitus_only": 974
+  }
 }

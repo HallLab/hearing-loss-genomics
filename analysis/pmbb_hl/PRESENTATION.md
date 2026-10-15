@@ -10,7 +10,7 @@
 ## 1 · Title
 
 > **Rare-variant and common-variant analysis of hearing loss in PMBB v4**
-> Two analyses × two phenotypes × three cohorts
+> Two analyses × three phenotypes × three cohorts
 > Andre Rico · Hall Lab × Epstein Lab · October 2026
 
 *Nothing to say. Move on.*
@@ -46,10 +46,12 @@ on the MAF filter; that is also what the original run did.*
 > |---|---|---:|---:|
 > | **broad** | `SO_396` or any child, ≥ 2 distinct dates | 6,752 | 57,507 |
 > | **bilateral sensorineural** | `SO_396.2` **and** `SO_396.8` on the **same date**, ≥ 2 dates | 3,164 | 53,919 |
+> | **tinnitus** | `SO_397` or ICD `388.3x` / `H93.1x`, ≥ 2 distinct dates | 2,859 | 53,614 |
 >
-> **controls: 50,755** — no ear evidence from any source. Shared by both arms.
+> **controls: 50,755** — no ear evidence from any source. Shared by all three arms.
 >
 > Every bilateral case is also a broad case — asserted in code, not assumed.
+> Tinnitus is **not** nested: 66% overlap, measured rather than asserted.
 
 *The same-date rule is the whole bilateral definition and it is worth thirty seconds.
 phecodeX splits a diagnosis across two axes — type and laterality — as separate rows, so
@@ -110,16 +112,16 @@ denominator, not of total genotypic variance.*
 
 ---
 
-## 7 · Results — all 18 cells
+## 7 · Results — all 24 cells
 
 > **figure:** `synthesis/figures/how_close.png`
 >
-> **Nothing reaches its threshold anywhere.** Closest 1.9× short, furthest 576×.
+> **Nothing reaches its threshold anywhere.** Closest 1.9× short, furthest 685×.
 >
 > **And the rare-variant arms land an order of magnitude closer than the common-variant
-> ones — in every run.**
+> ones — in every arm.**
 
-*The second line is the actionable one. Burden 1.9–13× short, ExWAS 15–576×. That is the
+*The second line is the actionable one. Burden 1.9–24× short, ExWAS 15–685×. That is the
 statistical version of the preference the group already held on biological grounds.*
 
 *The original run's burden figure is its omnibus recomputed by our method — its delivered
@@ -140,6 +142,9 @@ Say this before anyone asks.*
 > | bilateral | combined | 2.06e-05 | `PCBD1` | 0.239 |
 > | **bilateral** | **EUR** | **6.33e-06** | **`FBXO25`** | **0.113** |
 > | bilateral | AFR | 1.46e-05 | `IGSF9` | 0.259 |
+> | tinnitus | combined | 1.91e-05 | `CTNNA3` | 0.343 |
+> | tinnitus | EUR | 6.75e-05 | `FXYD3` | 0.712 |
+> | tinnitus | AFR | 4.11e-05 | `POLD1` | 0.496 |
 >
 > **Common-variant ExWAS** — bars `5e-8` and `0.05/variants`
 >
@@ -230,11 +235,40 @@ need 1.2M. The power model is optimistic, it assumes every masked variant is cau
 And **the phenotype comparability in All of Us and UK Biobank has not been checked** —
 that is the first thing that could invalidate this slide.*
 
+*A fourth, if tinnitus comes up: prevalence enters power directly, so a cohort sized for
+broad hearing loss is **half** what tinnitus needs. 250k does not buy the same thing for
+both phenotypes.*
+
+---
+
+## 12b · The hypothesis we started from
+
+> **`ZNF175`** — Park et al. 2021, *Nature Medicine*: associated with **tinnitus** in an
+> earlier PMBB release. The mouse ortholog `Zfp719` causes hearing loss when disrupted.
+> **It is why this project exists, and no arm had ever tested tinnitus.**
+>
+> Pre-registered in `PREMISES_tinnitus.md` before the arm ran: reported in all six
+> tinnitus cells whatever it said, with the hearing-loss arms beside them.
+>
+> | | best of all 18 cells | bar |
+> |---|---:|---:|
+> | burden omnibus | p = 0.324 (tinnitus EUR) | 2.79e-06 |
+> | ExWAS | p = 0.014 (**bilateral** AFR) | 5e-8 |
+>
+> **It reaches nothing — and this one is not a coverage failure.** MAC 587 against a
+> median gene's 178. **An effect of OR ≥ 2.8 had an 80% chance of being seen.**
+
+*This is the slide to be careful on. Say "does not hold at this cohort size", not "is
+wrong" — smaller effects are untouched by this. Note that the best cell is in the
+bilateral arm, not the tinnitus one, which is the wrong direction for the hypothesis;
+the original run's own tables already pointed that way and we recorded it in advance so
+it could not be presented as a discovery. Full detail in `ZNF175.md`.*
+
 ---
 
 ## 13 · Where everything is
 
-> **Read first:** `synthesis/CONSOLIDATED.md` — all 18 cells in one place
+> **Read first:** `synthesis/CONSOLIDATED.md` — all 24 cells in one place
 > **The pipeline:** `PIPELINE.md` — every decision with its reason
 >
 > **Full results, every p-value:**
@@ -245,7 +279,7 @@ that is the first thing that could invalidate this slide.*
 > | burden, every cell before combination | `rare_variant/phase_4/results/cells_<phenotype>_<cohort>.tsv` — 159,948 rows |
 > | ExWAS, one row per variant | `exwas/phase_4/results/merged_<phenotype>_<cohort>.tsv` — 70,366 rows |
 >
-> Six files each, `{broad,bilateral}_{combined,EUR,AFR}`.
+> Nine files each, `{broad,bilateral,tinnitus}_{combined,EUR,AFR}`.
 >
 > Each phase writes a `FINDINGS.md` beside its results.
 
@@ -259,6 +293,8 @@ that is the first thing that could invalidate this slide.*
 | "did changing the PCs move anything?" | `rare_variant/phase_5/figures/vs_first_pass.png` — ρ = 0.93–0.97 |
 | "is the MHC under control?" | `exwas/phase_5/figures/lambda_mhc.png` |
 | "what about the common-variant power?" | `exwas/phase_6/figures/power.png` |
+| "what happened to `ZNF175`?" | `ZNF175.md` — all 18 cells, pre-registered before the run |
+| "why add tinnitus at all?" | `PREMISES_tinnitus.md` — written before the arm ran |
 | "where are the genome-wide plots?" | `rare_variant/phase_5/figures/manhattan.png`, `exwas/phase_5/figures/manhattan.png` |
 
 ---
@@ -272,3 +308,5 @@ that is the first thing that could invalidate this slide.*
 | "the bilateral restriction destroyed the signal" | "at 3,164 cases the restriction cannot answer the question either way" |
 | "our pipeline is better than the original" | "no run reaches its threshold; the comparison is not a ranking" |
 | "there is no association with hearing loss" | "no effect larger than this cohort could see" |
+| "`ZNF175` was wrong" / "Park was wrong" | "it does not hold at this cohort size; in the combined arm we would have seen OR ≥ 2.8 and did not" |
+| "tinnitus found nothing either, same story" | "it is the rarest phenotype — at 5.3% cases it needs twice the cohort for the same effect" |

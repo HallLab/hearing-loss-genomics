@@ -3,7 +3,7 @@
 **Run 2026-10-14.** Step 1 job `49686445` (6/6), step 2 job `49687057` (132 tasks) plus
 `49687xxx` re-running one cell. SAIGE-GENE+ 1.5.0.
 
-## Result: nothing is significant, under either bar, in any cell of the 2 × 3 design
+## Result: nothing is significant, under either bar, in any cell of the 3 × 3 design
 
 | phenotype | cohort | genes | min omnibus p | best gene | Bonferroni bar | hits | min q | FDR hits |
 |---|---|---:|---:|---|---:|---:|---:|---:|
@@ -13,12 +13,21 @@
 | bilateral | combined | 17,941 | 2.06e-05 | `PCBD1` | 2.787e-06 | 0 | 0.2394 | 0 |
 | bilateral | EUR | 17,921 | **6.33e-06** | **`FBXO25`** | 2.790e-06 | 0 | **0.1134** | 0 |
 | bilateral | AFR | 17,778 | 1.46e-05 | `IGSF9` | 2.812e-06 | 0 | 0.2593 | 0 |
+| tinnitus | combined | 17,940 | 1.91e-05 | `CTNNA3` | 2.787e-06 | 0 | 0.3431 | 0 |
+| tinnitus | EUR | 17,923 | 6.75e-05 | `FXYD3` | 2.790e-06 | 0 | 0.7117 | 0 |
+| tinnitus | AFR | 17,777 | 4.11e-05 | `POLD1` | 2.813e-06 | 0 | 0.4961 | 0 |
 
 **The closest anything comes is `FBXO25` in bilateral EUR**, at q = 0.1134 against the
 0.10 bar — short by 13%. It is 2.3× short of the Bonferroni bar. It was also the top
 bilateral EUR gene in the first pass, at 1.37e-05; with the release's 15 PCs it is
 6.33e-06, so it strengthened rather than weakened under better ancestry correction.
 That is worth watching and is not a result.
+
+**The tinnitus arm, added 2026-10-15**, lands furthest from the bar of the three
+phenotypes — min q of 0.34 / 0.71 / 0.50 against bilateral's 0.24 / 0.11 / 0.26. Its
+pre-registered expectation ([`PREMISES_tinnitus.md`](../../../PREMISES_tinnitus.md) P5)
+was a measured null, and that is what it is. The declared target `ZNF175` is reported
+separately in [`ZNF175.md`](../../../ZNF175.md), in all eighteen cells, as P4 required.
 
 ## The three levels of multiplicity, and who pays for each
 

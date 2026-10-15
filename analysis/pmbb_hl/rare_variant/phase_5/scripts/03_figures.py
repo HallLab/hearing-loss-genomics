@@ -28,11 +28,13 @@ import pandas as pd
 HERE = Path(__file__).resolve().parents[1]
 PHASE4 = HERE.parent / "phase_4/results"
 FIG = HERE / "figures"
-PHENOS = ["broad", "bilateral"]
+PHENOS = ["broad", "bilateral", "tinnitus"]
 COHORTS = ["combined", "EUR", "AFR"]
 BLUE, ORANGE, PALE = "#2a78d6", "#eb6834", "#9ab4d1"
 INK, INK_2, INK_3, SURFACE = "#1a1a19", "#5c5b55", "#8a8980", "#ffffff"
-PCOL = {"broad": BLUE, "bilateral": ORANGE}
+# A third documented categorical slot; values unchanged.
+PLUM = "#a855a0"
+PCOL = {"broad": BLUE, "bilateral": ORANGE, "tinnitus": PLUM}
 
 
 def style():
@@ -52,10 +54,14 @@ def omnibus(pheno, cohort):
 
 
 def fig_manhattan():
+    # The first pass moved under pmbb_hl_v1/ when this rebuild took the pmbb_hl name.
     pos = pd.read_csv(HERE.parent.parent.parent
-                      / "gene_burden_pmbb_bilateral/phase_5/results/gene_positions.tsv",
+                      / "pmbb_hl_v1/gene_burden_pmbb_bilateral/phase_5/results"
+                      / "gene_positions.tsv",
                       sep="\t")[["Region", "CHR", "POS"]]
-    fig, axes = plt.subplots(3, 2, figsize=(13, 9), sharex=True, sharey=True)
+    fig, axes = plt.subplots(len(COHORTS), len(PHENOS),
+                             figsize=(6.5 * len(PHENOS), 9),
+                             sharex=True, sharey=True)
     for r, cohort in enumerate(COHORTS):
         for c, pheno in enumerate(PHENOS):
             ax = axes[r, c]
@@ -92,8 +98,9 @@ def fig_manhattan():
         ax.set_xticks(ticks)
         ax.set_xticklabels(labels, fontsize=7)
         ax.set_xlabel("chromosome")
-    fig.suptitle("Gene burden across the genome — no gene reaches its bar in any of "
-                 "the six cells", fontsize=11.5, x=0.06, ha="left", y=0.995)
+    fig.suptitle(f"Gene burden across the genome — no gene reaches its bar in any of "
+                 f"the {len(PHENOS) * len(COHORTS)} cells",
+                 fontsize=11.5, x=0.06, ha="left", y=0.995)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(FIG / "manhattan.png")
     plt.close(fig)
@@ -117,7 +124,8 @@ def fig_clingen():
     gene_set = set(cg[cg.best_classification.isin(["Definitive", "Strong"])].gene)
     Q = 0.10
 
-    fig, axes = plt.subplots(2, 3, figsize=(13.5, 7.6), sharey=True)
+    fig, axes = plt.subplots(len(PHENOS), len(COHORTS),
+                             figsize=(13.5, 3.8 * len(PHENOS)), sharey=True)
     for r, pheno in enumerate(PHENOS):
         for c, cohort in enumerate(COHORTS):
             ax = axes[r, c]
@@ -160,12 +168,13 @@ def fig_clingen():
                          fontsize=8.5)
             if c == 0:
                 ax.set_ylabel("$-\\log_{10}$ omnibus $p$")
-            if r == 1:
+            if r == len(PHENOS) - 1:
                 ax.set_xlabel("rank among ~17,900 genes (log)")
     axes[0, 0].text(52, 0.25, "top 50", fontsize=7, color=INK_3)
     axes[0, 2].legend(loc="upper right", fontsize=7)
 
-    fig.suptitle("Known deafness genes against both bars, in all six cells",
+    fig.suptitle(f"Known deafness genes against both bars, in all "
+                 f"{len(PHENOS) * len(COHORTS)} cells",
                  fontsize=11.5, x=0.055, ha="left", y=1.0)
     fig.text(0.055, 0.962,
              "the FDR boundary rises with rank because Benjamini-Hochberg requires "
@@ -179,12 +188,17 @@ def fig_clingen():
 
 
 def fig_vs_first_pass():
-    old_base = {"broad": HERE.parent.parent.parent
-                / "gene_burden_elena_replication/phase_4/results",
-                "bilateral": HERE.parent.parent.parent
-                / "gene_burden_pmbb_bilateral/phase_5/results"}
-    fig, axes = plt.subplots(2, 3, figsize=(12, 7))
-    for r, pheno in enumerate(PHENOS):
+    # TWO PHENOTYPES ONLY, and deliberately. This figure asks what the rebuild changed,
+    # which needs a first-pass counterpart to change from. The tinnitus arm has none --
+    # it was added on 2026-10-15, after the first pass -- so it is absent here rather
+    # than plotted against nothing. V1 lives under pmbb_hl_v1/ after the rename.
+    V1 = HERE.parent.parent.parent / "pmbb_hl_v1"
+    old_base = {"broad": V1 / "gene_burden_elena_replication/phase_4/results",
+                "bilateral": V1 / "gene_burden_pmbb_bilateral/phase_5/results"}
+    paired = [p for p in PHENOS if p in old_base]
+    fig, axes = plt.subplots(len(paired), len(COHORTS),
+                             figsize=(12, 3.5 * len(paired)))
+    for r, pheno in enumerate(paired):
         for c, cohort in enumerate(COHORTS):
             ax = axes[r, c]
             new = omnibus(pheno, cohort)[["Region", "omnibus_p"]]

@@ -53,7 +53,7 @@ from statsmodels.stats.multitest import multipletests
 HERE = Path(__file__).resolve().parents[1]
 STEP2 = HERE / "results/step2"
 OUT = HERE / "results"
-PHENOS = ["broad", "bilateral"]
+PHENOS = ["broad", "bilateral", "tinnitus"]
 COHORTS = ["combined", "EUR", "AFR"]
 CHROMS = range(1, 23)
 Q_BAR = 0.10

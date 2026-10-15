@@ -105,6 +105,59 @@
       "best_gene": "IGSF9",
       "differs_from_saige_cauchy": 787,
       "compared_to_saige_cauchy": 17778
+    },
+    "tinnitus_combined": {
+      "genes": 17940,
+      "cells": 159870,
+      "duplicate_cells_dropped": 1598,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1131,
+        "pDM == pLOF;pDM": 465,
+        "pDM == pLOF": 2
+      },
+      "bonferroni_bar": 2.787068004459309e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 1.9127204153701616e-05,
+      "min_q": 0.343142042517407,
+      "best_gene": "CTNNA3",
+      "differs_from_saige_cauchy": 565,
+      "compared_to_saige_cauchy": 17940
+    },
+    "tinnitus_EUR": {
+      "genes": 17923,
+      "cells": 159016,
+      "duplicate_cells_dropped": 2284,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 1424,
+        "pDM == pLOF;pDM": 858,
+        "pDM == pLOF": 2
+      },
+      "bonferroni_bar": 2.7897115438263685e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 6.748994016414489e-05,
+      "min_q": 0.7116917193630389,
+      "best_gene": "FXYD3",
+      "differs_from_saige_cauchy": 473,
+      "compared_to_saige_cauchy": 17923
+    },
+    "tinnitus_AFR": {
+      "genes": 17777,
+      "cells": 152789,
+      "duplicate_cells_dropped": 6869,
+      "duplicate_pairs": {
+        "pLOF == pLOF;pDM": 2683,
+        "pDM == pLOF;pDM": 4186
+      },
+      "bonferroni_bar": 2.8126230522585366e-06,
+      "bonferroni_hits": 0,
+      "fdr_hits": 0,
+      "min_omnibus_p": 4.11172802972648e-05,
+      "min_q": 0.4961343584437735,
+      "best_gene": "POLD1",
+      "differs_from_saige_cauchy": 814,
+      "compared_to_saige_cauchy": 17777
     }
   }
 }

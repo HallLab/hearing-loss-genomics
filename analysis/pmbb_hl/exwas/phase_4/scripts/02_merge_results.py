@@ -29,7 +29,7 @@ HERE = Path(__file__).resolve().parents[1]
 STEP2 = HERE / "results/step2"
 CENSUS = HERE.parent / "phase_2/results/census"
 OUT = HERE / "results"
-ARMS = [f"{p}_{c}" for p in ("broad", "bilateral")
+ARMS = [f"{p}_{c}" for p in ("broad", "bilateral", "tinnitus")
         for c in ("combined", "EUR", "AFR")]
 CHROMS = range(1, 23)
 PRIMARY = 5e-8
@@ -114,12 +114,12 @@ def main():
             cells[(tag, chrom)] = (body, cap, short)
 
     if problems:
-        print(f"REFUSING -- {len(problems)} of 132 cells unusable:", file=sys.stderr)
+        print(f"REFUSING -- {len(problems)} of 198 cells unusable:", file=sys.stderr)
         for p in problems[:20]:
             print(f"  {p}", file=sys.stderr)
         sys.exit(1)
 
-    print("all 132 cells pass: identical headers, consistent field counts,\n"
+    print("all 198 cells pass: identical headers, consistent field counts,\n"
           "row counts at or under the plink2 ceiling, p-values in range\n")
     report = {"primary_bar": PRIMARY, "arms": {}}
 

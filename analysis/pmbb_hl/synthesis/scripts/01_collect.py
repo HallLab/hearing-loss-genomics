@@ -2,9 +2,11 @@
 """
 Synthesis -- pull every reportable number out of the two arms' own results.
 
-TWELVE CELLS: {rare-variant burden, common-variant ExWAS} x {broad, bilateral} x
-{combined, EUR, AFR}. Nothing here is retyped from a document; each number is read from
-the file the phase that produced it wrote.
+EIGHTEEN CELLS: {rare-variant burden, common-variant ExWAS} x {broad, bilateral,
+tinnitus} x {combined, EUR, AFR}, plus the original run's six (broad only -- it never
+ran the other two phenotypes), for twenty-four points in the figure. Nothing here is
+retyped from a document; each number is read from the file the phase that produced it
+wrote.
 
 A COMPARABILITY WARNING THE TABLES CANNOT CARRY. The two arms do not report the same
 quantity and are not judged by the same bar:
@@ -18,11 +20,12 @@ one over 70,000-118,000 variants. The ratio to each cell's OWN bar is the only f
 that travels between them, and that is what the synthesis figure plots.
 """
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1].parent
 OUT = Path(__file__).resolve().parents[1] / "results"
-PHENOS = ["broad", "bilateral"]
+PHENOS = ["broad", "bilateral", "tinnitus"]
 COHORTS = ["combined", "EUR", "AFR"]
 
 
@@ -91,8 +94,16 @@ def main():
     # the figure uses her omnibus recomputed with the same ACAT over the same nine
     # cells, from the first pass's three-way comparison, where all three are one
     # quantity judged by one rule.
-    three_way = json.loads((ROOT.parent / "gene_burden_pmbb_bilateral/phase_5/results"
-                            / "09_three_way.json").read_text())
+    # The first pass now lives under pmbb_hl_v1/ -- it was moved there when this
+    # rebuild took the pmbb_hl name. Checked explicitly so a future move says what
+    # is missing instead of raising on read.
+    tw = (ROOT.parent / "pmbb_hl_v1/gene_burden_pmbb_bilateral/phase_5/results"
+          / "09_three_way.json")
+    if not tw.exists():
+        sys.exit(f"REFUSING: the first pass's three-way comparison is not at {tw}. "
+                 "It holds the original run's omnibus recomputed by our method, "
+                 "which is the only figure comparable to ours.")
+    three_way = json.loads(tw.read_text())
     import csv
     out["elena"] = {}
     for c in COHORTS:

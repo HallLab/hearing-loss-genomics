@@ -21,10 +21,12 @@ HERE = Path(__file__).resolve().parents[1]
 PHASE4 = HERE.parent / "phase_4/results"
 FIG = HERE / "figures"
 COHORTS = ["combined", "EUR", "AFR"]
-PHENOS = ["broad", "bilateral"]
+PHENOS = ["broad", "bilateral", "tinnitus"]
 BLUE, ORANGE, PALE = "#2a78d6", "#eb6834", "#9ab4d1"
 INK, INK_2, INK_3, SURFACE, RED = "#1a1a19", "#5c5b55", "#8a8980", "#ffffff", "#c0392b"
-PCOL = {"broad": BLUE, "bilateral": ORANGE}
+# A third documented categorical slot; values unchanged.
+PLUM = "#a855a0"
+PCOL = {"broad": BLUE, "bilateral": ORANGE, "tinnitus": PLUM}
 PRIMARY = 5e-8
 
 
@@ -47,7 +49,9 @@ def load(tag):
 
 def fig_manhattan():
     rep = json.loads((HERE / "results/01_calibration.json").read_text())["arms"]
-    fig, axes = plt.subplots(3, 2, figsize=(13, 9), sharex=True, sharey=True)
+    fig, axes = plt.subplots(len(COHORTS), len(PHENOS),
+                             figsize=(6.5 * len(PHENOS), 9),
+                             sharex=True, sharey=True)
     for r, cohort in enumerate(COHORTS):
         for c, pheno in enumerate(PHENOS):
             ax = axes[r, c]
@@ -79,8 +83,9 @@ def fig_manhattan():
         ax.set_xticks(ticks)
         ax.set_xticklabels(labels, fontsize=7)
         ax.set_xlabel("chromosome")
-    fig.suptitle("Common-variant ExWAS — no variant clears either bar in any of the "
-                 "six cells", fontsize=11.5, x=0.06, ha="left", y=0.995)
+    fig.suptitle(f"Common-variant ExWAS — no variant clears either bar in any of the "
+                 f"{len(PHENOS) * len(COHORTS)} cells",
+                 fontsize=11.5, x=0.06, ha="left", y=0.995)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(FIG / "manhattan.png")
     plt.close(fig)
@@ -112,7 +117,12 @@ def fig_lambda_mhc():
     ax.set_xticks(x)
     ax.set_xticklabels(labels, fontsize=8)
     ax.set_ylabel("genomic inflation factor λ")
-    ax.set_ylim(0.8, 1.48)
+    # THE FLOOR IS COMPUTED, NOT CHOSEN. It was fixed at 0.8, which was below every
+    # bar until the tinnitus arms came in at 0.61 and 0.72 -- those bars rendered off
+    # the bottom of the axes with their labels sitting on the tick text, and the
+    # figure still looked finished. Deriving it from the data cannot fail that way.
+    lo = min(list(out_v) + list(in_v))
+    ax.set_ylim(min(0.8, lo - 0.06), 1.48)
     for xi, v in zip(x - w / 2, out_v):
         ax.text(xi, v + 0.008, f"{v:.3f}", ha="center", fontsize=6.5)
     for xi, v in zip(x + w / 2, in_v):
@@ -123,8 +133,9 @@ def fig_lambda_mhc():
                  fontsize=11.5, x=0.055, ha="left", y=1.03)
     fig.text(0.055, 0.975,
              "the broad arms' inflation is gone with the release's PCs. The bilateral "
-             "arms show it instead, with the same PCs, the same GRM and the same "
-             "region — only the phenotype differs.",
+             "arms show it instead and the tinnitus arms swing the other way, to 0.61 "
+             "— at a similar case count. That spread is what estimator noise on ~1,020 "
+             "variants looks like.",
              fontsize=8, color=INK_2, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(FIG / "lambda_mhc.png")

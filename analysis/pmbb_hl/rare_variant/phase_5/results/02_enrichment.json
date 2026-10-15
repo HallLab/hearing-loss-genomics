@@ -396,6 +396,179 @@
           }
         }
       }
+    },
+    "tinnitus_combined": {
+      "definitive_strong": {
+        "genes_tested": 17940,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.259,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.518,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.296,
+            "p": 0.3727502684185876,
+            "genes": [
+              "TPRN",
+              "COL11A2"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17940,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.312,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.624,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.561,
+            "p": 0.4641548982000862,
+            "genes": [
+              "TPRN",
+              "COL11A2"
+            ]
+          }
+        }
+      }
+    },
+    "tinnitus_EUR": {
+      "definitive_strong": {
+        "genes_tested": 17923,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.259,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.519,
+            "p": 0.40647927632667624,
+            "genes": [
+              "TPRN"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.297,
+            "p": 0.3731909941477705,
+            "genes": [
+              "TPRN",
+              "TWNK"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17923,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.312,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.625,
+            "p": 0.46666162253752036,
+            "genes": [
+              "TPRN"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.562,
+            "p": 0.46464564083103593,
+            "genes": [
+              "TPRN",
+              "TWNK"
+            ]
+          }
+        }
+      }
+    },
+    "tinnitus_AFR": {
+      "definitive_strong": {
+        "genes_tested": 17777,
+        "clingen_tested": 93,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.262,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 0,
+            "expected": 0.523,
+            "p": 1.0,
+            "genes": []
+          },
+          "250": {
+            "observed": 1,
+            "expected": 1.308,
+            "p": 0.7330243417773272,
+            "genes": [
+              "PJVK"
+            ]
+          }
+        }
+      },
+      "plus_moderate": {
+        "genes_tested": 17777,
+        "clingen_tested": 112,
+        "depths": {
+          "50": {
+            "observed": 0,
+            "expected": 0.315,
+            "p": 1.0,
+            "genes": []
+          },
+          "100": {
+            "observed": 1,
+            "expected": 0.63,
+            "p": 0.4694243245451594,
+            "genes": [
+              "MYH14"
+            ]
+          },
+          "250": {
+            "observed": 2,
+            "expected": 1.575,
+            "p": 0.46888808883533345,
+            "genes": [
+              "MYH14",
+              "PJVK"
+            ]
+          }
+        }
+      }
     }
   }
 }

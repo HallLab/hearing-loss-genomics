@@ -1,6 +1,6 @@
 # Phase 6 — power, and whether the one positive result survives it
 
-**Run 2026-10-14.** Opened because phase 5 left two things sitting oddly together:
+**Run 2026-10-14; extended to the tinnitus arm and corrected 2026-10-15.** Opened because phase 5 left two things sitting oddly together:
 nothing is significant anywhere, and known deafness genes cluster at the top of the
 broad combined ranking at p = 5.9e-06.
 
@@ -48,6 +48,36 @@ The model treats each gene as one super-variant at its observed cumulative frequ
 assumes every masked variant is causal. Real masks contain neutral variants that dilute
 the signal, so the true requirement is **larger** than these numbers. Optimistic on
 purpose: it makes a null harder to explain away, not easier.
+
+### A correction to the bilateral and tinnitus figures
+
+The cohort sizes were hardcoded at the **broad** arm's values and reused for the other
+phenotypes, giving bilateral 57,498 people when its model was fitted on 53,910. Each
+phenotype excludes a different set of "other ear" patients, so every arm has its own N.
+The script now reads N and the case count from phase 3, which records what SAIGE was
+actually given.
+
+**The error was conservative, not optimistic.** Information goes as `mac · phi(1-phi)`
+with `phi = cases/n`, so an inflated N dilutes the case fraction and makes the arm look
+*less* powered than it is. Bilateral combined: detectable OR reported at 3.20, actual
+3.10. No conclusion moves, and the direction is the safe one.
+
+### Coverage and detectable effect, all nine arms
+
+| arm | ClinGen median MAC | other genes | detectable OR, ClinGen | ClinGen genes findable at OR 3 |
+|---|---:|---:|---:|---:|
+| broad combined | 453 | 190 | 2.24 | 69 of 93 |
+| broad EUR | 251 | 107 | 2.92 | 52 of 93 |
+| broad AFR | 75 | 38 | 7.51 | 22 of 93 |
+| bilateral combined | 435 | 178 | 3.10 | 45 of 93 |
+| bilateral EUR | 235 | 101 | 4.40 | 28 of 93 |
+| bilateral AFR | 72 | 36 | 22.16 | 8 of 93 |
+| tinnitus combined | 431 | 177 | 3.28 | 39 of 93 |
+| tinnitus EUR | 235 | 100 | 4.97 | 28 of 93 |
+| tinnitus AFR | 71 | 36 | 17.56 | 9 of 93 |
+
+ClinGen genes are better covered than average in every arm (Mann-Whitney p < 0.001
+throughout) — which is the fact the matched test below exists to control for.
 
 ## The uncomfortable finding, and the test that resolved it
 
@@ -117,6 +147,11 @@ And the two findings now fit together rather than sitting oddly:
 That is what real signal below a detection floor looks like. It remains a statement about
 the ranking: none of `SIX1`, `GJB3`, `COCH`, `TMPRSS3` or `MYO6` is significant on its own,
 and none may be named as a finding.
+
+**The matched test is run only on the two arms that have something to explain away.**
+Bilateral and tinnitus put zero ClinGen genes in the top 50 of every cohort, and a
+matched null for an observed count of zero answers nothing — running it there would
+manufacture three more p-values of 1.0.
 
 ## Files
 

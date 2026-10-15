@@ -53,7 +53,7 @@ COV = REL / "Phenotype/4.0/PMBB-Release-2026-4.0_phenotype_covariates.txt"
 PCA_BY_ANC = REL / "Exome/PCA/by_ancestry"
 OUT = HERE / "results/covariates"
 
-PHENOTYPES = ["broad", "bilateral"]
+PHENOTYPES = ["broad", "bilateral", "tinnitus"]
 # cohort -> (how many PCs, where they come from)
 PLAN = {
     "combined": (11, None),

@@ -46,11 +46,11 @@
       "median_mac_clingen": 435.0,
       "median_mac_other": 178.0,
       "mannwhitney_p": 1.1859182553116204e-11,
-      "median_detectable_or_clingen": 3.204065165171137,
-      "median_detectable_or_other": 6.1611763469888405,
-      "clingen_powered_for_or5": 68,
-      "clingen_powered_for_or3": 43,
-      "other_powered_for_or3_pct": 0.22310623038995966,
+      "median_detectable_or_clingen": 3.0951552446046393,
+      "median_detectable_or_other": 5.836520271892231,
+      "clingen_powered_for_or5": 72,
+      "clingen_powered_for_or3": 45,
+      "other_powered_for_or3_pct": 0.2363290004482295,
       "bonferroni_bar": 2.786912658157293e-06
     },
     "bilateral_EUR": {
@@ -59,11 +59,11 @@
       "median_mac_clingen": 235.0,
       "median_mac_other": 101.0,
       "mannwhitney_p": 1.16143633027034e-11,
-      "median_detectable_or_clingen": 4.598997277200084,
-      "median_detectable_or_other": 10.233145268840852,
-      "clingen_powered_for_or5": 53,
+      "median_detectable_or_clingen": 4.398644506259878,
+      "median_detectable_or_other": 9.560367657001835,
+      "clingen_powered_for_or5": 56,
       "clingen_powered_for_or3": 28,
-      "other_powered_for_or3_pct": 0.12530850347767555,
+      "other_powered_for_or3_pct": 0.13456360780794258,
       "bonferroni_bar": 2.790022878187601e-06
     },
     "bilateral_AFR": {
@@ -72,12 +72,51 @@
       "median_mac_clingen": 72.0,
       "median_mac_other": 36.0,
       "mannwhitney_p": 9.079237211703667e-12,
-      "median_detectable_or_clingen": 24.70521015033934,
-      "median_detectable_or_other": 92.92514921769109,
-      "clingen_powered_for_or5": 17,
+      "median_detectable_or_clingen": 22.15694906392796,
+      "median_detectable_or_other": 79.65443969877447,
+      "clingen_powered_for_or5": 20,
       "clingen_powered_for_or3": 8,
-      "other_powered_for_or3_pct": 0.005824144755442465,
+      "other_powered_for_or3_pct": 0.006785411365564037,
       "bonferroni_bar": 2.812464844189448e-06
+    },
+    "tinnitus_combined": {
+      "genes": 17940,
+      "clingen_genes": 93,
+      "median_mac_clingen": 431.0,
+      "median_mac_other": 177.0,
+      "mannwhitney_p": 1.1622721327548124e-11,
+      "median_detectable_or_clingen": 3.278261342705242,
+      "median_detectable_or_other": 6.3633333246258355,
+      "clingen_powered_for_or5": 65,
+      "clingen_powered_for_or3": 39,
+      "other_powered_for_or3_pct": 0.21521824396257075,
+      "bonferroni_bar": 2.787068004459309e-06
+    },
+    "tinnitus_EUR": {
+      "genes": 17923,
+      "clingen_genes": 93,
+      "median_mac_clingen": 235.0,
+      "median_mac_other": 100.0,
+      "mannwhitney_p": 1.1344724312285936e-11,
+      "median_detectable_or_clingen": 4.971377427067032,
+      "median_detectable_or_other": 11.661917802291011,
+      "clingen_powered_for_or5": 48,
+      "clingen_powered_for_or3": 28,
+      "other_powered_for_or3_pct": 0.10858104318564217,
+      "bonferroni_bar": 2.7897115438263685e-06
+    },
+    "tinnitus_AFR": {
+      "genes": 17777,
+      "clingen_genes": 93,
+      "median_mac_clingen": 71.0,
+      "median_mac_other": 36.0,
+      "mannwhitney_p": 9.165923513458448e-12,
+      "median_detectable_or_clingen": 17.562605348448052,
+      "median_detectable_or_other": 55.771013451367764,
+      "clingen_powered_for_or5": 23,
+      "clingen_powered_for_or3": 9,
+      "other_powered_for_or3_pct": 0.011366206740556436,
+      "bonferroni_bar": 2.8126230522585366e-06
     }
   }
 }

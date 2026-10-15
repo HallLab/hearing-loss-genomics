@@ -28,7 +28,7 @@ from scipy.stats import hypergeom
 HERE = Path(__file__).resolve().parents[1]
 PHASE4 = HERE.parent / "phase_4/results"
 OUT = HERE / "results"
-ARMS = [(p, c) for p in ("broad", "bilateral")
+ARMS = [(p, c) for p in ("broad", "bilateral", "tinnitus")
         for c in ("combined", "EUR", "AFR")]
 DEPTHS = [50, 100, 250]
 TIERS = {"definitive_strong": ["Definitive", "Strong"],

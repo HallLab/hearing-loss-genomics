@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J hl_exwas[1-132]
+#BSUB -J hl_exwas[1-198]
 #BSUB -q epistasis_normal
 #BSUB -n 4
 #BSUB -M 64000
@@ -39,7 +39,7 @@ GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_gen
 STEP1=${BURDEN}/phase_4/results/step1
 OUT=${P}/results/step2
 
-PHENOS=(broad bilateral)
+PHENOS=(broad bilateral tinnitus)
 COHORTS=(combined EUR AFR)
 I=$(( LSB_JOBINDEX - 1 ))
 PHENO=${PHENOS[$(( I / 66 ))]}

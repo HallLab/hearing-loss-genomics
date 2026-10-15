@@ -1,6 +1,6 @@
 # The pipeline
 
-**PMBB-Release-2026-4.0 · two analyses × two phenotypes × three cohorts = 18 cells**
+**PMBB-Release-2026-4.0 · two analyses × three phenotypes × three cohorts = 18 cells**
 
 Every number below is produced by the phase named beside it. Nothing is carried over
 from an earlier run without being recomputed, except where a box says *inherited* and
@@ -30,16 +30,19 @@ says why.
   ║              6,752 cases · 57,507 analysable                           ║
   ║   bilateral  SO_396.2 AND SO_396.8 on the SAME date, ≥ 2 dates         ║
   ║              3,164 cases · 53,919 analysable                           ║
+  ║   tinnitus   SO_397 or ICD 388.3x/H93.1x, ≥ 2 distinct dates           ║
+  ║              2,859 cases · 53,614 analysable                           ║
   ║   controls   50,755 — no ear evidence from any source, SHARED          ║
   ║                                                                        ║
   ║   ⊳ refuses unless every bilateral case is also a broad case           ║
+  ║   ⊳ tinnitus is NOT nested: 66% overlap, measured not asserted         ║
   ╚═══════════════════════════════╤════════════════════════════════════════╝
                                   │
             ┌─────────────────────┴─────────────────────┐
             │                                           │
   ╔═════════▼═══════════════════════╗       ╔═══════════▼════════════════════╗
   ║ PHASE 2 — burden masks          ║       ║ PHASE 2 — ExWAS MAF census     ║
-  ║ 22 tasks, from release VEP      ║       ║ 132 tasks (2 phenotypes!)      ║
+  ║ 22 tasks, from release VEP      ║       ║ 198 tasks (3 phenotypes!)      ║
   ║                                 ║       ║                                ║
   ║   pLOF      17,841 genes        ║       ║   MAF ≥ 0.01 → ~70k-118k       ║
   ║   pDM       17,623              ║       ║   variants per cohort          ║
@@ -65,13 +68,13 @@ says why.
   ╔═══════════════════════════════▼════════════════════════════════════════╗
   ║ PHASE 4 — SAIGE                                                        ║
   ║                                                                        ║
-  ║   step 1   6 null models   logit P(case) = Xβ + b,  b ~ N(0, τ·GRM)    ║
-  ║            2 phenotypes × 3 cohorts                                    ║
+  ║   step 1   9 null models   logit P(case) = Xβ + b,  b ~ N(0, τ·GRM)    ║
+  ║            3 phenotypes × 3 cohorts                                    ║
   ║            ╷                                                           ║
   ║            ├──────────────────────────┬────────────────────────────┐   ║
   ║            ▼                          ▼                            │   ║
   ║   BURDEN step 2                ExWAS step 2            INHERITED ──┘   ║
-  ║   132 tasks, whole grid        132 tasks               the null model  ║
+  ║   198 tasks, whole grid        198 tasks               the null model  ║
   ║   per call                                             does not depend ║
   ║   3 masks × 3 MAF = 9 cells    1 test per variant      on the MAF      ║
   ║   per gene                     MAF ≥ 0.01              filter          ║
@@ -90,7 +93,7 @@ says why.
   ║   figures                     MAC-matched test of the enrichment       ║
   ╚═══════════════════════════════╤════════════════════════════════════════╝
                                   │
-                        SYNTHESIS — 18 cells, one figure
+                        SYNTHESIS — 24 cells, one figure
 ```
 
 ---
@@ -145,7 +148,7 @@ A check that only warns gets ignored. These stop the pipeline.
 
 | phase | refuses when |
 |---|---|
-| 1 | a bilateral case is not also a broad case |
+| 1 | a bilateral case is not also a broad case (the check is scoped to that pair — tinnitus overlaps rather than nests, and its overlap is measured instead) |
 | 2 (masks) | a gene appears on two chromosomes · `pLOF_pDM` is not exactly the union · entry counts disagree with the manifest · LSF still has tasks in flight |
 | 2 (census) | a histogram does not sum to its `.bim` |
 | 3 | anyone in the cohort lacks a PC in the release |
@@ -159,15 +162,15 @@ A check that only warns gets ignored. These stop the pipeline.
 
 ```
 rare_variant/
-  phase_1/scripts/00_extract_release_tables.sh     cache the two phenotype extracts
-  phase_1/scripts/01_cohorts.py                    both phenotypes, one pass
+  phase_1/scripts/00_extract_release_tables.sh     cache the phenotype extracts
+  phase_1/scripts/01_cohorts.py                    all three phenotypes, one pass
   phase_2/scripts/01_build_masks.bsub              22 tasks
   phase_2/scripts/02_merge_masks.py
   phase_3/scripts/01_build_covariates.py           release PCs at 80%
   phase_3/scripts/02_build_grm.bsub                EUR and AFR
   phase_4/scripts/01_split_masks_by_chrom.sh
-  phase_4/scripts/02_saige_step1.bsub              6 null models
-  phase_4/scripts/03_saige_step2.bsub              132 tasks
+  phase_4/scripts/02_saige_step1.bsub              9 null models
+  phase_4/scripts/03_saige_step2.bsub              198 tasks
   phase_4/scripts/04_merge_results.py              dedup → ACAT → both bars
   phase_5/scripts/01_fetch_clingen.py              stamps date + sha256
   phase_5/scripts/02_enrichment.py
@@ -178,16 +181,16 @@ rare_variant/
 
 exwas/
   phase_2/scripts/01_build_keep_lists.py           6 sample lists
-  phase_2/scripts/02_maf_census.bsub               132 tasks
+  phase_2/scripts/02_maf_census.bsub               198 tasks
   phase_2/scripts/03_census_summary.py
-  phase_4/scripts/01_saige_step2.bsub              132 tasks, step 1 inherited
+  phase_4/scripts/01_saige_step2.bsub              198 tasks, step 1 inherited
   phase_4/scripts/02_merge_results.py
   phase_5/scripts/01_calibration.py                λ by region
   phase_5/scripts/02_figures.py
   phase_6/scripts/01_power.py
 
 synthesis/
-  scripts/01_collect.py                            18 cells from source
+  scripts/01_collect.py                            18 of ours + 6 original
   scripts/02_figure.py
 ```
 

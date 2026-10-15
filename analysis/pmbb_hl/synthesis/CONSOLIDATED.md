@@ -10,33 +10,35 @@ Every number here is read from the file the phase that produced it wrote;
 
 ![How close](figures/how_close.png)
 
-**Eighteen cells across three runs — two methods × three runs × three cohorts. Nothing
-reaches its threshold in any of them.** The closest is 1.9× short; the furthest is 576×.
+**Twenty-four cells across four arms — two methods × four arms × three cohorts. Nothing
+reaches its threshold in any of them.** The closest is 1.9× short; the furthest is 685×.
 
 The second thing the figure says is the useful one: **the rare-variant arms land an
-order of magnitude closer than the common-variant ones, in every run** — burden 1.9–13×,
-ExWAS 15–576×.
+order of magnitude closer than the common-variant ones, in every run** — burden 1.9–24×,
+ExWAS 15–685×.
 
-| run | phenotype | what it is |
+| arm | phenotype | what it is |
 |---|---|---|
 | **original run** | broad | the PMBB v4 analysis delivered in October |
 | **rebuild, broad** | broad | the same phenotype, this pipeline |
 | **rebuild, bilateral** | bilateral sensorineural | a phenotype the original never ran |
+| **rebuild, tinnitus** | tinnitus | the hypothesis this project started from |
 
 > **The original run's burden figure is its omnibus recomputed by our method.** Its
 > delivered tables report **per-cell** p-values corrected within one MAF family —
 > `0.05/53,583` for combined, verified from its own `Pvalue_Bonferroni` column — across
 > the 160,672 cell tests it ran. Placing that beside our omnibus would compare a minimum
 > over nine times more tests. The figure instead uses the same ACAT over the same nine
-> cells for all three, so one quantity is judged by one rule.
+> cells for all four, so one quantity is judged by one rule.
 >
 > Its ExWAS figure needs no such adjustment: single-variant p against 5e-8 is the same
-> quantity in all three runs.
+> quantity in all four arms.
 
-### The original run is the closest of the three in combined, and the furthest in AFR
+### The original run is the closest of the four in combined, and among the furthest in AFR
 
-Burden, combined: **1.9×** against our 10× and 7.4×. Burden, AFR: **13×** against our
-5.0× and 5.2×.
+Burden, combined: **1.9×** against our 10×, 7.4× and 6.9×. Burden, AFR: **13×** against
+our 5.0× and 5.2× for the hearing-loss arms — though the tinnitus arm at 14.6× is
+further still, so the original is no longer the furthest there.
 
 Neither is a verdict on pipeline quality. The gene sets differ — its 19,042 genes
 include 651 antisense, 88 LINC and 14 microRNA genes that a `pLOF` mask should not
@@ -47,19 +49,22 @@ comparison is here to show that **no run reaches its threshold**, not to rank th
 
 ## What was run
 
-| | broad phenotype | bilateral sensorineural |
-|---|---|---|
-| **rare-variant gene burden** | 6,752 cases | 3,164 cases |
-| **common-variant ExWAS** | the same cohorts, MAF ≥ 0.01 | |
+| | broad | bilateral sensorineural | tinnitus |
+|---|---|---|---|
+| **rare-variant gene burden** | 6,752 cases | 3,164 cases | 2,859 cases |
+| **common-variant ExWAS** | the same cohorts, MAF ≥ 0.01 | | |
 
-Both phenotypes are built by one script, so the control set is shared by construction
-and **every bilateral case is also a broad case** — asserted in code, not assumed.
+All three phenotypes are built by one script, so the control set is shared by
+construction. **Every bilateral case is also a broad case** — asserted in code, not
+assumed. **Tinnitus is not nested**: 1,885 of its 2,859 cases (66%) are also broad
+cases, and that overlap is measured rather than asserted, so the nesting check is
+scoped to the pair it describes.
 
-| cohort | broad: analysable / tested / cases | bilateral: analysable / tested / cases |
-|---|---|---|
-| combined | 57,507 / 57,498 / 6,752 | 53,919 / 53,910 / 3,164 |
-| EUR | 42,786 / 42,779 / 5,183 | 40,150 / 40,143 / 2,547 |
-| AFR | 11,334 / 11,334 / 1,285 | 10,539 / 10,539 / 490 |
+| cohort | broad: analysable / tested / cases | bilateral | tinnitus |
+|---|---|---|---|
+| combined | 57,507 / 57,498 / 6,752 | 53,919 / 53,910 / 3,164 | 53,614 / 53,605 / 2,859 |
+| EUR | 42,786 / 42,779 / 5,183 | 40,150 / 40,143 / 2,547 | 39,731 / 39,724 / 2,128 |
+| AFR | 11,334 / 11,334 / 1,285 | 10,539 / 10,539 / 490 | 10,641 / 10,641 / 592 |
 
 *Analysable* is what the phenotype supports; *tested* is what reached SAIGE after
 covariates. The difference is 9 and 7 people with no `AGE`, **all of them controls**, so
@@ -82,6 +87,9 @@ Bar: `0.05 / genes`. FDR (Benjamini-Hochberg, q < 0.10) reported alongside, as a
 | bilateral | combined | 17,941 | 2.06e-05 | `PCBD1` | 7.4× | 0.239 | 0 |
 | **bilateral** | **EUR** | 17,921 | **6.33e-06** | **`FBXO25`** | **2.3×** | **0.113** | 0 |
 | bilateral | AFR | 17,778 | 1.46e-05 | `IGSF9` | 5.2× | 0.259 | 0 |
+| tinnitus | combined | 17,940 | 1.91e-05 | `CTNNA3` | 6.9× | 0.343 | 0 |
+| tinnitus | EUR | 17,923 | 6.75e-05 | `FXYD3` | 24.2× | 0.712 | 0 |
+| tinnitus | AFR | 17,777 | 4.11e-05 | `POLD1` | 14.6× | 0.496 | 0 |
 
 ### Common-variant ExWAS
 
@@ -97,6 +105,9 @@ tests we performed, while 5e-8 counts nothing we did.
 | bilateral | combined | 70,350 | 2.88e-05 | `7:150692505:T:C` | 576× |
 | bilateral | EUR | 74,566 | 1.66e-05 | `19:44819634:C:T` | 332× |
 | **bilateral** | **AFR** | 118,049 | **7.67e-07** | `7:158133844:C:T` | 15× |
+| tinnitus | combined | 70,287 | 3.43e-05 | `1:94205228:T:C` | 685× |
+| tinnitus | EUR | 74,563 | 1.25e-05 | `17:39105864:C:T` | 250× |
+| tinnitus | AFR | 118,067 | 2.13e-05 | `5:14758467:C:T` | 426× |
 
 ---
 
@@ -116,6 +127,14 @@ The five are `SIX1`, `GJB3`, `COCH`, `TMPRSS3`, `MYO6`.
 **Identical to the first pass, to the digit, with the same five genes** — after changing
 the PCA source, raising the PC counts from 5/4/3 to 11/15/16, and adding deduplication
 before the combination.
+
+**The tinnitus arm, added on 2026-10-15, is the nearest thing to a negative control.**
+ClinGen's panel lists **deafness** genes, not tinnitus genes, so it should not enrich
+there — and it finds zero in the top 50 of all three cohorts. Since 66% of the tinnitus
+cases are also hearing-loss cases, an enrichment driven by the pipeline rather than by
+the phenotype would have been carried across by those shared cases. It was not. The
+inference is weak on its own, because that arm would likely miss a real enrichment too,
+but it points the right way.
 
 ### The threat, and how it was resolved
 
@@ -247,6 +266,12 @@ between the phenotypes with everything else fixed.
    in how close it gets.
 5. **The experiment that would answer the question is now specified**: ~250k people with
    comparable phenotyping resolves OR 1.3 in four known deafness genes.
+6. **The hypothesis this project started from does not hold at this cohort size.**
+   `ZNF175` — Park et al. 2021, *Nature Medicine*, tinnitus — was pre-registered as the
+   declared target and reported in all eighteen cells whatever it said. It reaches nothing,
+   and in the combined arm it is well enough covered (MAC 587 against a median of 178)
+   that the statement is sharper than "underpowered": an effect of OR ≥ 2.8 had an 80%
+   chance of being seen. See [`ZNF175.md`](../ZNF175.md).
 
 ### Next
 
@@ -254,4 +279,5 @@ between the phenotypes with everything else fixed.
 |---|---|
 | confirm phenotype comparability in All of Us / UK Biobank | the one thing that could invalidate the plan above |
 | more cases, not more methods | every cell is power-limited; another analysis of the same 6,752 will not change it |
+| size any replication for the rarest phenotype | prevalence enters power directly — tinnitus at 5.3% cases needs **twice** the cohort of broad hearing loss at 11.7% for the same variant and effect |
 | revisit the combined GRM if a combined result ever approaches a bar | `--hwe` across ancestries leaves it thinner than EUR alone |

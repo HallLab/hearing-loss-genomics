@@ -20,6 +20,10 @@ NO OPTIMISM CORRECTION IS NEEDED HERE, unlike the burden arm. There is no mask t
 dilute: the test is on one variant at its own frequency, so the calculation is the
 standard one with no causal-fraction assumption buried in it.
 
+PREVALENCE DIFFERS BY ARM and is reported for all three, because phi(1-phi) enters
+the non-centrality directly: the same variant at the same odds ratio needs roughly
+twice the cohort for tinnitus (5.3% cases) as for broad hearing loss (11.7%).
+
 FREQUENCIES ARE OURS, taken from what the ExWAS actually tested: the 1% floor itself,
 the median tested variant, and a common one. Nothing below 1% is tested here, so the
 scenarios span the real range rather than a hypothetical one.
@@ -36,7 +40,14 @@ HERE = Path(__file__).resolve().parents[1]
 PHASE4 = HERE.parent / "phase_4/results"
 OUT = HERE / "results"
 
-CASE_FRACTION = 6752 / 57498          # the broad combined prevalence
+# PREVALENCE IS NOT SHARED ACROSS THE ARMS, and it drives the answer. Information
+# goes as phi(1-phi), so tinnitus at 5.3% carries 0.0505 against broad's 0.1035 --
+# a factor of 2.05 in required cohort size, not a rounding difference. The curve is
+# drawn at the broad prevalence and the table is reported at all three.
+PREVALENCE = {"broad": 6752 / 57498,
+              "bilateral": 3164 / 53910,
+              "tinnitus": 2859 / 53605}
+CASE_FRACTION = PREVALENCE["broad"]
 BAR = 5e-8                            # the primary bar: the convention
 POWER_TARGET = 0.80
 
@@ -46,11 +57,11 @@ def power(n, f, log_or, alpha=BAR, phi=CASE_FRACTION):
     return float(ncx2.sf(chi2.isf(alpha, 1), 1, ncp))
 
 
-def n_for_power(f, log_or, target=POWER_TARGET):
+def n_for_power(f, log_or, target=POWER_TARGET, phi=CASE_FRACTION):
     lo, hi = 1e3, 1e9
-    if power(hi, f, log_or) < target:
+    if power(hi, f, log_or, phi=phi) < target:
         return None
-    return brentq(lambda n: power(n, f, log_or) - target, lo, hi)
+    return brentq(lambda n: power(n, f, log_or, phi=phi) - target, lo, hi)
 
 
 def main():
@@ -74,19 +85,23 @@ def main():
            "scenarios": {}, "note": "gene treated as one super-variant; assumes every "
                                     "masked variant is causal, so optimistic"}
 
-    print(f"\ncohort size needed for {POWER_TARGET:.0%} power at p < {BAR:.2e}\n")
-    print(f"  {'scenario':<24}" + "".join(f"{'OR '+str(o):>14}" for o in ors))
-    for k, f in scen.items():
-        row = []
-        out["scenarios"][k] = {"f": f, "needed": {}}
-        for o in ors:
-            n = n_for_power(f, np.log(o))
-            out["scenarios"][k]["needed"][str(o)] = n
-            row.append("—" if n is None else
-                       (f"{n/1e6:.1f}M" if n > 1e6 else f"{n/1e3:,.0f}k"))
-        print(f"  {k:<24}" + "".join(f"{v:>14}" for v in row))
+    out["prevalence"] = PREVALENCE
+    for pheno, phi in PREVALENCE.items():
+        print(f"\ncohort size needed for {POWER_TARGET:.0%} power at p < {BAR:.2e}"
+              f"   [{pheno}, {phi:.1%} cases]\n")
+        print(f"  {'scenario':<24}" + "".join(f"{'OR '+str(o):>14}" for o in ors))
+        for k, f in scen.items():
+            row = []
+            out["scenarios"].setdefault(k, {"f": f, "needed": {}})
+            out["scenarios"][k]["needed"].setdefault(pheno, {})
+            for o in ors:
+                n = n_for_power(f, np.log(o), phi=phi)
+                out["scenarios"][k]["needed"][pheno][str(o)] = n
+                row.append("—" if n is None else
+                           (f"{n/1e6:.1f}M" if n > 1e6 else f"{n/1e3:,.0f}k"))
+            print(f"  {k:<24}" + "".join(f"{v:>14}" for v in row))
 
-    print(f"\n  for reference, this cohort is 57,498")
+    print(f"\n  for reference, the arms as run are 57,498 / 53,910 / 53,605")
 
     (OUT / "04_power.json").write_text(json.dumps(out, indent=2) + "\n")
     print(f"\nwritten: results/04_power.json")

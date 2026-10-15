@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -J hl_census[1-132]
+#BSUB -J hl_census[1-198]
 #BSUB -q epistasis_normal
 #BSUB -n 4
 #BSUB -M 24000
@@ -28,7 +28,7 @@ P=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/exwas/phase_2
 GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/plink_deduplicated
 OUT=${P}/results/census
 
-PHENOS=(broad bilateral)
+PHENOS=(broad bilateral tinnitus)
 COHORTS=(combined EUR AFR)
 I=$(( LSB_JOBINDEX - 1 ))
 PHENO=${PHENOS[$(( I / 66 ))]}

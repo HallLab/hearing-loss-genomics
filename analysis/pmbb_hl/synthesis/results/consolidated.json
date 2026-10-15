@@ -27,6 +27,20 @@
         "EUR": 2547,
         "AFR": 490
       }
+    },
+    "tinnitus": {
+      "analysable": 53614,
+      "cases": 2859,
+      "tested": {
+        "combined": 53605,
+        "EUR": 39724,
+        "AFR": 10641
+      },
+      "tested_cases": {
+        "combined": 2859,
+        "EUR": 2128,
+        "AFR": 592
+      }
     }
   },
   "cells": {
@@ -203,6 +217,93 @@
       "secondary_bar": 4.235529314098383e-07,
       "lambda_in_mhc": 1.1551402785668823,
       "lambda_outside_mhc": 1.0104549353195054
+    },
+    "burden_tinnitus_combined": {
+      "arm": "burden",
+      "phenotype": "tinnitus",
+      "cohort": "combined",
+      "units": 17940,
+      "min_p": 1.9127204153701616e-05,
+      "bar": 2.787068004459309e-06,
+      "short_by": 6.862840850348139,
+      "hits": 0,
+      "best_gene": "CTNNA3",
+      "min_q": 0.343142042517407,
+      "duplicates_dropped": 1598,
+      "clingen_top50": 0,
+      "clingen_p": 1.0
+    },
+    "exwas_tinnitus_combined": {
+      "arm": "exwas",
+      "phenotype": "tinnitus",
+      "cohort": "combined",
+      "units": 70287,
+      "min_p": 3.426837e-05,
+      "bar": 5e-08,
+      "short_by": 685.3674,
+      "hits": 0,
+      "best_variant": "1:94205228:T:C",
+      "secondary_bar": 7.113691009717302e-07,
+      "lambda_in_mhc": 0.7215739283433659,
+      "lambda_outside_mhc": 0.9862281543077253
+    },
+    "burden_tinnitus_EUR": {
+      "arm": "burden",
+      "phenotype": "tinnitus",
+      "cohort": "EUR",
+      "units": 17923,
+      "min_p": 6.748994016414489e-05,
+      "bar": 2.7897115438263685e-06,
+      "short_by": 24.192443951239376,
+      "hits": 0,
+      "best_gene": "FXYD3",
+      "min_q": 0.7116917193630389,
+      "duplicates_dropped": 2284,
+      "clingen_top50": 0,
+      "clingen_p": 1.0
+    },
+    "exwas_tinnitus_EUR": {
+      "arm": "exwas",
+      "phenotype": "tinnitus",
+      "cohort": "EUR",
+      "units": 74563,
+      "min_p": 1.25068e-05,
+      "bar": 5e-08,
+      "short_by": 250.13600000000002,
+      "hits": 0,
+      "best_variant": "17:39105864:C:T",
+      "secondary_bar": 6.705738771240428e-07,
+      "lambda_in_mhc": 0.8800677466097766,
+      "lambda_outside_mhc": 0.9945367954727057
+    },
+    "burden_tinnitus_AFR": {
+      "arm": "burden",
+      "phenotype": "tinnitus",
+      "cohort": "AFR",
+      "units": 17777,
+      "min_p": 4.11172802972648e-05,
+      "bar": 2.8126230522585366e-06,
+      "short_by": 14.618837836889526,
+      "hits": 0,
+      "best_gene": "POLD1",
+      "min_q": 0.4961343584437735,
+      "duplicates_dropped": 6869,
+      "clingen_top50": 0,
+      "clingen_p": 1.0
+    },
+    "exwas_tinnitus_AFR": {
+      "arm": "exwas",
+      "phenotype": "tinnitus",
+      "cohort": "AFR",
+      "units": 118067,
+      "min_p": 2.130643e-05,
+      "bar": 5e-08,
+      "short_by": 426.1286,
+      "hits": 0,
+      "best_variant": "5:14758467:C:T",
+      "secondary_bar": 4.2348835830503024e-07,
+      "lambda_in_mhc": 0.6062018653425335,
+      "lambda_outside_mhc": 0.9963084508564908
     }
   },
   "elena": {

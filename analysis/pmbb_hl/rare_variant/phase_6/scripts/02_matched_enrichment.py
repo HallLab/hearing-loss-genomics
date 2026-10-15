@@ -39,6 +39,11 @@ DRAWS = 2000
 SEED = 20261014
 WINDOW = 0.10          # log10 MAC, so a factor of about 1.26
 TOP_N = 50
+# ONLY THE ARMS THAT HAVE SOMETHING TO EXPLAIN AWAY. This test asks whether the
+# ClinGen genes' presence in the top 50 survives matching on coverage. It is only
+# meaningful where they are present: bilateral and tinnitus put 0 ClinGen genes in
+# the top 50 of every cohort, and a matched null for an observed count of 0 answers
+# nothing. Running it there would manufacture three more p-values of 1.0.
 ARMS = [("broad", "combined"), ("broad", "EUR")]
 
 

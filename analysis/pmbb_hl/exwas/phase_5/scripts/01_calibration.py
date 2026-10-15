@@ -15,9 +15,11 @@ lambda = 1.34 inside the MHC in EUR with 4 PCs of its own PCA against the origin
 0.97 with 9 release PCs, and could not tell whether the cause was the count or the
 source. This rebuild uses 15 release PCs, so the question is answerable.
 
-THE TWO ARMS ARE NESTED, and the comparison must be read that way: every bilateral case
-is a broad case and the controls are identical, so agreement between them is the same
-data twice and measures nothing about reproducibility. A variant getting WEAKER says
+THE ARMS ARE NOT INDEPENDENT, and each pair must be read for what it is. Broad and
+bilateral are nested -- every bilateral case is a broad case, controls identical -- so
+agreement between them is the same data twice. Broad and tinnitus overlap at 66% but
+are not nested: 974 tinnitus cases are not HL cases, so a third of that case set is
+new. Both pairs share all 50,755 controls, which induces agreement by itself. A variant getting WEAKER says
 nothing either -- losing 53% of cases does that by itself. Only strengthening is
 informative, and the first pass's power control showed that the COUNT of strengthening
 variants is within what random size-matched case removal produces.
@@ -59,7 +61,7 @@ def main():
     print(f"  {'arm':<22}{'λ all':>9}{'λ outside MHC':>16}{'λ in MHC':>11}"
           f"{'n MHC':>9}{'min p':>11}")
     data = {}
-    for pheno in ("broad", "bilateral"):
+    for pheno in ("broad", "bilateral", "tinnitus"):
         for cohort in COHORTS:
             tag = f"{pheno}_{cohort}"
             d = load(tag)
@@ -80,25 +82,46 @@ def main():
                   f"{e['lambda_inside_mhc']:>11.4f}{e['n_mhc']:>9,}"
                   f"{e['min_p']:>11.2e}")
 
-    print("\nbroad against bilateral, per variant\n")
-    for cohort in COHORTS:
-        b, l = data[f"broad_{cohort}"], data[f"bilateral_{cohort}"]
-        m = b.merge(l[["MarkerID", "p.value", "BETA"]], on="MarkerID",
-                    suffixes=("_broad", "_bil"))
-        x = -np.log10(m["p.value_broad"])
-        y = -np.log10(m["p.value_bil"])
-        gained = (y > x + 1.0) & (m["p.value_bil"] < 1e-4)
-        rho = float(spearmanr(x, y).statistic)
-        report["cross_phenotype"][cohort] = {
-            "shared": len(m), "spearman": rho,
-            "stronger_on_half_the_cases": int(gained.sum()),
-            "stronger_variants": list(m.loc[gained, "MarkerID"])[:20],
-        }
-        print(f"  {cohort:<10} shared {len(m):>8,}   ρ = {rho:.3f}   "
-              f"stronger on half the cases: {int(gained.sum())}")
-    print("\n  ρ is reported only to make explicit that it is NOT a replication\n"
-          "  statistic: the arms share every control and the bilateral cases are a\n"
-          "  strict subset, so agreement is the same data twice.")
+    # TWO PAIRS, AND THEY ARE NOT THE SAME KIND OF COMPARISON.
+    #   broad vs bilateral: nested. Every bilateral case is a broad case, controls
+    #     identical. Agreement is the same data twice and measures nothing.
+    #   broad vs tinnitus: overlapping but NOT nested. 974 of 2,859 tinnitus cases
+    #     are not broad cases (34%), so the case sets are partly independent even
+    #     though the controls are shared. Agreement here is weak evidence; it is
+    #     still not replication, because the shared controls alone induce it.
+    PAIRS = [("broad", "bilateral", "nested: bilateral cases are a strict subset"),
+             ("broad", "tinnitus", "overlapping: 974 of 2,859 tinnitus cases "
+                                   "are not broad cases")]
+    for a, b_ph, relation in PAIRS:
+        print(f"\n{a} against {b_ph}, per variant  ({relation})\n")
+        for cohort in COHORTS:
+            left, right = data[f"{a}_{cohort}"], data[f"{b_ph}_{cohort}"]
+            m = left.merge(right[["MarkerID", "p.value", "BETA"]], on="MarkerID",
+                           suffixes=("_l", "_r"))
+            x = -np.log10(m["p.value_l"])
+            y = -np.log10(m["p.value_r"])
+            gained = (y > x + 1.0) & (m["p.value_r"] < 1e-4)
+            # Sign agreement is only meaningful among variants that reached
+            # anything at all in the left arm; over 70,000 near-null variants the
+            # betas are noise and the share sits at 0.5 by construction.
+            lead = m[m["p.value_l"] < 1e-3]
+            concord = (float((np.sign(lead.BETA_l) == np.sign(lead.BETA_r)).mean())
+                       if len(lead) else None)
+            rho = float(spearmanr(x, y).statistic)
+            report["cross_phenotype"][f"{a}_vs_{b_ph}_{cohort}"] = {
+                "relation": relation, "shared": len(m), "spearman": rho,
+                "stronger_in_second": int(gained.sum()),
+                "stronger_variants": list(m.loc[gained, "MarkerID"])[:20],
+                "lead_variants_left": len(lead), "sign_concordance": concord,
+            }
+            cc = "    n/a" if concord is None else f"{concord:>7.2f}"
+            print(f"  {cohort:<10} shared {len(m):>8,}   ρ = {rho:.3f}   "
+                  f"stronger in {b_ph}: {int(gained.sum()):>2}   "
+                  f"sign concordance (p_l < 1e-3, n={len(lead)}):{cc}")
+    print("\n  ρ is NOT a replication statistic in either pair: both share every\n"
+          "  control, which induces agreement on its own. For the nested pair it is\n"
+          "  the same data twice. For the overlapping pair a third of the tinnitus\n"
+          "  cases are new, so it is weak evidence and nothing more.")
 
     (OUT / "01_calibration.json").write_text(json.dumps(report, indent=2) + "\n")
     print(f"\nwritten: results/01_calibration.json")
