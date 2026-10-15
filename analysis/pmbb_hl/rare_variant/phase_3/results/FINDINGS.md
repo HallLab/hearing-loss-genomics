@@ -1,24 +1,38 @@
 # Phase 3 — covariates and the GRM
 
-**Run 2026-10-14.** Covariates from the release; GRM job `49676669`, 2/2.
+**Run 2026-10-14; tinnitus covariates added 2026-10-15.** Covariates from the release;
+GRM job `49676669`, 2/2. The GRM is unchanged by the new arm -- relatedness does not
+depend on the phenotype.
 
 ## Covariates
 
 PCs come from the **release's own exome PCA**, at the count reaching 80% of the
 variance in each cohort's eigenvalues.
 
-| | PCs | variance | | broad analysable | tested | bilateral analysable | tested |
-|---|---:|---:|---|---:|---:|---:|---:|
-| combined | **11** | 80.3% | | 57,507 | 57,498 | 53,919 | 53,910 |
-| EUR | **15** | 83.3% | | 42,786 | 42,779 | 40,150 | 40,143 |
-| AFR | **16** | 84.1% | | 11,334 | 11,334 | 10,539 | 10,539 |
+The PC count depends on the cohort's eigenvalues, not on the phenotype, so one choice
+serves all three arms.
 
-Cases: broad 6,752 / 5,183 / 1,285 · bilateral 3,164 / 2,547 / 490.
+| | PCs | variance |
+|---|---:|---:|
+| combined | **11** | 80.3% |
+| EUR | **15** | 83.3% |
+| AFR | **16** | 84.1% |
+
+Analysable / tested per arm:
+
+| | broad | bilateral | tinnitus |
+|---|---|---|---|
+| combined | 57,507 / 57,498 | 53,919 / 53,910 | 53,614 / 53,605 |
+| EUR | 42,786 / 42,779 | 40,150 / 40,143 | 39,731 / 39,724 |
+| AFR | 11,334 / 11,334 | 10,539 / 10,539 | 10,641 / 10,641 |
+
+Cases: broad 6,752 / 5,183 / 1,285 · bilateral 3,164 / 2,547 / 490 ·
+tinnitus 2,859 / 2,128 / 592.
 
 **Nobody is dropped for missing a PC.** That was the premise of using the release's
 PCA, and the script refuses to write anything if it fails. The only people dropped are
-9 (combined) and 7 (EUR) with no `AGE` value, all of them controls, so no case is lost
-in any cell.
+9 (combined) and 7 (EUR) with no `AGE` value, **the same people in every arm** and all
+of them controls, so no case is lost in any cell.
 
 ### This is the first run that meets the 80% rule
 
@@ -72,11 +86,12 @@ original's; the difference is the 235 and 49 extra samples, which shift allele
 frequencies enough to move a handful of variants across the filters.
 
 Coverage checked: **0 of the tested cohort is outside the new GRM**, in either ancestry,
-for either phenotype.
+for any of the three phenotypes -- re-verified against the `.fam` files on 2026-10-15,
+nine cells, zero missing.
 
 **Combined is not rebuilt.** The original's `ALL.common_ldpruned` covers all 70,925 and
-has no gap. Verified: 0 of the 57,498 broad and 0 of the 53,910 bilateral combined
-cohort are missing from it.
+has no gap. Verified: 0 of the 57,498 broad, 0 of the 53,910 bilateral and 0 of the
+53,605 tinnitus combined cohort are missing from it.
 
 ### One problem carried forward, not fixed
 
@@ -98,7 +113,7 @@ conservative direction, and nothing in any combined analysis has come close to a
 
 | | |
 |---|---|
-| `results/covariates/{broad,bilateral}_{combined,EUR,AFR}.txt` | IID PHENO AGE AGE2 SEX Batch PC1..PCn |
+| `results/covariates/{broad,bilateral,tinnitus}_{combined,EUR,AFR}.txt` | IID PHENO AGE AGE2 SEX Batch PC1..PCn — nine files |
 | `results/01_covariates.json` | counts, PC source and variance per cell |
 | `data/grm/{EUR,AFR}.common_ldpruned.*` | rebuilt GRM genotypes |
 | `data/{EUR,AFR}.keep` | the sample lists they were built over |

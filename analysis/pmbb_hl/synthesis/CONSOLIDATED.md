@@ -117,6 +117,87 @@ introduced nothing.
 
 ---
 
+## Ancestry and relatedness — the PCs and the GRM
+
+Two different corrections, often confused, and the confusion cost this project a
+rebuild. **PCs** are covariates: they put continuous ancestry into the model as fixed
+effects. **The GRM** is the random effect: it tells SAIGE who is related to whom. A
+script that builds one is not building the other.
+
+### PCs: the release's own exome PCA, at 80% of the variance
+
+| | PCs | variance reached |
+|---|---:|---:|
+| original run | 5 / 9 / 10 | 64.2% / 60.8% / 58.6% |
+| first pass | 5 / 4 / 3 | 64.2% / 66.7% / 56.5% |
+| **this rebuild** | **11 / 15 / 16** | **80.3% / 83.3% / 84.1%** |
+
+combined / EUR / AFR. **This is the first run that meets the 80% rule**, asked for by
+Nikki Palmiero on 2026-10-14.
+
+**Nobody is dropped for missing a PC** — that was the premise of using the release's,
+and the script refuses to write if it fails. The only people dropped are 9 (combined)
+and 7 (EUR) with no `AGE`, all controls, in all three phenotypes.
+
+> **A caveat carried rather than hidden.** "80% of the variance" is 80% of what the top
+> twenty eigenvalues capture, because plink publishes twenty. It is not 80% of total
+> genotypic variance, which twenty components come nowhere near. The rule holds — it is
+> a proportion of a stated denominator, not of everything.
+
+### Why the release's PCA and not one of our own
+
+The first pass re-ran a within-ancestry PCA to close a coverage gap in the original
+pipeline. **That gap did not exist**, and it was checkable three ways:
+
+- the original computed **no PCA at all** — its delivered PCs are identical to the
+  release's `exome_PC*` columns at `max|difference| = 0.00e+00`, across all 24
+  components in all three cohorts
+- there is no `--pca` in any of its scripts and no eigenvector file in its output
+- the release's by-ancestry exome PCA covers **100%** of the analysable cohort
+
+Its `step7_ldprune.bsub` builds the **GRM**. A GRM step was read as a PCA step, and a
+PCA was recomputed to fix something that was not broken. That recomputation was the only
+real methodological divergence from the original run, and removing it is what this
+rebuild exists for.
+
+### GRM: rebuilt for EUR and AFR, because that gap is real
+
+| | rebuild | original |
+|---|---:|---:|
+| EUR markers | 53,920 | 53,913 |
+| EUR samples | **51,867** | 51,632 |
+| AFR markers | 114,694 | 114,696 |
+| AFR samples | **14,927** | 14,878 |
+
+The original's pruned genotypes were built over a keep list already cut. **SAIGE
+intersects its phenotype file with the GRM**, so the 196 EUR and 34 AFR cohort members
+absent from them would have been dropped silently — no warning, no row in any log.
+
+Reproducing the marker counts to within 7 and 2 is what confirms the parameters are the
+original's; the difference is the extra samples. **0 of the tested cohort is outside the
+GRM** in any of the nine cells.
+
+Combined is **not** rebuilt: the original's `ALL.common_ldpruned` covers all 70,925 and
+has no gap.
+
+### One problem carried forward on purpose
+
+The combined GRM holds **38,833 markers for 70,925 people**, against EUR's 53,920 for
+51,867. **It is thinner than a subset of itself.**
+
+The cause is `--hwe 1e-6` applied **across ancestries**. Hardy-Weinberg departure in a
+structured sample is a consequence of mixing populations, not evidence of genotyping
+error — so the filter is removing population structure rather than bad genotypes.
+
+Left alone deliberately. Rebuilding it would be a third difference from the original run
+and would change the null model of every combined analysis. A thin GRM makes the
+relatedness correction somewhat worse, which is the **conservative** direction, and no
+combined analysis has come close to a bar.
+
+**If a combined result ever approaches significance, this is the first thing to redo.**
+
+---
+
 ## Results
 
 ### Rare-variant gene burden
