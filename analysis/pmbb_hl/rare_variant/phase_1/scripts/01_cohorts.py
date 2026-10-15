@@ -49,6 +49,7 @@ ANC = REL / ("Exome/PCA/combined/PMBB-Release-2026-4.0_genetic_exome"
 OUT = HERE / "results"
 
 PHENOTYPES = ["broad", "bilateral", "tinnitus"]
+BROAD = "SO_396"
 SENSORINEURAL = "SO_396.2"
 BILATERAL = "SO_396.8"
 TINNITUS = "SO_397"
@@ -100,11 +101,11 @@ def main():
     cohort = set(anc.IID)
     ev = load_evidence(cohort)
 
-    # One control set, used by both arms.
+    # One control set, used by all three arms.
     controls = cohort - set(ev.pid)
     print(f"exome cohort            {len(cohort):>8,}")
     print(f"with any ear evidence   {len(set(ev.pid)):>8,}")
-    print(f"controls (both arms)    {len(controls):>8,}\n")
+    print(f"controls (all 3 arms)   {len(controls):>8,}\n")
 
     report = {"release": REL.name, "exome_cohort": len(cohort),
               "controls": len(controls), "min_dates": MIN_DATES, "arms": {}}
@@ -162,11 +163,19 @@ def main():
     # The tinnitus arm OVERLAPS rather than nests, and the amount matters for every
     # later comparison, so it is measured and recorded rather than left implicit.
     overlap = built["tinnitus"] & built["broad"]
+    not_a_case = built["tinnitus"] - built["broad"]
+    # "Not a broad CASE" and "no hearing-loss EVIDENCE" are different questions and the
+    # counts differ -- the gap is people with hearing loss on a single date, below the
+    # two-date rule. Both get recorded, because quoting one for the other is the easy
+    # mistake to make and the numbers are far enough apart to mislead.
+    any_hl = set(ev[ev.code.str.match(rf"^{BROAD}($|\.)")].pid)
     report["tinnitus_overlap_with_broad"] = {
         "tinnitus_cases": len(built["tinnitus"]),
         "also_broad_cases": len(overlap),
         "share": round(len(overlap) / len(built["tinnitus"]), 3),
-        "tinnitus_only": len(built["tinnitus"] - built["broad"]),
+        "tinnitus_only": len(not_a_case),
+        "tinnitus_only_no_hl_evidence": len(not_a_case - any_hl),
+        "tinnitus_only_hl_one_date": len(not_a_case & any_hl),
     }
     o = report["tinnitus_overlap_with_broad"]
     print(f"tinnitus overlaps rather than nests: {o['also_broad_cases']:,} of "

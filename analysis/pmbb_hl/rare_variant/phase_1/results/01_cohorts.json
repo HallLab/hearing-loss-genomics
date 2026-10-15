@@ -109,6 +109,8 @@
     "tinnitus_cases": 2859,
     "also_broad_cases": 1885,
     "share": 0.659,
-    "tinnitus_only": 974
+    "tinnitus_only": 974,
+    "tinnitus_only_no_hl_evidence": 581,
+    "tinnitus_only_hl_one_date": 393
   }
 }
