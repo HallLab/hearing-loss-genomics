@@ -72,6 +72,51 @@ no case is lost anywhere.
 
 ---
 
+## The masks — what a burden test is actually testing
+
+Built from the release's own VEP annotation (106 GB), one chromosome per task. **One
+build serves all three phenotypes**: a mask depends on the annotation and the genotypes,
+not on who is a case, so building it per arm would only create a chance for them to
+differ.
+
+| mask | definition | genes | entries |
+|---|---|---:|---:|
+| `pLOF` | seven exact consequence terms, **or** any other splice annotation with `SpliceAI ≥ 0.2` | 17,841 | 462,144 |
+| `pDM` | AlphaMissense pathogenic / likely pathogenic, **or** max REVEL across transcripts ≥ 0.5 | 17,623 | 890,332 |
+| `pLOF_pDM` | the union, `pLOF` taking precedence | 17,945 | 1,340,936 |
+
+All three require `BIOTYPE == protein_coding`. 139,846,060 annotation rows fall inside
+the cohort's genotypes.
+
+**`pDM` here means "probably damaging and not truncating."** The SAIGE group file carries
+one annotation per variant and gives `pLOF` precedence, so the 11,540 variants that are
+both enter the `pLOF` test and are absent from the `pDM` one. That is a definitional
+consequence of the file format, not a choice, and it matters when reading a `pDM` result.
+
+### Three corrections to the original run, each measured
+
+| | count | what it fixes |
+|---|---:|---|
+| rows dropped, not `protein_coding` | 71,443,642 | the original's gene set carries 651 antisense, 88 LINC and 14 microRNA genes. Its top burden gene in two of three cohorts was `TMC3-AS1`, an antisense lncRNA |
+| splice annotations rejected by the `SpliceAI` gate | 2,780,725 | the original matched `"splice"` as a substring, admitting three `IMPACT=LOW` terms unconditionally. The gate its own analysis plan specifies was never applied |
+| `pDM` assignments recovered from REVEL | 1,366,320 | the original coerced VEP's multi-valued REVEL entries to `NaN`, silently dropping about three quarters of `pDM`. Found by Nikki Palmiero on 2026-10-05 |
+
+For scale, the gate rejects 2,780,725 splice candidates and admits 426,418 — it removes
+about **87%** of what substring matching would have let through.
+
+**None of this rescues a result.** Nothing is significant with the corrected masks or
+without them. The fixes are what make the gene list defensible, which is a different
+claim and the one worth making.
+
+### The masks reproduce the first pass byte for byte
+
+Not the same counts — the same files, md5-identical on all three masks. The first pass
+read the 106 GB serially; this reads it as 22 parallel tasks and merges. Byte-identical
+output from a restructured implementation is the evidence that the restructuring
+introduced nothing.
+
+---
+
 ## Results
 
 ### Rare-variant gene burden
