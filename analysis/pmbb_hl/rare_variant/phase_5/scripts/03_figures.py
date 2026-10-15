@@ -17,6 +17,7 @@ distribution over an ordered axis -- a strip plot on a log rank scale, because t
 claim lives in the first few dozen ranks out of 17,900 and a linear axis would hide it.
 """
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -65,9 +66,23 @@ def fig_manhattan():
     for r, cohort in enumerate(COHORTS):
         for c, pheno in enumerate(PHENOS):
             ax = axes[r, c]
-            d = omnibus(pheno, cohort).merge(pos, on="Region", how="left",
-                                             suffixes=("", "_p"))
-            d = d.dropna(subset=["POS"]).copy()
+            full = omnibus(pheno, cohort).merge(pos, on="Region", how="left",
+                                                suffixes=("", "_p"))
+            # A GENE WITH NO POSITION IS DROPPED FROM THE PLOT, SILENTLY. The map comes
+            # from the first pass and is two genes short of what this rebuild tests, so
+            # the drop is small -- but a Manhattan that omits the one gene worth looking
+            # at still looks finished. Refuse if anything dropped lands in the top 100.
+            lost = full[full.POS.isna()]
+            if len(lost):
+                floor = full.omnibus_p.nsmallest(100).iloc[-1]
+                near = lost[lost.omnibus_p <= floor]
+                if len(near):
+                    sys.exit(
+                        f"REFUSING: {pheno}_{cohort} -- "
+                        f"{', '.join(near.Region)} have no position in the gene map "
+                        f"and would be dropped from the plot, but rank inside the top "
+                        f"100. Rebuild gene_positions.tsv before drawing this.")
+            d = full.dropna(subset=["POS"]).copy()
             d["CHR"] = pd.to_numeric(d["CHR_p"] if "CHR_p" in d else d["CHR"],
                                      errors="coerce")
             d = d.dropna(subset=["CHR"]).sort_values(["CHR", "POS"])
