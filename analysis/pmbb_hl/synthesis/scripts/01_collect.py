@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+"""
+Synthesis -- pull every reportable number out of the two arms' own results.
+
+TWELVE CELLS: {rare-variant burden, common-variant ExWAS} x {broad, bilateral} x
+{combined, EUR, AFR}. Nothing here is retyped from a document; each number is read from
+the file the phase that produced it wrote.
+
+A COMPARABILITY WARNING THE TABLES CANNOT CARRY. The two arms do not report the same
+quantity and are not judged by the same bar:
+
+  burden   one omnibus p per GENE, Cauchy-combined over up to 9 mask x MAF cells,
+           against 0.05/genes and an FDR boundary
+  ExWAS    one p per VARIANT, no combination, against 5e-8 and 0.05/variants
+
+Putting their minimum p-values side by side compares a minimum over 17,900 genes with
+one over 70,000-118,000 variants. The ratio to each cell's OWN bar is the only figure
+that travels between them, and that is what the synthesis figure plots.
+"""
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1].parent
+OUT = Path(__file__).resolve().parents[1] / "results"
+PHENOS = ["broad", "bilateral"]
+COHORTS = ["combined", "EUR", "AFR"]
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    burden = json.loads((ROOT / "rare_variant/phase_4/results/04_merge.json").read_text())
+    exwas = json.loads((ROOT / "exwas/phase_4/results/02_merge.json").read_text())
+    enrich = json.loads((ROOT / "rare_variant/phase_5/results/02_enrichment.json").read_text())
+    matched = json.loads((ROOT / "rare_variant/phase_6/results/02_matched_enrichment.json").read_text())
+    calib = json.loads((ROOT / "exwas/phase_5/results/01_calibration.json").read_text())
+    cohorts = json.loads((ROOT / "rare_variant/phase_1/results/01_cohorts.json").read_text())
+    covar = json.loads((ROOT / "rare_variant/phase_3/results/01_covariates.json").read_text())
+
+    out = {"cohorts": {}, "cells": {}}
+    for ph in PHENOS:
+        out["cohorts"][ph] = {
+            "analysable": cohorts["arms"][ph]["analysable"],
+            "cases": cohorts["arms"][ph]["cases"],
+            "tested": {c: covar["arms"][ph][c]["written"] for c in COHORTS},
+            "tested_cases": {c: covar["arms"][ph][c]["cases"] for c in COHORTS},
+        }
+
+    print(f"  {'cell':<26}{'units':>9}{'min p':>11}{'bar':>11}{'short by':>10}"
+          f"{'hits':>6}")
+    for ph in PHENOS:
+        for c in COHORTS:
+            tag = f"{ph}_{c}"
+            b, e = burden["arms"][tag], exwas["arms"][tag]
+            for arm, units, minp, bar, hits in (
+                ("burden", b["genes"], b["min_omnibus_p"], b["bonferroni_bar"],
+                 b["bonferroni_hits"] + b["fdr_hits"]),
+                ("exwas", e["tested"], e["min_p"], 5e-8,
+                 e["hits_primary"] + e["hits_secondary"]),
+            ):
+                key = f"{arm}_{tag}"
+                out["cells"][key] = {
+                    "arm": arm, "phenotype": ph, "cohort": c, "units": units,
+                    "min_p": minp, "bar": bar, "short_by": minp / bar, "hits": hits,
+                }
+                if arm == "burden":
+                    out["cells"][key].update({
+                        "best_gene": b["best_gene"], "min_q": b["min_q"],
+                        "duplicates_dropped": b["duplicate_cells_dropped"],
+                        "clingen_top50": enrich["arms"][tag]["definitive_strong"]
+                                               ["depths"]["50"]["observed"],
+                        "clingen_p": enrich["arms"][tag]["definitive_strong"]
+                                           ["depths"]["50"]["p"],
+                    })
+                else:
+                    out["cells"][key].update({
+                        "best_variant": e["best_variant"],
+                        "secondary_bar": e["secondary_bar"],
+                        "lambda_in_mhc": calib["arms"][tag]["lambda_inside_mhc"],
+                        "lambda_outside_mhc": calib["arms"][tag]["lambda_outside_mhc"],
+                    })
+                print(f"  {key:<26}{units:>9,}{minp:>11.2e}{bar:>11.2e}"
+                      f"{minp/bar:>9.1f}x{hits:>6}")
+
+    out["matched_enrichment"] = matched["arms"]
+    (OUT / "consolidated.json").write_text(json.dumps(out, indent=2) + "\n")
+    print(f"\n  written: results/consolidated.json")
+
+
+if __name__ == "__main__":
+    main()
