@@ -28,10 +28,20 @@ Andre Rico · two analyses × three phenotypes × three cohorts = **18 cells**
 > demonstrably works, the limit is the cohort and not the method, and the hypothesis
 > this project started from does not survive."*
 
+**Nothing is significant — here is how close each analysis got.** The two are reported
+separately because they count different things: a gene against a Bonferroni bar over
+genes, a variant against the genome-wide convention.
+
+| | best result | its bar | short by |
+|---|---|---:|---:|
+| **Rare-variant burden** | `FBXO25`, bilateral EUR, p = 6.33e-06 | Bonferroni `0.05 / 17,921 genes` = 2.79e-06 | **2.3×** |
+| **Common-variant ExWAS** | `7:158133844:C:T`, bilateral AFR, p = 7.67e-07 | genome-wide `5e-8` | **15×** |
+
+And the three things worth taking away:
+
 | | |
 |---|---|
-| **Nothing reaches a bar** | closest is 1.9× short, furthest 685× |
-| **But the pipeline finds real biology** | known deafness genes cluster at the top, p = 5.9e-06, and that survived a test built to break it |
+| **The pipeline finds real biology** | known deafness genes cluster at the top, p = 5.9e-06, and that survived a test built to break it |
 | **The limit is the cohort** | the median gene carries **five** rare alleles among the cases |
 | **The origin hypothesis fails** | `ZNF175` reaches nothing, and not for lack of coverage |
 
@@ -214,6 +224,11 @@ Bar: `0.05 / genes` ≈ 2.79e-06, plus FDR q < 0.10. **Zero hits under either.**
 > the original run's six — and the x-axis is how far each one fell short of its own bar.
 > Everything is to the right of the line."*
 
+> **SAY —** *"The closest cell on the whole figure is the original run's burden in
+> combined, at one-point-nine. Ours is two-point-three. Neither reaches, and the gap
+> between them is not a verdict on either pipeline — their gene set is bigger, which
+> buys both a looser bar and more chances at a small p."*
+
 > **SAY —** *"And the second reading is the useful one: the rare-variant arms land an
 > order of magnitude closer than the common-variant ones, in every single run. That is
 > the statistical version of the preference this group already held on biological
@@ -234,6 +249,15 @@ There is also an open methodological question about `FBXO25` specifically — se
 They answer different questions and the split is principled. `5e-8` is the genome-wide
 convention and counts nothing we did. FDR is a threshold over a count of tests we
 actually performed, which is why it applies to the burden arm and not to the ExWAS.
+
+**The ExWAS carries two bars and they read very differently**, so have both:
+
+| | bar | our best is short by |
+|---|---:|---:|
+| genome-wide convention | `5e-8` | **15×** |
+| secondary Bonferroni, `0.05 / 118,049 variants` | 4.24e-07 | 1.8× |
+
+The convention is the stricter and is the one reported. Quote 15×, not 1.8×.
 
 ---
 
