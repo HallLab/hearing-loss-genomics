@@ -452,13 +452,31 @@ and per gene, so the decision can be made on the numbers.
 
 ## 10 · What I need next
 
-> **SAY —** *"Three things, in order of how much they matter."*
+> **SAY —** *"Three things, in order of how much they matter. The first one is the
+> one I would act on now."*
 
 | | |
 |---|---|
-| **1. Confirm phenotype comparability in All of Us / UK Biobank** | the single thing that could invalidate the replication plan |
-| **2. More cases, not more methods** | every cell is power-limited; another analysis of the same 6,752 people will not change anything |
+| **1. Re-run the cohort on AudBase audiograms instead of PMBB phecodes** | access in progress. A phecode records who got **coded**; an audiogram records who was **measured**. This is a better phenotype, not another method — and the distinction matters, because another statistical approach on the same labels will not change anything. |
+| **2. Confirm phenotype comparability in All of Us / UK Biobank** | the single thing that could invalidate the replication plan |
 | **3. A decision on §9** | and on whether the poster correction (backup B1) goes anywhere |
+
+### Why the audiogram arm is the strongest thing on this list
+
+It works on a **different lever** from everything in §7. The power argument there is
+about cohort size; this one is about **misclassification**, and it can be acted on
+without a new biobank, a new consent or a new data agreement.
+
+Two gains, and the second is probably the larger:
+
+| | |
+|---|---|
+| **cases we never had** | people with measured hearing loss who were never coded for it |
+| **controls we should never have had** | our 50,755 controls are "no ear evidence in the record" — not "measured and normal". Age-related hearing loss is common and under-coded, so some unknown share of them are undiagnosed cases. **A case sitting in the control group pushes the test toward the null**, so this is cost we are paying now and cannot currently measure. |
+
+**Expected, not promised.** We cannot size either gain until we see the data. The first
+thing to measure on arrival is how many current *controls* have an abnormal audiogram —
+that number alone says whether the phenotype was the binding constraint.
 
 ---
 
