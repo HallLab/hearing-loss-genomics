@@ -12,9 +12,11 @@ A ratio rather than raw p, because the two arms are not judged by the same rule:
 burden bar is 0.05/genes and the ExWAS bar is the 5e-8 convention. Raw minima would
 compare a minimum over 17,900 genes with one over 70,000-118,000 variants.
 
-COLOUR. Four series, four documented categorical slots, values unchanged. The validator
-could not be run -- node is not installed on this cluster -- and four series stays
-inside the all-pairs limit.
+COLOUR. Five series, slots 1-5 of the documented categorical order, values unchanged.
+VALIDATED this time: node is absent on this cluster but the skill also ships a Python
+validator, and it rejected the previous palette -- two of the five hues were invented
+rather than taken from the order, and one pair was indistinguishable under deuteranopia.
+Every point carries a direct label, which is the relief the contrast WARN requires.
 """
 import json
 from pathlib import Path
@@ -37,12 +39,18 @@ COHORTS = ["combined", "EUR", "AFR"]
 # both be worse than an annotated hole.
 SERIES = ["original run", "rebuild, broad", "rebuild, bilateral", "rebuild, tinnitus",
           "BRaVa annotation"]
-BLUE, ORANGE, AQUA, PLUM, SAND = ("#2a78d6", "#eb6834", "#1baf7a", "#a855a0",
-                                  "#b8860b")
+# SLOTS 1-5 OF THE DOCUMENTED CATEGORICAL ORDER, in order, not hues chosen to look
+# different. The previous version invented two (#a855a0, #b8860b) and the validator
+# failed them: #b8860b against #eb6834 is deltaE 2.5 under deuteranopia and 11.6 even
+# with normal colour vision -- the BRaVa and broad series were effectively one colour
+# for a red-green colourblind reader. Run with scripts/validate_palette.py, light mode:
+# all checks pass, worst adjacent CVD deltaE 9.1.
+BLUE, ORANGE, AQUA, YELLOW, MAGENTA = ("#2a78d6", "#eb6834", "#1baf7a",
+                                       "#eda100", "#e87ba4")
 INK, INK_2, INK_3, SURFACE = "#1a1a19", "#5c5b55", "#8a8980", "#ffffff"
 PCOL = {"original run": BLUE, "rebuild, broad": ORANGE,
-        "rebuild, bilateral": AQUA, "rebuild, tinnitus": PLUM,
-        "BRaVa annotation": SAND}
+        "rebuild, bilateral": AQUA, "rebuild, tinnitus": YELLOW,
+        "BRaVa annotation": MAGENTA}
 
 
 DY = (26, -27, 11, -12, 36)
