@@ -20,8 +20,25 @@ first pass byte for byte. This exists for two reasons, set out in
 |---|---|
 | 2 — masks | **done**, 22/22, job `49775051` |
 | 2 — comparison against `pmbb_hl` | **done** |
-| 4 — SAIGE step 2 | not started — step 1 is reused from `pmbb_hl`, the null model does not depend on the mask |
-| 5 — the pre-declared enrichment test | not started |
+| 4 — SAIGE step 2 | **done**, 88/88, job `49775068`. Step 1 reused from `pmbb_hl` — the null model does not depend on the mask |
+| 5 — the pre-declared enrichment test | **done** — [`phase_5/results/FINDINGS.md`](phase_5/results/FINDINGS.md) |
+
+## The answer
+
+**The ClinGen enrichment survives.** 5 Definitive/Strong genes in the top 50 of the broad
+combined ranking, 0.27 expected, **p = 7.83e-06** — against 5.91e-06 under our own
+annotation, on a mask set that shares a fifth of its variants.
+
+**But three of the five genes are the same, not five.** `SIX1`, `GJB3` and `COCH` hold;
+`MYO6` and `TMPRSS3` drop out and `RIPOR2` and `CEACAM16` take their places. That is the
+clearest evidence yet for what the finding has always claimed — **it is about the
+ranking, not about any gene.** A gene carrying a detectable effect would hold its place
+under a different annotation. None does; the class does.
+
+**The synonymous control is flat**, which rules out a structural artefact no other check
+in this project would have caught.
+
+**Nothing is significant in any of the four arms**, as expected.
 
 Everything above step 2 is inherited unchanged from `pmbb_hl`: cohorts, covariates, PCs,
 GRM, and the nine fitted null models. **Only the mask differs**, which is what makes any

@@ -1,0 +1,57 @@
+{
+  "arms": {
+    "burden_broad_combined": {
+      "genes": 16742,
+      "cells": 146581,
+      "duplicate_cells_dropped": 4100,
+      "median_cells_per_gene": 9.0,
+      "expected_cells_per_gene": 9,
+      "min_omnibus_p": 2.3289485786948116e-05,
+      "best_gene": "PSG8",
+      "bonferroni_bar": 2.986501015410345e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.38991257104508537,
+      "fdr_hits": 0
+    },
+    "burden_broad_EUR": {
+      "genes": 16697,
+      "cells": 144767,
+      "duplicate_cells_dropped": 5528,
+      "median_cells_per_gene": 9.0,
+      "expected_cells_per_gene": 9,
+      "min_omnibus_p": 0.00017667995657044688,
+      "best_gene": "PSG8",
+      "bonferroni_bar": 2.9945499191471523e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.9143588777585614,
+      "fdr_hits": 0
+    },
+    "synonymous_broad_combined": {
+      "genes": 16776,
+      "cells": 50326,
+      "duplicate_cells_dropped": 0,
+      "median_cells_per_gene": 3.0,
+      "expected_cells_per_gene": 3,
+      "min_omnibus_p": 0.00013164037227580971,
+      "best_gene": "DBT",
+      "bonferroni_bar": 2.9804482594182167e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.8960143919701332,
+      "fdr_hits": 0
+    },
+    "synonymous_broad_EUR": {
+      "genes": 16762,
+      "cells": 50281,
+      "duplicate_cells_dropped": 0,
+      "median_cells_per_gene": 3.0,
+      "expected_cells_per_gene": 3,
+      "min_omnibus_p": 9.236184897420952e-05,
+      "best_gene": "RFX5",
+      "bonferroni_bar": 2.982937596945472e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.8538220421105507,
+      "fdr_hits": 0
+    }
+  },
+  "acat_source": "/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/scripts/04_merge_results.py"
+}

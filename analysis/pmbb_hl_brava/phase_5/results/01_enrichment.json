@@ -1,0 +1,210 @@
+{
+  "declared_test": {
+    "arm": "burden_broad_combined",
+    "tier": "definitive_strong",
+    "depth": 50,
+    "source": "PREMISES.md P5",
+    "tested": 16742,
+    "on_list": 92,
+    "observed": 5,
+    "expected": 0.27475809341775176,
+    "p": 7.82617608464395e-06,
+    "verdict": "SURVIVES"
+  },
+  "clingen_list": "/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_5/data/clingen_hl_genes.tsv",
+  "arms": {
+    "burden_broad_combined": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16742,
+          "on_list": 92,
+          "observed": 5,
+          "expected": 0.27475809341775176,
+          "p": 7.82617608464395e-06
+        },
+        "100": {
+          "tested": 16742,
+          "on_list": 92,
+          "observed": 5,
+          "expected": 0.5495161868355035,
+          "p": 0.00022409766584464427
+        },
+        "250": {
+          "tested": 16742,
+          "on_list": 92,
+          "observed": 5,
+          "expected": 1.3737904670887588,
+          "p": 0.012248839844048695
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16742,
+          "on_list": 109,
+          "observed": 5,
+          "expected": 0.3255286106797276,
+          "p": 1.789770715725847e-05
+        },
+        "100": {
+          "tested": 16742,
+          "on_list": 109,
+          "observed": 6,
+          "expected": 0.6510572213594552,
+          "p": 4.811813388060575e-05
+        },
+        "250": {
+          "tested": 16742,
+          "on_list": 109,
+          "observed": 7,
+          "expected": 1.6276430533986381,
+          "p": 0.0012453153072843962
+        }
+      }
+    },
+    "burden_broad_EUR": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16697,
+          "on_list": 91,
+          "observed": 2,
+          "expected": 0.27250404264239086,
+          "p": 0.03038521322799019
+        },
+        "100": {
+          "tested": 16697,
+          "on_list": 91,
+          "observed": 2,
+          "expected": 0.5450080852847817,
+          "p": 0.10331311134536399
+        },
+        "250": {
+          "tested": 16697,
+          "on_list": 91,
+          "observed": 3,
+          "expected": 1.3625202132119543,
+          "p": 0.15594050173511156
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16697,
+          "on_list": 108,
+          "observed": 2,
+          "expected": 0.3234113912678924,
+          "p": 0.041523943833036744
+        },
+        "100": {
+          "tested": 16697,
+          "on_list": 108,
+          "observed": 3,
+          "expected": 0.6468227825357848,
+          "p": 0.02706990660754576
+        },
+        "250": {
+          "tested": 16697,
+          "on_list": 108,
+          "observed": 4,
+          "expected": 1.6170569563394621,
+          "p": 0.07908706784254987
+        }
+      }
+    },
+    "synonymous_broad_combined": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16776,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 0.27420123986647593,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16776,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 0.5484024797329519,
+          "p": 1.0
+        },
+        "250": {
+          "tested": 16776,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 1.3710061993323797,
+          "p": 1.0
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16776,
+          "on_list": 109,
+          "observed": 0,
+          "expected": 0.3248688602765856,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16776,
+          "on_list": 109,
+          "observed": 0,
+          "expected": 0.6497377205531712,
+          "p": 1.0
+        },
+        "250": {
+          "tested": 16776,
+          "on_list": 109,
+          "observed": 0,
+          "expected": 1.624344301382928,
+          "p": 1.0
+        }
+      }
+    },
+    "synonymous_broad_EUR": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16762,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 0.2744302589189834,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16762,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 0.5488605178379669,
+          "p": 1.0
+        },
+        "250": {
+          "tested": 16762,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 1.372151294594917,
+          "p": 1.0
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16762,
+          "on_list": 109,
+          "observed": 0,
+          "expected": 0.32514019806705646,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16762,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 0.6502803961341129,
+          "p": 0.4802173609190245
+        },
+        "250": {
+          "tested": 16762,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 1.6257009903352821,
+          "p": 0.806656359132551
+        }
+      }
+    }
+  },
+  "synonymous_control_flat": true
+}
