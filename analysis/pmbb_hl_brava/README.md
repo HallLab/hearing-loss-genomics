@@ -22,6 +22,7 @@ first pass byte for byte. This exists for two reasons, set out in
 | 2 — comparison against `pmbb_hl` | **done** |
 | 4 — SAIGE step 2 | **done**, 88/88, job `49775068`. Step 1 reused from `pmbb_hl` — the null model does not depend on the mask |
 | 5 — the pre-declared enrichment test | **done** — [`phase_5/results/FINDINGS.md`](phase_5/results/FINDINGS.md) |
+| 5 — why each gene moved | **done** — [`phase_5/results/GENE_MOVEMENT.md`](phase_5/results/GENE_MOVEMENT.md) |
 
 ## The answer
 
@@ -34,6 +35,13 @@ annotation, on a mask set that shares a fifth of its variants.
 clearest evidence yet for what the finding has always claimed — **it is about the
 ranking, not about any gene.** A gene carrying a detectable effect would hold its place
 under a different annotation. None does; the class does.
+
+**And the reshuffling is near-total.** Across the 92 ClinGen genes ranked by both
+annotations, the median gene moves **3,918 positions** out of ~17,000, and only **4 of
+92** stay within 100 places. The aggregate signal is robust; individual ranks are not
+even approximately stable. `MYO6` makes it concrete: the same mask, the same cutoff,
+**11 case alleles against 8** — three alleles, and the p moves an order of magnitude.
+See [`phase_5/results/GENE_MOVEMENT.md`](phase_5/results/GENE_MOVEMENT.md).
 
 **The synonymous control is flat**, which rules out a structural artefact no other check
 in this project would have caught.

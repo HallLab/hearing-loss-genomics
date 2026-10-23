@@ -350,6 +350,34 @@
       }
     }
   },
+  "brava": {
+    "arm": "burden",
+    "cohorts": [
+      "combined",
+      "EUR"
+    ],
+    "note": "burden only; AFR and the ExWAS were not run",
+    "cells": {
+      "combined": {
+        "units": 16742,
+        "min_p": 2.3289485786948116e-05,
+        "bar": 2.986501015410345e-06,
+        "short_by": 7.798251420901708,
+        "best_gene": "PSG8",
+        "min_q": 0.38991257104508537,
+        "hits": 0
+      },
+      "EUR": {
+        "units": 16697,
+        "min_p": 0.00017667995657044688,
+        "bar": 2.9945499191471523e-06,
+        "short_by": 59.00050469713503,
+        "best_gene": "PSG8",
+        "min_q": 0.9143588777585614,
+        "hits": 0
+      }
+    }
+  },
   "matched_enrichment": {
     "broad_combined": {
       "observed": 5,

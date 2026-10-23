@@ -1,0 +1,33 @@
+{
+  "depth": 50,
+  "clingen_genes": 100,
+  "in_top50_ours": [
+    "COCH",
+    "GJB3",
+    "MYO6",
+    "SIX1",
+    "TMPRSS3"
+  ],
+  "in_top50_brava": [
+    "CEACAM16",
+    "COCH",
+    "GJB3",
+    "RIPOR2",
+    "SIX1"
+  ],
+  "held": [
+    "COCH",
+    "GJB3",
+    "SIX1"
+  ],
+  "lost_by_brava": [
+    "MYO6",
+    "TMPRSS3"
+  ],
+  "gained_by_brava": [
+    "CEACAM16",
+    "RIPOR2"
+  ],
+  "median_abs_rank_change": 3917.5,
+  "clingen_list_size": 100
+}

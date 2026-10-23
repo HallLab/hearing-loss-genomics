@@ -26,17 +26,26 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parents[1]
 COHORTS = ["combined", "EUR", "AFR"]
-# Four series, not four phenotypes. The original run and our broad arm share a
-# phenotype and differ in pipeline; bilateral and tinnitus are phenotypes we added, and
-# the original ran neither, so there is no second original series.
-SERIES = ["original run", "rebuild, broad", "rebuild, bilateral", "rebuild, tinnitus"]
-BLUE, ORANGE, AQUA, PLUM = "#2a78d6", "#eb6834", "#1baf7a", "#a855a0"
+# Five series. The original run and our broad arm share a phenotype and differ in
+# pipeline; bilateral and tinnitus are phenotypes we added, and the original ran
+# neither. The fifth is the BRaVa annotation of the broad phenotype.
+#
+# THE BRaVa SERIES IS PARTIAL AND THE FIGURE SAYS SO. It was run on the burden arm
+# only, and only on combined and EUR -- the two cells where the ClinGen enrichment
+# exists (pmbb_hl_brava/PREMISES.md P3). So it has two of the twelve possible points.
+# Drawing it as though the missing ten were zero, or omitting the gap silently, would
+# both be worse than an annotated hole.
+SERIES = ["original run", "rebuild, broad", "rebuild, bilateral", "rebuild, tinnitus",
+          "BRaVa annotation"]
+BLUE, ORANGE, AQUA, PLUM, SAND = ("#2a78d6", "#eb6834", "#1baf7a", "#a855a0",
+                                  "#b8860b")
 INK, INK_2, INK_3, SURFACE = "#1a1a19", "#5c5b55", "#8a8980", "#ffffff"
 PCOL = {"original run": BLUE, "rebuild, broad": ORANGE,
-        "rebuild, bilateral": AQUA, "rebuild, tinnitus": PLUM}
+        "rebuild, bilateral": AQUA, "rebuild, tinnitus": PLUM,
+        "BRaVa annotation": SAND}
 
 
-DY = (26, -27, 11, -12)
+DY = (26, -27, 11, -12, 36)
 assert len(DY) == len(SERIES), \
     f"REFUSING: {len(DY)} label heights for {len(SERIES)} series -- labels would " \
     "share an offset and overlap wherever two arms agree closely"
@@ -47,8 +56,14 @@ def main():
     d, elena = raw["cells"], raw["elena"]
 
     def short(series, arm, cohort):
+        """None where a series has no cell -- the caller draws a gap, not a zero."""
         if series == "original run":
             return elena[cohort][arm]["short_by"]
+        if series == "BRaVa annotation":
+            bv = raw.get("brava")
+            if bv is None or arm != bv["arm"] or cohort not in bv["cells"]:
+                return None
+            return bv["cells"][cohort]["short_by"]
         ph = series.split(", ")[1]
         return d[f"{arm}_{ph}_{cohort}"]["short_by"]
     plt.rcParams.update({
@@ -60,7 +75,7 @@ def main():
         "axes.facecolor": SURFACE,
     })
 
-    fig, axes = plt.subplots(2, 1, figsize=(10.4, 6.2), sharex=True,
+    fig, axes = plt.subplots(2, 1, figsize=(10.6, 7.0), sharex=True,
                              gridspec_kw={"hspace": 0.42})
     panels = [("Rare-variant gene burden", "burden",
                "SAIGE-GENE · MAF ≤ 0.01 / 0.001 / 0.0001 · "
@@ -71,6 +86,7 @@ def main():
     for ax, (title, arm, note) in zip(axes, panels):
         for ci, cohort in enumerate(COHORTS[::-1]):
             vals = [(s, short(s, arm, cohort)) for s in SERIES]
+            vals = [(s, v) for s, v in vals if v is not None]
             ax.plot([min(v for _, v in vals), max(v for _, v in vals)],
                     [ci, ci], color=INK_3, lw=2, alpha=0.35,
                     solid_capstyle="round", zorder=1)
@@ -98,11 +114,15 @@ def main():
         ax.set_yticks(range(3))
         ax.set_yticklabels(COHORTS[::-1])
         ax.set_xscale("log")
-        ax.set_xlim(0.72, 1400)
-        ax.set_ylim(-1.12, 2.80)
+        ax.set_xlim(0.72, 1100)
+        # The top of the range has to clear the deepest POSITIVE label offset
+        # (+36pt on the fifth series) or it collides with the note text
+        # above the axes, which is how 10x ended up sitting on 'bar
+        # 0.05/genes'.
+        ax.set_ylim(-1.12, 3.18)
         ax.grid(axis="x", alpha=0.18, lw=0.5)
-        ax.set_title(title, loc="left", fontweight="bold", pad=30)
-        ax.text(0, 1.035, note, transform=ax.transAxes, fontsize=7.5,
+        ax.set_title(title, loc="left", fontweight="bold", pad=42)
+        ax.text(0, 1.012, note, transform=ax.transAxes, fontsize=7.5,
                 color=INK_3, va="bottom")
 
     axes[-1].set_xlabel("how far the best result fell short of its own bar "
@@ -113,14 +133,19 @@ def main():
     from matplotlib.lines import Line2D
     axes[0].legend(handles=[Line2D([], [], marker="o", ls="", ms=8,
                                    color=PCOL[s_], label=s_) for s_ in SERIES],
-                   loc="lower right", bbox_to_anchor=(1.0, 1.07), ncol=4,
-                   fontsize=8.5, handletextpad=0.4, columnspacing=1.3)
-    fig.suptitle("Twenty-four cells across four arms. Nothing reaches its threshold "
-                 "in any of them.", fontsize=11.5, x=0.062, ha="left", y=1.135)
+                   loc="lower right", bbox_to_anchor=(1.0, 1.07), ncol=5,
+                   fontsize=8.2, handletextpad=0.4, columnspacing=1.1)
+    n_pts = sum(1 for a in ("burden", "exwas") for c in COHORTS for s_ in SERIES
+                if short(s_, a, c) is not None)
+    fig.suptitle(f"{n_pts} cells across five arms. Nothing reaches its threshold "
+                 f"in any of them.", fontsize=11.5, x=0.062, ha="left", y=1.135)
     fig.text(0.062, 1.072, "the rare-variant arms land an order of magnitude closer "
              "than the common-variant ones, in every run",
              fontsize=9, color=INK_2, ha="left")
-    fig.text(0.062, 1.020, "the original run\u2019s burden figure is its omnibus "
+    fig.text(0.062, 1.020, "the BRaVa series is the burden arm only, on combined and "
+             "EUR \u2014 the two cells where the ClinGen enrichment lives; its other "
+             "gaps are not results \u00b7 "
+             "the original run\u2019s burden figure is its omnibus "
              "recomputed by our method \u2014 its delivered tables report per-cell "
              "p-values corrected within one MAF family, which is not the same quantity",
              fontsize=7.5, color=INK_3, ha="left")

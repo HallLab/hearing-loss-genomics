@@ -129,6 +129,28 @@ def main():
         print(f"  elena_{c:<20}burden {e['burden']['short_by']:>6.1f}x   "
               f"exwas {e['exwas']['short_by']:>7.0f}x")
 
+    # --- the BRaVa annotation arm. Burden only, and only the two cohorts where the
+    # ClinGen enrichment exists, so it is a PARTIAL series by construction -- see
+    # pmbb_hl_brava/PREMISES.md P3. Carried with its coverage stated so the figure can
+    # draw the gaps rather than quietly close them.
+    bv = ROOT.parent / "pmbb_hl_brava/phase_4/results/03_merge.json"
+    if bv.exists():
+        b = json.loads(bv.read_text())["arms"]
+        out["brava"] = {"arm": "burden", "cohorts": ["combined", "EUR"],
+                        "note": "burden only; AFR and the ExWAS were not run",
+                        "cells": {}}
+        for c in ("combined", "EUR"):
+            a = b[f"burden_broad_{c}"]
+            out["brava"]["cells"][c] = {
+                "units": a["genes"], "min_p": a["min_omnibus_p"],
+                "bar": a["bonferroni_bar"],
+                "short_by": a["min_omnibus_p"] / a["bonferroni_bar"],
+                "best_gene": a["best_gene"], "min_q": a["min_q"],
+                "hits": a["bonferroni_hits"] + a["fdr_hits"]}
+            print(f"  brava_{c:<20}burden {out['brava']['cells'][c]['short_by']:>6.1f}x")
+    else:
+        print(f"  (no BRaVa arm at {bv})")
+
     out["matched_enrichment"] = matched["arms"]
     (OUT / "consolidated.json").write_text(json.dumps(out, indent=2) + "\n")
     print(f"\n  written: results/consolidated.json")
