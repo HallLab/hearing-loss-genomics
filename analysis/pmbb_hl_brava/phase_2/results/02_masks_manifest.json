@@ -1,0 +1,37 @@
+{
+  "source": "release VEP, BRaVa annotation standard",
+  "standard": "docs/papers/BRaVa annotation recommendations.pdf",
+  "annotation_rows_in_cohort": 139846060,
+  "counts": {
+    "rows_in_cohort": 139846060,
+    "dropped_not_protein_coding": 71443642,
+    "dropped_no_symbol": 45534,
+    "dropped_not_mane_or_canonical": 52871860,
+    "rows_superseded": 2395875,
+    "dropped_gnomad_common": 193391,
+    "cat1_loftee_hc": 238897,
+    "cat2a_revel_or_cadd": 412692,
+    "cat2b_spliceai": 290651,
+    "cat2c_loftee_lc": 26749,
+    "cat4_synonymous": 1593025,
+    "uncategorised": 10330677
+  },
+  "masks": {
+    "pLOF": {
+      "genes": 15726,
+      "entries": 238897
+    },
+    "pDM": {
+      "genes": 16603,
+      "entries": 730092
+    },
+    "pLOF_pDM": {
+      "genes": 16755,
+      "entries": 968989
+    },
+    "synonymous": {
+      "genes": 16781,
+      "entries": 1593025
+    }
+  }
+}

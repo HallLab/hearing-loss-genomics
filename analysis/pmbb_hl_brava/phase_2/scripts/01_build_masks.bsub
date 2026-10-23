@@ -1,0 +1,17 @@
+#!/bin/bash
+#BSUB -J bmasks[1-22]
+#BSUB -q epistasis_normal
+#BSUB -n 2
+#BSUB -M 16000
+#BSUB -R "select[mem>=16000] rusage[mem=16000]"
+#BSUB -W 2:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_2/logs/bmask.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_2/logs/bmask.%J.%I.err
+#
+# Phase 2 (BRaVa) -- one chromosome per task, same shape as pmbb_hl's.
+#
+# The job name is bmasks, not masks, so that a merge here cannot be fooled by a
+# pmbb_hl mask job still in flight, and vice versa.
+#
+set -euo pipefail
+python3 /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_2/scripts/01_build_masks.py ${LSB_JOBINDEX}
