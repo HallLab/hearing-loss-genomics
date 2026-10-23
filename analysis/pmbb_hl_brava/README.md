@@ -20,7 +20,7 @@ first pass byte for byte. This exists for two reasons, set out in
 |---|---|
 | 2 — masks | **done**, 22/22, job `49775051` |
 | 2 — comparison against `pmbb_hl` | **done** |
-| 4 — SAIGE step 2 | **done**, 88/88, job `49775068`. Step 1 reused from `pmbb_hl` — the null model does not depend on the mask |
+| 4 — SAIGE step 2 | **done**, 88/88 job `49775068` + 44 AFR job `49775193` (one task retried as `49775246` after a transient node abort). Step 1 reused from `pmbb_hl` — the null model does not depend on the mask |
 | 5 — the pre-declared enrichment test | **done** — [`phase_5/results/FINDINGS.md`](phase_5/results/FINDINGS.md) |
 | 5 — why each gene moved | **done** — [`phase_5/results/GENE_MOVEMENT.md`](phase_5/results/GENE_MOVEMENT.md) |
 
@@ -46,7 +46,7 @@ See [`phase_5/results/GENE_MOVEMENT.md`](phase_5/results/GENE_MOVEMENT.md).
 **The synonymous control is flat**, which rules out a structural artefact no other check
 in this project would have caught.
 
-**Nothing is significant in any of the four arms**, as expected.
+**Nothing is significant in any of the six arms**, as expected. AFR was added after the declared test was answered and finds no enrichment either (1 in the top 50 against 0.28 expected, p = 0.25) — see the [`PREMISES.md`](PREMISES.md) addendum.
 
 Everything above step 2 is inherited unchanged from `pmbb_hl`: cohorts, covariates, PCs,
 GRM, and the nine fitted null models. **Only the mask differs**, which is what makes any

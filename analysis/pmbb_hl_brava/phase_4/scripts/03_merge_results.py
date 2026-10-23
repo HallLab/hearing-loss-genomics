@@ -39,7 +39,8 @@ STEP2 = HERE / "results/step2"
 OUT = HERE / "results"
 PMBB_HL_MERGE = (HERE.parent.parent / "pmbb_hl/rare_variant/phase_4/scripts"
                  / "04_merge_results.py")
-COHORTS = ["combined", "EUR"]
+# AFR added by the 2026-10-23 scope expansion (PREMISES.md addendum).
+COHORTS = ["combined", "EUR", "AFR"]
 SETS = {"burden": 9, "synonymous": 3}      # expected cells per gene, for the report
 CHROMS = range(1, 23)
 ALPHA = 0.05
@@ -67,11 +68,16 @@ acat = _borrow_acat()
 
 def in_flight():
     try:
-        out = subprocess.run(["bjobs", "-J", "bv_s2"], capture_output=True,
-                             text=True, timeout=60).stdout
+        # BOTH job names. The AFR expansion runs under bv_afr, so checking only
+        # bv_s2 would let the merge start while chr17 was still being written.
+        live = []
+        for name in ("bv_s2", "bv_afr"):
+            out = subprocess.run(["bjobs", "-J", name], capture_output=True,
+                                 text=True, timeout=60).stdout
+            live += [l for l in out.splitlines() if " RUN " in l or " PEND " in l]
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return None
-    return [l for l in out.splitlines() if " RUN " in l or " PEND " in l]
+    return live
 
 
 def load(sub, tag):

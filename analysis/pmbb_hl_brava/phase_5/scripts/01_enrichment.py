@@ -43,8 +43,11 @@ DECLARED_ARM = "burden_broad_combined"
 DEPTHS = [50, 100, 250]
 TIERS = {"definitive_strong": ["Definitive", "Strong"],
          "plus_moderate": ["Definitive", "Strong", "Moderate"]}
-ARMS = ["burden_broad_combined", "burden_broad_EUR",
-        "synonymous_broad_combined", "synonymous_broad_EUR"]
+# AFR added by the 2026-10-23 scope expansion. It is NOT part of the declared test --
+# P5 names combined, and DECLARED_ARM below is unchanged.
+ARMS = ["burden_broad_combined", "burden_broad_EUR", "burden_broad_AFR",
+        "synonymous_broad_combined", "synonymous_broad_EUR",
+        "synonymous_broad_AFR"]
 
 
 def enrich(ranked, gene_set, depth):

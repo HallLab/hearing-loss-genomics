@@ -354,9 +354,10 @@
     "arm": "burden",
     "cohorts": [
       "combined",
-      "EUR"
+      "EUR",
+      "AFR"
     ],
-    "note": "burden only; AFR and the ExWAS were not run",
+    "note": "burden only -- the ExWAS has no mask, so an annotation standard cannot change it",
     "cells": {
       "combined": {
         "units": 16742,
@@ -374,6 +375,15 @@
         "short_by": 59.00050469713503,
         "best_gene": "PSG8",
         "min_q": 0.9143588777585614,
+        "hits": 0
+      },
+      "AFR": {
+        "units": 16414,
+        "min_p": 2.1569426046863516e-05,
+        "bar": 3.046180090166931e-06,
+        "short_by": 7.0808111826643545,
+        "best_gene": "RNF149",
+        "min_q": 0.2020472416645569,
         "hits": 0
       }
     }

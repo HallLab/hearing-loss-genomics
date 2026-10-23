@@ -26,6 +26,19 @@
       "min_q": 0.9143588777585614,
       "fdr_hits": 0
     },
+    "burden_broad_AFR": {
+      "genes": 16414,
+      "cells": 133753,
+      "duplicate_cells_dropped": 13410,
+      "median_cells_per_gene": 9.0,
+      "expected_cells_per_gene": 9,
+      "min_omnibus_p": 2.1569426046863516e-05,
+      "best_gene": "RNF149",
+      "bonferroni_bar": 3.046180090166931e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.2020472416645569,
+      "fdr_hits": 0
+    },
     "synonymous_broad_combined": {
       "genes": 16776,
       "cells": 50326,
@@ -50,6 +63,19 @@
       "bonferroni_bar": 2.982937596945472e-06,
       "bonferroni_hits": 0,
       "min_q": 0.8538220421105507,
+      "fdr_hits": 0
+    },
+    "synonymous_broad_AFR": {
+      "genes": 16699,
+      "cells": 50008,
+      "duplicate_cells_dropped": 0,
+      "median_cells_per_gene": 3.0,
+      "expected_cells_per_gene": 3,
+      "min_omnibus_p": 2.5150527766304442e-05,
+      "best_gene": "BBOX1",
+      "bonferroni_bar": 2.99419126893826e-06,
+      "bonferroni_hits": 0,
+      "min_q": 0.32398736269679407,
       "fdr_hits": 0
     }
   },

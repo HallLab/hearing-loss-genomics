@@ -136,10 +136,16 @@ def main():
     bv = ROOT.parent / "pmbb_hl_brava/phase_4/results/03_merge.json"
     if bv.exists():
         b = json.loads(bv.read_text())["arms"]
-        out["brava"] = {"arm": "burden", "cohorts": ["combined", "EUR"],
-                        "note": "burden only; AFR and the ExWAS were not run",
+        # WHICH COHORTS ARE READ FROM THE MERGE, not written down here. That arm was
+        # scoped to combined and EUR, then expanded to AFR on 2026-10-23; a hardcoded
+        # pair would have silently dropped the new cell and the figure would still
+        # have rendered.
+        have = [c for c in COHORTS if f"burden_broad_{c}" in b]
+        out["brava"] = {"arm": "burden", "cohorts": have,
+                        "note": "burden only -- the ExWAS has no mask, so an "
+                                "annotation standard cannot change it",
                         "cells": {}}
-        for c in ("combined", "EUR"):
+        for c in have:
             a = b[f"burden_broad_{c}"]
             out["brava"]["cells"][c] = {
                 "units": a["genes"], "min_p": a["min_omnibus_p"],

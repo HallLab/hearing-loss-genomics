@@ -80,6 +80,23 @@ A robustness test is only meaningful where there is something to be robust.
 That is ~44 step-2 tasks rather than 198. If the result is interesting, expanding is a
 separate decision made with the numbers in hand.
 
+### Addendum, 2026-10-23 — scope expanded to AFR, after the fact
+
+**Recorded because it happened after the declared test was answered**, which is exactly
+the circumstance pre-registration exists to constrain.
+
+The AFR cohort was deliberately out of scope above: it carries 0 ClinGen genes in the
+top 50 under our own annotation, so there was nothing there for a robustness test to be
+robust about. It is now being run so the annotation comparison figure covers all three
+cohorts rather than two.
+
+**This cannot change the declared test and is not allowed to.** P5 names broad
+*combined*, Definitive/Strong, top 50. That test was computed, reported, and is closed.
+Nothing AFR produces may be substituted for it, added to it, or used to re-describe it.
+
+If the AFR arm produces something interesting it is a **hypothesis**, generated after
+seeing other results, and must be labelled as one wherever it appears.
+
 ## P4 — the synonymous mask is a control, and its expected result is nothing
 
 Synonymous variants with no splice signal should not associate with hearing loss. If the

@@ -109,6 +109,54 @@
         }
       }
     },
+    "burden_broad_AFR": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16414,
+          "on_list": 92,
+          "observed": 1,
+          "expected": 0.2802485682953576,
+          "p": 0.24531770741167316
+        },
+        "100": {
+          "tested": 16414,
+          "on_list": 92,
+          "observed": 1,
+          "expected": 0.5604971365907152,
+          "p": 0.4309463524529767
+        },
+        "250": {
+          "tested": 16414,
+          "on_list": 92,
+          "observed": 3,
+          "expected": 1.4012428414767881,
+          "p": 0.1652615147509298
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16414,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 0.33203362982819545,
+          "p": 0.28368905310682296
+        },
+        "100": {
+          "tested": 16414,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 0.6640672596563909,
+          "p": 0.48742397432411577
+        },
+        "250": {
+          "tested": 16414,
+          "on_list": 109,
+          "observed": 3,
+          "expected": 1.6601681491409772,
+          "p": 0.2312955742094391
+        }
+      }
+    },
     "synonymous_broad_combined": {
       "definitive_strong": {
         "50": {
@@ -202,6 +250,54 @@
           "observed": 1,
           "expected": 1.6257009903352821,
           "p": 0.806656359132551
+        }
+      }
+    },
+    "synonymous_broad_AFR": {
+      "definitive_strong": {
+        "50": {
+          "tested": 16699,
+          "on_list": 92,
+          "observed": 0,
+          "expected": 0.2754655967423199,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16699,
+          "on_list": 92,
+          "observed": 1,
+          "expected": 0.5509311934846398,
+          "p": 0.4254126406324332
+        },
+        "250": {
+          "tested": 16699,
+          "on_list": 92,
+          "observed": 1,
+          "expected": 1.3773279837115995,
+          "p": 0.7513144308530391
+        }
+      },
+      "plus_moderate": {
+        "50": {
+          "tested": 16699,
+          "on_list": 109,
+          "observed": 0,
+          "expected": 0.3263668483142703,
+          "p": 1.0
+        },
+        "100": {
+          "tested": 16699,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 0.6527336966285406,
+          "p": 0.4815069697090087
+        },
+        "250": {
+          "tested": 16699,
+          "on_list": 109,
+          "observed": 1,
+          "expected": 1.6318342415713516,
+          "p": 0.8078642650877345
         }
       }
     }
