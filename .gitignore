@@ -265,3 +265,10 @@ analysis/elena/
 *_P2Mat_Chunk_*.bin
 *.txt.index
 *.singleAssoc.txt
+
+# SAIGE step 2 output and its temporaries. Large, regenerable, and written while the
+# job is still running -- staging them races the scheduler.
+analysis/*/phase_4/results/step2/
+analysis/*/*/phase_4/results/step2/
+*.bin.tmp_*
+*_P2Mat_Chunk_*

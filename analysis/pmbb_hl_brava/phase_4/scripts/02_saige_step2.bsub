@@ -1,0 +1,95 @@
+#!/bin/bash
+#BSUB -J bv_s2[1-88]
+#BSUB -q epistasis_normal
+#BSUB -n 4
+#BSUB -M 64000
+#BSUB -R "select[mem>=64000] rusage[mem=64000]"
+#BSUB -W 8:00
+#BSUB -o /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_4/logs/s2.%J.%I.out
+#BSUB -e /project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_4/logs/s2.%J.%I.err
+#
+# Phase 4 (BRaVa), step 2 -- 88 tasks.
+#
+#   1-44   the burden grid   {broad_combined, broad_EUR} x 22 chromosomes
+#   45-88  the control set   the same two arms, synonymous mask
+#
+# NO STEP 1 HERE. The null model is logit P(case) = XB + b with b ~ N(0, tau*GRM). It
+# depends on the phenotype, the covariates and the relatedness -- none of which the mask
+# touches. So the nine models fitted in pmbb_hl are reused unchanged, which is also what
+# makes this arm interpretable: if nothing but the mask differs, then nothing but the
+# mask can explain a difference in the result.
+#
+# TWO ARMS, NOT EIGHTEEN. PREMISES.md P3 fixes the scope before the run: broad combined
+# and broad EUR are the only cells where the ClinGen enrichment exists (5 and 2 in the
+# top 50; every other arm is 0 against 0.26 expected). A robustness test is only
+# meaningful where there is something to be robust. Expanding is a separate decision,
+# made with these numbers in hand.
+#
+# THE SYNONYMOUS TASKS ARE A CONTROL and are expected to produce nothing -- see
+# PREMISES.md P4. They are run in the same array rather than separately so that a
+# forgotten control cannot be mistaken for a passed one.
+#
+set -euo pipefail
+module load apptainer/1.4.1
+SIF=/project/hall/tools/saige/1.5.0/saige_1.5.0.sif
+RSCRIPT=/app/.pixi/envs/default/bin/Rscript
+B=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl_brava/phase_4
+GENO=/project/hall/analysis/hearing-loss-genomics/analysis/elena/rarevariant_geneburden/plink_deduplicated
+# inherited, deliberately -- see above
+STEP1=/project/hall/analysis/hearing-loss-genomics/analysis/pmbb_hl/rare_variant/phase_4/results/step1
+OUT=${B}/results/step2
+
+COHORTS=(combined EUR)
+I=$(( LSB_JOBINDEX - 1 ))
+if [ ${I} -lt 44 ]; then
+  SET=burden
+  J=${I}
+  GROUPDIR=${B}/data/masks_by_chrom
+  ANNO="pLOF,pDM,pLOF:pDM"
+else
+  SET=synonymous
+  J=$(( I - 44 ))
+  GROUPDIR=${B}/data/syn_by_chrom
+  ANNO="synonymous"
+fi
+COHORT=${COHORTS[$(( J / 22 ))]}
+CHR=$(( J % 22 + 1 ))
+TAG=broad_${COHORT}
+
+PLINK=${GENO}/chr${CHR}_deduplicated
+MODEL=${STEP1}/${TAG}/${TAG}.rda
+VARRATIO=${STEP1}/${TAG}/${TAG}.varianceRatio.txt
+GROUPFILE=${GROUPDIR}/chr${CHR}.txt
+RESULT=${OUT}/${SET}/${TAG}/${TAG}_chr${CHR}.txt
+
+for F in ${PLINK}.bed ${MODEL} ${VARRATIO} ${GROUPFILE}; do
+  [ -s "${F}" ] || { echo "MISSING: ${F}" >&2; exit 1; }
+done
+mkdir -p ${OUT}/${SET}/${TAG}
+
+echo "task ${LSB_JOBINDEX}/88 -- ${SET} ${TAG} chr${CHR}  ($(( $(wc -l < ${GROUPFILE}) / 2 )) genes)"
+echo "start : $(date)"
+
+apptainer exec -B /project -B /static ${SIF} ${RSCRIPT} \
+  /usr/local/bin/step2_SPAtests.R \
+  --bedFile=${PLINK}.bed --bimFile=${PLINK}.bim --famFile=${PLINK}.fam \
+  --chrom=${CHR} \
+  --GMMATmodelFile=${MODEL} \
+  --varianceRatioFile=${VARRATIO} \
+  --groupFile=${GROUPFILE} \
+  --SAIGEOutputFile=${RESULT} \
+  --minMAF=0 \
+  --maxMAF_in_groupTest=0.0001,0.001,0.01 \
+  --minMAC=1 \
+  --annotation_in_groupTest="${ANNO}" \
+  --LOCO=FALSE \
+  --is_Firth_beta=TRUE \
+  --is_single_in_groupTest=FALSE \
+  --is_output_moreDetails=TRUE \
+  --is_no_weight_in_groupTest=TRUE \
+  --is_overwrite_output=TRUE
+
+N=$(( $(wc -l < ${RESULT}) - 1 ))
+[ "${N}" -gt 0 ] || { echo "REFUSING: ${SET} ${TAG} chr${CHR} produced no rows" >&2; exit 1; }
+echo "${SET} ${TAG} chr${CHR}: ${N} rows"
+echo "done : $(date)"
